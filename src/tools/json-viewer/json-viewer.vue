@@ -25,41 +25,63 @@ const rawJsonValidation = useValidation({
 </script>
 
 <template>
-  <div style="flex: 0 0 100%">
-    <div style="margin: 0 auto; max-width: 600px" flex justify-center gap-3>
-      <n-form-item label="Sort keys :" label-placement="left" label-width="100">
-        <n-switch v-model:value="sortKeys" />
-      </n-form-item>
-      <n-form-item label="Indent size :" label-placement="left" label-width="100" :show-feedback="false">
-        <n-input-number v-model:value="indentSize" min="0" max="10" style="width: 100px" />
-      </n-form-item>
-    </div>
+  <!-- 配置栏 -->
+  <div flex justify-start gap-4 mb-3 flex-wrap>
+    <n-form-item label="Sort keys" label-placement="left" label-width="90" :show-feedback="false">
+      <n-switch v-model:value="sortKeys" />
+    </n-form-item>
+    <n-form-item label="Indent size" label-placement="left" label-width="90" :show-feedback="false">
+      <n-input-number v-model:value="indentSize" min="0" max="10" style="width: 90px" />
+    </n-form-item>
   </div>
 
-  <n-form-item
-    label="Your raw JSON"
-    :feedback="rawJsonValidation.message"
-    :validation-status="rawJsonValidation.status"
-  >
-    <c-input-text
-      ref="inputElement"
-      v-model:value="rawJson"
-      placeholder="Paste your raw JSON here..."
-      rows="20"
-      multiline
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-      monospace
-    />
-  </n-form-item>
-  <n-form-item label="Prettified version of your JSON">
-    <TextareaCopyable :value="cleanJson" language="json" :follow-height-of="inputElement" />
-  </n-form-item>
+  <!-- 输入 / 输出并排 -->
+  <div class="json-panes">
+    <n-form-item
+      label="Raw JSON"
+      :feedback="rawJsonValidation.message"
+      :validation-status="rawJsonValidation.status"
+      class="pane"
+    >
+      <c-input-text
+        ref="inputElement"
+        v-model:value="rawJson"
+        placeholder="Paste your raw JSON here..."
+        rows="30"
+        multiline
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        monospace
+        style="height: 100%"
+      />
+    </n-form-item>
+
+    <n-form-item label="Prettified JSON" class="pane">
+      <TextareaCopyable :value="cleanJson" language="json" :follow-height-of="inputElement" style="height: 100%" />
+    </n-form-item>
+  </div>
 </template>
 
 <style lang="less" scoped>
+.json-panes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+
 .result-card {
   position: relative;
   .copy-button {

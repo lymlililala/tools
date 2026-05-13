@@ -91,6 +91,10 @@ import { tool as mortgageCalculator } from './mortgage-calculator';
 import { tool as bmiCalculator } from './bmi-calculator';
 import { tool as randomDecisionPicker } from './random-decision-picker';
 import { tool as incomeTaxCalculator } from './income-tax-calculator';
+import { tool as cssUnitConverter } from './css-unit-converter';
+import { tool as unixTimestamp } from './unix-timestamp';
+import { tool as numberFormatter } from './number-formatter';
+import { tool as colorPaletteGenerator } from './color-palette-generator';
 
 export const toolsByCategory: ToolCategory[] = [
   {
@@ -120,6 +124,8 @@ export const toolsByCategory: ToolCategory[] = [
       xmlToJson,
       jsonToXml,
       markdownToHtml,
+      cssUnitConverter,
+      unixTimestamp,
     ],
   },
   {
@@ -145,7 +151,7 @@ export const toolsByCategory: ToolCategory[] = [
   },
   {
     name: 'Images and videos',
-    components: [qrCodeGenerator, wifiQrCodeGenerator, svgPlaceholderGenerator, cameraRecorder],
+    components: [qrCodeGenerator, wifiQrCodeGenerator, svgPlaceholderGenerator, cameraRecorder, colorPaletteGenerator],
   },
   {
     name: 'Development',
@@ -172,7 +178,7 @@ export const toolsByCategory: ToolCategory[] = [
   },
   {
     name: 'Math',
-    components: [mathEvaluator, etaCalculator, percentageCalculator, mortgageCalculator, incomeTaxCalculator],
+    components: [mathEvaluator, etaCalculator, percentageCalculator, mortgageCalculator, incomeTaxCalculator, numberFormatter],
   },
   {
     name: 'Measurement',

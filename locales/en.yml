@@ -502,3 +502,61 @@ tools:
     preset1Child: Children's edu ¥2,000/mo
     presetRent: Housing rent ¥1,500/mo
     presetElderly: Elderly care ¥3,000/mo
+
+  css-unit-converter:
+    title: CSS Unit Converter
+    description: Convert between CSS units - px, rem, em, vw, vh, pt, and percent. Configure root font size, parent font size, and viewport dimensions.
+    input: Input Value
+    value: Value
+    unit: Unit
+    baseSettings: Base Settings
+    rootFontSize: Root Font Size
+    parentFontSize: Parent Font Size
+    viewportWidth: Viewport Width
+    viewportHeight: Viewport Height
+    results: Converted Values
+    clickHint: Click any result to use it as the new input value.
+
+  unix-timestamp:
+    title: Unix Timestamp Converter
+    description: Convert Unix timestamps to human-readable dates and vice versa. Shows current timestamp, ISO 8601, UTC, and local time formats.
+    current: Current Time
+    tsToDate: Timestamp → Date
+    dateToTs: Date → Timestamp
+    timestamp: Timestamp
+    inMs: In milliseconds
+    useNow: Use Now
+    dateString: Date String
+
+  number-formatter:
+    title: Number Formatter
+    description: Format numbers with different locales, styles (decimal, currency, percent, scientific), and separators.
+    input: Input
+    number: Number
+    locale: Locale
+    style: Style
+    currency: Currency
+    decimals: Decimal Places
+    grouping: Thousands separator
+    result: Result
+    comparison: Locale Comparison
+    styleDecimal: Decimal
+    styleCurrency: Currency
+    stylePercent: Percent
+    styleScientific: Scientific
+    styleEngineering: Engineering
+    styleCompact: Compact
+
+  color-palette-generator:
+    title: Color Palette Generator
+    description: Generate color palettes, tints, shades, and color harmonies from a base color. Perfect for UI design.
+    baseColor: Base Color
+    shades: Tints & Shades
+    harmonies: Color Harmonies
+    grays: Neutral / Gray Scale
+    complementary: Complementary
+    analogous: Analogous
+    triadic: Triadic
+    splitComplementary: Split-Complementary
+    tetradic: Tetradic (Square)
+    clickToCopy: Click any swatch to copy its hex value.
