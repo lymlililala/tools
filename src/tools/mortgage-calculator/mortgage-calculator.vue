@@ -161,24 +161,34 @@ const loanYearOptions = [5, 10, 15, 20, 25, 30].map(y => ({ label: `${y} ${t('to
           </n-form-item>
 
           <n-form-item :label="t('tools.mortgage-calculator.downPaymentRate')">
-            <n-slider
-              v-model:value="downPaymentRate"
-              :min="20"
-              :max="90"
-              :step="1"
-              :marks="{ 20: '20%', 30: '30%', 50: '50%', 70: '70%' }"
-              style="flex:1"
-            />
-            <n-input-number
-              v-model:value="downPaymentRate"
-              :min="20"
-              :max="90"
-              style="width: 90px; margin-left: 12px; flex-shrink:0"
-            >
-              <template #suffix>
-                %
-              </template>
-            </n-input-number>
+            <div style="width:100%">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px">
+                <n-slider
+                  v-model:value="downPaymentRate"
+                  :min="20"
+                  :max="90"
+                  :step="1"
+                  style="flex:1"
+                />
+                <n-input-number
+                  v-model:value="downPaymentRate"
+                  :min="20"
+                  :max="90"
+                  style="width: 90px; flex-shrink:0"
+                >
+                  <template #suffix>
+                    %
+                  </template>
+                </n-input-number>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; opacity:0.5; margin-top:-14px; padding:0 2px">
+                <span>20%</span>
+                <span>30%</span>
+                <span>50%</span>
+                <span>70%</span>
+                <span>90%</span>
+              </div>
+            </div>
           </n-form-item>
 
           <n-form-item :label="t('tools.mortgage-calculator.loanYears')">
