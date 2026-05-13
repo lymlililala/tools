@@ -1,3 +1,4 @@
+import { inject } from '@vercel/analytics';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createHead } from '@vueuse/head';
@@ -15,6 +16,7 @@ import router from './router';
 import { i18nPlugin } from './plugins/i18n.plugin';
 
 registerSW();
+inject();
 
 const app = createApp(App);
 
