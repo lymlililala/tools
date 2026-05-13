@@ -74,6 +74,9 @@ const tools = computed<ToolCategory[]>(() => [
           <command-palette />
         </div>
 
+        <div class="topbar-right">
+          <locale-selector />
+        </div>
       </div>
 
       <!-- 页面内容 -->
@@ -166,6 +169,12 @@ const tools = computed<ToolCategory[]>(() => [
   display: flex;
   align-items: center;
   gap: 2px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 // ─── Page Content ────────────────────────────────────────────
