@@ -47,6 +47,7 @@
     "@tiptap/vue-3": "2.0.3",
     "@types/figlet": "^1.5.8",
     "@types/markdown-it": "^13.0.7",
+    "@vercel/analytics": "^2.0.1",
     "@vicons/material": "^0.12.0",
     "@vicons/tabler": "^0.12.0",
     "@vueuse/core": "^10.3.0",
