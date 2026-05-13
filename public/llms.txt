@@ -1,0 +1,131 @@
+# MyUtl - Online Tools
+
+> MyUtl (https://myutl.com) is a free, open-source, client-side online toolbox for developers and everyday users. All tools run entirely in the browser — no data is sent to any server.
+
+## About
+
+MyUtl provides 90+ handy utilities organized into categories. Every tool works offline after the first load (PWA supported). No login, no tracking, no ads.
+
+## Tools
+
+### Crypto & Security
+- [Token Generator](/token-generator) — Generate random strings with custom character sets
+- [Hash Text](/hash-text) — Hash text using MD5, SHA1, SHA256, SHA512, etc.
+- [Bcrypt](/bcrypt) — Hash and compare passwords using bcrypt
+- [UUID Generator](/uuid-generator) — Generate UUIDs v1, v3, v4, v5
+- [ULID Generator](/ulid-generator) — Generate Universally Unique Lexicographically Sortable Identifiers
+- [Encrypt / Decrypt Text](/encryption) — AES, TripleDES, Rabbit, RC4 encryption
+- [BIP39 Generator](/bip39-generator) — Generate BIP39 mnemonic passphrases
+- [HMAC Generator](/hmac-generator) — Compute HMAC with various hash functions
+- [RSA Key Pair Generator](/rsa-key-pair-generator) — Generate RSA private/public key pairs
+- [Password Strength Analyser](/password-strength-analyser) — Analyse password strength and crack time
+- [PDF Signature Checker](/pdf-signature-checker) — Verify PDF digital signatures
+
+### Converter
+- [Date-Time Converter](/date-converter) — Convert between date/time formats and timezones
+- [Integer Base Converter](/base-converter) — Convert numbers between decimal, hex, binary, octal, base64
+- [Roman Numeral Converter](/roman-numeral-converter) — Convert between Roman numerals and integers
+- [Base64 String Encoder/Decoder](/base64-string-converter) — Encode/decode strings in Base64
+- [Base64 File Converter](/base64-file-converter) — Convert files to/from Base64
+- [Color Converter](/color-converter) — Convert colors between HEX, RGB, HSL, CSS names
+- [Case Converter](/case-converter) — Transform text case (camelCase, snake_case, PascalCase, etc.)
+- [Text to NATO Alphabet](/text-to-nato-alphabet) — Convert text to NATO phonetic alphabet
+- [Text to Binary](/text-to-binary) — Convert text to ASCII binary
+- [Text to Unicode](/text-to-unicode) — Parse and convert text to Unicode code points
+- [YAML to JSON](/yaml-to-json-converter) — Convert YAML to JSON
+- [JSON to YAML](/json-to-yaml-converter) — Convert JSON to YAML
+- [YAML to TOML](/yaml-to-toml) — Convert YAML to TOML
+- [JSON to TOML](/json-to-toml) — Convert JSON to TOML
+- [TOML to JSON](/toml-to-json) — Convert TOML to JSON
+- [TOML to YAML](/toml-to-yaml) — Convert TOML to YAML
+- [XML to JSON](/xml-to-json) — Convert XML to JSON
+- [JSON to XML](/json-to-xml) — Convert JSON to XML
+- [Markdown to HTML](/markdown-to-html) — Render Markdown as HTML
+- [List Converter](/list-converter) — Process and transform column-based lists
+- [CSS Unit Converter](/css-unit-converter) — Convert between px, rem, em, vw, vh, pt, %
+- [Unix Timestamp Converter](/unix-timestamp) — Convert Unix timestamps to/from human-readable dates
+
+### Web
+- [URL Encoder/Decoder](/url-encoder) — Encode/decode percent-encoded URLs
+- [HTML Entities](/html-entities) — Escape/unescape HTML entities
+- [URL Parser](/url-parser) — Parse URLs into components
+- [Device Information](/device-information) — Display current device and browser details
+- [Basic Auth Generator](/basic-auth-generator) — Generate Base64 basic authentication headers
+- [Meta Tag Generator](/meta-tag-generator) — Generate HTML meta and Open Graph tags
+- [OTP Code Generator](/otp-code-generator-and-validator) — Generate and validate TOTP/HOTP codes
+- [MIME Types](/mime-types) — Look up MIME types by file extension
+- [JWT Parser](/jwt-parser) — Decode and inspect JSON Web Tokens
+- [Keycode Info](/keycode-info) — Show JavaScript key codes for any key press
+- [Slugify String](/slugify-string) — Convert strings to URL-safe slugs
+- [HTML WYSIWYG Editor](/html-wysiwyg-editor) — Visual HTML editor with source output
+- [User-Agent Parser](/user-agent-parser) — Parse browser/OS from user-agent strings
+- [HTTP Status Codes](/http-status-codes) — Reference list of all HTTP status codes
+- [JSON Diff](/json-diff) — Compare two JSON objects visually
+- [Safelink Decoder](/safelink-decoder) — Decode tracking/safelink URLs
+
+### Images & Videos
+- [QR Code Generator](/qrcode-generator) — Generate and download QR codes
+- [WiFi QR Code Generator](/wifi-qrcode-generator) — Generate QR codes for WiFi networks
+- [SVG Placeholder Generator](/svg-placeholder-generator) — Generate SVG placeholder images
+- [Camera Recorder](/camera-recorder) — Record video/photo from webcam
+- [Color Palette Generator](/color-palette-generator) — Generate tints, shades, and color harmonies from a base color
+
+### Development
+- [Git Cheatsheet](/git-memo) — Quick reference for common Git commands
+- [Random Port Generator](/random-port-generator) — Generate random non-reserved port numbers
+- [Crontab Generator](/crontab-generator) — Build and validate cron expressions
+- [JSON Prettify & Format](/json-prettify) — Format and prettify JSON
+- [JSON Minify](/json-minify) — Minify and compress JSON
+- [JSON to CSV](/json-to-csv) — Convert JSON arrays to CSV
+- [SQL Prettify](/sql-prettify) — Format SQL queries
+- [Chmod Calculator](/chmod-calculator) — Calculate Unix file permissions
+- [Docker Run to Compose](/docker-run-to-docker-compose-converter) — Convert docker run commands to docker-compose YAML
+- [XML Formatter](/xml-formatter) — Format and prettify XML
+- [YAML Prettify](/yaml-prettify) — Format and prettify YAML
+- [Email Normalizer](/email-normalizer) — Normalize email addresses
+- [Regex Tester](/regex-tester) — Test and debug regular expressions
+- [Regex Cheatsheet](/regex-memo) — Quick reference for regex syntax
+
+### Network
+- [IPv4 Subnet Calculator](/ipv4-subnet-calculator) — Calculate IPv4 subnets and CIDR blocks
+- [IPv4 Address Converter](/ipv4-address-converter) — Convert IPv4 to decimal, binary, hex
+- [IPv4 Range Expander](/ipv4-range-expander) — Expand IPv4 address ranges to CIDR
+- [MAC Address Lookup](/mac-address-lookup) — Look up device vendor by MAC address
+- [MAC Address Generator](/mac-address-generator) — Generate random MAC addresses
+- [IPv6 ULA Generator](/ipv6-ula-generator) — Generate IPv6 Unique Local Addresses
+
+### Math
+- [Math Evaluator](/math-evaluator) — Evaluate mathematical expressions
+- [ETA Calculator](/eta-calculator) — Estimate time of arrival/completion
+- [Percentage Calculator](/percentage-calculator) — Calculate percentages between values
+- [Mortgage Calculator](/mortgage-calculator) — Calculate mortgage monthly payments and total interest (supports China provident fund loans)
+- [China Income Tax Calculator](/income-tax-calculator) — Calculate Chinese individual income tax with social insurance
+- [Number Formatter](/number-formatter) — Format numbers with locale, currency, and scientific notation
+
+### Measurement
+- [Chronometer](/chronometer) — Stopwatch with lap timing
+- [Temperature Converter](/temperature-converter) — Convert between Kelvin, Celsius, Fahrenheit, and more
+- [Benchmark Builder](/benchmark-builder) — Compare JavaScript execution times
+- [BMI Calculator](/bmi-calculator) — Calculate Body Mass Index with WHO and Chinese standards
+
+### Text
+- [Lorem Ipsum Generator](/lorem-ipsum-generator) — Generate placeholder text
+- [Text Statistics](/text-statistics) — Count characters, words, lines, and bytes
+- [Emoji Picker](/emoji-picker) — Search and copy emojis with Unicode values
+- [String Obfuscator](/string-obfuscator) — Obfuscate sensitive strings
+- [Text Diff](/text-diff) — Compare two texts and highlight differences
+- [Numeronym Generator](/numeronym-generator) — Generate numeronyms (e.g. i18n)
+- [ASCII Text Drawer](/ascii-text-drawer) — Create ASCII art text banners
+- [Random Decision Picker](/random-decision-picker) — Spin a wheel to pick from custom options
+
+### Data
+- [Phone Parser & Formatter](/phone-parser-and-formatter) — Parse, validate, and format phone numbers
+- [IBAN Validator & Parser](/iban-validator-and-parser) — Validate and parse IBAN bank account numbers
+
+## Technical Notes
+
+- Built with Vue 3, Vite, Naive UI
+- All processing is client-side only; no user data leaves the browser
+- PWA: works offline after first visit
+- Open source: https://github.com/lymlililala/tools
+- Domain: https://myutl.com

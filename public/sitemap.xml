@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://myutl.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Crypto -->
+  <url><loc>https://myutl.com/token-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/hash-text</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/bcrypt</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/uuid-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/ulid-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/encryption</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/bip39-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/hmac-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/rsa-key-pair-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/password-strength-analyser</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/pdf-signature-checker</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Converter -->
+  <url><loc>https://myutl.com/date-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/base-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/roman-numeral-converter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/base64-string-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/base64-file-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/color-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/case-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/text-to-nato-alphabet</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myutl.com/text-to-binary</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/text-to-unicode</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/yaml-to-json-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/yaml-to-toml</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/json-to-yaml-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/json-to-toml</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/list-converter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/toml-to-json</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/toml-to-yaml</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/xml-to-json</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/json-to-xml</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/markdown-to-html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/css-unit-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/unix-timestamp</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Web -->
+  <url><loc>https://myutl.com/url-encoder</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/html-entities</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/url-parser</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/device-information</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/basic-auth-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/meta-tag-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/otp-code-generator-and-validator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/mime-types</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/jwt-parser</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/keycode-info</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/slugify-string</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/html-wysiwyg-editor</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/user-agent-parser</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/http-status-codes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/json-diff</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/safelink-decoder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Images and videos -->
+  <url><loc>https://myutl.com/qrcode-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/wifi-qrcode-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/svg-placeholder-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/camera-recorder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myutl.com/color-palette-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Development -->
+  <url><loc>https://myutl.com/git-memo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/random-port-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/crontab-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/json-prettify</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/json-minify</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/json-to-csv</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/sql-prettify</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/chmod-calculator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/docker-run-to-docker-compose-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/xml-formatter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/yaml-prettify</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/email-normalizer</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/regex-tester</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/regex-memo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Network -->
+  <url><loc>https://myutl.com/ipv4-subnet-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/ipv4-address-converter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/ipv4-range-expander</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/mac-address-lookup</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/mac-address-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/ipv6-ula-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Math -->
+  <url><loc>https://myutl.com/math-evaluator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/eta-calculator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/percentage-calculator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/mortgage-calculator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/income-tax-calculator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/number-formatter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Measurement -->
+  <url><loc>https://myutl.com/chronometer</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/temperature-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/benchmark-builder</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myutl.com/bmi-calculator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+
+  <!-- Text -->
+  <url><loc>https://myutl.com/lorem-ipsum-generator</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/text-statistics</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/emoji-picker</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/string-obfuscator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/text-diff</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/numeronym-generator</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myutl.com/ascii-text-drawer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myutl.com/random-decision-picker</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Data -->
+  <url><loc>https://myutl.com/phone-parser-and-formatter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/iban-validator-and-parser</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
