@@ -87,6 +87,10 @@ import { tool as uuidGenerator } from './uuid-generator';
 import { tool as macAddressLookup } from './mac-address-lookup';
 import { tool as xmlFormatter } from './xml-formatter';
 import { tool as yamlViewer } from './yaml-viewer';
+import { tool as mortgageCalculator } from './mortgage-calculator';
+import { tool as bmiCalculator } from './bmi-calculator';
+import { tool as randomDecisionPicker } from './random-decision-picker';
+import { tool as incomeTaxCalculator } from './income-tax-calculator';
 
 export const toolsByCategory: ToolCategory[] = [
   {
@@ -168,11 +172,11 @@ export const toolsByCategory: ToolCategory[] = [
   },
   {
     name: 'Math',
-    components: [mathEvaluator, etaCalculator, percentageCalculator],
+    components: [mathEvaluator, etaCalculator, percentageCalculator, mortgageCalculator, incomeTaxCalculator],
   },
   {
     name: 'Measurement',
-    components: [chronometer, temperatureConverter, benchmarkBuilder],
+    components: [chronometer, temperatureConverter, benchmarkBuilder, bmiCalculator],
   },
   {
     name: 'Text',
@@ -184,6 +188,7 @@ export const toolsByCategory: ToolCategory[] = [
       textDiff,
       numeronymGenerator,
       asciiTextDrawer,
+      randomDecisionPicker,
     ],
   },
   {

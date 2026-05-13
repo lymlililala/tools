@@ -392,3 +392,113 @@ tools:
   text-to-binary:
     title: Text to ASCII binary
     description: Convert text to its ASCII binary representation and vice-versa.
+
+  mortgage-calculator:
+    title: Mortgage Calculator
+    description: Calculate mortgage monthly payments, total interest, and repayment plans online. Supports equal payment and equal principal methods, as well as combined commercial and provident fund loans.
+    params: Loan Parameters
+    summary: Repayment Summary
+    totalPrice: Total Property Price
+    downPaymentRate: Down Payment Rate
+    loanYears: Loan Term
+    annualRate: Annual Interest Rate
+    loanType: Repayment Type
+    equalPayment: Equal Payment (fixed monthly)
+    equalPrincipal: Equal Principal (decreasing monthly)
+    useCombinedLoan: Combined Provident Fund Loan
+    providentFundAmount: Provident Fund Amount
+    providentRate: Provident Fund Rate
+    yuan: Yuan
+    years: yr
+    downPayment: Down Payment
+    totalLoan: Total Loan Amount
+    monthlyPayment: Monthly Payment
+    firstMonthPayment: First Month Payment
+    lastMonthPayment: Last Month Payment
+    totalPayment: Total Payment
+    totalInterest: Total Interest
+    combinedDetail: Combined Loan Details
+    providentPart: Provident Fund Loan
+    commercialPart: Commercial Loan
+    tips: Tips
+    tip1: The above figures are for reference only. Actual loan terms are subject to bank approval.
+    tip2: Equal payment keeps monthly payments the same; early payments are mostly interest, later mostly principal.
+    tip3: Equal principal has decreasing monthly payments; higher pressure initially but less total interest.
+
+  bmi-calculator:
+    title: BMI Calculator
+    description: Calculate your Body Mass Index (BMI) from height and weight. Get weight classification based on WHO and Chinese national standards, plus your ideal weight range.
+    metric: Metric (cm/kg)
+    imperial: Imperial (in/lbs)
+    height: Height
+    weight: Weight
+    yourBmi: Your BMI
+    underweight: Underweight
+    normal: Normal
+    overweight: Overweight
+    obese1: Obese (Class I)
+    obese2: Obese (Class II)
+    idealWeight: Ideal Weight Range
+    idealWeightDesc: Ideal weight based on BMI 18.5–24
+    chineseStandard: 'Chinese standard (NHC): BMI < 18.5 underweight, 18.5-24 normal, 24-28 overweight, >= 28 obese.'
+
+  random-decision-picker:
+    title: Random Decision Picker
+    description: Can't decide? Enter your options and spin the wheel to let fate choose for you! Supports custom options and quick presets.
+    spin: Spin!
+    spinning: Spinning...
+    quickPick: Quick Pick
+    result: 🎰 Result
+    options: Options
+    addOption: Type an option, press Enter to add
+    noOptions: No options yet. Add some above!
+    presets: Quick Presets
+    presetYesNo: Yes / No
+    presetFood: What to eat
+    presetDays: Weekdays
+    yes: Yes
+    no: No
+    food1: Hot pot
+    food2: BBQ
+    food3: Takeout
+    food4: Cook at home
+    mon: Mon
+    tue: Tue
+    wed: Wed
+    thu: Thu
+    fri: Fri
+    sat: Sat
+    sun: Sun
+
+  income-tax-calculator:
+    title: China Income Tax Calculator
+    description: Calculate monthly income tax, social insurance contributions, and net salary based on China's current individual income tax policy (¥5,000 threshold, 7 tax brackets), with support for special additional deductions.
+    income: Income Details
+    grossSalary: Gross Monthly Salary
+    city: Social Insurance City
+    yuanPerMonth: CNY/month
+    specialDeductions: Special Additional Deductions
+    optional: optional
+    childrenEdu: Children's Education
+    childCare: Infant & Toddler Care (under 3)
+    continuingEdu: Continuing Education
+    housingLoan: Housing Loan Interest
+    housingRent: Housing Rent
+    elderlySupport: Elderly Care
+    result: Calculation Results
+    taxableIncome: Taxable Income
+    taxBracket: Applicable Tax Rate
+    incomeTax: Income Tax
+    socialInsuranceTotal: Social Insurance Total
+    netSalary: Net Salary
+    effectiveRate: Effective Rate (tax + insurance)
+    socialInsuranceDetail: Social Insurance Breakdown
+    pension: Pension Insurance
+    medical: Medical Insurance
+    unemployment: Unemployment Insurance
+    housingFund: Housing Provident Fund
+    total: Total
+    taxBrackets: Tax Brackets
+    preset1Child: Children's edu ¥2,000/mo
+    presetRent: Housing rent ¥1,500/mo
+    presetElderly: Elderly care ¥3,000/mo
