@@ -388,3 +388,113 @@ tools:
   text-to-binary:
     title: 文本到 ASCII 二进制
     description: 将文本转换为其 ASCII 二进制表示形式，反之亦然。
+
+  mortgage-calculator:
+    title: 房贷计算器
+    description: 在线计算房贷月供、总利息和还款计划，支持等额还款和等额本金两种方式，以及商业贷款与公积金组合贷款。
+    params: 贷款参数
+    summary: 还款摘要
+    totalPrice: 总房价
+    downPaymentRate: 首付比例
+    loanYears: 贷款年限
+    annualRate: 年利率
+    loanType: 还款方式
+    equalPayment: 等额还款（月供不变）
+    equalPrincipal: 等额本金（递减还款）
+    useCombinedLoan: 公积金组合贷
+    providentFundAmount: 公积金金额
+    providentRate: 公积金利率
+    yuan: 元
+    years: 年
+    downPayment: 首付金额
+    totalLoan: 贷款总额
+    monthlyPayment: 每月还款额
+    firstMonthPayment: 首月还款额
+    lastMonthPayment: 末月还款额
+    totalPayment: 还款总额
+    totalInterest: 支付总利息
+    combinedDetail: 组合贷款明细
+    providentPart: 公积金贷款
+    commercialPart: 商业贷款
+    tips: 温馨提示
+    tip1: 以上数据仅供参考，实际贷款以银行审批为准。
+    tip2: 等额还款每月还款金额相同，前期利息占比高，后期本金占比高。
+    tip3: 等额本金每月还款额递减，前期压力较大，总利息少于等额还款。
+
+  bmi-calculator:
+    title: BMI 体重指数计算器
+    description: 根据身高体重计算 BMI（体质指数），并提供中国标准的体重分类评估和理想体重范围建议。
+    metric: 公制 (cm/kg)
+    imperial: 英制 (in/lbs)
+    height: 身高
+    weight: 体重
+    yourBmi: 您的 BMI
+    underweight: 偏瘦
+    normal: 正常
+    overweight: 偏重
+    obese1: 轻度肥胖
+    obese2: 重度肥胖
+    idealWeight: 理想体重范围
+    idealWeightDesc: 基于 BMI 18.5–24 的理想体重
+    chineseStandard: '参考中国卫生部标准：BMI < 18.5 偏瘦，18.5-24 正常，24-28 超重，≥ 28 肥胖。'
+
+  random-decision-picker:
+    title: 随机决定器
+    description: 无法做决定？输入你的选项，旋转转盘让命运替你选择！支持自定义选项和多种预设方案。
+    spin: 旋转！
+    spinning: 旋转中...
+    quickPick: 快速选择
+    result: 🎰 抽到的是
+    options: 选项列表
+    addOption: 输入新选项，回车添加
+    noOptions: 暂无选项，请添加
+    presets: 快速预设
+    presetYesNo: 是/否
+    presetFood: 今天吃什么
+    presetDays: 工作日
+    yes: 是
+    no: 否
+    food1: 火锅
+    food2: 烧烤
+    food3: 外卖
+    food4: 自己做
+    mon: 周一
+    tue: 周二
+    wed: 周三
+    thu: 周四
+    fri: 周五
+    sat: 周六
+    sun: 周日
+
+  income-tax-calculator:
+    title: 个人所得税计算器
+    description: 根据中国现行个税政策（起征点5000元，7档税率），快速计算月薪应缴个税、五险一金和实发工资，支持专项附加扣除。
+    income: 收入信息
+    grossSalary: 税前月薪
+    city: 社保城市
+    yuanPerMonth: 元/月
+    specialDeductions: 专项附加扣除
+    optional: 选填
+    childrenEdu: 子女教育
+    childCare: 3岁以下育儿
+    continuingEdu: 继续教育
+    housingLoan: 住房贷款利息
+    housingRent: 住房租金
+    elderlySupport: 赡养老人
+    result: 计算结果
+    taxableIncome: 应纳税所得额
+    taxBracket: 适用税率
+    incomeTax: 应缴个人所得税
+    socialInsuranceTotal: 五险一金合计
+    netSalary: 实发工资
+    effectiveRate: 综合税率（个税+社保）
+    socialInsuranceDetail: 五险一金明细
+    pension: 养老保险
+    medical: 医疗保险
+    unemployment: 失业保险
+    housingFund: 住房公积金
+    total: 合计
+    taxBrackets: 个税税率表
+    preset1Child: 子女教育 2000/月
+    presetRent: 租房扣除 1500/月
+    presetElderly: 赡养老人 3000/月
