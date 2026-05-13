@@ -498,3 +498,61 @@ tools:
     preset1Child: 子女教育 2000/月
     presetRent: 租房扣除 1500/月
     presetElderly: 赡养老人 3000/月
+
+  css-unit-converter:
+    title: CSS 单位转换器
+    description: 在 px、rem、em、vw、vh、pt 和百分比之间互转 CSS 单位，可自定义根字体大小、父元素字体大小和视口尺寸。
+    input: 输入值
+    value: 数值
+    unit: 单位
+    baseSettings: 基准设置
+    rootFontSize: 根字体大小
+    parentFontSize: 父元素字体大小
+    viewportWidth: 视口宽度
+    viewportHeight: 视口高度
+    results: 转换结果
+    clickHint: 点击任意结果可将其设置为新的输入值。
+
+  unix-timestamp:
+    title: Unix 时间戳转换器
+    description: Unix 时间戳与可读日期互转。显示当前时间戳、ISO 8601、UTC 和本地时间格式。
+    current: 当前时间
+    tsToDate: 时间戳 → 日期
+    dateToTs: 日期 → 时间戳
+    timestamp: 时间戳
+    inMs: 毫秒级时间戳
+    useNow: 使用当前时间
+    dateString: 日期字符串
+
+  number-formatter:
+    title: 数字格式化工具
+    description: 按不同地区语言和格式（十进制、货币、百分比、科学计数）格式化数字。
+    input: 输入
+    number: 数字
+    locale: 语言地区
+    style: 格式样式
+    currency: 货币类型
+    decimals: 小数位数
+    grouping: 千位分隔符
+    result: 格式化结果
+    comparison: 多语言对比
+    styleDecimal: 十进制
+    styleCurrency: 货币
+    stylePercent: 百分比
+    styleScientific: 科学计数
+    styleEngineering: 工程计数
+    styleCompact: 紧凑模式
+
+  color-palette-generator:
+    title: 调色板生成器
+    description: 从一个基础颜色生成色阶、配色方案（互补色、类比色、三角配色等）和灰色系，适合 UI 设计。
+    baseColor: 基础颜色
+    shades: 明暗色阶
+    harmonies: 配色方案
+    grays: 中性/灰色系
+    complementary: 互补色
+    analogous: 类比色
+    triadic: 三角配色
+    splitComplementary: 分裂互补
+    tetradic: 四色（正方形）
+    clickToCopy: 点击色块可复制其十六进制值。
