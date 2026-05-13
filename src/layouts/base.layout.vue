@@ -5,19 +5,16 @@ import { Home2, Menu2 } from '@vicons/tabler';
 
 import { storeToRefs } from 'pinia';
 import MenuLayout from '../components/MenuLayout.vue';
-import NavbarButtons from '../components/NavbarButtons.vue';
 import { useStyleStore } from '@/stores/style.store';
 import { config } from '@/config';
 import type { ToolCategory } from '@/tools/tools.types';
 import { useToolStore } from '@/tools/tools.store';
-import { useTracker } from '@/modules/tracker/tracker.services';
 import CollapsibleToolMenu from '@/components/CollapsibleToolMenu.vue';
 
 const themeVars = useThemeVars();
 const styleStore = useStyleStore();
 const version = config.app.version;
 
-const { tracker } = useTracker();
 const { t } = useI18n();
 
 const toolStore = useToolStore();
@@ -42,14 +39,6 @@ const tools = computed<ToolCategory[]>(() => [
           <span class="logo-tagline">在线工具箱</span>
         </div>
       </RouterLink>
-
-      <!-- 移动端：语言 + 按钮 -->
-      <div v-if="styleStore.isSmallScreen" class="mobile-actions">
-        <locale-selector w="100%" />
-        <div flex justify-center mt-2>
-          <NavbarButtons />
-        </div>
-      </div>
 
       <!-- 工具菜单（含搜索框） -->
       <div class="sider-menu">
@@ -85,10 +74,6 @@ const tools = computed<ToolCategory[]>(() => [
           <command-palette />
         </div>
 
-        <div class="topbar-right">
-          <locale-selector v-if="!styleStore.isSmallScreen" />
-          <NavbarButtons v-if="!styleStore.isSmallScreen" />
-        </div>
       </div>
 
       <!-- 页面内容 -->
@@ -146,12 +131,6 @@ const tools = computed<ToolCategory[]>(() => [
   margin-top: 1px;
 }
 
-// ─── Mobile Actions ──────────────────────────────────────────
-.mobile-actions {
-  padding: 10px 12px;
-  border-bottom: 1px solid v-bind('themeVars.dividerColor');
-}
-
 // ─── Sider Menu ──────────────────────────────────────────────
 .sider-menu {
   flex: 1;
@@ -187,12 +166,6 @@ const tools = computed<ToolCategory[]>(() => [
   display: flex;
   align-items: center;
   gap: 2px;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 // ─── Page Content ────────────────────────────────────────────
