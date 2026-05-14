@@ -8,7 +8,7 @@ import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
 
 const route = useRoute();
-const { t } = useI18n();
+const { t, te } = useI18n();
 
 const i18nKey = computed<string>(() => route.path.trim().replace('/', ''));
 const toolTitle = computed<string>(() => t(`tools.${i18nKey.value}.title`, String(route.meta.name)));
@@ -73,20 +73,14 @@ useHead(head);
 // FAQ 数据（通用 + 工具特定）
 const faqs = computed(() => {
   const toolKey = i18nKey.value;
-  const base = [
-    {
-      q: t(`tools.${toolKey}.faq1q`, ''),
-      a: t(`tools.${toolKey}.faq1a`, ''),
-    },
-    {
-      q: t(`tools.${toolKey}.faq2q`, ''),
-      a: t(`tools.${toolKey}.faq2a`, ''),
-    },
-    {
-      q: t(`tools.${toolKey}.faq3q`, ''),
-      a: t(`tools.${toolKey}.faq3a`, ''),
-    },
-  ].filter(f => f.q && f.a);
+  const base = [1, 2, 3].flatMap((n) => {
+    const qKey = `tools.${toolKey}.faq${n}q`;
+    const aKey = `tools.${toolKey}.faq${n}a`;
+    if (te(qKey) && te(aKey)) {
+      return [{ q: t(qKey), a: t(aKey) }];
+    }
+    return [];
+  });
 
   // 通用 FAQ
   if (base.length === 0) {
@@ -113,8 +107,8 @@ const howToSteps = computed(() => {
   const toolKey = i18nKey.value;
   const steps = [];
   for (let i = 1; i <= 5; i++) {
-    const step = t(`tools.${toolKey}.step${i}`, '');
-    if (step) steps.push(step);
+    const key = `tools.${toolKey}.step${i}`;
+    if (te(key)) steps.push(t(key));
   }
   return steps;
 });
