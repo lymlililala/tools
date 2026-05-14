@@ -42,7 +42,40 @@
     <meta name="twitter:image" content="https://myutl.com/banner.png" />
     <meta name="twitter:image:alt" content="MyUtl - 免费在线工具箱" />
 
-    <meta name="keywords" content="在线工具,开发者工具,JSON格式化,Base64,URL编码,房贷计算器,个人所得税,BMI计算器,二维码生成,加密解密,免费工具" />
+    <meta name="keywords" content="在线工具,开发者工具,JSON格式化,Base64,URL编码,房贷计算器,个人所得税,BMI计算器,二维码生成,加密解密,免费工具,online tools,free tools,developer tools" />
+
+    <!-- hreflang -->
+    <link rel="alternate" hreflang="zh" href="https://myutl.com/" />
+    <link rel="alternate" hreflang="en" href="https://myutl.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://myutl.com/" />
+
+    <!-- JSON-LD: WebSite + SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MyUtl",
+      "url": "https://myutl.com",
+      "description": "免费在线工具箱，提供90+实用工具：JSON格式化、Base64编解码、二维码生成、房贷计算器、个人所得税计算器等",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://myutl.com/?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MyUtl",
+        "url": "https://myutl.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://myutl.com/android-chrome-192x192.png"
+        }
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="app"></div>
