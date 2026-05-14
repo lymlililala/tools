@@ -189,6 +189,13 @@ tools:
   base64-string-converter:
     title: Base64 string encoder/decoder
     description: Simply encode and decode strings into their base64 representation.
+    step1: 'Step 1: Select "Encode" or "Decode" mode.'
+    step2: 'Step 2: Paste your input text into the input box.'
+    step3: 'Step 3: The result appears instantly. Click to copy.'
+    faq1q: What is Base64?
+    faq1a: Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string. It is commonly used to embed images in HTML/CSS, encode email attachments, and pass binary data in URLs or JSON.
+    faq2q: Is Base64 the same as encryption?
+    faq2a: No. Base64 is encoding, not encryption. It is easily reversible and provides no security. Anyone can decode a Base64 string without a key.
 
   toml-to-yaml:
     title: TOML to YAML
@@ -229,6 +236,15 @@ tools:
   json-prettify:
     title: JSON prettify and format
     description: Prettify your JSON string into a friendly, human-readable format.
+    step1: 'Step 1: Paste your raw JSON text into the left input box.'
+    step2: 'Step 2: Adjust indent size and sort keys options as needed.'
+    step3: 'Step 3: The formatted result appears on the right. Click the copy button to copy it.'
+    faq1q: What is JSON Prettify?
+    faq1a: JSON Prettify (also known as JSON formatter or JSON beautifier) takes minified or unformatted JSON and re-formats it with proper indentation and line breaks, making it easy to read and debug.
+    faq2q: What is the difference between JSON prettify and JSON minify?
+    faq2a: JSON Prettify adds whitespace and indentation to make JSON human-readable. JSON Minify removes all unnecessary whitespace to reduce file size — useful for APIs and storage.
+    faq3q: Does it support JSON5 (comments, trailing commas)?
+    faq3a: 'Yes. This tool uses JSON5 for parsing, so it accepts comments and trailing commas in addition to standard JSON.'
 
   docker-run-to-docker-compose-converter:
     title: Docker run to Docker compose converter
@@ -253,6 +269,13 @@ tools:
   qrcode-generator:
     title: QR Code generator
     description: Generate and download a QR code for a URL (or just plain text), and customize the background and foreground colors.
+    step1: 'Step 1: Enter the URL or text you want to encode in the QR code.'
+    step2: 'Step 2: Customize foreground/background colors if desired.'
+    step3: 'Step 3: Download the QR code image (PNG).'
+    faq1q: What can a QR code contain?
+    faq1a: 'QR codes can contain URLs, plain text, contact cards (vCard), WiFi credentials, phone numbers, email addresses, and more.'
+    faq2q: What is the maximum data a QR code can store?
+    faq2a: A standard QR code can store up to ~4,296 alphanumeric characters or ~7,089 numeric characters. Shorter content produces a simpler, more scannable code.
 
   wifi-qrcode-generator:
     title: WiFi QR Code generator
@@ -265,6 +288,12 @@ tools:
   temperature-converter:
     title: Temperature converter
     description: Degrees temperature conversions for Kelvin, Celsius, Fahrenheit, Rankine, Delisle, Newton, Réaumur, and Rømer.
+    step1: 'Step 1: Enter a temperature value in any unit.'
+    step2: 'Step 2: Converted values for all other units appear instantly.'
+    faq1q: How do I convert Celsius to Fahrenheit?
+    faq1a: 'Formula: °F = °C × 9/5 + 32. For example, 100°C = 212°F (boiling point of water).'
+    faq2q: What is absolute zero?
+    faq2a: Absolute zero is the lowest possible temperature: 0 Kelvin = −273.15°C = −459.67°F. At this temperature, particles have minimum thermal motion.
 
   chmod-calculator:
     title: Chmod calculator
@@ -317,6 +346,13 @@ tools:
   hash-text:
     title: Hash text
     description: 'Hash a text string using the function you need : MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3 or RIPEMD160'
+    step1: 'Step 1: Type or paste your text into the input field.'
+    step2: 'Step 2: Select the hash algorithm (MD5, SHA-256, etc.).'
+    step3: 'Step 3: The hash output appears instantly. Click to copy.'
+    faq1q: What is a hash function?
+    faq1a: A hash function takes any input and produces a fixed-length output (digest). It is one-way — you cannot reverse a hash to get the original input. It is used in passwords, file integrity checks, and digital signatures.
+    faq2q: Which hash algorithm should I use?
+    faq2a: For security-sensitive use cases, use SHA-256 or SHA-512. MD5 and SHA-1 are considered cryptographically broken and should only be used for non-security purposes like checksums.
 
   json-to-toml:
     title: JSON to TOML
@@ -353,6 +389,13 @@ tools:
   uuid-generator:
     title: UUIDs generator
     description: A Universally Unique Identifier (UUID) is a 128-bit number used to identify information in computer systems. The number of possible UUIDs is 16^32, which is 2^128 or about 3.4x10^38 (which is a lot!).
+    step1: 'Step 1: Select the UUID version (v1, v4, etc.).'
+    step2: 'Step 2: Enter the number of UUIDs to generate.'
+    step3: 'Step 3: Click "Generate" and copy the result.'
+    faq1q: What is a UUID?
+    faq1a: A UUID (Universally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. There are approximately 5.3 × 10²² possible UUIDs in version 4.
+    faq2q: What is the difference between UUID v1 and v4?
+    faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
 
   ipv4-address-converter:
     title: IPv4 address converter
@@ -389,6 +432,13 @@ tools:
   url-encoder:
     title: Encode/decode URL-formatted strings
     description: Encode text to URL-encoded format (also known as "percent-encoded"), or decode from it.
+    step1: 'Step 1: Select "Encode" or "Decode" mode.'
+    step2: 'Step 2: Paste your URL or text into the input box.'
+    step3: 'Step 3: The encoded/decoded result appears instantly.'
+    faq1q: What is URL encoding?
+    faq1a: URL encoding (percent-encoding) converts characters that are not allowed in URLs (like spaces, Chinese characters, or symbols) into a %XX format. For example, a space becomes %20.
+    faq2q: When do I need to URL-encode a string?
+    faq2a: When passing user input as query parameters, constructing URLs programmatically, or handling form data submissions.
 
   text-to-binary:
     title: Text to ASCII binary
@@ -425,6 +475,17 @@ tools:
     tip1: The above figures are for reference only. Actual loan terms are subject to bank approval.
     tip2: Equal payment keeps monthly payments the same; early payments are mostly interest, later mostly principal.
     tip3: Equal principal has decreasing monthly payments; higher pressure initially but less total interest.
+    step1: 'Step 1: Enter the total property price.'
+    step2: 'Step 2: Set the down payment rate (minimum 20%).'
+    step3: 'Step 3: Choose the loan term (years) and annual interest rate.'
+    step4: 'Step 4: Select repayment type: Equal Payment or Equal Principal.'
+    step5: 'Step 5: Optionally enable the Combined Provident Fund Loan for split financing.'
+    faq1q: What is the difference between Equal Payment and Equal Principal?
+    faq1a: Equal Payment (等额还款) keeps your monthly payment fixed throughout the loan. Equal Principal (等额本金) pays the same principal each month, so your payment decreases over time — you pay less total interest but higher initial payments.
+    faq2q: What is the minimum down payment in China?
+    faq2a: For first-time homebuyers in most Chinese cities, the minimum down payment is 20%. Some cities and loan types may require 30% or more.
+    faq3q: How is the monthly payment calculated?
+    faq3a: 'For Equal Payment: M = P × r × (1+r)^n / ((1+r)^n - 1), where P is loan principal, r is monthly interest rate (annual rate / 12), and n is total months.'
 
   bmi-calculator:
     title: BMI Calculator
@@ -442,6 +503,15 @@ tools:
     idealWeight: Ideal Weight Range
     idealWeightDesc: Ideal weight based on BMI 18.5–24
     chineseStandard: 'Chinese standard (NHC): BMI < 18.5 underweight, 18.5-24 normal, 24-28 overweight, >= 28 obese.'
+    step1: 'Step 1: Select your unit system (metric: cm/kg, or imperial: in/lbs).'
+    step2: 'Step 2: Enter your height and weight.'
+    step3: 'Step 3: Your BMI and weight classification are calculated instantly.'
+    faq1q: What is BMI and is it accurate?
+    faq1a: BMI (Body Mass Index) is a simple ratio of weight to height squared. It is a useful screening tool but does not measure body fat directly — it can misclassify muscular or elderly individuals.
+    faq2q: What BMI range is considered healthy?
+    faq2a: 'WHO standard: 18.5–24.9 is normal. Chinese national standard (NHC): 18.5–23.9 is normal weight; 24–27.9 is overweight; ≥28 is obese.'
+    faq3q: Does this calculator send my data anywhere?
+    faq3a: No. All calculations run entirely in your browser. No health data is collected or transmitted.
 
   random-decision-picker:
     title: Random Decision Picker
@@ -517,6 +587,13 @@ tools:
     viewportHeight: Viewport Height
     results: Converted Values
     clickHint: Click any result to use it as the new input value.
+    step1: 'Step 1: Enter a value and select its unit (e.g. 16px).'
+    step2: 'Step 2: Set the base font size, parent font size, and viewport dimensions if needed.'
+    step3: 'Step 3: All converted values appear instantly. Click any result to use it as the new input.'
+    faq1q: What is the difference between rem and em?
+    faq1a: rem is relative to the root element font size (usually 16px on most browsers). em is relative to the current element's parent font size, which can compound/cascade.
+    faq2q: When should I use rem vs px?
+    faq2a: Use rem for font sizes and spacing so your layout scales with user's browser font settings (better accessibility). Use px for fine-grained control, borders, or fixed elements.
 
   unix-timestamp:
     title: Unix Timestamp Converter
@@ -528,6 +605,13 @@ tools:
     inMs: In milliseconds
     useNow: Use Now
     dateString: Date String
+    step1: 'Step 1: To convert a timestamp to a date, paste the Unix timestamp in the input field.'
+    step2: 'Step 2: Toggle "In milliseconds" if your timestamp is in ms (13 digits) rather than seconds (10 digits).'
+    step3: 'Step 3: To convert a date to a timestamp, enter a date string in the bottom section.'
+    faq1q: What is a Unix timestamp?
+    faq1a: A Unix timestamp counts the number of seconds (or milliseconds) elapsed since January 1, 1970 00:00:00 UTC (the Unix Epoch). It is timezone-independent and widely used in programming.
+    faq2q: How do I check if my timestamp is in seconds or milliseconds?
+    faq2a: 'A 10-digit number is seconds (e.g. 1704067200). A 13-digit number is milliseconds (e.g. 1704067200000). Current Unix time is ~1.7 billion seconds.'
 
   number-formatter:
     title: Number Formatter
@@ -583,109 +667,3 @@ tools:
     faqFreeA: Completely free. No registration, no login required. Always free to use.
     faqMobile: Does it work on mobile?
     faqMobileA: 'Yes. MyUtl is mobile-optimized and works on phones and tablets.'
-
-  json-prettify:
-    step1: 'Step 1: Paste your raw JSON text into the left input box.'
-    step2: 'Step 2: Adjust indent size and sort keys options as needed.'
-    step3: 'Step 3: The formatted result appears on the right. Click the copy button to copy it.'
-    faq1q: What is JSON Prettify?
-    faq1a: JSON Prettify (also known as JSON formatter or JSON beautifier) takes minified or unformatted JSON and re-formats it with proper indentation and line breaks, making it easy to read and debug.
-    faq2q: What is the difference between JSON prettify and JSON minify?
-    faq2a: JSON Prettify adds whitespace and indentation to make JSON human-readable. JSON Minify removes all unnecessary whitespace to reduce file size — useful for APIs and storage.
-    faq3q: Does it support JSON5 (comments, trailing commas)?
-    faq3a: 'Yes. This tool uses JSON5 for parsing, so it accepts comments and trailing commas in addition to standard JSON.'
-
-  mortgage-calculator:
-    step1: 'Step 1: Enter the total property price.'
-    step2: 'Step 2: Set the down payment rate (minimum 20%).'
-    step3: 'Step 3: Choose the loan term (years) and annual interest rate.'
-    step4: 'Step 4: Select repayment type: Equal Payment or Equal Principal.'
-    step5: 'Step 5: Optionally enable the Combined Provident Fund Loan for split financing.'
-    faq1q: What is the difference between Equal Payment and Equal Principal?
-    faq1a: Equal Payment (等额还款) keeps your monthly payment fixed throughout the loan. Equal Principal (等额本金) pays the same principal each month, so your payment decreases over time — you pay less total interest but higher initial payments.
-    faq2q: What is the minimum down payment in China?
-    faq2a: For first-time homebuyers in most Chinese cities, the minimum down payment is 20%. Some cities and loan types may require 30% or more.
-    faq3q: How is the monthly payment calculated?
-    faq3a: 'For Equal Payment: M = P × r × (1+r)^n / ((1+r)^n - 1), where P is loan principal, r is monthly interest rate (annual rate / 12), and n is total months.'
-
-  bmi-calculator:
-    step1: 'Step 1: Select your unit system (metric: cm/kg, or imperial: in/lbs).'
-    step2: 'Step 2: Enter your height and weight.'
-    step3: 'Step 3: Your BMI and weight classification are calculated instantly.'
-    faq1q: What is BMI and is it accurate?
-    faq1a: BMI (Body Mass Index) is a simple ratio of weight to height squared. It is a useful screening tool but does not measure body fat directly — it can misclassify muscular or elderly individuals.
-    faq2q: What BMI range is considered healthy?
-    faq2a: 'WHO standard: 18.5–24.9 is normal. Chinese national standard (NHC): 18.5–23.9 is normal weight; 24–27.9 is overweight; ≥28 is obese.'
-    faq3q: Does this calculator send my data anywhere?
-    faq3a: No. All calculations run entirely in your browser. No health data is collected or transmitted.
-
-  uuid-generator:
-    step1: 'Step 1: Select the UUID version (v1, v4, etc.).'
-    step2: 'Step 2: Enter the number of UUIDs to generate.'
-    step3: 'Step 3: Click "Generate" and copy the result.'
-    faq1q: What is a UUID?
-    faq1a: A UUID (Universally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. There are approximately 5.3 × 10²² possible UUIDs in version 4.
-    faq2q: What is the difference between UUID v1 and v4?
-    faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
-
-  base64-string-converter:
-    step1: 'Step 1: Select "Encode" or "Decode" mode.'
-    step2: 'Step 2: Paste your input text into the input box.'
-    step3: 'Step 3: The result appears instantly. Click to copy.'
-    faq1q: What is Base64?
-    faq1a: Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string. It is commonly used to embed images in HTML/CSS, encode email attachments, and pass binary data in URLs or JSON.
-    faq2q: Is Base64 the same as encryption?
-    faq2a: No. Base64 is encoding, not encryption. It is easily reversible and provides no security. Anyone can decode a Base64 string without a key.
-
-  qrcode-generator:
-    step1: 'Step 1: Enter the URL or text you want to encode in the QR code.'
-    step2: 'Step 2: Customize foreground/background colors if desired.'
-    step3: 'Step 3: Download the QR code image (PNG).'
-    faq1q: What can a QR code contain?
-    faq1a: 'QR codes can contain URLs, plain text, contact cards (vCard), WiFi credentials, phone numbers, email addresses, and more.'
-    faq2q: What is the maximum data a QR code can store?
-    faq2a: A standard QR code can store up to ~4,296 alphanumeric characters or ~7,089 numeric characters. Shorter content produces a simpler, more scannable code.
-
-  temperature-converter:
-    step1: 'Step 1: Enter a temperature value in any unit.'
-    step2: 'Step 2: Converted values for all other units appear instantly.'
-    faq1q: How do I convert Celsius to Fahrenheit?
-    faq1a: 'Formula: °F = °C × 9/5 + 32. For example, 100°C = 212°F (boiling point of water).'
-    faq2q: What is absolute zero?
-    faq2a: Absolute zero is the lowest possible temperature: 0 Kelvin = −273.15°C = −459.67°F. At this temperature, particles have minimum thermal motion.
-
-  hash-text:
-    step1: 'Step 1: Type or paste your text into the input field.'
-    step2: 'Step 2: Select the hash algorithm (MD5, SHA-256, etc.).'
-    step3: 'Step 3: The hash output appears instantly. Click to copy.'
-    faq1q: What is a hash function?
-    faq1a: A hash function takes any input and produces a fixed-length output (digest). It is one-way — you cannot reverse a hash to get the original input. It is used in passwords, file integrity checks, and digital signatures.
-    faq2q: Which hash algorithm should I use?
-    faq2a: For security-sensitive use cases, use SHA-256 or SHA-512. MD5 and SHA-1 are considered cryptographically broken and should only be used for non-security purposes like checksums.
-
-  url-encoder:
-    step1: 'Step 1: Select "Encode" or "Decode" mode.'
-    step2: 'Step 2: Paste your URL or text into the input box.'
-    step3: 'Step 3: The encoded/decoded result appears instantly.'
-    faq1q: What is URL encoding?
-    faq1a: URL encoding (percent-encoding) converts characters that are not allowed in URLs (like spaces, Chinese characters, or symbols) into a %XX format. For example, a space becomes %20.
-    faq2q: When do I need to URL-encode a string?
-    faq2a: When passing user input as query parameters, constructing URLs programmatically, or handling form data submissions.
-
-  css-unit-converter:
-    step1: 'Step 1: Enter a value and select its unit (e.g. 16px).'
-    step2: 'Step 2: Set the base font size, parent font size, and viewport dimensions if needed.'
-    step3: 'Step 3: All converted values appear instantly. Click any result to use it as the new input.'
-    faq1q: What is the difference between rem and em?
-    faq1a: rem is relative to the root element font size (usually 16px on most browsers). em is relative to the current element's parent font size, which can compound/cascade.
-    faq2q: When should I use rem vs px?
-    faq2a: Use rem for font sizes and spacing so your layout scales with user's browser font settings (better accessibility). Use px for fine-grained control, borders, or fixed elements.
-
-  unix-timestamp:
-    step1: 'Step 1: To convert a timestamp to a date, paste the Unix timestamp in the input field.'
-    step2: 'Step 2: Toggle "In milliseconds" if your timestamp is in ms (13 digits) rather than seconds (10 digits).'
-    step3: 'Step 3: To convert a date to a timestamp, enter a date string in the bottom section.'
-    faq1q: What is a Unix timestamp?
-    faq1a: A Unix timestamp counts the number of seconds (or milliseconds) elapsed since January 1, 1970 00:00:00 UTC (the Unix Epoch). It is timezone-independent and widely used in programming.
-    faq2q: How do I check if my timestamp is in seconds or milliseconds?
-    faq2a: 'A 10-digit number is seconds (e.g. 1704067200). A 13-digit number is milliseconds (e.g. 1704067200000). Current Unix time is ~1.7 billion seconds.'
