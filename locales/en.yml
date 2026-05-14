@@ -73,14 +73,37 @@ tools:
     data: Data
 
   password-strength-analyser:
+    step1: 'Step 1: Type or paste your password into the input field.'
+    step2: 'Step 2: The strength meter updates in real-time as you type.'
+    step3: 'Step 3: Review the score, crack-time estimate, and improvement suggestions.'
+    faq1q: 'What makes a password strong?'
+    faq1a: 'A strong password is long (12+ characters), uses a mix of uppercase, lowercase, numbers and symbols, and avoids common words.'
+    faq2q: 'Is my password sent to a server?'
+    faq2a: 'No. All analysis is done entirely in your browser. Your password never leaves your device.'
     title: Password strength analyser
     description: Discover the strength of your password with this client-side-only password strength analyser and crack time estimation tool.
 
   chronometer:
+    step1: 'Step 1: Click Start to begin the timer.'
+    step2: 'Step 2: Click Lap to record split times.'
+    step3: 'Step 3: Click Stop to pause and Reset to clear.'
+    faq1q: 'What is a chronometer?'
+    faq1a: 'A chronometer is a precise timekeeping device used to measure elapsed time commonly used for sports benchmarks and timing events.'
+    faq2q: 'Does closing the tab stop the timer?'
+    faq2a: 'Yes, closing or refreshing the tab will reset the timer since it runs in the browser JavaScript context.'
     title: Chronometer
     description: Monitor the duration of a thing. Basically a chronometer with simple chronometer features.
 
   token-generator:
+    step1: 'Step 1: Choose character types - uppercase, lowercase, numbers, and/or symbols.'
+    step2: 'Step 2: Drag the slider to set the desired token length (1-512 characters).'
+    step3: 'Step 3: The token is instantly generated and displayed in the output box.'
+    step4: 'Step 4: Click Copy to copy the token to your clipboard.'
+    step5: 'Step 5: Click Refresh to regenerate a new random token at any time.'
+    faq1q: 'What is a random token used for?'
+    faq1a: 'Random tokens are used as API keys, session tokens, CSRF tokens, password reset links, and any scenario requiring a unique unpredictable string.'
+    faq2q: 'How secure is the generated token?'
+    faq2a: 'The token uses the browser built-in cryptographic random number generator making it cryptographically secure.'
     title: Token generator
     description: Generate random string with the chars you want, uppercase or lowercase letters, numbers and/or symbols.
 
@@ -95,94 +118,268 @@ tools:
       copy: Copy
       refresh: Refresh
   percentage-calculator:
+    step1: 'Step 1: Select the type of percentage calculation you need.'
+    step2: 'Step 2: Enter the required values in the input fields.'
+    step3: 'Step 3: The result updates instantly.'
+    faq1q: 'How do I calculate percentage change?'
+    faq1a: 'Percentage change = ((New Value - Old Value) / Old Value) x 100. Positive means increase, negative means decrease.'
+    faq2q: 'How do I find X percent of Y?'
+    faq2a: 'Multiply Y by (X / 100). For example 20% of 150 = 150 x 0.20 = 30.'
     title: Percentage calculator
     description: Easily calculate percentages from a value to another value, or from a percentage to a value.
 
   svg-placeholder-generator:
+    step1: 'Step 1: Set the desired width and height for the placeholder image.'
+    step2: 'Step 2: Choose background and text colors.'
+    step3: 'Step 3: Optionally customize the label text.'
+    step4: 'Step 4: Copy the SVG code or data URL for use in your project.'
+    faq1q: 'What is an SVG placeholder?'
+    faq1a: 'An SVG placeholder is a lightweight vector image used during development to reserve space for real images before they are loaded.'
+    faq2q: 'Can I use SVG placeholders in production?'
+    faq2a: 'SVG placeholders are primarily for development but can be used in production for fallback or skeleton screens.'
     title: SVG placeholder generator
     description: Generate svg images to use as a placeholder in your applications.
 
   json-to-csv:
+    step1: 'Step 1: Paste your JSON array into the input field.'
+    step2: 'Step 2: The tool auto-detects column headers from the JSON keys.'
+    step3: 'Step 3: Review the CSV output and click Copy or Download.'
+    faq1q: 'What JSON structure is supported?'
+    faq1a: 'The tool supports a JSON array of objects.'
+    faq2q: 'What if my JSON objects have different keys?'
+    faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
     title: JSON to CSV
     description: Convert JSON to CSV with automatic header detection.
 
   camera-recorder:
+    step1: 'Step 1: Click Allow when the browser requests camera and microphone permissions.'
+    step2: 'Step 2: Use the camera preview to frame your shot.'
+    step3: 'Step 3: Click Photo to take a snapshot or Record to start video.'
+    step4: 'Step 4: Stop recording and download the result.'
+    faq1q: 'Is my video uploaded to a server?'
+    faq1a: 'No. Everything is processed locally in your browser. No data is uploaded.'
+    faq2q: 'What formats are supported?'
+    faq2a: 'Photos are saved as PNG. Videos are saved in WebM format supported by most modern browsers.'
     title: Camera recorder
     description: Take a picture or record a video from your webcam or camera.
 
   keycode-info:
+    step1: 'Step 1: Click anywhere on the page to focus the keyboard listener.'
+    step2: 'Step 2: Press any key on your keyboard.'
+    step3: 'Step 3: The key name, keyCode, code, location, and modifiers are displayed instantly.'
+    step4: 'Step 4: Click the copy icon next to any field to copy that value.'
+    faq1q: 'What is a keyCode?'
+    faq1a: 'The keyCode property is a legacy integer representing the key pressed. Modern code should use event.key or event.code instead.'
+    faq2q: 'What is the difference between key and code?'
+    faq2a: 'key represents the printed character. code represents the physical key position. Use key and code in modern JavaScript.'
     title: Keycode info
     description: Find the javascript keycode, code, location and modifiers of any pressed key.
 
   emoji-picker:
+    step1: 'Step 1: Browse or search for an emoji by name or keyword.'
+    step2: 'Step 2: Click an emoji to copy it to your clipboard.'
+    step3: 'Step 3: The unicode code point and shortcode are also displayed.'
+    faq1q: 'How do I search for a specific emoji?'
+    faq1a: 'Use the search box and type keywords like heart, fire, or smile. The list filters in real-time.'
+    faq2q: 'Can I use emojis in code or URLs?'
+    faq2a: 'Yes. Each emoji has a unicode code point usable in HTML entities or JSON. URLs require percent-encoding.'
     title: Emoji picker
     description: Copy and paste emojis easily and get the unicode and code points value of each emoji.
 
   color-converter:
+    step1: 'Step 1: Use the color picker or type a color value in any format.'
+    step2: 'Step 2: All other formats (HEX, RGB, HSL, CMYK etc.) update automatically.'
+    step3: 'Step 3: Check the WCAG contrast score to ensure accessibility.'
+    step4: 'Step 4: Click any field to copy the value to your clipboard.'
+    faq1q: 'What is the difference between HEX RGB and HSL?'
+    faq1a: 'HEX is a 6-digit hexadecimal color code. RGB defines color by Red Green Blue channels (0-255). HSL defines Hue Saturation and Lightness as percentages.'
+    faq2q: 'What is WCAG contrast ratio?'
+    faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
     title: Color converter
     description: Convert color between the different formats (hex, rgb, hsl and css name)
 
   bcrypt:
+    step1: 'Step 1: Enter the text you want to hash.'
+    step2: 'Step 2: Adjust the cost factor (rounds) - higher values are slower but more secure.'
+    step3: 'Step 3: The bcrypt hash is generated and displayed.'
+    step4: 'Step 4: To verify, paste a hash in the verification section and enter the original text.'
+    faq1q: 'What is bcrypt?'
+    faq1a: 'Bcrypt is a password-hashing algorithm designed to be intentionally slow to resist brute-force attacks. It uses a salt to protect against rainbow table attacks.'
+    faq2q: 'What is the cost factor?'
+    faq2a: 'The cost factor controls how many hashing rounds are performed. Increasing it by 1 doubles the computation time.'
     title: Bcrypt
     description: Hash and compare text string using bcrypt. Bcrypt is a password-hashing function based on the Blowfish cipher.
 
   crontab-generator:
+    step1: 'Step 1: Use the visual editor to set minute, hour, day, month, and weekday fields.'
+    step2: 'Step 2: Or type a cron expression directly into the input box.'
+    step3: 'Step 3: The human-readable description and next scheduled times are shown automatically.'
+    faq1q: 'What is a cron expression?'
+    faq1a: 'A cron expression is a string of 5 fields (minute hour day month weekday) that defines a recurring schedule for Unix/Linux tasks.'
+    faq2q: 'What does star slash 5 mean in cron?'
+    faq2a: 'It means every 5 units. In the minute field it runs at 0, 5, 10, 15... minutes past each hour.'
     title: Crontab generator
     description: Validate and generate crontab and get the human-readable description of the cron schedule.
 
   http-status-codes:
+    step1: 'Step 1: Browse the list of all HTTP status codes organized by category.'
+    step2: 'Step 2: Use the search box to quickly find a specific code or description.'
+    step3: 'Step 3: Click a code to copy it to your clipboard.'
+    faq1q: 'What is an HTTP status code?'
+    faq1a: 'HTTP status codes are 3-digit numbers returned by a server indicating whether the request was successful, redirected, or resulted in an error.'
+    faq2q: 'What is the difference between 401 and 403?'
+    faq2a: '401 Unauthorized means authentication is required but not provided. 403 Forbidden means the server refuses to authorize the request.'
     title: HTTP status codes
     description: The list of all HTTP status codes, their name, and their meaning.
 
   sql-prettify:
+    step1: 'Step 1: Paste your SQL query into the input editor.'
+    step2: 'Step 2: Select the SQL dialect (MySQL, PostgreSQL, etc.) from the dropdown.'
+    step3: 'Step 3: The formatted query appears in the output panel instantly.'
+    step4: 'Step 4: Click Copy to copy the formatted SQL.'
+    faq1q: 'Why format SQL queries?'
+    faq1a: 'Formatted SQL is easier to read, debug, and maintain. Consistent indentation helps spot errors faster.'
+    faq2q: 'What SQL dialects are supported?'
+    faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
     title: SQL prettify and format
     description: Format and prettify your SQL queries online (it supports various SQL dialects).
 
   benchmark-builder:
+    step1: 'Step 1: Add benchmark cases by clicking Add case.'
+    step2: 'Step 2: Enter JavaScript code for each case.'
+    step3: 'Step 3: Click Run to execute all cases multiple times.'
+    step4: 'Step 4: Compare ops/sec results to identify the fastest implementation.'
+    faq1q: 'What does ops/sec mean?'
+    faq1a: 'Ops/sec (operations per second) measures how many times a code block can execute in one second. Higher is faster.'
+    faq2q: 'Is this benchmark accurate?'
+    faq2a: 'The benchmark runs in your browser JavaScript engine. Results vary by device. Use it for relative comparisons.'
     title: Benchmark builder
     description: Easily compare execution time of tasks with this very simple online benchmark builder.
 
   git-memo:
+    step1: 'Step 1: Browse the Git cheatsheet organized by category.'
+    step2: 'Step 2: Search for a specific command using the search box.'
+    step3: 'Step 3: Click any command to copy it to your clipboard.'
+    faq1q: 'What is Git?'
+    faq1a: 'Git is a distributed version control system for tracking changes in source code allowing developers to collaborate and maintain project history.'
+    faq2q: 'What is the difference between git pull and git fetch?'
+    faq2a: 'git fetch downloads remote changes but does not merge them. git pull equals git fetch plus git merge.'
     title: Git cheatsheet
     description: Git is a decentralized version management software. With this cheatsheet, you will have quick access to the most common git commands.
 
   slugify-string:
+    step1: 'Step 1: Enter the text you want to convert into a slug.'
+    step2: 'Step 2: The slug updates in real-time as you type.'
+    step3: 'Step 3: Click Copy to copy the result.'
+    faq1q: 'What is a slug?'
+    faq1a: 'A slug is a URL-friendly string typically lowercase with hyphens instead of spaces, used in URLs.'
+    faq2q: 'Does it support non-English characters?'
+    faq2a: 'Yes. The tool converts accented and special characters to their ASCII equivalents.'
     title: Slugify string
     description: Make a string url, filename and id safe.
 
   encryption:
+    step1: 'Step 1: Select Encrypt or Decrypt mode.'
+    step2: 'Step 2: Choose the encryption algorithm (AES, TripleDES, Rabbit, RC4).'
+    step3: 'Step 3: Enter the text and your secret key.'
+    step4: 'Step 4: The encrypted or decrypted result appears instantly.'
+    faq1q: 'Which algorithm should I use?'
+    faq1a: 'AES (Advanced Encryption Standard) is the industry standard for symmetric encryption and is recommended for most use cases.'
+    faq2q: 'Is my data safe?'
+    faq2a: 'All encryption and decryption is performed locally in your browser. Your data and keys never leave your device.'
     title: Encrypt / decrypt text
     description: Encrypt clear text and decrypt ciphertext using crypto algorithms like AES, TripleDES, Rabbit or RC4.
 
   random-port-generator:
+    step1: 'Step 1: Set the quantity of port numbers to generate.'
+    step2: 'Step 2: Choose whether to exclude well-known ports (0-1023).'
+    step3: 'Step 3: Click Generate to get a new set of random ports.'
+    step4: 'Step 4: Click Copy to copy the results.'
+    faq1q: 'What are registered vs dynamic ports?'
+    faq1a: 'Ports 0-1023 are well-known system ports. Ports 1024-49151 are registered ports. Ports 49152-65535 are dynamic ephemeral ports.'
+    faq2q: 'Why do I need a random port?'
+    faq2a: 'Random ports are used when starting local dev servers or containers to avoid conflicts with already-running processes.'
     title: Random port generator
     description: Generate random port numbers outside of the range of "known" ports (0-1023).
 
   yaml-prettify:
+    step1: 'Step 1: Paste your YAML content into the left editor.'
+    step2: 'Step 2: The formatted and validated YAML appears on the right.'
+    step3: 'Step 3: Copy or download the formatted YAML.'
+    faq1q: 'What does YAML prettify do?'
+    faq1a: 'YAML prettify re-formats YAML with consistent indentation and spacing making it easier to read.'
+    faq2q: 'Will prettifying change my YAML values?'
+    faq2a: 'No. Prettifying only changes whitespace and formatting. The data values and structure remain identical.'
     title: YAML prettify and format
     description: Prettify your YAML string into a friendly, human-readable format.
 
   eta-calculator:
+    step1: 'Step 1: Enter the total number of items to process.'
+    step2: 'Step 2: Enter how many have been completed so far.'
+    step3: 'Step 3: Enter the time elapsed.'
+    step4: 'Step 4: The ETA and remaining time are calculated automatically.'
+    faq1q: 'What does ETA stand for?'
+    faq1a: 'ETA stands for Estimated Time of Arrival or Completion. It predicts when a task will finish based on current progress rate.'
+    faq2q: 'How is the ETA calculated?'
+    faq2a: 'ETA = (Total Items - Completed) divided by (Completed / Time Elapsed). Assumes a constant processing rate.'
     title: ETA calculator
     description: An ETA (Estimated Time of Arrival) calculator to determine the approximate end time of a task, for example, the end time and duration of a file download.
 
   roman-numeral-converter:
+    step1: 'Step 1: Enter an Arabic number (1-3999) or a Roman numeral in the input field.'
+    step2: 'Step 2: The conversion result updates automatically.'
+    step3: 'Step 3: Click Copy to copy the result.'
+    faq1q: 'What are Roman numerals?'
+    faq1a: 'Roman numerals are a numeral system from ancient Rome using letters: I (1), V (5), X (10), L (50), C (100), D (500), M (1000).'
+    faq2q: 'Why is 4 written as IV and not IIII?'
+    faq2a: 'Roman numerals use subtractive notation. A smaller numeral before a larger one means subtraction. IV = 5 - 1 = 4.'
     title: Roman numeral converter
     description: Convert Roman numerals to numbers and convert numbers to Roman numerals.
 
   hmac-generator:
+    step1: 'Step 1: Enter the message you want to authenticate.'
+    step2: 'Step 2: Enter your secret key.'
+    step3: 'Step 3: Select the hash algorithm (SHA-256, SHA-512, etc.).'
+    step4: 'Step 4: Copy the generated HMAC value.'
+    faq1q: 'What is HMAC?'
+    faq1a: 'HMAC (Hash-based Message Authentication Code) combines a cryptographic hash function with a secret key to verify data integrity and authenticity.'
+    faq2q: 'What is the difference between HMAC and a regular hash?'
+    faq2a: 'A regular hash only verifies data integrity. HMAC additionally requires a shared secret key.'
     title: Hmac generator
     description: Computes a hash-based message authentication code (HMAC) using a secret key and your favorite hashing function.
 
   bip39-generator:
+    step1: 'Step 1: Choose the number of words for your mnemonic phrase (12, 15, 18, 21, or 24).'
+    step2: 'Step 2: Click Generate to create a random BIP39 mnemonic.'
+    step3: 'Step 3: Optionally enter an existing mnemonic to derive the seed.'
+    step4: 'Step 4: Copy the mnemonic phrase and store it securely.'
+    faq1q: 'What is a BIP39 mnemonic?'
+    faq1a: 'BIP39 defines a standard for generating human-readable mnemonic phrases from random entropy used to back up cryptocurrency wallets.'
+    faq2q: 'How many possible 12-word phrases are there?'
+    faq2a: 'There are 2048 to the power of 12 possible phrases making brute-force attacks computationally infeasible.'
     title: BIP39 passphrase generator
     description: Generate a BIP39 passphrase from an existing or random mnemonic, or get the mnemonic from the passphrase.
 
   base64-file-converter:
+    step1: 'Step 1: Drop or select a file using the file picker.'
+    step2: 'Step 2: The file is converted to Base64 instantly in your browser.'
+    step3: 'Step 3: Copy the Base64 string or the data URL.'
+    faq1q: 'What is Base64 file encoding?'
+    faq1a: 'Base64 encoding converts binary file data into a text string using 64 printable ASCII characters. Used to embed files in HTML, CSS, JSON, or APIs.'
+    faq2q: 'What is the size overhead of Base64?'
+    faq2a: 'Base64 increases the file size by approximately 33%.'
     title: Base64 file converter
     description: Convert a string, file, or image into its base64 representation.
 
   list-converter:
+    step1: 'Step 1: Paste your list data into the input box.'
+    step2: 'Step 2: Choose the input separator (newline, comma, semicolon, etc.).'
+    step3: 'Step 3: Choose the output format (JSON array, comma-separated, etc.).'
+    step4: 'Step 4: Copy the converted result.'
+    faq1q: 'What list formats are supported?'
+    faq1a: 'Input can be newline, comma, pipe, or tab separated. Output supports JSON array, CSV, and other formats.'
+    faq2q: 'Can I remove duplicates?'
+    faq2a: 'Yes. The tool includes options to deduplicate, sort, trim whitespace, and reverse the list.'
     title: List converter
     description: This tool can process column-based data and apply various changes (transpose, add prefix and suffix, reverse list, sort list, lowercase values, truncate values) to each row.
 
@@ -198,38 +395,101 @@ tools:
     faq2a: No. Base64 is encoding, not encryption. It is easily reversible and provides no security. Anyone can decode a Base64 string without a key.
 
   toml-to-yaml:
+    step1: 'Step 1: Paste your TOML content into the left editor.'
+    step2: 'Step 2: The YAML equivalent is generated in real-time.'
+    step3: 'Step 3: Copy or download the YAML output.'
+    faq1q: 'What is TOML?'
+    faq1a: 'TOML is a configuration file format commonly used in Rust projects (Cargo.toml) and Hugo.'
+    faq2q: 'What is YAML?'
+    faq2a: 'YAML is a human-readable data serialization format widely used for Docker Compose, Kubernetes, and GitHub Actions.'
     title: TOML to YAML
     description: Parse and convert TOML to YAML.
 
   math-evaluator:
+    step1: 'Step 1: Type a mathematical expression in the input field.'
+    step2: 'Step 2: The result is calculated in real-time.'
+    step3: 'Step 3: Use functions like sin(), cos(), sqrt(), log(), etc.'
+    faq1q: 'What functions are available?'
+    faq1a: 'Supported functions include trigonometry (sin, cos, tan), logarithms (log, log2, log10), powers (sqrt, pow, exp), and constants (pi, e).'
+    faq2q: 'Does it support complex expressions?'
+    faq2a: 'Yes. The evaluator supports nested functions, units, matrices, and complex numbers.'
     title: Math evaluator
     description: A calculator for evaluating mathematical expressions. You can use functions like sqrt, cos, sin, abs, etc.
 
   json-to-yaml-converter:
+    step1: 'Step 1: Paste your JSON into the left editor.'
+    step2: 'Step 2: The YAML conversion is shown in real-time.'
+    step3: 'Step 3: Copy or download the YAML result.'
+    faq1q: 'Why convert JSON to YAML?'
+    faq1a: 'YAML is more human-readable than JSON and supports comments. It is preferred for Kubernetes, Docker Compose, and Ansible configs.'
+    faq2q: 'Is JSON a subset of YAML?'
+    faq2a: 'Yes. YAML 1.2 is a superset of JSON meaning all valid JSON is valid YAML.'
     title: JSON to YAML converter
     description: Simply convert JSON to YAML with this online live converter.
 
   url-parser:
+    step1: 'Step 1: Paste a URL into the input field.'
+    step2: 'Step 2: The URL is parsed into its components: protocol, host, path, query params, hash.'
+    step3: 'Step 3: Click any field to copy that component.'
+    faq1q: 'What URL components are shown?'
+    faq1a: 'The tool extracts: protocol, username, password, hostname, port, pathname, search query string, individual query parameters, and hash fragment.'
+    faq2q: 'What if a URL has no query parameters?'
+    faq2a: 'The query parameters section is hidden automatically when no params are present.'
     title: URL parser
     description: Parse a URL into its separate constituent parts (protocol, origin, params, port, username-password, ...)
 
   iban-validator-and-parser:
+    step1: 'Step 1: Enter or paste the IBAN number.'
+    step2: 'Step 2: The tool instantly validates the format and checksum.'
+    step3: 'Step 3: Valid IBANs are parsed to show country, bank code, and account number.'
+    faq1q: 'What is an IBAN?'
+    faq1a: 'IBAN (International Bank Account Number) is an internationally agreed standard for identifying bank accounts.'
+    faq2q: 'How long is an IBAN?'
+    faq2a: 'IBAN length varies by country from 15 (Norway) to 34 characters. It always starts with a 2-letter country code and 2 check digits.'
     title: IBAN validator and parser
     description: Validate and parse IBAN numbers. Check if an IBAN is valid and get the country, BBAN, if it is a QR-IBAN and the IBAN friendly format.
 
   user-agent-parser:
+    step1: 'Step 1: Your current browser User-Agent string is pre-filled automatically.'
+    step2: 'Step 2: Or paste any User-Agent string to analyze it.'
+    step3: 'Step 3: The browser, engine, OS, device, and CPU architecture are extracted.'
+    faq1q: 'What is a User-Agent string?'
+    faq1a: 'A User-Agent string is sent by browsers with every HTTP request to identify the browser, operating system, and device type to the server.'
+    faq2q: 'Why do User-Agent strings look so complex?'
+    faq2a: 'For historical compatibility reasons modern browsers include multiple older browser identifiers.'
     title: User-agent parser
     description: Detect and parse Browser, Engine, OS, CPU, and Device type/model from an user-agent string.
 
   numeronym-generator:
+    step1: 'Step 1: Enter a word or phrase.'
+    step2: 'Step 2: The numeronym is generated instantly.'
+    step3: 'Step 3: Copy the result.'
+    faq1q: 'What is a numeronym?'
+    faq1a: 'A numeronym uses a number to represent omitted letters. i18n stands for internationalization. Common examples: a11y (accessibility), k8s (Kubernetes).'
+    faq2q: 'Who invented numeronyms?'
+    faq2a: 'The term i18n is attributed to DEC in the 1970s and has been popularized in software development.'
     title: Numeronym generator
     description: A numeronym is a word where a number is used to form an abbreviation. For example, "i18n" is a numeronym of "internationalization" where 18 stands for the number of letters between the first i and the last n in the word.
 
   case-converter:
+    step1: 'Step 1: Enter or paste your text into the input field.'
+    step2: 'Step 2: Select the target case format (camelCase, PascalCase, snake_case, etc.).'
+    step3: 'Step 3: The converted text appears instantly. Click Copy to copy it.'
+    faq1q: 'What case formats are supported?'
+    faq1a: 'Supported formats include camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE, kebab-case, Title Case, UPPER CASE, lower case, and dot.case.'
+    faq2q: 'What is the difference between camelCase and PascalCase?'
+    faq2a: 'camelCase starts with a lowercase letter (e.g. myVariable). PascalCase starts with an uppercase letter (e.g. MyClass).'
     title: Case converter
     description: Transform the case of a string and choose between different formats
 
   html-entities:
+    step1: 'Step 1: Enter HTML text with special characters or enter entities to decode.'
+    step2: 'Step 2: Choose Encode or Decode mode.'
+    step3: 'Step 3: The result updates in real-time. Click Copy to copy.'
+    faq1q: 'What are HTML entities?'
+    faq1a: 'HTML entities are special codes to display reserved characters in HTML. For example &lt; renders as < and &amp; renders as &.'
+    faq2q: 'Why do I need to escape HTML?'
+    faq2a: 'Escaping HTML prevents XSS attacks when displaying user-generated content.'
     title: Escape HTML entities
     description: Escape or unescape HTML entities (replace characters like <,>, &, " and \' with their HTML version)
 
@@ -247,22 +507,57 @@ tools:
     faq3a: 'Yes. This tool uses JSON5 for parsing, so it accepts comments and trailing commas in addition to standard JSON.'
 
   docker-run-to-docker-compose-converter:
+    step1: 'Step 1: Paste your docker run command into the input field.'
+    step2: 'Step 2: The equivalent Docker Compose YAML is generated instantly.'
+    step3: 'Step 3: Copy or download the docker-compose.yml.'
+    faq1q: 'Why use Docker Compose instead of docker run?'
+    faq1a: 'Docker Compose makes it easier to manage multi-container applications and version-control your configuration.'
+    faq2q: 'Does it support all docker run flags?'
+    faq2a: 'The tool supports common flags like -p (ports), -v (volumes), -e (env vars), --name, and --network.'
     title: Docker run to Docker compose converter
     description: Transforms "docker run" commands into docker-compose files!
 
   mac-address-lookup:
+    step1: 'Step 1: Enter a MAC address (e.g. AA:BB:CC:DD:EE:FF).'
+    step2: 'Step 2: The tool looks up the OUI to identify the manufacturer.'
+    step3: 'Step 3: The vendor name and country are displayed.'
+    faq1q: 'What is a MAC address?'
+    faq1a: 'A MAC address is a unique 48-bit hardware identifier assigned to a network interface card, written as six pairs of hex digits.'
+    faq2q: 'What are the first 3 bytes of a MAC address?'
+    faq2a: 'The first 3 bytes (OUI) are assigned by the IEEE to manufacturers. The last 3 bytes are assigned by the manufacturer.'
     title: MAC address lookup
     description: Find the vendor and manufacturer of a device by its MAC address.
 
   mime-types:
+    step1: 'Step 1: Enter a file extension (e.g. .pdf) or a MIME type (e.g. application/pdf).'
+    step2: 'Step 2: The matching MIME type or extension is found instantly.'
+    step3: 'Step 3: Click to copy the result.'
+    faq1q: 'What is a MIME type?'
+    faq1a: 'MIME type is a standard identifier for the format of a file consisting of a type and subtype such as text/html, application/json, or image/png.'
+    faq2q: 'Why are MIME types important for web development?'
+    faq2a: 'Servers use MIME types to tell browsers how to handle files. An incorrect MIME type can cause files to be downloaded instead of displayed.'
     title: MIME types
     description: Convert MIME types to file extensions and vice-versa.
 
   toml-to-json:
+    step1: 'Step 1: Paste your TOML content into the left editor.'
+    step2: 'Step 2: The JSON equivalent is generated in real-time.'
+    step3: 'Step 3: Copy or download the JSON output.'
+    faq1q: 'What is TOML?'
+    faq1a: 'TOML is a configuration file format often used in Rust (Cargo.toml) and Hugo projects.'
+    faq2q: 'What happens to TOML comments during conversion?'
+    faq2a: 'JSON does not support comments so all TOML comments are lost during conversion.'
     title: TOML to JSON
     description: Parse and convert TOML to JSON.
 
   lorem-ipsum-generator:
+    step1: 'Step 1: Select the output type: paragraphs, sentences, or words.'
+    step2: 'Step 2: Set the quantity using the slider or input.'
+    step3: 'Step 3: Click Copy to copy the generated text.'
+    faq1q: 'What is Lorem Ipsum?'
+    faq1a: 'Lorem Ipsum is placeholder text derived from Cicero writings (45 BC) used as dummy text in typesetting since the 1500s.'
+    faq2q: 'Why use Lorem Ipsum instead of real text?'
+    faq2a: 'Lorem Ipsum avoids distraction from layout design. Readable text causes viewers to focus on content rather than visual design.'
     title: Lorem ipsum generator
     description: Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content
 
@@ -278,10 +573,25 @@ tools:
     faq2a: A standard QR code can store up to ~4,296 alphanumeric characters or ~7,089 numeric characters. Shorter content produces a simpler, more scannable code.
 
   wifi-qrcode-generator:
+    step1: 'Step 1: Enter your WiFi network name (SSID).'
+    step2: 'Step 2: Enter the WiFi password.'
+    step3: 'Step 3: Select the security type (WPA/WPA2, WEP, or None).'
+    step4: 'Step 4: Scan the generated QR code with your phone to connect instantly.'
+    faq1q: 'What information is encoded in a WiFi QR code?'
+    faq1a: 'The QR code encodes the SSID, password, and security type. When scanned compatible devices automatically connect.'
+    faq2q: 'Is it safe to share a WiFi QR code?'
+    faq2a: 'Only share with trusted people. The QR code contains your WiFi password and anyone who scans it can join your network.'
     title: WiFi QR Code generator
     description: Generate and download QR codes for quick connections to WiFi networks.
 
   xml-formatter:
+    step1: 'Step 1: Paste your XML content into the input editor.'
+    step2: 'Step 2: The formatted and indented XML appears on the right.'
+    step3: 'Step 3: Copy or download the formatted XML.'
+    faq1q: 'What is XML?'
+    faq1a: 'XML (Extensible Markup Language) is a flexible markup language for storing and transporting structured data.'
+    faq2q: 'What is the difference between XML and JSON?'
+    faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
     title: XML formatter
     description: Prettify your XML string into a friendly, human-readable format.
 
@@ -296,50 +606,136 @@ tools:
     faq2a: 'Absolute zero is the lowest possible temperature: 0 Kelvin = −273.15°C = −459.67°F. At this temperature, particles have minimum thermal motion.'
 
   chmod-calculator:
+    step1: 'Step 1: Check the permission boxes for owner, group, and others.'
+    step2: 'Step 2: The numeric chmod value (e.g. 755) and symbolic notation update automatically.'
+    step3: 'Step 3: Copy the chmod command for use in your terminal.'
+    faq1q: 'What is chmod?'
+    faq1a: 'chmod (change mode) is a Unix/Linux command that modifies file and directory permissions.'
+    faq2q: 'What does chmod 755 mean?'
+    faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
     title: Chmod calculator
     description: Compute your chmod permissions and commands with this online chmod calculator.
 
   rsa-key-pair-generator:
+    step1: 'Step 1: Select the key size (1024, 2048, or 4096 bits).'
+    step2: 'Step 2: Click Generate to create a new RSA key pair.'
+    step3: 'Step 3: Copy the private key and public key (PEM format) separately.'
+    faq1q: 'What is RSA?'
+    faq1a: 'RSA (Rivest-Shamir-Adleman) is a widely used asymmetric encryption algorithm. A public key encrypts data; only the corresponding private key can decrypt it.'
+    faq2q: 'What key size should I use?'
+    faq2a: '2048-bit is the minimum recommended. 4096-bit provides stronger security. 1024-bit is considered insecure.'
     title: RSA key pair generator
     description: Generate a new random RSA private and public pem certificate key pair.
 
   html-wysiwyg-editor:
+    step1: 'Step 1: Type or paste content into the WYSIWYG editor.'
+    step2: 'Step 2: Use the toolbar to apply formatting (bold, italic, links, lists, etc.).'
+    step3: 'Step 3: Switch to Source view to see the generated HTML code.'
+    step4: 'Step 4: Copy the HTML source for use in your project.'
+    faq1q: 'What does WYSIWYG mean?'
+    faq1a: 'WYSIWYG stands for What You See Is What You Get. The editor displays content as it will appear in a browser.'
+    faq2q: 'Is the generated HTML clean?'
+    faq2a: 'The editor generates semantic HTML5 and avoids inline styles where possible.'
     title: HTML WYSIWYG editor
     description: Online, feature-rich WYSIWYG HTML editor which generates the source code of the content immediately.
 
   yaml-to-toml:
+    step1: 'Step 1: Paste your YAML content into the left editor.'
+    step2: 'Step 2: The TOML equivalent is generated in real-time.'
+    step3: 'Step 3: Copy or download the TOML output.'
+    faq1q: 'When should I use TOML over YAML?'
+    faq1a: 'TOML is preferred for simple configuration files where clarity is critical. It has stricter syntax than YAML.'
+    faq2q: 'Does YAML support anchors and aliases?'
+    faq2a: 'Yes. YAML supports anchors (&) and aliases (*) for reusing content. TOML does not have a direct equivalent.'
     title: YAML to TOML
     description: Parse and convert YAML to TOML.
 
   mac-address-generator:
+    step1: 'Step 1: Enter the quantity of MAC addresses to generate.'
+    step2: 'Step 2: Optionally enter a prefix (OUI) to generate addresses for a specific vendor.'
+    step3: 'Step 3: Select the separator (colon, hyphen, or none).'
+    step4: 'Step 4: Click Generate and copy the results.'
+    faq1q: 'What is a MAC address used for?'
+    faq1a: 'MAC addresses uniquely identify devices on a local network at the data-link layer (Layer 2).'
+    faq2q: 'Can I generate multicast MAC addresses?'
+    faq2a: 'The generator creates unicast addresses by default. A MAC address is multicast if the LSB of the first byte is 1.'
     title: MAC address generator
     description: Enter the quantity and prefix. MAC addresses will be generated in your chosen case (uppercase or lowercase)
 
   json-diff:
+    step1: 'Step 1: Paste the first JSON object into the left panel.'
+    step2: 'Step 2: Paste the second JSON object into the right panel.'
+    step3: 'Step 3: Added fields in green, removed in red, changed values in yellow.'
+    faq1q: 'What is JSON diffing used for?'
+    faq1a: 'JSON diffing compares API responses, config file versions, or database snapshots to identify what changed.'
+    faq2q: 'Does it support nested JSON?'
+    faq2a: 'Yes. The diff viewer recursively compares nested objects and arrays.'
     title: JSON diff
     description: Compare two JSON objects and get the differences between them.
 
   jwt-parser:
+    step1: 'Step 1: Paste your JWT token into the input field.'
+    step2: 'Step 2: The Header, Payload, and Signature are decoded and color-coded.'
+    step3: 'Step 3: Standard claims like exp and iat show human-readable dates.'
+    faq1q: 'What is a JWT?'
+    faq1a: 'JWT (JSON Web Token) is an open standard (RFC 7519) for securely transmitting information as a JSON object. Commonly used for authentication.'
+    faq2q: 'Is a JWT token encrypted?'
+    faq2a: 'A standard JWT (JWS) is signed but NOT encrypted. The payload can be decoded by anyone. Use JWE for confidentiality.'
     title: JWT parser
     description: Parse and decode your JSON Web Token (jwt) and display its content.
 
   date-converter:
+    step1: 'Step 1: Enter a date and time in the input field.'
+    step2: 'Step 2: Choose the source timezone.'
+    step3: 'Step 3: The date is displayed in multiple formats and timezones.'
+    faq1q: 'What date formats are supported?'
+    faq1a: 'The tool supports ISO 8601, Unix timestamp, RFC 2822, and common locale formats.'
+    faq2q: 'What is a Unix timestamp?'
+    faq2a: 'A Unix timestamp is the number of seconds elapsed since January 1 1970 00:00:00 UTC. It is timezone-independent.'
     title: Date-time converter
     description: Convert date and time into the various different formats
 
   phone-parser-and-formatter:
+    step1: 'Step 1: Enter a phone number in any format.'
+    step2: 'Step 2: Select the country code if needed.'
+    step3: 'Step 3: The parsed result shows country, type, and formatted versions.'
+    faq1q: 'What is E.164 format?'
+    faq1a: 'E.164 is the international telephone numbering standard. Numbers start with + followed by country code and subscriber number.'
+    faq2q: 'What information can be derived from a phone number?'
+    faq2a: 'You can determine the country, region, carrier (sometimes), and type (mobile, landline, toll-free, etc.).'
     title: Phone parser and formatter
     description: Parse, validate and format phone numbers. Get information about the phone number, like the country code, type, etc.
 
   ipv4-subnet-calculator:
+    step1: 'Step 1: Enter an IPv4 address with CIDR notation (e.g. 192.168.1.0/24).'
+    step2: 'Step 2: The network address, broadcast address, usable host range, and mask are calculated.'
+    step3: 'Step 3: Copy any field for use in your network configuration.'
+    faq1q: 'What is CIDR notation?'
+    faq1a: 'CIDR notation represents a network as IP address + prefix length. /24 means 255.255.255.0 netmask giving 254 usable hosts.'
+    faq2q: 'How many hosts does /24 support?'
+    faq2a: 'A /24 subnet has 256 addresses. Subtract 2 for network and broadcast addresses leaving 254 usable hosts.'
     title: IPv4 subnet calculator
     description: Parse your IPv4 CIDR blocks and get all the info you need about your subnet.
 
   og-meta-generator:
+    step1: 'Step 1: Enter your page title, description, URL, and image.'
+    step2: 'Step 2: Select the type (website, article, product, etc.).'
+    step3: 'Step 3: Copy the generated Open Graph and Twitter Card meta tags.'
+    faq1q: 'What are Open Graph meta tags?'
+    faq1a: 'Open Graph tags are HTML meta tags that control how your page appears when shared on social media - title, description, image, and more.'
+    faq2q: 'Why is the og:image important?'
+    faq2a: 'The og:image is the thumbnail shown when your page is shared on social media. Recommended size is 1200x630px.'
     title: Open graph meta generator
     description: Generate open-graph and socials HTML meta tags for your website.
 
   ipv6-ula-generator:
+    step1: 'Step 1: Click Generate to create a random IPv6 ULA prefix.'
+    step2: 'Step 2: The generated prefix, global ID, and full address range are displayed.'
+    step3: 'Step 3: Copy the prefix to use in your local network configuration.'
+    faq1q: 'What is an IPv6 ULA address?'
+    faq1a: 'ULA (Unique Local Address) is an IPv6 address in the fc00::/7 range similar to private IPv4 ranges. Not routable on the global internet.'
+    faq2q: 'How is a ULA global ID generated?'
+    faq2a: 'Per RFC 4193 the 40-bit global ID is generated pseudo-randomly to minimize collision probability.'
     title: IPv6 ULA generator
     description: Generate your own local, non-routable IP addresses for your network according to RFC4193.
 
@@ -355,34 +751,90 @@ tools:
     faq2a: For security-sensitive use cases, use SHA-256 or SHA-512. MD5 and SHA-1 are considered cryptographically broken and should only be used for non-security purposes like checksums.
 
   json-to-toml:
+    step1: 'Step 1: Paste your JSON content into the left editor.'
+    step2: 'Step 2: The TOML equivalent appears in real-time.'
+    step3: 'Step 3: Copy or download the TOML output.'
+    faq1q: 'What JSON structures are not supported in TOML?'
+    faq1a: 'TOML does not support null values or arrays of mixed types.'
+    faq2q: 'Why convert JSON to TOML?'
+    faq2a: 'TOML is more human-readable for configuration files. Some tools like Cargo and Hugo use TOML exclusively.'
     title: JSON to TOML
     description: Parse and convert JSON to TOML.
 
   device-information:
+    step1: 'Step 1: Open the tool - your device information is detected automatically.'
+    step2: 'Step 2: Review screen resolution, pixel ratio, OS, browser, and connection details.'
+    step3: 'Step 3: Click any value to copy it.'
+    faq1q: 'What information is shown?'
+    faq1a: 'The tool shows screen resolution, viewport size, pixel ratio, color depth, browser name and version, operating system, language, and online/offline status.'
+    faq2q: 'Is this information sent to a server?'
+    faq2a: 'No. All information is read from your browser JavaScript APIs locally. Nothing is transmitted.'
     title: Device information
     description: Get information about your current device (screen size, pixel-ratio, user agent, ...)
 
   pdf-signature-checker:
+    step1: 'Step 1: Drop or select a PDF file.'
+    step2: 'Step 2: The tool scans the PDF for digital signatures.'
+    step3: 'Step 3: Valid signatures show signer information and certificate details.'
+    faq1q: 'What is a PDF digital signature?'
+    faq1a: 'A PDF digital signature uses public key cryptography to verify the signer identity and that the document has not been altered since signing.'
+    faq2q: 'Is my PDF uploaded to a server?'
+    faq2a: 'No. The PDF is processed entirely in your browser. Your file never leaves your device.'
     title: PDF signature checker
     description: Verify the signatures of a PDF file. A signed PDF file contains one or more signatures that may be used to determine whether the contents of the file have been altered since the file was signed.
 
   json-minify:
+    step1: 'Step 1: Paste your JSON into the left editor.'
+    step2: 'Step 2: The minified JSON appears on the right in real-time.'
+    step3: 'Step 3: Click Copy to copy the minified JSON.'
+    faq1q: 'Why minify JSON?'
+    faq1a: 'Minified JSON removes all whitespace reducing file size. Useful for API payloads and production config files.'
+    faq2q: 'Does minifying change the JSON data?'
+    faq2a: 'No. Minifying only removes insignificant whitespace. The data values and structure remain identical.'
     title: JSON minify
     description: Minify and compress your JSON by removing unnecessary whitespace.
 
   ulid-generator:
+    step1: 'Step 1: Click Generate to create a new ULID.'
+    step2: 'Step 2: Generate multiple ULIDs using the count input.'
+    step3: 'Step 3: Click Copy to copy the ULID(s).'
+    faq1q: 'What is a ULID?'
+    faq1a: 'A ULID (Universally Unique Lexicographically Sortable Identifier) is a 128-bit identifier that encodes a timestamp and random component.'
+    faq2q: 'What is the advantage of ULID over UUID?'
+    faq2a: 'ULIDs are sortable by creation time unlike UUID v4, URL-safe, and more compact (26 chars vs 36 for UUID).'
     title: ULID generator
     description: Generate random Universally Unique Lexicographically Sortable Identifier (ULID).
 
   string-obfuscator:
+    step1: 'Step 1: Enter the string you want to obfuscate (e.g. API key, IBAN, token).'
+    step2: 'Step 2: Set how many characters to keep visible at the start and end.'
+    step3: 'Step 3: The obfuscated string is shown - safe to share in screenshots or logs.'
+    faq1q: 'What is string obfuscation?'
+    faq1a: 'String obfuscation replaces middle characters with asterisks making secrets partially visible but unrecoverable.'
+    faq2q: 'Is obfuscation the same as encryption?'
+    faq2a: 'No. Obfuscation is a visual technique - the original string is not recoverable. Encryption produces a reversible ciphertext.'
     title: String obfuscator
     description: Obfuscate a string (like a secret, an IBAN, or a token) to make it shareable and identifiable without revealing its content.
 
   base-converter:
+    step1: 'Step 1: Enter a number in any base (binary, octal, decimal, hexadecimal, or custom).'
+    step2: 'Step 2: The equivalent values in all other bases appear instantly.'
+    step3: 'Step 3: Click any result to copy it.'
+    faq1q: 'What is base conversion?'
+    faq1a: 'Base conversion translates a number from one numeral system to another. Binary (2), octal (8), decimal (10), and hexadecimal (16) are common.'
+    faq2q: 'How do I convert hex to binary?'
+    faq2a: 'Each hex digit corresponds to exactly 4 binary digits. For example F(hex) = 1111(binary).'
     title: Integer base converter
     description: Convert a number between different bases (decimal, hexadecimal, binary, octal, base64, ...)
 
   yaml-to-json-converter:
+    step1: 'Step 1: Paste your YAML content into the left editor.'
+    step2: 'Step 2: The JSON equivalent is generated in real-time.'
+    step3: 'Step 3: Copy or download the JSON output.'
+    faq1q: 'Why convert YAML to JSON?'
+    faq1a: 'JSON is more widely supported as an API data format. Converting YAML config to JSON makes it portable.'
+    faq2q: 'Are YAML comments preserved in JSON?'
+    faq2a: 'No. JSON does not support comments so all YAML comments are discarded during conversion.'
     title: YAML to JSON converter
     description: Simply convert YAML to JSON with this online live converter.
 
@@ -398,34 +850,90 @@ tools:
     faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
 
   ipv4-address-converter:
+    step1: 'Step 1: Enter an IPv4 address in dotted-decimal format (e.g. 192.168.1.1).'
+    step2: 'Step 2: The address is converted to decimal, binary, hexadecimal, and IPv6 mapped format.'
+    step3: 'Step 3: Click any result field to copy it.'
+    faq1q: 'What is an IPv4 address?'
+    faq1a: 'An IPv4 address is a 32-bit number written as four decimal octets separated by dots uniquely identifying a device on a network.'
+    faq2q: 'What is an IPv4-mapped IPv6 address?'
+    faq2a: 'An IPv4-mapped IPv6 address represents an IPv4 in IPv6 format: ::ffff:x.x.x.x. Used in dual-stack systems.'
     title: IPv4 address converter
     description: Convert an IP address into decimal, binary, hexadecimal, or even an IPv6 representation of it.
 
   text-statistics:
+    step1: 'Step 1: Type or paste your text into the input field.'
+    step2: 'Step 2: Statistics update in real-time.'
+    step3: 'Step 3: Review word count, character count, sentence count, reading time, and more.'
+    faq1q: 'How is reading time calculated?'
+    faq1a: 'Reading time is estimated at 200-250 words per minute (average adult reading speed).'
+    faq2q: 'What counts as a word?'
+    faq2a: 'Words are sequences of characters separated by whitespace. Punctuation attached to a word is counted as part of the word.'
     title: Text statistics
     description: Get information about a text, the number of characters, the number of words, its size in bytes, ...
 
   text-to-nato-alphabet:
+    step1: 'Step 1: Enter the text you want to spell out.'
+    step2: 'Step 2: Each letter is replaced with its NATO phonetic equivalent.'
+    step3: 'Step 3: Copy the result for verbal communication.'
+    faq1q: 'What is the NATO phonetic alphabet?'
+    faq1a: 'The NATO phonetic alphabet assigns a word to each letter (Alpha, Bravo, Charlie...) to avoid confusion in voice communication.'
+    faq2q: 'Why not just say the letter?'
+    faq2a: 'Many letters sound similar over phone or radio (B/D/E/G/P/T, M/N, etc.). Using phonetic words reduces errors.'
     title: Text to NATO alphabet
     description: Transform text into the NATO phonetic alphabet for oral transmission.
 
   basic-auth-generator:
+    step1: 'Step 1: Enter your username and password.'
+    step2: 'Step 2: The Base64-encoded Basic Auth header value is generated instantly.'
+    step3: 'Step 3: Copy the full Authorization header value.'
+    faq1q: 'What is HTTP Basic Authentication?'
+    faq1a: 'HTTP Basic Auth sends credentials as Base64-encoded username:password in an Authorization header with every request.'
+    faq2q: 'Is Basic Auth secure?'
+    faq2a: 'Basic Auth alone is NOT secure because credentials are only Base64-encoded. Always use it over HTTPS.'
     title: Basic auth generator
     description: Generate a base64 basic auth header from a username and password.
 
   text-to-unicode:
+    step1: 'Step 1: Enter text to convert to Unicode code points or enter code points to decode.'
+    step2: 'Step 2: Choose Encode or Decode mode.'
+    step3: 'Step 3: Copy the result.'
+    faq1q: 'What is Unicode?'
+    faq1a: 'Unicode is a universal character encoding standard assigning a unique code point to every character in every language.'
+    faq2q: 'What is the difference between Unicode and UTF-8?'
+    faq2a: 'Unicode assigns code points (e.g. U+0041 for A). UTF-8 is an encoding that represents those code points as 1-4 bytes.'
     title: Text to Unicode
     description: Parse and convert text to unicode and vice-versa
 
   ipv4-range-expander:
+    step1: 'Step 1: Enter the start and end IPv4 addresses of the range.'
+    step2: 'Step 2: The tool calculates the minimal set of CIDR blocks that cover the range.'
+    step3: 'Step 3: Copy the CIDR list for use in firewall rules or routing tables.'
+    faq1q: 'What is CIDR aggregation?'
+    faq1a: 'CIDR aggregation finds the smallest set of network prefixes that exactly covers a given IP range.'
+    faq2q: 'Why might one IP range result in multiple CIDR blocks?'
+    faq2a: 'IP ranges that do not align on power-of-2 boundaries require multiple CIDR blocks to represent exactly.'
     title: IPv4 range expander
     description: Given a start and an end IPv4 address, this tool calculates a valid IPv4 subnet along with its CIDR notation.
 
   text-diff:
+    step1: 'Step 1: Paste the original text in the left panel.'
+    step2: 'Step 2: Paste the modified text in the right panel.'
+    step3: 'Step 3: Added text is highlighted in green, removed text in red.'
+    faq1q: 'What diff algorithm is used?'
+    faq1a: 'The tool uses a standard diff algorithm comparing texts line-by-line and character-by-character.'
+    faq2q: 'Can I diff code files?'
+    faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
     title: Text diff
     description: Compare two texts and see the differences between them.
 
   otp-generator:
+    step1: 'Step 1: Enter your TOTP secret key from your authenticator app.'
+    step2: 'Step 2: The current OTP code is displayed with a countdown timer.'
+    step3: 'Step 3: Copy the 6-digit code to authenticate.'
+    faq1q: 'What is OTP / TOTP?'
+    faq1a: 'OTP is a password valid for only one session. TOTP generates a new code every 30 seconds using a shared secret and the current time.'
+    faq2q: 'What is the standard algorithm?'
+    faq2a: 'TOTP is defined in RFC 6238 and uses HMAC-SHA1. Used by Google Authenticator and Authy.'
     title: OTP code generator
     description: Generate and validate time-based OTP (one time password) for multi-factor authentication.
 
@@ -441,6 +949,13 @@ tools:
     faq2a: When passing user input as query parameters, constructing URLs programmatically, or handling form data submissions.
 
   text-to-binary:
+    step1: 'Step 1: Enter text to convert to binary or enter binary to decode back to text.'
+    step2: 'Step 2: Choose Text to Binary or Binary to Text mode.'
+    step3: 'Step 3: Copy the result.'
+    faq1q: 'How is text converted to binary?'
+    faq1a: 'Each character is converted to its ASCII/Unicode code point then represented as 8-bit binary. For example A = 65 = 01000001.'
+    faq2q: 'What encoding is used?'
+    faq2a: 'The tool uses UTF-8 encoding which is the standard for the web.'
     title: Text to ASCII binary
     description: Convert text to its ASCII binary representation and vice-versa.
 
@@ -514,6 +1029,13 @@ tools:
     faq3a: No. All calculations run entirely in your browser. No health data is collected or transmitted.
 
   random-decision-picker:
+    step1: 'Step 1: Enter your options, one per line.'
+    step2: 'Step 2: Click Spin or Pick to randomly select one.'
+    step3: 'Step 3: The selected option is highlighted and announced.'
+    faq1q: 'How random is the selection?'
+    faq1a: 'The tool uses Math.random() which is pseudo-random and sufficient for everyday decisions.'
+    faq2q: 'Can I weight certain options?'
+    faq2a: 'Currently the tool gives equal weight to all options. To weight an option add it multiple times in the list.'
     title: Random Decision Picker
     description: Can't decide? Enter your options and spin the wheel to let fate choose for you! Supports custom options and quick presets.
     spin: Spin!
@@ -542,6 +1064,14 @@ tools:
     sun: Sun
 
   income-tax-calculator:
+    step1: 'Step 1: Enter your gross monthly salary.'
+    step2: 'Step 2: Select your city to apply the correct social insurance rates.'
+    step3: 'Step 3: Optionally add special deductions (children education, housing rent, etc.).'
+    step4: 'Step 4: Review your tax bracket, total deductions, and net salary.'
+    faq1q: 'How is China income tax calculated?'
+    faq1a: 'China uses a progressive tax rate with 7 brackets (3%-45%). Tax = (Gross - Social Insurance - 5000 deduction - Special deductions) x Rate - Quick deduction.'
+    faq2q: 'What is included in social insurance?'
+    faq2a: 'Five insurances: pension, medical, unemployment, work injury, maternity. One fund: housing provident fund. Rates vary by city.'
     title: China Income Tax Calculator
     description: Calculate monthly income tax, social insurance contributions, and net salary based on China's current individual income tax policy (¥5,000 threshold, 7 tax brackets), with support for special additional deductions.
     income: Income Details

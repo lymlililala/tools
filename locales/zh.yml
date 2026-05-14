@@ -73,13 +73,36 @@ tools:
     data: '数据'
 
   password-strength-analyser:
+    step1: '步骤 1：在输入框中输入或粘贴您的密码。'
+    step2: '步骤 2：强度仪表随您的输入实时更新。'
+    step3: '步骤 3：查看评分、破解时间估计和改进建议。'
+    faq1q: '什么样的密码是强密码？'
+    faq1a: '强密码长度 12 位以上，包含大写、小写、数字和符号的组合，避免常见词汇或规律。'
+    faq2q: '我的密码会上传到服务器吗？'
+    faq2a: '不会。所有分析均在浏览器本地完成，您的密码不会离开您的设备。'
     title: 密码强度分析仪
     description: 使用此密码强度分析器和破解时间估计工具来发现密码的强度。
 
   chronometer:
+    step1: '步骤 1：点击「开始」启动计时器。'
+    step2: '步骤 2：点击「分段」记录分段时间。'
+    step3: '步骤 3：点击「停止」暂停，点击「重置」清零。'
+    faq1q: '什么是计时器？'
+    faq1a: '计时器是用于测量经过时间的精密计时设备，常用于体育计时、基准测试和事件计时。'
+    faq2q: '关闭标签页会停止计时吗？'
+    faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。'
     title: 计时器
     description: 监控事物的持续时间。基本上是一种具有简单计时器功能的计时器。
   token-generator:
+    step1: '步骤 1：选择字符类型——大写字母、小写字母、数字和/或符号。'
+    step2: '步骤 2：拖动滑块设置 Token 长度（1–512 个字符）。'
+    step3: '步骤 3：Token 将立即生成并显示在输出框中。'
+    step4: '步骤 4：点击「复制」将 Token 复制到剪贴板。'
+    step5: '步骤 5：点击「刷新」随时重新生成新的随机 Token。'
+    faq1q: '随机 Token 有什么用途？'
+    faq1a: '随机 Token 用于 API 密钥、Session 令牌、CSRF 令牌、密码重置链接等需要唯一不可预测字符串的场景。'
+    faq2q: '生成的 Token 有多安全？'
+    faq2a: 'Token 使用浏览器内置加密级随机数生成器生成，具有密码学安全性。'
     title: Token 生成器
     description: 使用您想要的字符、大写或小写字母、数字和/或符号生成随机字符串。
 
@@ -94,92 +117,266 @@ tools:
       copy: 复制
       refresh: 刷新
   percentage-calculator:
+    step1: '步骤 1：选择所需的百分比计算类型。'
+    step2: '步骤 2：在输入框中填入所需数值。'
+    step3: '步骤 3：结果立即更新。'
+    faq1q: '如何计算百分比变化？'
+    faq1a: '百分比变化 = ((新值 - 旧值) / 旧值) × 100。正数表示增长，负数表示减少。'
+    faq2q: '如何计算 Y 的 X%？'
+    faq2a: 'Y 的 X% = Y × (X / 100)。例如，150 的 20% = 150 × 0.20 = 30。'
     title: 百分比计算器
     description: 轻松计算从一个值到另一个值的百分比，或从百分比到值的百分比。
 
   svg-placeholder-generator:
+    step1: '步骤 1：设置占位图的宽度和高度。'
+    step2: '步骤 2：选择背景色和文字颜色。'
+    step3: '步骤 3：可选自定义标签文字。'
+    step4: '步骤 4：复制 SVG 代码或 data URL 用于项目中。'
+    faq1q: '什么是 SVG 占位图？'
+    faq1a: 'SVG 占位图是一种轻量向量图像，用于开发阶段在实际图像加载前预留空间。'
+    faq2q: '可以在生产环境使用吗？'
+    faq2a: 'SVG 占位图主要用于开发，可在生产环境作为 fallback 或骨架屏使用。'
     title: SVG 占位符生成器
     description: 生成 svg 图像以用作应用程序中的占位符。
 
   json-to-csv:
+    step1: '步骤 1：将 JSON 数组粘贴到输入框中。'
+    step2: '步骤 2：工具自动从 JSON 键中检测列标题。'
+    step3: '步骤 3：查看 CSV 输出，点击「复制」或「下载」。'
+    faq1q: '支持什么 JSON 结构？'
+    faq1a: '工具支持对象数组格式。'
+    faq2q: '如果 JSON 对象的键不一致怎么办？'
+    faq2a: '工具会将所有对象中的唯一键合并为列标题。缺失字段在 CSV 输出中留空。'
     title: JSON 转 CSV
     description: 使用自动标头检测将JSON转换为CSV。
 
   camera-recorder:
+    step1: '步骤 1：浏览器请求摄像头/麦克风权限时点击「允许」。'
+    step2: '步骤 2：使用相机预览画面构图。'
+    step3: '步骤 3：点击「拍照」截图，或点击「录制」开始录视频。'
+    step4: '步骤 4：停止录制后下载结果。'
+    faq1q: '我的视频会上传到服务器吗？'
+    faq1a: '不会。所有处理均在浏览器本地完成，不会上传任何数据。'
+    faq2q: '支持什么格式？'
+    faq2a: '照片保存为 PNG 格式，视频保存为大多数现代浏览器支持的 WebM 格式。'
     title: 摄像机记录器
     description: 从网络摄像头或照相机拍摄照片或录制视频。
 
   keycode-info:
+    step1: '步骤 1：点击页面任意位置，使键盘监听器获得焦点。'
+    step2: '步骤 2：按下键盘上的任意键。'
+    step3: '步骤 3：键名、keyCode、code、位置和修饰键状态立即显示。'
+    step4: '步骤 4：点击任意字段旁的复制图标可复制该值。'
+    faq1q: '什么是 keyCode？'
+    faq1a: 'keyCode 是表示所按键的旧式整数属性，由浏览器定义。现代代码应使用 event.key 或 event.code 替代。'
+    faq2q: 'key、code 和 keyCode 有什么区别？'
+    faq2a: 'key 表示打印字符，code 表示物理按键位置，keyCode 是旧式数值。现代 JavaScript 推荐使用 key 和 code。'
     title: Keycode 信息
     description: 查找任何按下的键的javascript键代码、代码、位置和修饰符。
 
   emoji-picker:
+    step1: '步骤 1：按名称或关键词浏览或搜索 Emoji。'
+    step2: '步骤 2：点击 Emoji 将其复制到剪贴板。'
+    step3: '步骤 3：同时显示 Unicode 码点和短代码供参考。'
+    faq1q: '如何搜索特定 Emoji？'
+    faq1a: '使用搜索框输入关键词，列表将实时过滤。'
+    faq2q: '可以在代码或 URL 中使用 Emoji 吗？'
+    faq2a: '可以。每个 Emoji 都有 Unicode 码点，可用于 HTML 实体或 JSON。URL 中需要进行百分比编码。'
     title: Emoji 选择器
     description: 轻松复制和粘贴Emoji表情符号，并获得每个表情符号的unicode和code points值.
 
   color-converter:
+    step1: '步骤 1：使用颜色选择器或直接输入任意格式的颜色值。'
+    step2: '步骤 2：其他格式（HEX、RGB、HSL、CMYK 等）自动更新。'
+    step3: '步骤 3：查看 WCAG 对比度评分，确保无障碍可访问性。'
+    step4: '步骤 4：点击任意字段即可复制该值。'
+    faq1q: 'HEX、RGB 和 HSL 有什么区别？'
+    faq1a: 'HEX 是 6 位十六进制颜色码。RGB 通过红、绿、蓝三通道（0–255）定义颜色。HSL 通过色相（0–360°）、饱和度和亮度定义颜色。'
+    faq2q: '什么是 WCAG 对比度？'
+    faq2a: 'WCAG 对比度衡量文本在背景上的可读性。4.5:1 达到 AA 标准；7:1 达到 AAA 标准。'
     title: Color 选择器
     description: 在不同格式（十六进制、rgb、hsl和css名称）之间转换颜色
   bcrypt:
+    step1: '步骤 1：在「待哈希文本」字段中输入要哈希的内容。'
+    step2: '步骤 2：调整代价因子（轮数）——数值越高越安全但越慢。'
+    step3: '步骤 3：生成的 bcrypt 哈希值显示在输出框中。'
+    step4: '步骤 4：如需验证，在验证区粘贴哈希并输入原始文本。'
+    faq1q: '什么是 bcrypt？'
+    faq1a: 'bcrypt 是一种密码哈希算法，被设计为故意缓慢以抵御暴力破解攻击，并使用盐值防御彩虹表攻击。'
+    faq2q: '什么是代价因子？'
+    faq2a: '代价因子控制哈希轮数。每增加 1，计算时间翻倍，使暴力破解更加困难。'
     title: 加密
     description: 使用bcrypt对文本字符串进行哈希和比较。Bcrypt是一个基于Blowfish密码的密码哈希函数。
 
   crontab-generator:
+    step1: '步骤 1：使用可视化编辑器设置分钟、小时、日、月和星期字段。'
+    step2: '步骤 2：或直接在输入框中输入 cron 表达式。'
+    step3: '步骤 3：自动显示人类可读的描述和下次执行时间。'
+    faq1q: '什么是 cron 表达式？'
+    faq1a: 'cron 表达式是由 5 个字段（分钟 小时 日 月 星期）组成的字符串，定义 Unix/Linux 定时任务的重复计划。'
+    faq2q: '*/5 * * * * 是什么意思？'
+    faq2a: '表示每 5 分钟执行一次。分钟字段中的 */5 表示在每小时的 0、5、10、15 分运行。'
     title: Crontab 表达式生成
     description: 验证并生成crontab，并获取cron调度的可读描述。
 
   http-status-codes:
+    step1: '步骤 1：浏览按类别组织的 HTTP 状态码列表。'
+    step2: '步骤 2：使用搜索框快速查找特定状态码或描述。'
+    step3: '步骤 3：点击状态码即可复制。'
+    faq1q: '什么是 HTTP 状态码？'
+    faq1a: 'HTTP 状态码是服务器对客户端请求响应中返回的 3 位数字，指示请求是成功、重定向还是发生错误。'
+    faq2q: '401 和 403 有什么区别？'
+    faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
     title: HTTP 状态码
     description: 所有HTTP状态的列表对其名称和含义解释。
 
   sql-prettify:
+    step1: '步骤 1：将 SQL 查询语句粘贴到输入编辑器中。'
+    step2: '步骤 2：从下拉菜单中选择 SQL 方言（MySQL、PostgreSQL 等）。'
+    step3: '步骤 3：格式化后的查询语句立即出现在输出面板中。'
+    step4: '步骤 4：点击「复制」复制格式化后的 SQL。'
+    faq1q: '为什么要格式化 SQL 语句？'
+    faq1a: '格式化的 SQL 更易于阅读、调试和维护。统一的缩进和大写规范帮助更快发现错误。'
+    faq2q: '支持哪些 SQL 方言？'
+    faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
     title: SQL 美化和格式化
     description: 在线格式化和美化您的 SQL 查询（它支持各种 SQL 方言）。
 
   benchmark-builder:
+    step1: '步骤 1：点击「添加用例」添加基准测试用例。'
+    step2: '步骤 2：为每个用例输入 JavaScript 代码。'
+    step3: '步骤 3：点击「运行」多次执行所有用例。'
+    step4: '步骤 4：比较 ops/sec 结果，找出最快的实现。'
+    faq1q: 'ops/sec 是什么意思？'
+    faq1a: 'ops/sec（每秒操作数）衡量一段代码在一秒内能执行多少次。数值越高越快。'
+    faq2q: '这个基准测试准确吗？'
+    faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
     title: 基准生成器
     description: 简单的在线基准构建器可以轻松比较任务的执行时间。
 
   git-memo:
+    step1: '步骤 1：浏览按类别组织的 Git 速查表。'
+    step2: '步骤 2：使用搜索框查找特定命令。'
+    step3: '步骤 3：点击任意命令即可复制到剪贴板。'
+    faq1q: '什么是 Git？'
+    faq1a: 'Git 是一个分布式版本控制系统，用于追踪源代码的变更，允许多名开发者协作、分支、合并并维护项目历史。'
+    faq2q: 'git pull 和 git fetch 有什么区别？'
+    faq2a: 'git fetch 下载远程变更但不合并。git pull = git fetch + git merge，将远程变更应用到当前分支。'
     title: Git 备忘录
     description: Git是一种去中心化的版本管理软件。使用此备忘单，您可以快速访问最常见的git命令.
 
   slugify-string:
+    step1: '步骤 1：输入要转换为 slug 的文本。'
+    step2: '步骤 2：slug 在您输入时实时更新。'
+    step3: '步骤 3：点击「复制」复制结果。'
+    faq1q: '什么是 slug？'
+    faq1a: 'slug 是 URL 友好的字符串，通常为小写字母并用连字符替换空格，用于 URL 路径。'
+    faq2q: '支持非英文字符吗？'
+    faq2a: '支持。工具将重音符号和特殊字符转换为 ASCII 等效字符。'
     title: 打乱字符串
     description: 确保字符串 url、文件名和 id 安全。
 
   encryption:
+    step1: '步骤 1：选择「加密」或「解密」模式。'
+    step2: '步骤 2：选择加密算法（AES、TripleDES、Rabbit、RC4）。'
+    step3: '步骤 3：输入文本和您的密钥。'
+    step4: '步骤 4：加密/解密结果立即显示。'
+    faq1q: '应该使用哪种算法？'
+    faq1a: 'AES（高级加密标准）是对称加密的行业标准，适用于大多数场景。'
+    faq2q: '我的数据安全吗？'
+    faq2a: '所有加密和解密均在浏览器本地执行，您的数据和密钥不会离开您的设备。'
     title: 加密/解密文本
     description: 使用加密算法（如AES、TripleDES、Rabbit或RC4）加密和解密文本明文。
 
   random-port-generator:
+    step1: '步骤 1：设置要生成的端口数量。'
+    step2: '步骤 2：选择是否排除知名端口（0–1023）。'
+    step3: '步骤 3：点击「生成」获取一组新的随机端口。'
+    step4: '步骤 4：点击「复制」复制结果。'
+    faq1q: '注册端口和动态端口有什么区别？'
+    faq1a: '0–1023 是知名系统端口，1024–49151 是注册端口，49152–65535 是动态/临时端口。'
+    faq2q: '为什么需要随机端口？'
+    faq2a: '启动本地开发服务器、容器或服务时，随机端口可避免与已运行进程冲突。'
     title: 随机端口生成
     description: 生成“已知”端口范围（0-1023）之外的随机端口号。
 
   yaml-prettify:
+    step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：格式化且经过验证的 YAML 出现在右侧。'
+    step3: '步骤 3：复制或下载格式化后的 YAML。'
+    faq1q: 'YAML 格式化有什么作用？'
+    faq1a: 'YAML 格式化以统一的缩进和间距重新排版 YAML，使其更易于阅读和比较。'
+    faq2q: '格式化会改变 YAML 的值吗？'
+    faq2a: '不会。格式化只改变空白和格式，数据值和结构保持完全不变。'
     title: YAML美化和格式化
     description: 将YAML字符串修饰为友好的可读格式。
 
   eta-calculator:
+    step1: '步骤 1：输入要处理的项目总数。'
+    step2: '步骤 2：输入已完成的数量。'
+    step3: '步骤 3：输入已经过的时间。'
+    step4: '步骤 4：自动计算预计完成时间和剩余时间。'
+    faq1q: 'ETA 代表什么？'
+    faq1a: 'ETA 代表预计到达（或完成）时间，根据当前进度速率预测任务何时完成。'
+    faq2q: 'ETA 如何计算？'
+    faq2a: 'ETA = (总数 - 已完成) / (已完成 / 已用时间)，假设处理速率恒定。'
     title: ETA 计算器
     description: ETA（估计到达时间）计算器，用于知道任务的近似结束时间，例如下载的结束时刻。
 
   roman-numeral-converter:
+    step1: '步骤 1：在输入框中输入阿拉伯数字（1–3999）或罗马数字。'
+    step2: '步骤 2：转换结果自动更新。'
+    step3: '步骤 3：点击「复制」复制结果。'
+    faq1q: '什么是罗马数字？'
+    faq1a: '罗马数字是古罗马的数字系统，使用字母表示：I (1)、V (5)、X (10)、L (50)、C (100)、D (500)、M (1000)。'
+    faq2q: '为什么 4 写作 IV 而不是 IIII？'
+    faq2a: '罗马数字使用减法记法：较小的数字在较大的数字前表示相减。IV = 5 - 1 = 4。'
     title: 罗马数字转换器
     description: 将罗马数字转换为数字，并将数字转换为罗马数字。
 
   hmac-generator:
+    step1: '步骤 1：输入要认证的消息。'
+    step2: '步骤 2：输入您的密钥。'
+    step3: '步骤 3：选择哈希算法（SHA-256、SHA-512 等）。'
+    step4: '步骤 4：复制生成的 HMAC 值。'
+    faq1q: '什么是 HMAC？'
+    faq1a: 'HMAC（哈希消息认证码）将密码哈希函数与密钥结合，同时验证数据完整性和真实性。'
+    faq2q: 'HMAC 和普通哈希有什么区别？'
+    faq2a: '普通哈希只验证数据完整性。HMAC 还需要共享密钥，只有拥有密钥的一方才能验证真实性。'
     title: Hmac 生成器
     description: 使用密钥和您喜欢的哈希函数计算基于哈希的消息身份验证代码（HMAC）。
 
   bip39-generator:
+    step1: '步骤 1：选择助记词的单词数量（12、15、18、21 或 24 个）。'
+    step2: '步骤 2：点击「生成」创建随机 BIP39 助记词。'
+    step3: '步骤 3：可选：输入现有助记词以推导种子。'
+    step4: '步骤 4：复制助记词并安全保存——它控制您的钱包访问权限。'
+    faq1q: '什么是 BIP39 助记词？'
+    faq1a: 'BIP39 是比特币改进提案标准，定义了从随机熵生成人类可读助记短语的方法，用于备份加密货币钱包。'
+    faq2q: '12 个单词的短语有多少种可能？'
+    faq2a: '共有 2048 的 12 次方种可能，使暴力破解在计算上不可行。'
     title: BIP39密码生成器
     description: 从现有或随机助记符生成BIP39密码短语，或从密码短语获取助记符。
 
   base64-file-converter:
+    step1: '步骤 1：拖放或选择文件。'
+    step2: '步骤 2：文件在浏览器中立即转换为 Base64。'
+    step3: '步骤 3：复制 Base64 字符串或 data URL。'
+    faq1q: '什么是 Base64 文件编码？'
+    faq1a: 'Base64 编码使用 64 个可打印 ASCII 字符将二进制文件数据转换为文本字符串，用于将文件嵌入 HTML、CSS、JSON 或 API 中。'
+    faq2q: 'Base64 的体积开销是多少？'
+    faq2a: 'Base64 将文件大小增加约 33%。'
     title: Base64 文件转换器
     description: 将字符串、文件或图像转换为其 Base64 表示形式。
   list-converter:
+    step1: '步骤 1：将列表数据粘贴到输入框中。'
+    step2: '步骤 2：选择输入分隔符（换行、逗号、分号等）。'
+    step3: '步骤 3：选择输出格式（JSON 数组、逗号分隔等）。'
+    step4: '步骤 4：复制转换结果。'
+    faq1q: '支持哪些列表格式？'
+    faq1a: '输入支持换行分隔、逗号分隔、管道分隔或制表符分隔。输出支持 JSON 数组、CSV 等格式。'
+    faq2q: '可以去除重复项吗？'
+    faq2a: '可以。工具支持去重、排序、去除首尾空格和反转列表。'
     title: List 转换器
     description: 该工具可以处理基于数组的数据，并将各种更改（转置、添加前缀和后缀、反向列表、排序列表、小写值、截断值）应用于每一行。
 
@@ -195,38 +392,101 @@ tools:
     faq2a: 不是。Base64 是编码，不是加密。它可以轻易被逆向解码，不提供任何安全保护。
 
   toml-to-yaml:
+    step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：实时生成等效的 YAML。'
+    step3: '步骤 3：复制或下载 YAML 输出。'
+    faq1q: '什么是 TOML？'
+    faq1a: 'TOML 是一种配置文件格式，常用于 Rust 项目（Cargo.toml）和 Hugo。'
+    faq2q: '什么是 YAML？'
+    faq2a: 'YAML 是一种人类可读的数据序列化格式，广泛用于配置文件（Docker Compose、Kubernetes 等）。'
     title: TOML 到 YAML
     description: Parse and convert TOML to YAML.
 
   math-evaluator:
+    step1: '步骤 1：在输入框中输入数学表达式。'
+    step2: '步骤 2：结果实时计算。'
+    step3: '步骤 3：使用 sin()、cos()、sqrt()、log() 等函数。'
+    faq1q: '支持哪些函数？'
+    faq1a: '支持三角函数（sin、cos、tan）、对数（log、log2、log10）、幂函数（sqrt、pow、exp）和常数（pi、e）。'
+    faq2q: '支持复杂表达式吗？'
+    faq2a: '支持。支持嵌套函数、单位、矩阵和复数。'
     title: 数学计算器
     description: 计算数学表达式的计算器。您可以使用sqrt、cos、sin、abs等函数。
 
   json-to-yaml-converter:
+    step1: '步骤 1：将 JSON 粘贴到左侧编辑器。'
+    step2: '步骤 2：实时显示 YAML 转换结果。'
+    step3: '步骤 3：复制或下载 YAML 结果。'
+    faq1q: '为什么要将 JSON 转换为 YAML？'
+    faq1a: 'YAML 比 JSON 更具可读性且支持注释，在 Kubernetes、Docker Compose 和 Ansible 的配置文件中更受欢迎。'
+    faq2q: 'JSON 是 YAML 的子集吗？'
+    faq2a: '是的。YAML 1.2 是 JSON 的超集，所有有效的 JSON 也是有效的 YAML。'
     title: JSON到YAML转换器
     description: 在线转换将JSON转换为YAML。
 
   url-parser:
+    step1: '步骤 1：将 URL 粘贴到输入框中。'
+    step2: '步骤 2：URL 被解析为各个组成部分：协议、主机、路径、查询参数、哈希。'
+    step3: '步骤 3：点击任意字段复制该组件。'
+    faq1q: '显示哪些 URL 组件？'
+    faq1a: '工具提取：协议、用户名、密码、主机名、端口、路径、查询字符串、各查询参数和哈希片段。'
+    faq2q: '如果 URL 没有查询参数怎么办？'
+    faq2a: '没有查询参数时，查询参数区域会自动隐藏。'
     title: Url分析器
     description: 解析url字符串以获取所有不同的部分（协议、来源、参数、端口、用户名密码…）
 
   iban-validator-and-parser:
+    step1: '步骤 1：输入或粘贴 IBAN 号码。'
+    step2: '步骤 2：工具立即验证格式和校验和。'
+    step3: '步骤 3：有效的 IBAN 会解析并显示国家、银行代码和账号。'
+    faq1q: '什么是 IBAN？'
+    faq1a: 'IBAN（国际银行账号）是国际通用的银行账户标识标准，包含国家代码、校验位和账号。'
+    faq2q: 'IBAN 有多长？'
+    faq2a: 'IBAN 长度因国而异，从 15 位（挪威）到 34 位不等。始终以 2 字母国家代码和 2 位校验位开头。'
     title: IBAN验证器和解析器
     description: 验证和分析IBAN编号。检查IBAN是否有效，并获取国家BBAN，如果它是QR-IBAN和IBAN友好格式。
 
   user-agent-parser:
+    step1: '步骤 1：您当前浏览器的 User-Agent 字符串已自动填入。'
+    step2: '步骤 2：或粘贴任意 User-Agent 字符串进行分析。'
+    step3: '步骤 3：提取浏览器、引擎、操作系统、设备和 CPU 架构信息。'
+    faq1q: '什么是 User-Agent 字符串？'
+    faq1a: 'User-Agent 字符串是浏览器随每个 HTTP 请求发送的标识符，告知服务器浏览器类型、操作系统和设备信息。'
+    faq2q: '为什么 User-Agent 字符串看起来这么复杂？'
+    faq2a: '出于历史兼容性原因，现代浏览器在 UA 中包含多个旧浏览器标识符，导致字符串越来越复杂。'
     title: 用户代理分析器
     description: 从用户代理字符串中检测和分析浏览器、引擎、操作系统、CPU和设备类型/型号。
 
   numeronym-generator:
+    step1: '步骤 1：输入单词或短语。'
+    step2: '步骤 2：数字缩略词立即生成。'
+    step3: '步骤 3：复制结果。'
+    faq1q: '什么是数字缩略词（numeronym）？'
+    faq1a: '数字缩略词用数字表示省略的字母数量。i18n 代表 internationalization。常见例子：a11y（accessibility）、k8s（Kubernetes）。'
+    faq2q: '谁发明了数字缩略词？'
+    faq2a: 'i18n 这个术语归功于 20 世纪 70 年代的 DEC，后来在软件开发中广泛流行。'
     title: 数字名称生成器
     description: 数字名是一个用数字构成缩写的词。例如，“i18n”是“国际化”的名词，其中18表示单词中第一个i和最后一个n之间的字母数。
 
   case-converter:
+    step1: '步骤 1：在输入框中输入或粘贴文本。'
+    step2: '步骤 2：选择目标大小写格式（camelCase、PascalCase、snake_case 等）。'
+    step3: '步骤 3：转换后的文本立即显示，点击「复制」复制。'
+    faq1q: '支持哪些大小写格式？'
+    faq1a: '支持 camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case、标题首字母大写、全大写、全小写和 dot.case。'
+    faq2q: 'camelCase 和 PascalCase 有什么区别？'
+    faq2a: 'camelCase 以小写字母开头（如 myVariable），PascalCase 以大写字母开头（如 MyClass）。'
     title: 大小写转换
     description: 更改字符串的大小写并在不同格式之间进行选择
 
   html-entities:
+    step1: '步骤 1：输入包含特殊字符的 HTML 文本，或输入实体进行解码。'
+    step2: '步骤 2：选择「编码」或「解码」模式。'
+    step3: '步骤 3：结果实时更新，点击「复制」复制。'
+    faq1q: '什么是 HTML 实体？'
+    faq1a: 'HTML 实体是用于在 HTML 中显示保留字符或特殊字符的代码。例如 &lt; 显示为 <，&amp; 显示为 &。'
+    faq2q: '为什么需要转义 HTML？'
+    faq2a: '转义 HTML 可防止显示用户生成内容时的 XSS 攻击。'
     title: 转义html实体
     description: 转义或unescape html实体（将<、>、&、“和\'替换为其html版本）
 
@@ -244,22 +504,57 @@ tools:
     faq3a: 支持。本工具使用 JSON5 进行解析，除标准 JSON 外，还支持注释和尾随逗号。
 
   docker-run-to-docker-compose-converter:
+    step1: '步骤 1：将 docker run 命令粘贴到输入框中。'
+    step2: '步骤 2：等效的 Docker Compose YAML 立即生成。'
+    step3: '步骤 3：复制或下载 docker-compose.yml。'
+    faq1q: '为什么用 Docker Compose 而不是 docker run？'
+    faq1a: 'Docker Compose 更易于管理多容器应用、对配置进行版本控制，并通过单个 YAML 文件与团队共享设置。'
+    faq2q: '支持所有 docker run 参数吗？'
+    faq2a: '支持常用参数如 -p（端口）、-v（卷）、-e（环境变量）、--name、--network 等。'
     title: Docker Run 到 docker-compose 转换器
     description: 将 docker run 命令行转换为 docker-compose 文件!
 
   mac-address-lookup:
+    step1: '步骤 1：输入 MAC 地址（如 AA:BB:CC:DD:EE:FF）。'
+    step2: '步骤 2：工具查询 OUI 以识别制造商。'
+    step3: '步骤 3：显示厂商名称和国家。'
+    faq1q: '什么是 MAC 地址？'
+    faq1a: 'MAC（媒体访问控制）地址是分配给网卡的唯一硬件标识符，长 48 位（6 字节），通常写成六对十六进制数字。'
+    faq2q: 'MAC 地址的前 3 字节是什么？'
+    faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
     title: MAC地址查找
     description: 通过设备的MAC地址查找设备的供应商和制造商。
 
   mime-types:
+    step1: '步骤 1：输入文件扩展名（如 .pdf）或 MIME 类型（如 application/pdf）。'
+    step2: '步骤 2：立即找到匹配的 MIME 类型或扩展名。'
+    step3: '步骤 3：点击复制结果。'
+    faq1q: '什么是 MIME 类型？'
+    faq1a: 'MIME 类型是文件或数据格式的标准标识符，由类型和子类型组成（如 text/html、application/json、image/png）。'
+    faq2q: 'MIME 类型对 Web 开发为什么重要？'
+    faq2a: '服务器用 MIME 类型告知浏览器如何处理文件。错误的 MIME 类型会导致文件被下载而非显示。'
     title: mime类型
     description: 将mime类型转换为扩展，反之亦然。
 
   toml-to-json:
+    step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：实时生成等效的 JSON。'
+    step3: '步骤 3：复制或下载 JSON 输出。'
+    faq1q: '什么是 TOML？'
+    faq1a: 'TOML 是一种配置文件格式，常用于 Rust（Cargo.toml）和 Hugo 项目。'
+    faq2q: '转换时 TOML 注释会怎样？'
+    faq2a: 'JSON 不支持注释，因此所有 TOML 注释在转换为 JSON 时都会丢失。'
     title: TOML 到 JSON
     description: 解析TOML并将其转换为JSON。
 
   lorem-ipsum-generator:
+    step1: '步骤 1：选择输出类型：段落、句子或单词。'
+    step2: '步骤 2：使用滑块或输入框设置数量。'
+    step3: '步骤 3：点击「复制」复制生成的文本。'
+    faq1q: '什么是 Lorem Ipsum？'
+    faq1a: 'Lorem Ipsum 是源自古罗马著作的占位文本，自 16 世纪以来一直用作排版行业的示意文字。'
+    faq2q: '为什么使用 Lorem Ipsum 而非真实文本？'
+    faq2a: 'Lorem Ipsum 避免设计评审时被内容分散注意力，作为中性填充文本使用。'
     title: Lorem ipsum生成器
     description: Lorem ipsum是一种占位符文本，通常用于演示文档或字体的视觉形式，而不依赖于有意义的内容
 
@@ -275,10 +570,25 @@ tools:
     faq2a: 标准二维码最多可存储约 4,296 个字母数字字符或约 7,089 个数字字符。内容越短，二维码越简单，扫描成功率越高。
 
   wifi-qrcode-generator:
+    step1: '步骤 1：输入 WiFi 网络名称（SSID）。'
+    step2: '步骤 2：输入 WiFi 密码。'
+    step3: '步骤 3：选择安全类型（WPA/WPA2、WEP 或无）。'
+    step4: '步骤 4：用手机扫描生成的二维码即可立即连接。'
+    faq1q: 'WiFi 二维码中编码了哪些信息？'
+    faq1a: '二维码以标准 WIFI: 格式编码了 SSID、密码和安全类型。扫描后，兼容设备可自动连接到该网络。'
+    faq2q: '分享 WiFi 二维码安全吗？'
+    faq2a: '只应与信任的人分享——二维码包含可恢复的 WiFi 密码，任何扫描它的人都可以加入您的网络。'
     title: WiFi 二维码生成器
     description: 生成和下载QR码以快速连接到WiFi网络。
 
   xml-formatter:
+    step1: '步骤 1：将 XML 内容粘贴到输入编辑器。'
+    step2: '步骤 2：格式化且缩进整齐的 XML 出现在右侧。'
+    step3: '步骤 3：复制或下载格式化后的 XML。'
+    faq1q: '什么是 XML？'
+    faq1a: 'XML（可扩展标记语言）是用于存储和传输结构化数据的灵活标记语言。与 HTML 不同，XML 标签由用户自定义。'
+    faq2q: 'XML 和 JSON 有什么区别？'
+    faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
     title: XML 格式化
     description: 将XML字符串修饰为友好的可读格式。
 
@@ -293,49 +603,135 @@ tools:
     faq2a: 绝对零度是最低可能温度：0 开尔文 = −273.15°C = −459.67°F。在此温度下，粒子的热运动降至最低。
 
   chmod-calculator:
+    step1: '步骤 1：勾选所有者、组和其他用户的权限复选框。'
+    step2: '步骤 2：chmod 数值（如 755）和符号表示（如 rwxr-xr-x）自动更新。'
+    step3: '步骤 3：复制 chmod 命令用于终端。'
+    faq1q: '什么是 chmod？'
+    faq1a: 'chmod（更改模式）是 Unix/Linux 命令，用于修改文件和目录的权限，控制谁可以读取、写入或执行文件。'
+    faq2q: 'chmod 755 是什么意思？'
+    faq2a: '755 表示所有者有读+写+执行权限（7），组和其他用户有读+执行权限（5）。常用于 Web 服务器目录。'
     title: Chmod 计算器
     description: 使用此在线的chmod计算器计算chmod权限和命令。
 
   rsa-key-pair-generator:
+    step1: '步骤 1：选择密钥大小（1024、2048 或 4096 位）。'
+    step2: '步骤 2：点击「生成」创建新的 RSA 密钥对。'
+    step3: '步骤 3：分别复制私钥和公钥（PEM 格式）。'
+    faq1q: '什么是 RSA？'
+    faq1a: 'RSA（Rivest-Shamir-Adleman）是广泛使用的非对称加密算法。公钥加密数据，只有对应的私钥才能解密。'
+    faq2q: '应该使用多大的密钥？'
+    faq2a: '2048 位是安全推荐的最低标准。4096 位提供更强的安全性。1024 位被认为不安全，不应使用。'
     title: RSA密钥对生成器
     description: 生成新的随机RSA私钥和公钥pem证书。
 
   html-wysiwyg-editor:
+    step1: '步骤 1：在所见即所得编辑器中输入或粘贴内容。'
+    step2: '步骤 2：使用工具栏应用格式（粗体、斜体、链接、列表等）。'
+    step3: '步骤 3：切换到「源码」视图查看生成的 HTML 代码。'
+    step4: '步骤 4：复制 HTML 源码用于您的项目。'
+    faq1q: '所见即所得（WYSIWYG）是什么意思？'
+    faq1a: 'WYSIWYG 代表所见即所得。编辑器以浏览器中将呈现的样式显示内容，无需了解 HTML。'
+    faq2q: '生成的 HTML 是否干净？'
+    faq2a: '编辑器生成语义化 HTML5，尽量避免内联样式。'
     title: HTML所见即所得编辑器
     description: 在线HTML编辑器具有功能丰富的所见即所得编辑器，立即获得内容的源代码。
 
   yaml-to-toml:
+    step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：实时生成等效的 TOML。'
+    step3: '步骤 3：复制或下载 TOML 输出。'
+    faq1q: '什么时候应该用 TOML 而非 YAML？'
+    faq1a: 'TOML 适合需要高度清晰性的简单配置文件。它的语法比 YAML 更严格，减少了缩进错误的可能性。'
+    faq2q: 'YAML 支持锚点和别名吗？'
+    faq2a: '支持。YAML 支持锚点（&）和别名（*）用于复用内容。TOML 没有直接等效的功能。'
     title: YAML 到 TOML
     description: 解析YAML并将其转换为TOML。
 
   mac-address-generator:
+    step1: '步骤 1：输入要生成的 MAC 地址数量。'
+    step2: '步骤 2：可选：输入前缀（OUI）以生成特定厂商的地址。'
+    step3: '步骤 3：选择分隔符（冒号、连字符或无）。'
+    step4: '步骤 4：点击「生成」并复制结果。'
+    faq1q: 'MAC 地址有什么用途？'
+    faq1a: 'MAC 地址用于在局域网数据链路层（第 2 层）唯一标识设备。路由器和交换机使用 MAC 地址进行本地流量转发。'
+    faq2q: '可以生成组播 MAC 地址吗？'
+    faq2a: '生成器默认创建单播地址。如果第一字节的最低有效位为 1，则该地址为组播地址。'
     title: MAC 地址生成器
     description: 输入数量和前缀。MAC地址将以您选择的大小写（大写或小写）生成
 
   json-diff:
+    step1: '步骤 1：将第一个 JSON 对象粘贴到左侧面板。'
+    step2: '步骤 2：将第二个 JSON 对象粘贴到右侧面板。'
+    step3: '步骤 3：新增字段用绿色高亮，删除字段用红色，变更值用黄色。'
+    faq1q: 'JSON 对比有什么用途？'
+    faq1a: 'JSON 对比用于比较 API 响应、配置文件版本或数据库快照，识别两个状态之间的变化。'
+    faq2q: '支持嵌套 JSON 吗？'
+    faq2a: '支持。对比查看器递归比较嵌套对象和数组，精确显示哪些深层嵌套键被添加、删除或修改。'
     title: JSON 差异比较
     description: 比较两个JSON对象并获得它们之间的差异。
   jwt-parser:
+    step1: '步骤 1：将 JWT 令牌粘贴到输入框中。'
+    step2: '步骤 2：Header、Payload 和 Signature 被解码并用颜色标记。'
+    step3: '步骤 3：exp 和 iat 等标准声明显示人类可读的日期。'
+    faq1q: '什么是 JWT？'
+    faq1a: 'JWT（JSON Web Token）是安全传输 JSON 对象信息的开放标准（RFC 7519），常用于身份认证和信息交换。'
+    faq2q: 'JWT 令牌是加密的吗？'
+    faq2a: '标准 JWT（JWS）是签名的但未加密，任何人都可以解码 Payload。如需保密性，请使用 JWE。'
     title: JWT 解析器
     description: 解析和解码JSON Web Token（jwt）并显示其内容。
 
   date-converter:
+    step1: '步骤 1：在输入框中输入日期和时间。'
+    step2: '步骤 2：选择源时区。'
+    step3: '步骤 3：日期以多种格式和时区显示。'
+    faq1q: '支持哪些日期格式？'
+    faq1a: '支持 ISO 8601、Unix 时间戳、RFC 2822 和常见本地化格式，可在 UTC、EST、PST、CET 等时区之间转换。'
+    faq2q: '什么是 Unix 时间戳？'
+    faq2a: 'Unix 时间戳（纪元时间）是自 1970 年 1 月 1 日 00:00:00 UTC 起经过的秒数，与时区无关，在编程中广泛使用。'
     title: 日期时间转换器
     description: 将日期和时间转换为各种不同的格式
 
   phone-parser-and-formatter:
+    step1: '步骤 1：输入任意格式的电话号码。'
+    step2: '步骤 2：如需要，选择国家代码。'
+    step3: '步骤 3：解析结果显示国家、类型和格式化版本。'
+    faq1q: '什么是 E.164 格式？'
+    faq1a: 'E.164 是国际电话号码标准。号码以 + 开头，后跟国家代码和用户号码。'
+    faq2q: '从电话号码可以获取哪些信息？'
+    faq2a: '从电话号码可以确定国家、地区、运营商（有时）和类型（移动、座机、免费电话等）。'
     title: 电话分析器和格式化程序
     description: 解析、验证和格式化电话号码。获取有关电话号码的信息，如国家/地区代码、类型等。
 
   ipv4-subnet-calculator:
+    step1: '步骤 1：输入带 CIDR 表示法的 IPv4 地址（如 192.168.1.0/24）。'
+    step2: '步骤 2：自动计算网络地址、广播地址、可用主机范围和子网掩码。'
+    step3: '步骤 3：复制任意字段用于网络配置。'
+    faq1q: '什么是 CIDR 表示法？'
+    faq1a: 'CIDR 以 IP 地址加斜杠和前缀长度表示网络。例如 /24 表示 255.255.255.0 子网掩码，提供 254 个可用主机。'
+    faq2q: '/24 支持多少台主机？'
+    faq2a: '/24 子网有 256 个地址（2 的 8 次方）。减去网络地址和广播地址，剩余 254 个可用主机地址。'
     title: IPv4子网计算器
     description: 解析IPv4 CIDR块，并获取有关子网络的所有所需信息。
 
   og-meta-generator:
+    step1: '步骤 1：输入您的页面标题、描述、URL 和图片。'
+    step2: '步骤 2：选择类型（网站、文章、产品等）。'
+    step3: '步骤 3：复制生成的 Open Graph 和 Twitter Card meta 标签。'
+    faq1q: '什么是 Open Graph meta 标签？'
+    faq1a: 'Open Graph 标签是控制您的页面在社交媒体（Facebook、Twitter、LinkedIn 等）分享时显示效果的 HTML meta 标签。'
+    faq2q: 'og:image 为什么重要？'
+    faq2a: 'og:image 是页面在社交媒体分享时显示的缩略图。推荐尺寸为 1200×630px。'
     title: 开放式图形元生成器
     description: 为您的网站生成开放式图形和社交html元标记。
 
   ipv6-ula-generator:
+    step1: '步骤 1：点击「生成」创建随机的 IPv6 ULA 前缀。'
+    step2: '步骤 2：显示生成的前缀、全局 ID 和完整地址范围。'
+    step3: '步骤 3：复制前缀用于您的局域网配置。'
+    faq1q: '什么是 IPv6 ULA 地址？'
+    faq1a: 'ULA（唯一本地地址）是 fc00::/7 范围内的 IPv6 地址，类似于私有 IPv4 地址段，不在公网路由。'
+    faq2q: 'ULA 全局 ID 是如何生成的？'
+    faq2a: '根据 RFC 4193，40 位全局 ID 应使用当前时间和 EUI-64 伪随机生成，以最小化不同组织间的碰撞概率。'
     title: IPv6 ULA生成器
     description: 根据RFC4193在网络上生成您自己的本地不可路由IP地址。
 
@@ -351,34 +747,90 @@ tools:
     faq2a: 安全敏感场景请使用 SHA-256 或 SHA-512。MD5 和 SHA-1 在密码学上已被认为不安全，仅适用于非安全用途如校验和。
 
   json-to-toml:
+    step1: '步骤 1：将 JSON 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：实时生成等效的 TOML。'
+    step3: '步骤 3：复制或下载 TOML 输出。'
+    faq1q: '哪些 JSON 结构在 TOML 中不受支持？'
+    faq1a: 'TOML 不支持 null 值或混合类型数组。含有这些特性的 JSON 可能无法干净地转换为 TOML。'
+    faq2q: '为什么要将 JSON 转换为 TOML？'
+    faq2a: 'TOML 对配置文件更具可读性。某些工具（如 Cargo、Hugo）只支持 TOML，需要从 JSON 转换。'
     title: JSON 转 TOML
     description: 解析JSON并将其转换为TOML。
 
   device-information:
+    step1: '步骤 1：打开工具——设备信息自动检测。'
+    step2: '步骤 2：查看屏幕分辨率、像素比、操作系统、浏览器和连接详情。'
+    step3: '步骤 3：点击任意值复制。'
+    faq1q: '显示哪些信息？'
+    faq1a: '工具显示屏幕分辨率、视口大小、像素比、色深、浏览器名称和版本、操作系统、语言以及在线/离线状态。'
+    faq2q: '这些信息会发送到服务器吗？'
+    faq2a: '不会。所有信息均从浏览器 JavaScript API 本地读取，不传输任何数据。'
     title: 设备信息
     description: 获取有关当前设备的信息（屏幕大小、像素比率、用户代理…）
 
   pdf-signature-checker:
+    step1: '步骤 1：拖放或选择 PDF 文件。'
+    step2: '步骤 2：工具扫描 PDF 中的数字签名。'
+    step3: '步骤 3：有效签名显示签名者信息和证书详情。'
+    faq1q: '什么是 PDF 数字签名？'
+    faq1a: 'PDF 数字签名使用公钥密码学验证签名者身份，并确认文档自签名后未被篡改。'
+    faq2q: '我的 PDF 会上传到服务器吗？'
+    faq2a: '不会。PDF 完全在浏览器中使用 JavaScript 处理，您的文件不会离开您的设备。'
     title: PDF签名检查器
     description: '验证PDF文件的签名。签名的PDF文件包含一个或多个签名，可用于确定文件的内容在签名后是否已被更改。'
 
   json-minify:
+    step1: '步骤 1：将 JSON 粘贴到左侧编辑器。'
+    step2: '步骤 2：右侧实时显示压缩后的 JSON。'
+    step3: '步骤 3：点击「复制」复制压缩后的 JSON。'
+    faq1q: '为什么要压缩 JSON？'
+    faq1a: '压缩 JSON 去除所有空白和换行，减小文件体积，适用于 API 载荷和生产环境配置文件。'
+    faq2q: '压缩会改变 JSON 数据吗？'
+    faq2a: '不会。压缩只删除无关紧要的空白，数据值和结构保持完全不变。'
     title: JSON 压缩
     description: 通过删除不必要的空白来缩小和压缩JSON。
 
   ulid-generator:
+    step1: '步骤 1：点击「生成」创建新的 ULID。'
+    step2: '步骤 2：使用数量输入框批量生成 ULID。'
+    step3: '步骤 3：点击「复制」复制 ULID。'
+    faq1q: '什么是 ULID？'
+    faq1a: 'ULID（通用唯一词典可排序标识符）是 128 位标识符，编码了时间戳和随机分量，既唯一又可按时间排序。'
+    faq2q: 'ULID 相比 UUID 有什么优势？'
+    faq2a: 'ULID 可按创建时间排序（不同于 UUID v4），URL 安全，且字符串表示更紧凑（26 字符 vs UUID 的 36 字符）。'
     title: ULID 生成器
     description: 生成随机的通用唯一词典可排序标识符（ULID）。
 
   string-obfuscator:
+    step1: '步骤 1：输入要脱敏的字符串（如 API 密钥、IBAN、令牌）。'
+    step2: '步骤 2：设置开头和结尾保留可见的字符数。'
+    step3: '步骤 3：显示脱敏后的字符串——可安全用于截图或日志。'
+    faq1q: '什么是字符串脱敏？'
+    faq1a: '字符串脱敏用星号等符号替换中间字符，使机密部分可见但无法恢复。'
+    faq2q: '脱敏和加密是一样的吗？'
+    faq2a: '不一样。脱敏是用于显示目的的视觉技术，原始字符串无法从脱敏输出中恢复。加密则产生可逆的密文。'
     title: 字符串混淆器
     description: 混淆字符串（如秘密、IBAN 或令牌），使其可共享和可识别，而不泄露其内容。
 
   base-converter:
+    step1: '步骤 1：在任意进制输入框中输入数字（二进制、八进制、十进制、十六进制或自定义）。'
+    step2: '步骤 2：其他所有进制的等效值立即出现。'
+    step3: '步骤 3：点击任意结果复制。'
+    faq1q: '什么是进制转换？'
+    faq1a: '进制转换将数字从一种数制翻译到另一种数制。二进制（2 进制）、八进制（8 进制）、十进制（10 进制）和十六进制（16 进制）是最常见的。'
+    faq2q: '如何将十六进制转换为二进制？'
+    faq2a: '每个十六进制数字对应恰好 4 位二进制数。例如 F(hex) = 1111(binary)，所以 0xFF = 11111111。'
     title: 整数基转换器
     description: 在不同的基数（十进制、十六进制、二进制、八进制、base64…）之间转换数字
 
   yaml-to-json-converter:
+    step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：实时生成等效的 JSON。'
+    step3: '步骤 3：复制或下载 JSON 输出。'
+    faq1q: '为什么要将 YAML 转换为 JSON？'
+    faq1a: 'JSON 作为 API 数据格式得到更广泛支持，将 YAML 配置转换为 JSON 使其更具可移植性。'
+    faq2q: 'YAML 注释在 JSON 中保留吗？'
+    faq2a: '不保留。JSON 不支持注释，因此所有 YAML 注释在转换时都会被丢弃。'
     title: YAML到JSON转换器
     description: 使用此在线转换器将YAML转换为JSON。
 
@@ -394,34 +846,90 @@ tools:
     faq2a: UUID v1 基于时间生成，包含机器 MAC 地址，可预测但有序。UUID v4 随机生成，是通用场景的最佳选择。
 
   ipv4-address-converter:
+    step1: '步骤 1：以点分十进制格式输入 IPv4 地址（如 192.168.1.1）。'
+    step2: '步骤 2：地址被转换为十进制、二进制、十六进制和 IPv6 映射格式。'
+    step3: '步骤 3：点击任意结果字段复制。'
+    faq1q: '什么是 IPv4 地址？'
+    faq1a: 'IPv4 地址是 32 位数字，通常写成四个十进制八位组（如 192.168.1.1），在网络上唯一标识一台设备。'
+    faq2q: '什么是 IPv4 映射的 IPv6 地址？'
+    faq2a: 'IPv4 映射的 IPv6 地址以 ::ffff:x.x.x.x 格式表示 IPv4 地址，用于同时支持 IPv4 和 IPv6 的双栈系统。'
     title: Ipv4地址转换器
     description: 在ipv6中，将ip地址转换为十进制、二进制、十六进制或事件
 
   text-statistics:
+    step1: '步骤 1：在输入框中输入或粘贴文本。'
+    step2: '步骤 2：统计数据实时更新。'
+    step3: '步骤 3：查看字数、字符数、句子数、阅读时间等。'
+    faq1q: '阅读时间如何计算？'
+    faq1a: '阅读时间按每分钟 200–250 个单词（成人平均阅读速度）估算，会因内容复杂度而变化。'
+    faq2q: '什么算作一个单词？'
+    faq2a: '单词定义为由空白字符分隔的字符序列。附在单词上的标点符号算作单词的一部分。'
     title: 文本统计
     description: 获取有关文本、字符数、字数、大小等的信息
 
   text-to-nato-alphabet:
+    step1: '步骤 1：输入要拼读的文本。'
+    step2: '步骤 2：每个字母替换为对应的北约音标字母。'
+    step3: '步骤 3：复制结果用于语音沟通。'
+    faq1q: '什么是北约音标字母？'
+    faq1a: '北约音标字母为每个字母指定一个单词（Alpha、Bravo、Charlie……），以避免语音通信中的混淆。'
+    faq2q: '为什么不直接说字母？'
+    faq2a: '许多字母在电话或无线电中听起来相似。使用音标单词可减少口头拼写时的错误。'
     title: 文本转北约字母表
     description: 将文本转换为北约拼音字母以进行口头传播。
 
   basic-auth-generator:
+    step1: '步骤 1：输入您的用户名和密码。'
+    step2: '步骤 2：Base64 编码的 Basic Auth 头部值立即生成。'
+    step3: '步骤 3：复制完整的 Authorization 头部值。'
+    faq1q: '什么是 HTTP Basic 认证？'
+    faq1a: 'HTTP Basic Auth 是 HTTP 协议内置的简单认证方案。客户端随每个请求发送 Authorization: Basic base64(user:password)。'
+    faq2q: 'Basic Auth 安全吗？'
+    faq2a: 'Basic Auth 本身不安全，因为凭据只是 Base64 编码而非加密。必须在 HTTPS 上使用。'
     title: 基本身份验证生成器
     description: 从用户名和密码生成 base64 基本身份验证标头。
 
   text-to-unicode:
+    step1: '步骤 1：输入文本转换为 Unicode 码点，或输入码点进行解码。'
+    step2: '步骤 2：选择「编码」或「解码」模式。'
+    step3: '步骤 3：复制结果。'
+    faq1q: '什么是 Unicode？'
+    faq1a: 'Unicode 是通用字符编码标准，为每种语言的每个字符分配唯一码点，涵盖 150 多种文字的 14 万多个字符。'
+    faq2q: 'Unicode 和 UTF-8 有什么区别？'
+    faq2a: 'Unicode 是分配码点的标准（如 U+0041 代表字母 A），UTF-8 是将这些码点在内存或文件中表示为 1–4 字节的编码方式。'
     title: 文本转 Unicode
     description: 解析文本并将其转换为 unicode，反之亦然
 
   ipv4-range-expander:
+    step1: '步骤 1：输入 IP 范围的起始和结束 IPv4 地址。'
+    step2: '步骤 2：工具计算覆盖该范围的最小 CIDR 块集合。'
+    step3: '步骤 3：复制 CIDR 列表用于防火墙规则或路由表。'
+    faq1q: '什么是 CIDR 聚合？'
+    faq1a: 'CIDR 聚合找到精确覆盖给定 IP 范围的最小网络前缀集，用于减少路由表条目数量。'
+    faq2q: '为什么一个 IP 范围可能需要多个 CIDR 块？'
+    faq2a: '不对齐 2 的幂次方边界的 IP 范围需要多个 CIDR 块来精确表示。'
     title: IPv4范围扩展器
     description: 给定起始和结束IPv4地址，此工具使用其CIDR表示法计算有效的IPv4网络。
 
   text-diff:
+    step1: '步骤 1：将原始文本粘贴到左侧面板。'
+    step2: '步骤 2：将修改后的文本粘贴到右侧面板。'
+    step3: '步骤 3：新增文本用绿色高亮，删除文本用红色。'
+    faq1q: '使用什么 diff 算法？'
+    faq1a: '工具使用标准 diff 算法，逐行和逐字符比较文本，找出最小变更集。'
+    faq2q: '可以对比代码文件吗？'
+    faq2a: '可以。工具适用于任何文本内容，包括代码、散文、JSON 和 YAML。'
     title: 文本比较
     description: 比较两个文本并查看它们之间的差异。
 
   otp-generator:
+    step1: '步骤 1：输入您的 TOTP 密钥（来自您的身份验证器应用或服务）。'
+    step2: '步骤 2：当前 OTP 代码及倒计时显示。'
+    step3: '步骤 3：复制 6 位代码进行认证。'
+    faq1q: '什么是 OTP / TOTP？'
+    faq1a: 'OTP（一次性密码）仅对一次登录会话有效。TOTP 每 30 秒使用共享密钥和当前时间生成新代码。'
+    faq2q: '使用什么标准算法？'
+    faq2a: 'TOTP 由 RFC 6238 定义，使用 HMAC-SHA1。被 Google Authenticator 和 Authy 等应用使用。'
     title: OTP代码生成器
     description: 为多因素身份验证生成和验证基于时间的OTP（一次性密码）。
 
@@ -437,6 +945,13 @@ tools:
     faq2a: 将用户输入作为查询参数传递时、以编程方式构建 URL 时，或处理表单数据提交时。
 
   text-to-binary:
+    step1: '步骤 1：输入文本转换为二进制，或输入二进制解码回文本。'
+    step2: '步骤 2：选择「文本转二进制」或「二进制转文本」模式。'
+    step3: '步骤 3：复制结果。'
+    faq1q: '文本如何转换为二进制？'
+    faq1a: '每个字符转换为其 ASCII/Unicode 码点，然后表示为 8 位二进制。例如 A = 65 = 01000001。'
+    faq2q: '使用什么编码？'
+    faq2a: '工具使用 UTF-8 编码，这是 Web 的标准编码。ASCII 字符使用单字节，非 ASCII 字符可能使用 2–4 字节。'
     title: 文本到 ASCII 二进制
     description: 将文本转换为其 ASCII 二进制表示形式，反之亦然。
 
@@ -510,6 +1025,13 @@ tools:
     faq3a: 不会。所有计算完全在您的浏览器中运行，不会收集或传输任何健康数据。
 
   random-decision-picker:
+    step1: '步骤 1：输入您的选项，每行一个。'
+    step2: '步骤 2：点击「旋转」或「选择」随机选一个。'
+    step3: '步骤 3：选中的选项被高亮显示。'
+    faq1q: '选择有多随机？'
+    faq1a: '工具使用浏览器 Math.random() 函数，这是伪随机的，对日常决策已足够。'
+    faq2q: '可以给某些选项加权吗？'
+    faq2a: '目前工具对所有选项给予相同权重。如要加权某个选项，可在列表中多次添加它。'
     title: 随机决定器
     description: 无法做决定？输入你的选项，旋转转盘让命运替你选择！支持自定义选项和多种预设方案。
     spin: 旋转！
@@ -538,6 +1060,14 @@ tools:
     sun: 周日
 
   income-tax-calculator:
+    step1: '步骤 1：输入您的税前月薪。'
+    step2: '步骤 2：选择您的城市，以应用正确的社保费率。'
+    step3: '步骤 3：可选添加专项附加扣除（子女教育、住房租金等）。'
+    step4: '步骤 4：查看您的税级、总扣除额和税后工资。'
+    faq1q: '中国个人所得税如何计算？'
+    faq1a: '中国使用 7 档累进税率（3%–45%）。应纳税额 = (税前工资 - 社保 - 5000 元基本扣除 - 专项附加扣除) × 税率 - 速算扣除数。'
+    faq2q: '社保（五险一金）包含哪些内容？'
+    faq2a: '五险：养老保险、医疗保险、失业保险、工伤保险、生育保险。一金：住房公积金。费率因城市而异。'
     title: 个人所得税计算器
     description: 根据中国现行个税政策（起征点5000元，7档税率），快速计算月薪应缴个税、五险一金和实发工资，支持专项附加扣除。
     income: 收入信息
