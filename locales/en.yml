@@ -547,6 +547,13 @@ tools:
     styleScientific: Scientific
     styleEngineering: Engineering
     styleCompact: Compact
+    step1: 'Step 1: Enter a number in the input field.'
+    step2: 'Step 2: Choose a locale (e.g. en-US, zh-CN) and a format style (decimal, currency, percent, etc.).'
+    step3: 'Step 3: The formatted result appears instantly. Use the comparison table to see the same number across multiple locales.'
+    faq1q: What is number formatting?
+    faq1a: Number formatting adapts how numbers are displayed based on locale and style — for example, 1234.56 can become "1,234.56" (US), "1 234,56" (France), or "￥1,234.56" (China with currency).
+    faq2q: What is the difference between compact and scientific notation?
+    faq2a: Scientific notation always shows a coefficient and exponent (e.g. 1.23E3). Compact notation uses locale-aware abbreviations (e.g. "1.2K", "1.2万") which are more readable for large numbers.
 
   color-palette-generator:
     title: Color Palette Generator
@@ -561,6 +568,13 @@ tools:
     splitComplementary: Split-Complementary
     tetradic: Tetradic (Square)
     clickToCopy: Click any swatch to copy its hex value.
+    step1: 'Step 1: Pick a base color using the color picker or enter a hex value.'
+    step2: 'Step 2: The tool generates tints, shades, and color harmonies automatically.'
+    step3: 'Step 3: Click any swatch to copy its hex value to your clipboard.'
+    faq1q: What is a color harmony?
+    faq1a: Color harmonies are combinations of colors that are visually pleasing based on their positions on the color wheel. Common types include complementary (opposite), analogous (adjacent), and triadic (evenly spaced).
+    faq2q: What is the difference between tints and shades?
+    faq2a: Tints are created by adding white to a color (making it lighter), while shades are created by adding black (making it darker). This tool generates both to give you a full range.
 
   common:
     faqSafe: Is this tool safe? Will my data be uploaded?
@@ -675,21 +689,3 @@ tools:
     faq1a: A Unix timestamp counts the number of seconds (or milliseconds) elapsed since January 1, 1970 00:00:00 UTC (the Unix Epoch). It is timezone-independent and widely used in programming.
     faq2q: How do I check if my timestamp is in seconds or milliseconds?
     faq2a: 'A 10-digit number is seconds (e.g. 1704067200). A 13-digit number is milliseconds (e.g. 1704067200000). Current Unix time is ~1.7 billion seconds.'
-
-  number-formatter:
-    step1: 'Step 1: Enter a number in the input field.'
-    step2: 'Step 2: Choose a locale (e.g. en-US, zh-CN) and a format style (decimal, currency, percent, etc.).'
-    step3: 'Step 3: The formatted result appears instantly. Use the comparison table to see the same number across multiple locales.'
-    faq1q: What is number formatting?
-    faq1a: Number formatting adapts how numbers are displayed based on locale and style — for example, 1234.56 can become "1,234.56" (US), "1 234,56" (France), or "￥1,234.56" (China with currency).
-    faq2q: What is the difference between compact and scientific notation?
-    faq2a: Scientific notation always shows a coefficient and exponent (e.g. 1.23E3). Compact notation uses locale-aware abbreviations (e.g. "1.2K", "1.2万") which are more readable for large numbers.
-
-  color-palette-generator:
-    step1: 'Step 1: Pick a base color using the color picker or enter a hex value.'
-    step2: 'Step 2: The tool generates tints, shades, and color harmonies automatically.'
-    step3: 'Step 3: Click any swatch to copy its hex value to your clipboard.'
-    faq1q: What is a color harmony?
-    faq1a: Color harmonies are combinations of colors that are visually pleasing based on their positions on the color wheel. Common types include complementary (opposite), analogous (adjacent), and triadic (evenly spaced).
-    faq2q: What is the difference between tints and shades?
-    faq2a: Tints are created by adding white to a color (making it lighter), while shades are created by adding black (making it darker). This tool generates both to give you a full range.
