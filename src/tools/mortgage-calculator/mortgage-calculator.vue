@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PieChart from '@/components/PieChart.vue';
+
 const { t } = useI18n();
 
 // 贷款类型
@@ -135,6 +137,13 @@ const loanTypeOptions = computed(() => [
 ]);
 
 const loanYearOptions = [5, 10, 15, 20, 25, 30].map(y => ({ label: `${y} ${t('tools.mortgage-calculator.years')}`, value: y }));
+
+// 饼图：本金 vs 利息
+const chartSegments = computed(() => [
+  { label: '首付 Down Payment', value: downPayment.value, color: '#6366f1' },
+  { label: '贷款本金 Principal', value: totalLoanAmount.value, color: '#22c55e' },
+  { label: '总利息 Interest', value: totalInterest.value, color: '#f87171' },
+]);
 </script>
 
 <template>
@@ -313,6 +322,14 @@ const loanYearOptions = [5, 10, 15, 20, 25, 30].map(y => ({ label: `${y} ${t('to
             <span>{{ t('tools.mortgage-calculator.commercialPart') }}</span>
             <span>¥ {{ formatMoney(commercialLoanAmount) }}</span>
           </div>
+        </c-card>
+
+        <!-- 饼图：资金构成 -->
+        <c-card>
+          <template #title>
+            资金构成
+          </template>
+          <PieChart :segments="chartSegments" :size="170" />
         </c-card>
       </div>
     </div>
