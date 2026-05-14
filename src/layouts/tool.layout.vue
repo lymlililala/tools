@@ -8,7 +8,7 @@ import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
 
 const route = useRoute();
-const { t, te } = useI18n();
+const { t, te, locale } = useI18n();
 
 const i18nKey = computed<string>(() => route.path.trim().replace('/', ''));
 const toolTitle = computed<string>(() => t(`tools.${i18nKey.value}.title`, String(route.meta.name)));
@@ -70,13 +70,18 @@ const head = computed<HeadObject>(() => ({
 }));
 useHead(head);
 
+// 判断 i18n key 是否存在（兼容 vue-i18n v9 编译模式）
+function hasKey(key: string): boolean {
+  return te(key, locale.value);
+}
+
 // FAQ 数据（通用 + 工具特定）
 const faqs = computed(() => {
   const toolKey = i18nKey.value;
   const base = [1, 2, 3].flatMap((n) => {
     const qKey = `tools.${toolKey}.faq${n}q`;
     const aKey = `tools.${toolKey}.faq${n}a`;
-    if (te(qKey) && te(aKey)) {
+    if (hasKey(qKey) && hasKey(aKey)) {
       return [{ q: t(qKey), a: t(aKey) }];
     }
     return [];
@@ -108,7 +113,7 @@ const howToSteps = computed(() => {
   const steps = [];
   for (let i = 1; i <= 5; i++) {
     const key = `tools.${toolKey}.step${i}`;
-    if (te(key)) steps.push(t(key));
+    if (hasKey(key)) steps.push(t(key));
   }
   return steps;
 });
