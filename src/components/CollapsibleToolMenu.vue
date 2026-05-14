@@ -2,6 +2,20 @@
 import { useStorage } from '@vueuse/core';
 import { useThemeVars } from 'naive-ui';
 import { RouterLink, useRoute } from 'vue-router';
+import {
+  Star,
+  Lock,
+  ArrowsRightLeft,
+  World,
+  Photo,
+  Code,
+  Wifi,
+  MathFunction,
+  LetterT,
+  Database,
+  Tool as ToolIcon,
+} from '@vicons/tabler';
+import { NIcon } from 'naive-ui';
 import MenuIconItem from './MenuIconItem.vue';
 import type { Tool, ToolCategory } from '@/tools/tools.types';
 
@@ -25,26 +39,44 @@ const collapsedCategories = useStorage<Record<string, boolean>>(
   },
 );
 
-// 判断某分类是否包含当前路由
+// 分类图标映射
+const CATEGORY_ICONS: Record<string, any> = {
+  'your favorite tools': Star,
+  'favorite-tools': Star,
+  'crypto': Lock,
+  'converter': ArrowsRightLeft,
+  'web': World,
+  'images & videos': Photo,
+  'images and videos': Photo,
+  'development': Code,
+  'network': Wifi,
+  'math': MathFunction,
+  'text': LetterT,
+  'data': Database,
+  'default': ToolIcon,
+};
+
+function getCategoryIcon(name: string) {
+  const key = name.toLowerCase().trim();
+  return CATEGORY_ICONS[key] ?? ToolIcon;
+}
+
 function categoryContainsCurrentRoute(components: Tool[]) {
   return components.some(t => t.path === route.path);
 }
 
-// 某分类是否展开：优先用户手动设置，其次当前路由所在分类自动展开
 function isCategoryExpanded(name: string, components: Tool[]) {
   if (name in collapsedCategories.value) {
     return !collapsedCategories.value[name];
   }
-  // 默认：当前路由所在分类展开，其余折叠
   return categoryContainsCurrentRoute(components);
 }
 
 function toggleCategoryCollapse({ name }: { name: string }) {
   const cur = isCategoryExpanded(name, []);
-  collapsedCategories.value[name] = cur; // true = collapsed
+  collapsedCategories.value[name] = cur;
 }
 
-// 搜索
 const search = ref('');
 
 const menuOptions = computed(() =>
@@ -71,7 +103,6 @@ const menuOptions = computed(() =>
     .filter(c => c.filteredTools.length > 0),
 );
 
-// 展开全部 / 折叠全部
 function expandAll() {
   toolsByCategory.value.forEach(({ name }) => {
     collapsedCategories.value[name] = false;
@@ -96,15 +127,14 @@ const themeVars = useThemeVars();
       placeholder="搜索工具..."
     >
       <template #prefix>
-        <icon-mdi-magnify style="opacity:0.5" />
+        <icon-mdi-magnify style="opacity:0.45" />
       </template>
     </n-input>
 
-    <!-- 展开/折叠全部 -->
     <div v-if="!search" class="expand-actions">
-      <span class="action-btn" @click="expandAll">全部展开</span>
+      <span class="action-btn" @click="expandAll">展开全部</span>
       <span class="sep">·</span>
-      <span class="action-btn" @click="collapseAll">全部折叠</span>
+      <span class="action-btn" @click="collapseAll">折叠全部</span>
     </div>
   </div>
 
@@ -115,11 +145,15 @@ const themeVars = useThemeVars();
       :class="{ active: categoryContainsCurrentRoute(components) }"
       @click="toggleCategoryCollapse({ name })"
     >
+      <!-- 分类图标 -->
+      <div class="cat-icon">
+        <NIcon :component="getCategoryIcon(name)" size="14" />
+      </div>
+      <span class="cat-name">{{ name }}</span>
+      <span class="cat-count">{{ components.length }}</span>
       <span class="chevron" :class="{ expanded: isExpanded }">
         <icon-mdi-chevron-right />
       </span>
-      <span class="cat-name">{{ name }}</span>
-      <span class="cat-count">{{ components.length }}</span>
     </div>
 
     <n-collapse-transition :show="isExpanded">
@@ -145,43 +179,43 @@ const themeVars = useThemeVars();
 
 <style scoped lang="less">
 .menu-search {
-  padding: 10px 12px 6px;
+  padding: 10px 12px 4px;
 
   .expand-actions {
     display: flex;
     align-items: center;
     gap: 4px;
-    margin-top: 6px;
+    margin-top: 5px;
     padding: 0 2px;
     font-size: 11px;
 
     .action-btn {
-      opacity: 0.45;
+      opacity: 0.4;
       cursor: pointer;
       transition: opacity 0.15s;
 
       &:hover {
-        opacity: 0.9;
+        opacity: 0.85;
       }
     }
 
     .sep {
-      opacity: 0.3;
+      opacity: 0.25;
     }
   }
 }
 
 .category-block {
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .category-header {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 8px 5px 4px;
-  margin: 0 6px;
-  border-radius: 6px;
+  gap: 5px;
+  padding: 5px 8px 5px 8px;
+  margin: 0 4px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background 0.15s;
   user-select: none;
@@ -195,35 +229,50 @@ const themeVars = useThemeVars();
       opacity: 1;
       font-weight: 600;
     }
+
+    .cat-icon {
+      opacity: 0.9;
+      color: v-bind('themeVars.primaryColor');
+    }
   }
+}
+
+.cat-icon {
+  display: flex;
+  align-items: center;
+  opacity: 0.4;
+  transition: opacity 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.cat-name {
+  flex: 1;
+  font-size: 11.5px;
+  opacity: 0.55;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.cat-count {
+  font-size: 11px;
+  opacity: 0.28;
+  min-width: 16px;
+  text-align: right;
 }
 
 .chevron {
   display: flex;
   align-items: center;
-  font-size: 16px;
-  opacity: 0.45;
+  font-size: 15px;
+  opacity: 0.35;
   transition: transform 0.2s ease;
   transform: rotate(0deg);
+  flex-shrink: 0;
 
   &.expanded {
     transform: rotate(90deg);
   }
-}
-
-.cat-name {
-  flex: 1;
-  font-size: 12px;
-  opacity: 0.6;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.cat-count {
-  font-size: 11px;
-  opacity: 0.3;
-  min-width: 16px;
-  text-align: right;
 }
 
 .menu-wrapper {
@@ -242,14 +291,14 @@ const themeVars = useThemeVars();
 
   .toggle-bar {
     width: 20px;
-    opacity: 0.1;
+    opacity: 0.08;
     transition: opacity ease 0.2s;
     position: relative;
     cursor: pointer;
     flex-shrink: 0;
 
     &::before {
-      width: 2px;
+      width: 1.5px;
       height: 100%;
       content: ' ';
       background-color: v-bind('themeVars.textColor3');
@@ -260,7 +309,7 @@ const themeVars = useThemeVars();
     }
 
     &:hover {
-      opacity: 0.5;
+      opacity: 0.45;
     }
   }
 }
@@ -268,7 +317,7 @@ const themeVars = useThemeVars();
 .no-results {
   text-align: center;
   padding: 24px 12px;
-  opacity: 0.4;
+  opacity: 0.35;
   font-size: 13px;
 }
 </style>

@@ -2,14 +2,13 @@
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
-const { isMenuCollapsed, isSmallScreen } = toRefs(styleStore);
+const { isMenuCollapsed, isSmallScreen, isDarkTheme } = toRefs(styleStore);
 const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static'));
 </script>
 
 <template>
   <n-layout has-sider class="root-layout">
     <n-layout-sider
-      bordered
       collapse-mode="width"
       :collapsed-width="0"
       :width="260"
@@ -18,6 +17,7 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
       :native-scrollbar="false"
       :position="siderPosition"
       class="sider"
+      :class="{ 'is-dark': isDarkTheme }"
     >
       <div class="sider-inner">
         <slot name="sider" />
@@ -39,7 +39,16 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 }
 
 .sider {
-  // 让侧边栏内部可以 flex column
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  transition: border-color 0.3s;
+
+  &.is-dark {
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    // 磨砂玻璃
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
   ::v-deep(.n-layout-scroll-container) {
     display: flex;
     flex-direction: column;
@@ -54,7 +63,6 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
   height: 100%;
   min-height: 0;
 
-  // sider-menu 撑满剩余空间
   ::v-deep(.sider-menu) {
     flex: 1;
     min-height: 0;
@@ -79,7 +87,6 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
   height: 100%;
   min-height: 0;
 
-  // page-content 撑满剩余
   ::v-deep(.page-content) {
     flex: 1;
     min-height: 0;
@@ -93,7 +100,8 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #00000080;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   cursor: pointer;
   z-index: 200;
 }

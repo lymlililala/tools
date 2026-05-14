@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { NIcon, useThemeVars } from 'naive-ui';
 import { RouterLink } from 'vue-router';
-import { Home2, Menu2 } from '@vicons/tabler';
+import { Home2, Menu2, Moon, Sun } from '@vicons/tabler';
 
 import { storeToRefs } from 'pinia';
 import MenuLayout from '../components/MenuLayout.vue';
@@ -29,7 +29,7 @@ const tools = computed<ToolCategory[]>(() => [
 <template>
   <MenuLayout class="menu-layout" :class="{ isSmallScreen: styleStore.isSmallScreen }">
     <template #sider>
-      <!-- 紧凑 Logo 区 -->
+      <!-- Logo Bar -->
       <RouterLink to="/" class="logo-bar" @click="styleStore.isSmallScreen && (styleStore.isMenuCollapsed = true)">
         <div class="logo-icon">
           <icon-mdi-tools style="font-size:18px" />
@@ -54,7 +54,7 @@ const tools = computed<ToolCategory[]>(() => [
 
     <template #content>
       <!-- 顶部 Navbar -->
-      <div class="topbar">
+      <div class="topbar" :class="{ 'topbar--dark': styleStore.isDarkTheme }">
         <div class="topbar-left">
           <c-button
             circle
@@ -62,12 +62,12 @@ const tools = computed<ToolCategory[]>(() => [
             :aria-label="$t('home.toggleMenu')"
             @click="styleStore.isMenuCollapsed = !styleStore.isMenuCollapsed"
           >
-            <NIcon size="22" :component="Menu2" />
+            <NIcon size="20" :component="Menu2" />
           </c-button>
 
           <c-tooltip :tooltip="$t('home.home')" position="bottom">
             <c-button to="/" circle variant="text" :aria-label="$t('home.home')">
-              <NIcon size="22" :component="Home2" />
+              <NIcon size="20" :component="Home2" />
             </c-button>
           </c-tooltip>
 
@@ -75,6 +75,18 @@ const tools = computed<ToolCategory[]>(() => [
         </div>
 
         <div class="topbar-right">
+          <!-- 深色/浅色切换 -->
+          <c-tooltip :tooltip="styleStore.isDarkTheme ? '切换到浅色模式' : '切换到深色模式'" position="bottom">
+            <c-button
+              circle
+              variant="text"
+              :aria-label="styleStore.isDarkTheme ? 'Light mode' : 'Dark mode'"
+              @click="styleStore.toggleDark()"
+            >
+              <NIcon size="18" :component="styleStore.isDarkTheme ? Sun : Moon" />
+            </c-button>
+          </c-tooltip>
+
           <locale-selector />
         </div>
       </div>
@@ -106,13 +118,14 @@ const tools = computed<ToolCategory[]>(() => [
 .logo-icon {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #18a058 0%, #6366f1 100%);
+  border-radius: 9px;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a78bfa 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
 }
 
 .logo-text {
@@ -130,7 +143,7 @@ const tools = computed<ToolCategory[]>(() => [
 
 .logo-tagline {
   font-size: 11px;
-  opacity: 0.45;
+  opacity: 0.4;
   margin-top: 1px;
 }
 
@@ -145,7 +158,7 @@ const tools = computed<ToolCategory[]>(() => [
 .sider-footer {
   padding: 10px 14px;
   font-size: 11px;
-  opacity: 0.4;
+  opacity: 0.35;
   border-top: 1px solid v-bind('themeVars.dividerColor');
   text-align: center;
   flex-shrink: 0;
@@ -156,13 +169,21 @@ const tools = computed<ToolCategory[]>(() => [
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 8px 6px 4px;
+  padding: 6px 12px 6px 4px;
   border-bottom: 1px solid v-bind('themeVars.dividerColor');
   position: sticky;
   top: 0;
   z-index: 100;
   background: v-bind('themeVars.baseColor');
   flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s;
+
+  &.topbar--dark {
+    background: rgba(15, 17, 23, 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
 }
 
 .topbar-left {
