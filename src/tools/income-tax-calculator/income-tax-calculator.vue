@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PieChart from '@/components/PieChart.vue';
+
 const { t } = useI18n();
 
 // ====== 输入参数 ======
@@ -108,6 +110,13 @@ function bracketColor(rate: number) {
   if (rate <= 0.35) return '#ef4444';
   return '#dc2626';
 }
+
+// 饼图：工资构成
+const salaryChartSegments = computed(() => [
+  { label: t('tools.income-tax-calculator.netSalary'), value: netSalary.value, color: '#22c55e' },
+  { label: t('tools.income-tax-calculator.incomeTax'), value: taxResult.value.tax, color: '#f87171' },
+  { label: t('tools.income-tax-calculator.socialInsuranceTotal'), value: socialInsurance.value.total, color: '#f59e0b' },
+]);
 
 const DEDUCTION_PRESETS = computed(() => [
   { label: t('tools.income-tax-calculator.preset1Child'), key: 'childrenEdu', value: 2000 },
@@ -285,6 +294,14 @@ const DEDUCTION_PRESETS = computed(() => [
               <span>¥ {{ fmt(socialInsurance.total) }}</span>
             </div>
           </div>
+        </c-card>
+
+        <!-- 工资构成饼图 -->
+        <c-card>
+          <template #title>
+            工资构成
+          </template>
+          <PieChart :segments="salaryChartSegments" :size="160" />
         </c-card>
 
         <!-- 税率表 -->

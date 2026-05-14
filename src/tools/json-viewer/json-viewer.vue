@@ -4,9 +4,6 @@ import { useStorage } from '@vueuse/core';
 import { formatJson } from './json.models';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
-import TextareaCopyable from '@/components/TextareaCopyable.vue';
-
-const inputElement = ref<HTMLElement>();
 
 const rawJson = useStorage('json-prettify:raw-json', '{"hello": "world", "foo": "bar"}');
 const indentSize = useStorage('json-prettify:indent-size', 3);
@@ -22,6 +19,10 @@ const rawJsonValidation = useValidation({
     },
   ],
 });
+
+function clearInput() {
+  rawJson.value = '';
+}
 </script>
 
 <template>
@@ -37,30 +38,48 @@ const rawJsonValidation = useValidation({
 
   <!-- 输入 / 输出并排 -->
   <div class="json-panes">
-    <n-form-item
-      label="Raw JSON"
-      :feedback="rawJsonValidation.message"
-      :validation-status="rawJsonValidation.status"
-      class="pane"
-    >
-      <c-input-text
-        ref="inputElement"
-        v-model:value="rawJson"
+    <!-- 输入 -->
+    <div class="pane">
+      <div class="pane-header">
+        <span class="pane-title">Raw JSON</span>
+        <n-tag v-if="rawJsonValidation.isValid && rawJson" type="success" size="small" :bordered="false">
+          Valid
+        </n-tag>
+        <n-tag v-else-if="rawJson" type="error" size="small" :bordered="false">
+          Invalid
+        </n-tag>
+      </div>
+      <c-code-input
+        v-model="rawJson"
+        language="json"
         placeholder="Paste your raw JSON here..."
-        rows="30"
-        multiline
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="false"
-        monospace
-        style="height: 100%"
+        min-height="400px"
       />
-    </n-form-item>
+      <div v-if="rawJsonValidation.message" class="validation-msg">
+        {{ rawJsonValidation.message }}
+      </div>
+    </div>
 
-    <n-form-item label="Prettified JSON" class="pane">
-      <TextareaCopyable :value="cleanJson" language="json" :follow-height-of="inputElement" style="height: 100%" />
-    </n-form-item>
+    <!-- 输出 -->
+    <div class="pane">
+      <div class="pane-header">
+        <span class="pane-title">Formatted JSON</span>
+        <c-output-actions
+          :value="cleanJson"
+          :clearable="true"
+          :downloadable="true"
+          download-filename="formatted.json"
+          @clear="clearInput"
+        />
+      </div>
+      <c-code-input
+        :model-value="cleanJson"
+        language="json"
+        placeholder="Formatted JSON will appear here..."
+        min-height="400px"
+        readonly
+      />
+    </div>
   </div>
 </template>
 
@@ -79,15 +98,25 @@ const rawJsonValidation = useValidation({
 .pane {
   display: flex;
   flex-direction: column;
-  min-height: 480px;
+  gap: 8px;
 }
 
-.result-card {
-  position: relative;
-  .copy-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
+.pane-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pane-title {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.65;
+  flex: 1;
+}
+
+.validation-msg {
+  font-size: 12px;
+  color: #f87171;
+  margin-top: -4px;
 }
 </style>
