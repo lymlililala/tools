@@ -82,6 +82,11 @@ function onUpdateFavoriteTools() {
       <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
         <ToolCard v-for="tool in toolStore.tools" :key="tool.name" :tool="tool" />
       </div>
+
+      <!-- 收藏提示 -->
+      <div class="bookmark-hint">
+        <span>💡 {{ $t('home.bookmarkHint') }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -120,5 +125,16 @@ function onUpdateFavoriteTools() {
     opacity: 0.4;
     transform: scale(1.0);
   }
+}
+
+.bookmark-hint {
+  margin-top: 40px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px dashed rgba(99, 102, 241, 0.25);
+  font-size: 13px;
+  opacity: 0.75;
+  text-align: center;
 }
 </style>
