@@ -45,6 +45,12 @@ const tools = computed<ToolCategory[]>(() => [
         <CollapsibleToolMenu :tools-by-category="tools" />
       </div>
 
+      <!-- Blog 入口 -->
+      <RouterLink to="/blog" class="sider-blog-link" @click="styleStore.isSmallScreen && (styleStore.isMenuCollapsed = true)">
+        <icon-mdi-newspaper-variant-outline style="font-size:15px;margin-right:6px;opacity:0.6" />
+        Blog & Guides
+      </RouterLink>
+
       <!-- 底部版权 -->
       <div class="sider-footer">
         <span>© {{ new Date().getFullYear() }} MyUtl</span>
@@ -75,6 +81,12 @@ const tools = computed<ToolCategory[]>(() => [
         </div>
 
         <div class="topbar-right">
+          <c-tooltip tooltip="Blog & Guides" position="bottom">
+            <c-button to="/blog" variant="text" :aria-label="'Blog'" class="topbar-blog-btn">
+              <icon-mdi-newspaper-variant-outline style="font-size:17px" />
+            </c-button>
+          </c-tooltip>
+
           <!-- 深色/浅色切换 -->
           <c-tooltip :tooltip="styleStore.isDarkTheme ? '切换到浅色模式' : '切换到深色模式'" position="bottom">
             <c-button
@@ -152,6 +164,25 @@ const tools = computed<ToolCategory[]>(() => [
   flex: 1;
   overflow-y: auto;
   padding-bottom: 8px;
+}
+
+// ─── Blog link ───────────────────────────────────────────────
+.sider-blog-link {
+  display: flex;
+  align-items: center;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: v-bind('themeVars.textColor2');
+  text-decoration: none;
+  opacity: 0.7;
+  border-top: 1px solid v-bind('themeVars.dividerColor');
+  transition: opacity 0.15s, background 0.15s;
+
+  &:hover {
+    opacity: 1;
+    background: v-bind('themeVars.buttonColor2Hover');
+  }
 }
 
 // ─── Sider Footer ────────────────────────────────────────────

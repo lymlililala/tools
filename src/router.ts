@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { layouts } from './layouts/index';
 import HomePage from './pages/Home.page.vue';
 import NotFound from './pages/404.page.vue';
+import ArticlesPage from './pages/Articles.page.vue';
+import ArticleDetailPage from './pages/ArticleDetail.page.vue';
 import { tools } from './tools';
 import { config } from './config';
 import { routes as demoRoutes } from './ui/demo/demo.routes';
@@ -30,6 +32,18 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import('./pages/About.vue'),
+    },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: ArticlesPage,
+      meta: { layout: layouts.base },
+    },
+    {
+      path: '/blog/:slug',
+      name: 'blog-detail',
+      component: ArticleDetailPage,
+      meta: { layout: layouts.base },
     },
     ...toolsRoutes,
     ...toolsRedirectRoutes,

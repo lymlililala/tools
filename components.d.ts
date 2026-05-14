@@ -12,6 +12,8 @@ declare module '@vue/runtime-core' {
     '404.page': typeof import('./src/pages/404.page.vue')['default']
     About: typeof import('./src/pages/About.vue')['default']
     App: typeof import('./src/App.vue')['default']
+    'ArticleDetail.page': typeof import('./src/pages/ArticleDetail.page.vue')['default']
+    'Articles.page': typeof import('./src/pages/Articles.page.vue')['default']
     AsciiTextDrawer: typeof import('./src/tools/ascii-text-drawer/ascii-text-drawer.vue')['default']
     'Base.layout': typeof import('./src/layouts/base.layout.vue')['default']
     Base64FileConverter: typeof import('./src/tools/base64-file-converter/base64-file-converter.vue')['default']
