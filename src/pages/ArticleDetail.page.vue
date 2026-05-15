@@ -1,35 +1,118 @@
 <script setup lang="ts">
-import { useRoute, RouterLink } from 'vue-router';
-import { useHead } from '@vueuse/head';
-import { articles } from './articles/articles.data';
+import { useRoute, RouterLink } from 'vue-router'
+import { useHead } from '@vueuse/head'
+import { supabase } from '../lib/supabase'
+import type { DbArticle } from '../lib/supabase'
+import { articles as localArticles } from './articles/articles.data'
 
-const route = useRoute();
-const slug = computed(() => route.params.slug as string);
+const route = useRoute()
+const slug = computed(() => route.params.slug as string)
 
-const article = computed(() => articles.find(a => a.slug === slug.value));
+// ─── State ────────────────────────────────────────────────────────────────────
+const article = ref<DbArticle | null>(null)
+const relatedArticles = ref<DbArticle[]>([])
+const loading = ref(true)
+const error = ref<string | null>(null)
 
-// Redirect to 404 if not found is handled by router
-const relatedArticles = computed(() => {
-  if (!article.value) return [];
-  return articles
-    .filter(a => a.slug !== slug.value && a.category === article.value!.category)
-    .slice(0, 3);
-});
+// ─── Convert local article format to DbArticle ───────────────────────────────
+function localToDb(a: typeof localArticles[0]): DbArticle {
+  return {
+    slug: a.slug,
+    tool_path: a.toolPath,
+    title: a.title,
+    description: a.description,
+    keywords: a.keywords,
+    category: a.category,
+    published_at: a.publishedAt,
+    content: a.content,
+  }
+}
 
-const canonicalUrl = computed(() => `https://myutl.com/blog/${slug.value}`);
+// ─── Fetch article ────────────────────────────────────────────────────────────
+async function fetchArticle(s: string) {
+  loading.value = true
+  error.value = null
+  article.value = null
+  relatedArticles.value = []
+
+  try {
+    // Fetch the main article
+    const { data, error: sbError } = await supabase
+      .from('tools_articles')
+      .select('*')
+      .eq('slug', s)
+      .single()
+
+    if (sbError) {
+      // Table not yet created — use local data as fallback
+      console.warn('Supabase unavailable, using local data:', sbError.message)
+      const local = localArticles.find(a => a.slug === s)
+      if (local) {
+        article.value = localToDb(local)
+        relatedArticles.value = localArticles
+          .filter(a => a.category === local.category && a.slug !== s)
+          .slice(0, 3)
+          .map(localToDb)
+      }
+      else {
+        error.value = 'Article not found'
+      }
+    }
+    else {
+      article.value = data as DbArticle
+
+      // Fetch related articles (same category, excluding current)
+      if (data) {
+        const { data: related } = await supabase
+          .from('tools_articles')
+          .select('slug, title, description, category')
+          .eq('category', data.category)
+          .neq('slug', s)
+          .limit(3)
+
+        relatedArticles.value = (related ?? []) as DbArticle[]
+      }
+    }
+  }
+  catch (e: any) {
+    // Fallback to local data on any error
+    console.warn('Supabase fetch failed, using local data:', e)
+    const local = localArticles.find(a => a.slug === s)
+    if (local) {
+      article.value = localToDb(local)
+      relatedArticles.value = localArticles
+        .filter(a => a.category === local.category && a.slug !== s)
+        .slice(0, 3)
+        .map(localToDb)
+    }
+    else {
+      error.value = 'Article not found'
+    }
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+// Re-fetch when slug changes
+watch(slug, fetchArticle, { immediate: true })
+
+// ─── SEO ──────────────────────────────────────────────────────────────────────
+const canonicalUrl = computed(() => `https://myutl.com/blog/${slug.value}`)
 
 watchEffect(() => {
-  if (!article.value) return;
+  if (!article.value)
+    return
   useHead({
     title: `${article.value.title} | MyUtl Blog`,
     meta: [
       { name: 'description', content: article.value.description },
-      { name: 'keywords', content: article.value.keywords.join(', ') },
+      { name: 'keywords', content: (article.value.keywords ?? []).join(', ') },
       { property: 'og:title', content: article.value.title },
       { property: 'og:description', content: article.value.description },
       { property: 'og:url', content: canonicalUrl.value },
       { property: 'og:type', content: 'article' },
-      { property: 'article:published_time', content: article.value.publishedAt },
+      { property: 'article:published_time', content: article.value.published_at },
       { property: 'article:section', content: article.value.category },
     ],
     link: [{ rel: 'canonical', href: canonicalUrl.value }],
@@ -41,20 +124,32 @@ watchEffect(() => {
           '@type': 'Article',
           'headline': article.value.title,
           'description': article.value.description,
-          'datePublished': article.value.publishedAt,
+          'datePublished': article.value.published_at,
           'url': canonicalUrl.value,
           'publisher': { '@type': 'Organization', 'name': 'MyUtl', 'url': 'https://myutl.com' },
-          'keywords': article.value.keywords.join(', '),
+          'keywords': (article.value.keywords ?? []).join(', '),
         }),
       },
     ],
-  });
-});
+  })
+})
 </script>
 
 <template>
   <div class="article-page">
-    <template v-if="article">
+    <!-- Loading -->
+    <div v-if="loading" class="state-center">
+      <n-spin size="large" />
+    </div>
+
+    <!-- Error / Not Found -->
+    <div v-else-if="error || !article" class="not-found">
+      <h2>Article not found</h2>
+      <RouterLink to="/blog">← Back to Blog</RouterLink>
+    </div>
+
+    <!-- Article -->
+    <template v-else>
       <!-- Breadcrumb -->
       <nav class="breadcrumb">
         <RouterLink to="/">Home</RouterLink>
@@ -68,7 +163,7 @@ watchEffect(() => {
       <header class="article-header">
         <div class="article-meta">
           <span class="article-cat">{{ article.category }}</span>
-          <span class="article-date">{{ article.publishedAt }}</span>
+          <span class="article-date">{{ article.published_at }}</span>
         </div>
         <h1 class="article-title">
           {{ article.title }}
@@ -76,25 +171,25 @@ watchEffect(() => {
         <p class="article-description">
           {{ article.description }}
         </p>
-        <RouterLink :to="article.toolPath" class="try-tool-btn">
+        <RouterLink :to="article.tool_path" class="try-tool-btn">
           <icon-mdi-tools style="margin-right:6px" />
           Try the Tool →
         </RouterLink>
       </header>
 
-      <!-- Article Content (rendered as markdown via c-markdown) -->
+      <!-- Article Content -->
       <article class="article-content">
-        <c-markdown :value="article.content" />
+        <c-markdown :value="article.content ?? ''" />
       </article>
 
       <!-- Tags -->
       <div class="article-tags">
-        <span v-for="kw in article.keywords" :key="kw" class="tag">{{ kw }}</span>
+        <span v-for="kw in (article.keywords ?? [])" :key="kw" class="tag">{{ kw }}</span>
       </div>
 
       <!-- CTA -->
       <div class="article-cta">
-        <RouterLink :to="article.toolPath" class="cta-btn">
+        <RouterLink :to="article.tool_path" class="cta-btn">
           🚀 Open {{ article.title.split(':')[0] }} Tool
         </RouterLink>
       </div>
@@ -121,12 +216,6 @@ watchEffect(() => {
         </div>
       </section>
     </template>
-
-    <!-- 404 fallback -->
-    <div v-else class="not-found">
-      <h2>Article not found</h2>
-      <RouterLink to="/blog">← Back to Blog</RouterLink>
-    </div>
   </div>
 </template>
 
@@ -135,6 +224,12 @@ watchEffect(() => {
   max-width: 780px;
   margin: 0 auto;
   padding: 32px 24px 80px;
+}
+
+.state-center {
+  display: flex;
+  justify-content: center;
+  padding: 80px;
 }
 
 .breadcrumb {
