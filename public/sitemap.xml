@@ -231,4 +231,15 @@
   <!-- Blog Articles - Data -->
   <url><loc>https://myutl.com/blog/phone-formatter-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://myutl.com/blog/iban-validator-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/blog/sql-formatter-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/blog/jwt-explained</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/base64-string-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/uuid-vs-ulid</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/json-to-yaml-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/color-converter-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/url-encoder-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/http-status-codes-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/docker-compose-converter-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/blog/json-formatter-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myutl.com/blog/git-cheat-sheet</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
