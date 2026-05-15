@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useHead } from '@vueuse/head';
-import { RouterLink } from 'vue-router';
-import { articles } from './articles/articles.data';
+import { useHead } from '@vueuse/head'
+import { RouterLink } from 'vue-router'
+import { supabase } from '../lib/supabase'
+import type { DbArticle } from '../lib/supabase'
+import { articles as localArticles } from './articles/articles.data'
 
 useHead({
   title: 'Blog - Developer Tools Guides | MyUtl',
@@ -11,31 +13,86 @@ useHead({
     { property: 'og:title', content: 'Blog - Developer Tools Guides | MyUtl' },
     { property: 'og:description', content: 'In-depth guides and tutorials for every developer tool on MyUtl.' },
   ],
-});
+})
 
+// ─── State ────────────────────────────────────────────────────────────────────
+const articles = ref<DbArticle[]>([])
+const loading = ref(true)
+const error = ref<string | null>(null)
+const activeCategory = ref('All')
+const searchQuery = ref('')
+
+// ─── Convert local article format to DbArticle ───────────────────────────────
+function localToDb(a: typeof localArticles[0]): DbArticle {
+  return {
+    slug: a.slug,
+    tool_path: a.toolPath,
+    title: a.title,
+    description: a.description,
+    keywords: a.keywords,
+    category: a.category,
+    published_at: a.publishedAt,
+    content: a.content,
+  }
+}
+
+// ─── Fetch from Supabase, fallback to local data ─────────────────────────────
+async function fetchArticles() {
+  loading.value = true
+  error.value = null
+  try {
+    const { data, error: sbError } = await supabase
+      .from('tools_articles')
+      .select('id, slug, tool_path, title, description, keywords, category, published_at')
+      .order('published_at', { ascending: false })
+
+    if (sbError) {
+      // Table not yet created — use local data as fallback
+      console.warn('Supabase unavailable, using local data:', sbError.message)
+      articles.value = localArticles.map(localToDb).sort((a, b) =>
+        b.published_at.localeCompare(a.published_at),
+      )
+    }
+    else {
+      articles.value = (data ?? []) as DbArticle[]
+      // If empty (table exists but no data), fallback to local
+      if (articles.value.length === 0)
+        articles.value = localArticles.map(localToDb)
+    }
+  }
+  catch (e: any) {
+    console.warn('Supabase fetch failed, using local data:', e)
+    articles.value = localArticles.map(localToDb)
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+onMounted(fetchArticles)
+
+// ─── Computed ─────────────────────────────────────────────────────────────────
 const categories = computed(() => {
-  const cats = [...new Set(articles.map(a => a.category))];
-  return cats;
-});
-
-const activeCategory = ref('All');
+  const cats = [...new Set(articles.value.map(a => a.category))]
+  return cats.sort()
+})
 
 const filteredArticles = computed(() => {
-  if (activeCategory.value === 'All') return articles;
-  return articles.filter(a => a.category === activeCategory.value);
-});
-
-const searchQuery = ref('');
+  if (activeCategory.value === 'All')
+    return articles.value
+  return articles.value.filter(a => a.category === activeCategory.value)
+})
 
 const displayedArticles = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase();
-  if (!q) return filteredArticles.value;
+  const q = searchQuery.value.trim().toLowerCase()
+  if (!q)
+    return filteredArticles.value
   return filteredArticles.value.filter(a =>
     a.title.toLowerCase().includes(q)
     || a.description.toLowerCase().includes(q)
-    || a.keywords.some(k => k.toLowerCase().includes(q)),
-  );
-});
+    || (a.keywords ?? []).some((k: string) => k.toLowerCase().includes(q)),
+  )
+})
 </script>
 
 <template>
@@ -63,53 +120,70 @@ const displayedArticles = computed(() => {
       </div>
     </div>
 
-    <!-- Category Tabs -->
-    <div class="category-tabs">
-      <button
-        class="cat-tab"
-        :class="{ active: activeCategory === 'All' }"
-        @click="activeCategory = 'All'"
-      >
-        All ({{ articles.length }})
-      </button>
-      <button
-        v-for="cat in categories"
-        :key="cat"
-        class="cat-tab"
-        :class="{ active: activeCategory === cat }"
-        @click="activeCategory = cat"
-      >
-        {{ cat }}
-      </button>
+    <!-- Loading -->
+    <div v-if="loading" class="state-placeholder">
+      <n-spin size="large" />
+      <p>Loading articles...</p>
     </div>
 
-    <!-- Article Grid -->
-    <div v-if="displayedArticles.length > 0" class="article-grid">
-      <RouterLink
-        v-for="article in displayedArticles"
-        :key="article.slug"
-        :to="`/blog/${article.slug}`"
-        class="article-card"
-      >
-        <div class="article-cat">
-          {{ article.category }}
-        </div>
-        <h2 class="article-title">
-          {{ article.title }}
-        </h2>
-        <p class="article-desc">
-          {{ article.description }}
-        </p>
-        <div class="article-footer">
-          <span class="article-date">{{ article.publishedAt }}</span>
-          <span class="article-read">Read →</span>
-        </div>
-      </RouterLink>
+    <!-- Error -->
+    <div v-else-if="error" class="state-placeholder error">
+      <icon-mdi-alert-circle style="font-size:32px;color:#ef4444" />
+      <p>{{ error }}</p>
+      <c-button @click="fetchArticles">
+        Retry
+      </c-button>
     </div>
 
-    <div v-else class="no-results">
-      No articles found for "{{ searchQuery }}"
-    </div>
+    <template v-else>
+      <!-- Category Tabs -->
+      <div class="category-tabs">
+        <button
+          class="cat-tab"
+          :class="{ active: activeCategory === 'All' }"
+          @click="activeCategory = 'All'"
+        >
+          All ({{ articles.length }})
+        </button>
+        <button
+          v-for="cat in categories"
+          :key="cat"
+          class="cat-tab"
+          :class="{ active: activeCategory === cat }"
+          @click="activeCategory = cat"
+        >
+          {{ cat }}
+        </button>
+      </div>
+
+      <!-- Article Grid -->
+      <div v-if="displayedArticles.length > 0" class="article-grid">
+        <RouterLink
+          v-for="article in displayedArticles"
+          :key="article.slug"
+          :to="`/blog/${article.slug}`"
+          class="article-card"
+        >
+          <div class="article-cat">
+            {{ article.category }}
+          </div>
+          <h2 class="article-title">
+            {{ article.title }}
+          </h2>
+          <p class="article-desc">
+            {{ article.description }}
+          </p>
+          <div class="article-footer">
+            <span class="article-date">{{ article.published_at }}</span>
+            <span class="article-read">Read →</span>
+          </div>
+        </RouterLink>
+      </div>
+
+      <div v-else class="no-results">
+        No articles found for "{{ searchQuery }}"
+      </div>
+    </template>
   </div>
 </template>
 
@@ -144,6 +218,21 @@ const displayedArticles = computed(() => {
 .blog-search-wrap {
   max-width: 480px;
   margin: 0 auto;
+}
+
+.state-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 24px;
+  opacity: 0.6;
+  font-size: 15px;
+
+  &.error {
+    opacity: 1;
+    color: #ef4444;
+  }
 }
 
 .category-tabs {
