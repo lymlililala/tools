@@ -179,7 +179,7 @@ watchEffect(() => {
 
       <!-- Article Content -->
       <article class="article-content">
-        <c-markdown :value="article.content ?? ''" />
+        <c-markdown :markdown="article.content ?? ''" />
       </article>
 
       <!-- Tags -->
