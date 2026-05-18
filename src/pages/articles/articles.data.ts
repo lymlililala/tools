@@ -11787,4 +11787,364 @@ Our Git memo tool provides an interactive reference for:
 
 Keep it open while working for quick command lookups without leaving your terminal.`,
   },
+
+  // ─── New SEO/GEO Articles (2026-05) ────────────────────────────────────────
+  {
+    slug: 'linux-file-permissions-chmod-guide',
+    toolPath: '/chmod-calculator',
+    title: 'Linux File Permissions Explained: chmod, chown, and Octal Notation',
+    description: 'Understand Linux file permissions from scratch. Learn what rwx means, how octal notation works, and when to use chmod 755 vs 644 vs 777.',
+    keywords: ['linux file permissions', 'chmod', 'chmod 755', 'chmod 644', 'octal permissions', 'rwx linux', 'file permission calculator'],
+    category: 'Development',
+    publishedAt: '2026-05-15',
+    content: `## Why File Permissions Matter
+
+Every file and directory on a Linux system has an owner and a set of rules controlling who can read, write, or execute it. Get these wrong and you either lock yourself out of your own files or — far worse — leave sensitive data readable by any user on the system.
+
+This guide explains the permission system from first principles, so you stop guessing and start understanding what your \`ls -la\` output actually means.
+
+## Reading the Permission String
+
+Run \`ls -la\` in any directory and you will see something like this:
+
+\`\`\`
+-rwxr-xr--  1 alice devs  4096 May 10 09:30 deploy.sh
+drwxr-x---  2 alice devs  4096 May  8 14:22 config/
+\`\`\`
+
+The first column is a 10-character string. Break it down:
+
+| Position | Characters | Meaning |
+|----------|-----------|---------|
+| 1 | - or d | File type: - = regular file, d = directory |
+| 2-4 | rwx | Owner permissions |
+| 5-7 | r-x | Group permissions |
+| 8-10 | r-- | Others (world) permissions |
+
+Each triplet uses three flags:
+- **r** (read, value 4) — view file contents or list directory
+- **w** (write, value 2) — modify file or add/remove files in directory
+- **x** (execute, value 1) — run file as program, or cd into directory
+- **-** — permission not granted
+
+So \`rwxr-xr--\` means: owner can read/write/execute; group can read/execute; others can only read.
+
+## Octal Notation: The Numbers Behind chmod
+
+Each permission triplet maps to a number from 0 to 7 by adding the values of granted permissions:
+
+| Octal | Binary | Permissions |
+|-------|--------|-------------|
+| 7 | 111 | rwx |
+| 6 | 110 | rw- |
+| 5 | 101 | r-x |
+| 4 | 100 | r-- |
+| 3 | 011 | -wx |
+| 2 | 010 | -w- |
+| 1 | 001 | --x |
+| 0 | 000 | --- |
+
+Three octal digits cover owner, group, and others in that order. So \`chmod 754 file\` sets owner to rwx (7), group to r-x (5), others to r-- (4).
+
+## The Most Common Permission Modes
+
+**chmod 644** — Standard web file. Owner reads and writes; everyone else reads only. Used for HTML, CSS, config files, anything a web server needs to read but not execute.
+
+**chmod 755** — Executable script or public directory. Owner has full control; group and others can read and execute but not modify. Use this for shell scripts, binaries, and public directories.
+
+**chmod 700** — Private files. Only the owner has any access at all. Use for SSH keys, credential files, and private scripts.
+
+**chmod 600** — Sensitive data, no execute needed. SSH private key files must be 600 or SSH will refuse to use them.
+
+**chmod 777** — Avoid unless you know exactly why. Anyone on the system can read, write, and execute. Almost never the right choice on a shared or production server.
+
+## Symbolic Mode: Letters Instead of Numbers
+
+chmod also accepts a symbolic syntax that is easier to read for targeted changes:
+
+\`\`\`bash
+chmod u+x script.sh      # add execute for owner
+chmod g-w file.txt       # remove write from group
+chmod o=r file.txt       # set others to read-only exactly
+chmod a+r file.txt       # add read for all (a = all)
+chmod ug+rw,o-rwx data/  # owner+group read/write, others nothing
+\`\`\`
+
+The letters: u = user (owner), g = group, o = others, a = all three. Operators: + adds, - removes, = sets exactly.
+
+## Directories vs Files: A Key Difference
+
+Execute permission means something different on directories. Without x on a directory, you cannot cd into it or access anything inside, even if you have read permission. This is why directories need 755 while their contents can be 644.
+
+\`\`\`bash
+# Wrong: breaks directory traversal
+chmod -R 644 /var/www/html/
+
+# Correct: X (capital) applies execute only to directories
+chmod -R u=rwX,go=rX /var/www/html/
+\`\`\`
+
+## chown: Changing Ownership
+
+\`\`\`bash
+chown alice file.txt           # change owner
+chown alice:devs file.txt      # change owner and group
+chown -R www-data /var/www/    # recursive, common for web servers
+\`\`\`
+
+## Special Permission Bits
+
+**setuid (4000)** — Executable runs as the file owner, not the caller. The \`passwd\` command uses this.
+
+**setgid (2000)** — New files in a directory inherit the directory group. Useful for shared project folders.
+
+**sticky bit (1000)** — On directories like \`/tmp\`, prevents users from deleting files they do not own.
+
+\`\`\`bash
+chmod 4755 /usr/local/bin/mytool  # setuid + 755
+chmod 2775 /shared/project/       # setgid + 775
+chmod 1777 /tmp                   # sticky + full write
+\`\`\`
+
+## Web Server Permissions Reference
+
+| Location | Owner | Permissions |
+|----------|-------|-------------|
+| Application files | deploy user | 644 |
+| Application directories | deploy user | 755 |
+| Shell scripts / binaries | deploy user | 755 |
+| Uploaded content | www-data | 644 |
+| Upload directory | www-data | 755 |
+| .env / credential files | deploy user | 600 |
+| SSH private keys | user | 600 |
+
+→ Try the [chmod Calculator](/chmod-calculator) to convert between octal, symbolic, and readable formats instantly.`,
+  },
+  {
+    slug: 'base64-vs-hex-encoding',
+    toolPath: '/base64-string-converter',
+    title: 'Base64 vs Hex Encoding: Differences, Use Cases, and When to Use Each',
+    description: 'Base64 and hex are both ways to represent binary data as text, but they work differently and suit different situations. Here is when to use which.',
+    keywords: ['base64 vs hex', 'base64 encoding', 'hex encoding', 'binary to text', 'base64 decode', 'hex decode', 'encoding comparison'],
+    category: 'Converter',
+    publishedAt: '2026-05-16',
+    content: `## The Problem They Both Solve
+
+Computers store everything as binary — sequences of bytes with values from 0 to 255. When you need to transmit or store binary data in a system that only handles printable text (an email body, a JSON field, a URL parameter, a cookie), you have to encode it first.
+
+Base64 and hexadecimal are the two most common solutions. They solve the same problem but make different tradeoffs.
+
+## How Hex Encoding Works
+
+Hexadecimal uses 16 characters: 0-9 and a-f. Each byte (0-255) maps to exactly two hex characters, because 256 equals 16 squared.
+
+\`\`\`
+"Hi"  →  bytes: 72, 105  →  hex: 48 69  →  "4869"
+\`\`\`
+
+Size overhead: every byte becomes 2 characters, so hex-encoded data is exactly **2x the size** of the original.
+
+The character set [0-9a-f] is safe in virtually every context — URLs, filenames, terminal output, database fields, log files.
+
+## How Base64 Encoding Works
+
+Base64 uses 64 characters: A-Z, a-z, 0-9, plus + and / (with = for padding). Every 3 bytes of input map to 4 Base64 characters.
+
+\`\`\`
+"Hi!"  →  bytes: 72, 105, 33  →  base64: "SGkh"
+\`\`\`
+
+Size overhead: 3 bytes become 4 characters, so Base64 is roughly **33% larger** than the original (compared to 100% overhead for hex). For large payloads like images or files, this difference is meaningful.
+
+## Side-by-Side Comparison
+
+| Property | Hex | Base64 |
+|----------|-----|--------|
+| Characters used | 0-9, a-f (16 chars) | A-Z, a-z, 0-9, +, / (64 chars) |
+| Size overhead | +100% (2x original) | +33% (roughly 4/3 original) |
+| Human readability | Byte values visible | Not readable |
+| URL-safe by default | Yes | No (+ and / need escaping) |
+| URL-safe variant | — | Base64url: uses - and _ |
+| Common use cases | Checksums, hashes, colors | Images, files, JWT, email |
+
+## When to Use Hex
+
+**Checksums and hashes** — SHA-256, MD5, and most hash functions output hex by convention. Running sha256sum gives you a 64-character hex string. The format is readable enough to compare the first 8 characters visually.
+
+**Color codes** — CSS colors like #ff6600 are hex: R=ff (255), G=66 (102), B=00 (0).
+
+**Binary protocol debugging** — When inspecting raw network packets or file headers, hex shows exact byte values. Tools like xxd, hexdump, and Wireshark all default to hex.
+
+**Database IDs and tokens** — Many systems store UUIDs as 32-character hex strings. Hex is compact and URL-safe with no escaping required.
+
+\`\`\`javascript
+// Node.js: hash as hex
+const hash = crypto.createHash('sha256').update(data).digest('hex');
+
+// Node.js: random token as hex
+const token = crypto.randomBytes(32).toString('hex'); // 64 chars
+\`\`\`
+
+## When to Use Base64
+
+**Embedding binary in text formats** — JSON has no binary type. Storing an image, certificate, or file inside a JSON field requires Base64. The lower size overhead matters for large payloads.
+
+**Email attachments** — MIME encoding for email attachments has used Base64 since the early 1990s.
+
+**JWTs (JSON Web Tokens)** — JWT headers and payloads are Base64url-encoded. You can decode a JWT by splitting on . and Base64-decoding each part — no secret key needed to read the claims.
+
+**Data URIs** — Embedding images directly in CSS or HTML uses Base64: data:image/png;base64,iVBOR...
+
+**TLS certificates** — PEM format (the -----BEGIN CERTIFICATE----- format) is Base64-encoded DER data.
+
+\`\`\`javascript
+// Node.js: encode to Base64
+const encoded = Buffer.from(binaryData).toString('base64');
+
+// URL-safe Base64 for JWTs and URLs
+const urlSafe = encoded.replace(/+/g, '-').replace(///g, '_').replace(/=/g, '');
+\`\`\`
+
+## URL Safety: A Practical Concern
+
+Standard Base64 uses + and /, both of which have special meaning in URLs (+ means space; / is a path separator). If you need Base64 in a URL query parameter, either percent-encode it or switch to the Base64url variant (RFC 4648): replace + with -, / with _, and strip = padding.
+
+Hex has no such issue — the characters 0-9a-f are URL-safe in every context.
+
+## Quick Decision Guide
+
+- Representing a **hash or checksum**? → **Hex**
+- **Embedding a file or image** in JSON, HTML, or email? → **Base64**
+- Building a **JWT or OAuth token**? → **Base64url**
+- Debugging **binary data** at the byte level? → **Hex**
+- Storing **random bytes as a token** in a URL? → **Hex** (simpler) or **Base64url** (shorter)
+- **CSS color codes**? → **Hex** (the universal standard)
+
+→ Try the [Base64 String Converter](/base64-string-converter) to encode and decode instantly, or the [Hash Text Tool](/hash-text) for hex-encoded hashes.`,
+  },
+  {
+    slug: 'how-to-debug-api-requests',
+    toolPath: '/url-parser',
+    title: 'How to Debug API Requests: A Practical Guide for Developers',
+    description: 'Walk through a systematic approach to debugging failed API calls — from reading HTTP status codes and parsing URLs to inspecting headers and decoding JWT tokens.',
+    keywords: ['debug API requests', 'API debugging', 'HTTP debugging', 'API error troubleshooting', '401 unauthorized fix', '400 bad request', 'CORS error fix'],
+    category: 'Web',
+    publishedAt: '2026-05-17',
+    content: `## APIs Fail in Predictable Ways
+
+When an API call fails, most developers immediately open the network tab or start adding console.log statements. That works, but there is a faster mental model: every API failure falls into one of five categories, and the HTTP status code tells you which one. Once you know the category, the fix is usually obvious.
+
+## Step 1: Read the Status Code
+
+The status code is the single most important diagnostic signal. Never skip it.
+
+**4xx — You sent something wrong**
+
+| Code | Meaning | Most Common Cause |
+|------|---------|-------------------|
+| 400 | Bad Request | Malformed JSON, wrong field type, missing required field |
+| 401 | Unauthorized | Missing or expired token, wrong auth scheme |
+| 403 | Forbidden | Valid token but insufficient permissions |
+| 404 | Not Found | Wrong URL path, resource does not exist, wrong ID |
+| 405 | Method Not Allowed | POST where GET is expected, or vice versa |
+| 409 | Conflict | Duplicate record, stale update, race condition |
+| 413 | Payload Too Large | File too big, body exceeds server limit |
+| 422 | Unprocessable Entity | Valid JSON structure but invalid field values |
+| 429 | Too Many Requests | Rate limited — back off and retry |
+
+**5xx — The server broke**
+
+| Code | Meaning | Action |
+|------|---------|--------|
+| 500 | Internal Server Error | Bug on their side; check their status page |
+| 502 | Bad Gateway | Server down or restarting |
+| 503 | Service Unavailable | Overload or maintenance |
+| 504 | Gateway Timeout | Server too slow; retry with backoff |
+
+A 5xx is almost never your fault. Check the service status page before debugging your own code.
+
+## Step 2: Inspect the URL
+
+More API bugs trace back to malformed URLs than developers expect. Check these systematically:
+
+**Protocol** — http vs https. Many APIs refuse plain HTTP connections or silently redirect them.
+
+**Host** — A single typo connects you to the wrong server or nowhere at all.
+
+**Path** — Watch for a missing leading slash, a doubled slash, or the wrong version prefix (v1 vs v2).
+
+**Query parameters** — Values must be URL-encoded. A space must become %20; an ampersand in a value must become %26. Always use encodeURIComponent() in JavaScript when building URLs dynamically.
+
+\`\`\`javascript
+// Wrong — breaks if name contains &, =, or spaces
+const url = \`https://api.example.com/search?name=\${name}\`;
+
+// Correct
+const url = \`https://api.example.com/search?name=\${encodeURIComponent(name)}\`;
+\`\`\`
+
+## Step 3: Check Authentication
+
+The difference between 401 and 403 is important:
+- **401** — The server does not know who you are. Credentials are missing, expired, or malformed.
+- **403** — The server knows who you are but will not permit the action. This is a permissions issue.
+
+For JWT Bearer tokens, decode the token and check the exp claim (expiry as a Unix timestamp), the aud claim (intended audience), and any scope or permissions claims. You do not need the signing secret to read the claims — only to verify the signature.
+
+For API keys, verify the key is in the correct header and confirm you are using the key for the right environment. Production keys typically do not work on staging endpoints.
+
+For Basic Auth, the header value is base64(username:password). Decode it to confirm the credentials are correct.
+
+## Step 4: Validate the Request Body
+
+400 and 422 errors usually mean something is wrong with the request body. Read the error response carefully — it typically identifies the specific field that failed.
+
+Common body problems:
+
+**Wrong Content-Type** — Sending JSON without the Content-Type: application/json header causes some servers to ignore the body entirely.
+
+**Trailing commas** — Valid in JavaScript but invalid in JSON. The value {"key": "value",} will fail JSON parsing on most servers.
+
+**Wrong types** — Sending the string "123" where an integer 123 is required, or "true" where a boolean true is expected.
+
+**Null versus missing** — Some APIs treat an explicit null differently from an omitted field.
+
+## Step 5: Diagnose CORS Errors
+
+CORS errors occur only in browsers. The same request may succeed from curl or Postman but fail in your web app, because browsers enforce same-origin policy and require servers to explicitly permit cross-origin requests.
+
+Signs of a CORS problem: the browser console shows "Access to fetch has been blocked by CORS policy," the network tab shows a status of 0, and the request works fine from Postman.
+
+The fix must happen on the server. CORS cannot be disabled from the browser. Check whether the server responds with Access-Control-Allow-Origin set to your origin or *, and whether it handles the preflight OPTIONS request for routes that require an Authorization header.
+
+## Step 6: Isolate with curl
+
+Use curl to remove all client-side variables. If a request works in curl but not in your code, the bug is in your code. If it works in curl but not in the browser, it is CORS.
+
+\`\`\`bash
+# GET with auth header
+curl -v -H "Authorization: Bearer your_token" https://api.example.com/users
+
+# POST with JSON body
+curl -v -X POST \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer your_token" \\
+  -d '{"name":"test","email":"test@example.com"}' \\
+  https://api.example.com/users
+\`\`\`
+
+The -v flag shows full request and response headers. Always include it when debugging — most bugs hide in the headers.
+
+## Debugging Toolkit
+
+| Problem | Tool |
+|---------|------|
+| Parse and break down a URL | [URL Parser](/url-parser) |
+| Decode and inspect a JWT | [JWT Parser](/jwt-parser) |
+| Decode a Base64 auth header | [Base64 Decoder](/base64-string-converter) |
+| Look up an HTTP status code | [HTTP Status Codes](/http-status-codes) |
+| Test regex against response data | [Regex Tester](/regex-tester) |
+
+→ Start with the [URL Parser](/url-parser) to break down any endpoint URL and catch encoding or path mistakes immediately.`,
+  },
 ];

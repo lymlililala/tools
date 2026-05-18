@@ -243,4 +243,7 @@
   <url><loc>https://myutl.com/blog/docker-compose-converter-guide</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://myutl.com/blog/json-formatter-guide</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://myutl.com/blog/git-cheat-sheet</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/linux-file-permissions-chmod-guide</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/base64-vs-hex-encoding</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/blog/how-to-debug-api-requests</loc><lastmod>2026-05-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
