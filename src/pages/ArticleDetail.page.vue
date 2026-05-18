@@ -28,6 +28,21 @@ function localToDb(a: typeof localArticles[0]): DbArticle {
   }
 }
 
+// ─── Local fallback helpers ───────────────────────────────────────────────────
+function useLocalArticle(s: string) {
+  const local = localArticles.find(a => a.slug === s)
+  if (local) {
+    article.value = localToDb(local)
+    relatedArticles.value = localArticles
+      .filter(a => a.category === local.category && a.slug !== s)
+      .slice(0, 3)
+      .map(localToDb)
+  }
+  else {
+    error.value = 'Article not found'
+  }
+}
+
 // ─── Fetch article ────────────────────────────────────────────────────────────
 async function fetchArticle(s: string) {
   loading.value = true
@@ -35,33 +50,31 @@ async function fetchArticle(s: string) {
   article.value = null
   relatedArticles.value = []
 
+  // Timeout: if Supabase doesn't respond in 5s, fall back to local data
+  const timeout = setTimeout(() => {
+    if (loading.value) {
+      console.warn('Supabase timeout, falling back to local data')
+      useLocalArticle(s)
+      loading.value = false
+    }
+  }, 5000)
+
   try {
-    // Fetch the main article
     const { data, error: sbError } = await supabase
       .from('tools_articles')
       .select('*')
       .eq('slug', s)
       .single()
 
+    clearTimeout(timeout)
+
     if (sbError) {
-      // Table not yet created — use local data as fallback
       console.warn('Supabase unavailable, using local data:', sbError.message)
-      const local = localArticles.find(a => a.slug === s)
-      if (local) {
-        article.value = localToDb(local)
-        relatedArticles.value = localArticles
-          .filter(a => a.category === local.category && a.slug !== s)
-          .slice(0, 3)
-          .map(localToDb)
-      }
-      else {
-        error.value = 'Article not found'
-      }
+      useLocalArticle(s)
     }
     else {
       article.value = data as DbArticle
 
-      // Fetch related articles (same category, excluding current)
       if (data) {
         const { data: related } = await supabase
           .from('tools_articles')
@@ -75,21 +88,12 @@ async function fetchArticle(s: string) {
     }
   }
   catch (e: any) {
-    // Fallback to local data on any error
+    clearTimeout(timeout)
     console.warn('Supabase fetch failed, using local data:', e)
-    const local = localArticles.find(a => a.slug === s)
-    if (local) {
-      article.value = localToDb(local)
-      relatedArticles.value = localArticles
-        .filter(a => a.category === local.category && a.slug !== s)
-        .slice(0, 3)
-        .map(localToDb)
-    }
-    else {
-      error.value = 'Article not found'
-    }
+    useLocalArticle(s)
   }
   finally {
+    clearTimeout(timeout)
     loading.value = false
   }
 }
