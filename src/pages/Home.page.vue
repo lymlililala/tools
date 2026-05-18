@@ -10,7 +10,17 @@ import { config } from '@/config';
 
 const toolStore = useToolStore();
 
-useHead({ title: 'MyUtl - 免费在线工具箱' });
+useHead({
+  title: 'MyUtl - 免费在线工具箱 | 90+ 开发者在线工具',
+  meta: [
+    { name: 'description', content: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密、URL 编码、二维码生成、计算器等开发者与日常实用工具，全部在浏览器本地运行，安全无需注册。' },
+    { property: 'og:title', content: 'MyUtl - 免费在线工具箱 | 90+ 开发者在线工具' },
+    { property: 'og:description', content: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密等开发者工具。' },
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://myutl.com/' },
+  ],
+});
 const { t } = useI18n();
 
 const favoriteTools = computed(() => toolStore.favoriteTools);
@@ -23,6 +33,15 @@ function onUpdateFavoriteTools() {
 
 <template>
   <div class="pt-50px">
+    <!-- SEO H1/H2 - visually styled but semantically present -->
+    <div class="seo-hero">
+      <h1 class="seo-h1">
+        MyUtl — 免费在线工具箱
+      </h1>
+      <h2 class="seo-h2">
+        90+ 开发者工具，全部免费、安全、无需注册，直接在浏览器中运行
+      </h2>
+    </div>
     <div class="grid-wrapper">
       <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
         <ColoredCard v-if="config.showBanner" :title="$t('home.follow.title')" :icon="IconHeart">
@@ -136,5 +155,25 @@ function onUpdateFavoriteTools() {
   font-size: 13px;
   opacity: 0.75;
   text-align: center;
+}
+
+.seo-hero {
+  padding: 0 4px 8px;
+}
+
+.seo-h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  opacity: 0.88;
+  line-height: 1.3;
+}
+
+.seo-h2 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0 0 20px;
+  opacity: 0.55;
+  line-height: 1.6;
 }
 </style>

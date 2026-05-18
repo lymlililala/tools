@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
+import { useRoute } from 'vue-router';
 
-useHead({ title: 'Page not found - IT Tools' });
+const route = useRoute();
+
+// noindex prevents search engines from indexing soft 404 pages
+// This is the standard SPA approach to handle soft 404 SEO
+useHead({
+  title: '页面未找到 - MyUtl',
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'description', content: '抱歉，该页面不存在。请返回首页使用其他工具。' },
+  ],
+});
 </script>
 
 <template>
