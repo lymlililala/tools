@@ -25,6 +25,8 @@ const loading = ref(true)
 const error = ref<string | null>(null)
 const activeCategory = ref('All')
 const searchQuery = ref('')
+const currentPage = ref(1)
+const PAGE_SIZE = 10
 
 // ─── Convert local article format to DbArticle ───────────────────────────────
 function localToDb(a: typeof localArticles[0]): DbArticle {
@@ -40,35 +42,52 @@ function localToDb(a: typeof localArticles[0]): DbArticle {
   }
 }
 
+// ─── Local data fallback ─────────────────────────────────────────────────────
+function useLocalArticles() {
+  articles.value = localArticles.map(localToDb).sort((a, b) =>
+    b.published_at.localeCompare(a.published_at),
+  )
+}
+
 // ─── Fetch from Supabase, fallback to local data ─────────────────────────────
 async function fetchArticles() {
   loading.value = true
   error.value = null
+
+  // Timeout: if Supabase doesn't respond in 5s, fall back to local data
+  const timeout = setTimeout(() => {
+    if (loading.value) {
+      console.warn('Supabase timeout, falling back to local data')
+      useLocalArticles()
+      loading.value = false
+    }
+  }, 5000)
+
   try {
     const { data, error: sbError } = await supabase
       .from('tools_articles')
       .select('id, slug, tool_path, title, description, keywords, category, published_at')
       .order('published_at', { ascending: false })
 
+    clearTimeout(timeout)
+
     if (sbError) {
-      // Table not yet created — use local data as fallback
       console.warn('Supabase unavailable, using local data:', sbError.message)
-      articles.value = localArticles.map(localToDb).sort((a, b) =>
-        b.published_at.localeCompare(a.published_at),
-      )
+      useLocalArticles()
     }
     else {
       articles.value = (data ?? []) as DbArticle[]
-      // If empty (table exists but no data), fallback to local
       if (articles.value.length === 0)
-        articles.value = localArticles.map(localToDb)
+        useLocalArticles()
     }
   }
   catch (e: any) {
+    clearTimeout(timeout)
     console.warn('Supabase fetch failed, using local data:', e)
-    articles.value = localArticles.map(localToDb)
+    useLocalArticles()
   }
   finally {
+    clearTimeout(timeout)
     loading.value = false
   }
 }
@@ -87,7 +106,7 @@ const filteredArticles = computed(() => {
   return articles.value.filter(a => a.category === activeCategory.value)
 })
 
-const displayedArticles = computed(() => {
+const searchedArticles = computed(() => {
   const q = searchQuery.value.trim().toLowerCase()
   if (!q)
     return filteredArticles.value
@@ -96,6 +115,18 @@ const displayedArticles = computed(() => {
     || a.description.toLowerCase().includes(q)
     || (a.keywords ?? []).some((k: string) => k.toLowerCase().includes(q)),
   )
+})
+
+const totalPages = computed(() => Math.ceil(searchedArticles.value.length / PAGE_SIZE))
+
+const displayedArticles = computed(() => {
+  const start = (currentPage.value - 1) * PAGE_SIZE
+  return searchedArticles.value.slice(start, start + PAGE_SIZE)
+})
+
+// Reset to page 1 when filter/search changes
+watch([activeCategory, searchQuery], () => {
+  currentPage.value = 1
 })
 </script>
 
@@ -186,6 +217,25 @@ const displayedArticles = computed(() => {
 
       <div v-else class="no-results">
         No articles found for "{{ searchQuery }}"
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="pagination">
+        <button
+          class="page-btn"
+          :disabled="currentPage === 1"
+          @click="currentPage--"
+        >
+          ← Prev
+        </button>
+        <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+        <button
+          class="page-btn"
+          :disabled="currentPage === totalPages"
+          @click="currentPage++"
+        >
+          Next →
+        </button>
       </div>
     </template>
   </div>
@@ -336,5 +386,42 @@ const displayedArticles = computed(() => {
   padding: 60px;
   opacity: 0.5;
   font-size: 15px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.page-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(128,128,128,0.25);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: inherit;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #6366f1;
+    color: #6366f1;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.page-info {
+  font-size: 14px;
+  opacity: 0.6;
+  min-width: 60px;
+  text-align: center;
 }
 </style>
