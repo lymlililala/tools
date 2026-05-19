@@ -2,7 +2,7 @@
 import type { lib } from 'crypto-js';
 import { MD5, RIPEMD160, SHA1, SHA224, SHA256, SHA3, SHA384, SHA512, enc } from 'crypto-js';
 
-import InputCopyable from '../../components/InputCopyable.vue';
+import { useCopy } from '@/composable/copy';
 import { convertHexToBin } from './hash-text.service';
 import { useQueryParam } from '@/composable/queryParams';
 
@@ -27,52 +27,299 @@ function formatWithEncoding(words: lib.WordArray, encoding: Encoding) {
   if (encoding === 'Bin') {
     return convertHexToBin(words.toString(enc.Hex));
   }
-
   return words.toString(enc[encoding]);
 }
 
 const hashText = (algo: AlgoNames, value: string) => formatWithEncoding(algos[algo](value), encoding.value);
+
+// ── 每行独立复制状态 ────────────────────────────────────────────────────────────
+const copiedAlgo = ref<AlgoNames | null>(null);
+let copiedTimer: ReturnType<typeof setTimeout> | null = null;
+
+async function copyHash(algo: AlgoNames) {
+  const text = hashText(algo, clearText.value);
+  try {
+    await navigator.clipboard.writeText(text);
+  }
+  catch {
+    // legacy fallback
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+  copiedAlgo.value = algo;
+  if (copiedTimer) {
+    clearTimeout(copiedTimer);
+  }
+  copiedTimer = setTimeout(() => {
+    copiedAlgo.value = null;
+  }, 1800);
+}
 </script>
 
 <template>
   <div>
     <c-card>
-      <c-input-text v-model:value="clearText" multiline raw-text placeholder="Your string to hash..." rows="3" autosize autofocus label="Your text to hash:" />
+      <!-- ① 输入框 + 清空按钮 -->
+      <div class="input-wrapper-outer">
+        <label class="input-label">Your text to hash:</label>
+        <div class="textarea-wrap">
+          <textarea
+            v-model="clearText"
+            class="hash-textarea"
+            placeholder="Your string to hash..."
+            rows="3"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+          />
+          <button v-if="clearText" class="clear-btn" title="Clear" @click="clearText = ''">
+            <icon-mdi-close />
+          </button>
+        </div>
+      </div>
 
       <n-divider />
 
+      <!-- ② 编码选择 -->
       <c-select
         v-model:value="encoding"
         mb-4
         label="Digest encoding"
         :options="[
-          {
-            label: 'Binary (base 2)',
-            value: 'Bin',
-          },
-          {
-            label: 'Hexadecimal (base 16)',
-            value: 'Hex',
-          },
-          {
-            label: 'Base64 (base 64)',
-            value: 'Base64',
-          },
-          {
-            label: 'Base64url (base 64 with url safe chars)',
-            value: 'Base64url',
-          },
+          { label: 'Binary (base 2)', value: 'Bin' },
+          { label: 'Hexadecimal (base 16)', value: 'Hex' },
+          { label: 'Base64 (base 64)', value: 'Base64' },
+          { label: 'Base64url (base 64 with url safe chars)', value: 'Base64url' },
         ]"
       />
 
-      <div v-for="algo in algoNames" :key="algo" style="margin: 5px 0">
-        <n-input-group>
-          <n-input-group-label style="flex: 0 0 120px">
+      <!-- ③ Hash 结果列表 -->
+      <div class="hash-list">
+        <div v-for="algo in algoNames" :key="algo" class="hash-row">
+          <!-- 算法名称：固定宽度、加粗 -->
+          <div class="algo-name">
             {{ algo }}
-          </n-input-group-label>
-          <InputCopyable :value="hashText(algo, clearText)" readonly />
-        </n-input-group>
+          </div>
+
+          <!-- Hash 值：等宽字体、超长截断 + Tooltip -->
+          <c-tooltip :tooltip="hashText(algo, clearText)" position="bottom" class="hash-value-wrap">
+            <div class="hash-value">
+              {{ hashText(algo, clearText) }}
+            </div>
+          </c-tooltip>
+
+          <!-- 复制按钮：固定不移位，带 ✓ 切换 -->
+          <button
+            class="copy-btn"
+            :class="{ copied: copiedAlgo === algo }"
+            :title="copiedAlgo === algo ? 'Copied!' : 'Copy'"
+            @click="copyHash(algo)"
+          >
+            <transition name="icon-switch" mode="out-in">
+              <icon-mdi-check v-if="copiedAlgo === algo" key="check" class="copy-icon success" />
+              <icon-mdi-content-copy v-else key="copy" class="copy-icon" />
+            </transition>
+          </button>
+        </div>
       </div>
     </c-card>
   </div>
 </template>
+
+<style scoped lang="less">
+/* ── 输入框区域 ───────────────────────────────────────────────── */
+.input-label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.textarea-wrap {
+  position: relative;
+}
+
+.hash-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 80px;
+  max-height: 320px;
+  resize: vertical;
+  overflow-y: auto;
+  padding: 8px 36px 8px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.6;
+  border-radius: 4px;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  /* 使用 CSS 变量适配深色模式 */
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #5d7cfa;
+  }
+
+  &::placeholder {
+    opacity: 0.45;
+  }
+}
+
+.clear-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: opacity 0.15s;
+  font-size: 16px;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+/* ── Hash 结果列表 ─────────────────────────────────────────────── */
+.hash-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hash-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(128, 128, 128, 0.04);
+  }
+}
+
+/* 算法名称列：固定宽度、加粗、分隔线 */
+.algo-name {
+  flex: 0 0 110px;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-right: 1px solid rgba(128, 128, 128, 0.15);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Hash 值列：等宽字体，超长截断 */
+.hash-value-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+  /* 让 tooltip 包裹整个区域 */
+  display: flex;
+  align-items: center;
+}
+
+.hash-value {
+  flex: 1;
+  padding: 10px 12px;
+  font-family: 'Fira Code', 'Consolas', 'Menlo', 'Monaco', monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 确保不撑破布局 */
+  min-width: 0;
+}
+
+/* 复制按钮：固定宽度，永远可见 */
+.copy-btn {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 100%;
+  min-height: 38px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s, color 0.15s;
+  border-left: 1px solid rgba(128, 128, 128, 0.12);
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &.copied {
+    opacity: 1;
+    color: #22c55e;
+  }
+}
+
+.copy-icon {
+  font-size: 15px;
+}
+
+.copy-icon.success {
+  color: #22c55e;
+}
+
+/* ── 图标切换动画 ─────────────────────────────────────────────── */
+.icon-switch-enter-active,
+.icon-switch-leave-active {
+  transition: all 0.16s ease;
+}
+
+.icon-switch-enter-from {
+  opacity: 0;
+  transform: scale(0.5) rotate(-10deg);
+}
+
+.icon-switch-leave-to {
+  opacity: 0;
+  transform: scale(0.5) rotate(10deg);
+}
+
+/* ── 移动端适配 ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .algo-name {
+    flex: 0 0 80px;
+    font-size: 12px;
+    padding: 8px 8px;
+  }
+
+  .hash-value {
+    font-size: 11px;
+    padding: 8px 8px;
+  }
+
+  .copy-btn {
+    flex: 0 0 32px;
+    width: 32px;
+  }
+}
+</style>
