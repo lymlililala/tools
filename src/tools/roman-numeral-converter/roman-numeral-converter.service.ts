@@ -30,16 +30,18 @@ export function arabicToRoman(num: number) {
   return roman;
 }
 
-const ROMAN_NUMBER_REGEX = /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
+const ROMAN_NUMBER_REGEX = /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
 
 export function isValidRomanNumber(romanNumber: string) {
-  return ROMAN_NUMBER_REGEX.test(romanNumber);
+  if (!romanNumber) return false;
+  return ROMAN_NUMBER_REGEX.test(romanNumber.toUpperCase());
 }
 
 export function romanToArabic(s: string) {
-  if (!isValidRomanNumber(s)) {
+  const upper = s.toUpperCase();
+  if (!isValidRomanNumber(upper)) {
     return null;
   }
   const map: { [key: string]: number } = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
-  return [...s].reduce((r, c, i, s) => (map[s[i + 1]] > map[c] ? r - map[c] : r + map[c]), 0);
+  return [...upper].reduce((r, c, i, arr) => (map[arr[i + 1]] > map[c] ? r - map[c] : r + map[c]), 0);
 }
