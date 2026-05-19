@@ -1,20 +1,30 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core';
+import { useClipboard, useEventListener } from '@vueuse/core';
 import { useStyleStore } from '@/stores/style.store';
 
+const { copy } = useClipboard();
 const event = ref<KeyboardEvent>();
 const ripple = ref(false);
 const styleStore = useStyleStore();
+const copiedLabel = ref('');
 
+// ── 页面加载后自动开始监听，无需先点击 ────────────────────────────────────
+// 使用 document 级监听，页面打开直接按键即可
 useEventListener(document, 'keydown', (e) => {
-  // 避免劫持 Cmd+K 等功能快捷键
-  if (e.metaKey || e.ctrlKey) return;
+  // 避免劫持 Cmd+K / Ctrl+K 等全局快捷键
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') return;
   event.value = e;
   // 触发波纹动画
   ripple.value = false;
   nextTick(() => { ripple.value = true; });
 });
 
+// 波纹动画清除
+watch(ripple, (v) => {
+  if (v) setTimeout(() => { ripple.value = false; }, 600);
+});
+
+// ── 字段数据 ──────────────────────────────────────────────────────────────
 const fields = computed(() => {
   if (!event.value) return [];
   return [
@@ -36,11 +46,16 @@ const fields = computed(() => {
 });
 
 function locationLabel(loc: number) {
-  const map: Record<number, string> = { 0: 'Standard (0)', 1: 'Left (1)', 2: 'Right (2)', 3: 'Numpad (3)' };
+  const map: Record<number, string> = {
+    0: 'Standard (0)',
+    1: 'Left (1)',
+    2: 'Right (2)',
+    3: 'Numpad (3)',
+  };
   return map[loc] ?? String(loc);
 }
 
-// 特殊键的 emoji
+// ── 特殊键显示 ────────────────────────────────────────────────────────────
 const keyEmoji = computed(() => {
   if (!event.value) return null;
   const map: Record<string, string> = {
@@ -56,26 +71,23 @@ const displayKey = computed(() => {
   return keyEmoji.value ?? (event.value.key.length === 1 ? event.value.key.toUpperCase() : event.value.key);
 });
 
-// 波纹动画清除
-watch(ripple, (v) => {
-  if (v) {
-    setTimeout(() => { ripple.value = false; }, 600);
-  }
-});
+// ── 复制反馈 ──────────────────────────────────────────────────────────────
+async function copyField(label: string, value: string) {
+  await copy(value);
+  copiedLabel.value = label;
+  setTimeout(() => { copiedLabel.value = ''; }, 1400);
+}
 </script>
 
 <template>
   <div class="keycode-root" :class="{ dark: styleStore.isDarkTheme }">
-    <!-- 主展示区 -->
+    <!-- ① 主展示区 ────────────────────────────────────────────────────── -->
     <div class="key-stage" :class="{ 'has-key': !!event, rippling: ripple }">
+      <!-- 空状态占位 -->
       <div v-if="!event" class="key-placeholder">
         <div class="placeholder-icon">⌨️</div>
-        <div class="placeholder-text">
-          Press any key on your keyboard
-        </div>
-        <div class="placeholder-hint">
-          Results appear instantly
-        </div>
+        <div class="placeholder-text">Press any key on your keyboard</div>
+        <div class="placeholder-hint">Results appear instantly — no click needed</div>
       </div>
 
       <template v-else>
@@ -101,17 +113,24 @@ watch(ripple, (v) => {
       </template>
     </div>
 
-    <!-- 详细信息卡片 -->
+    <!-- ② 详细信息卡片（带复制反馈）──────────────────────────────────── -->
     <div v-if="event" class="key-details">
-      <div v-for="field in fields" :key="field.label" class="detail-card">
+      <div
+        v-for="field in fields"
+        :key="field.label"
+        class="detail-card"
+        :class="{ copied: copiedLabel === field.label }"
+        @click="copyField(field.label, field.value)"
+      >
         <div class="detail-icon">{{ field.icon }}</div>
         <div class="detail-content">
           <div class="detail-label">{{ field.label }}</div>
           <div class="detail-value">{{ field.value }}</div>
         </div>
-        <button class="copy-btn" :title="`Copy ${field.label}`" @click.stop="() => { navigator.clipboard?.writeText(field.value) }">
-          <icon-mdi-content-copy style="font-size: 13px" />
-        </button>
+        <div class="copy-btn" :title="`Copy ${field.label}`">
+          <icon-mdi-check v-if="copiedLabel === field.label" class="copy-icon success" />
+          <icon-mdi-content-copy v-else class="copy-icon" />
+        </div>
       </div>
     </div>
   </div>
@@ -130,31 +149,35 @@ watch(ripple, (v) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  min-height: 220px;
   border-radius: 16px;
   margin-bottom: 20px;
   overflow: hidden;
   cursor: default;
-  background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(168,85,247,0.06) 100%);
-  border: 1.5px solid rgba(99,102,241,0.15);
+  background: linear-gradient(135deg, rgba(99,102,241,0.07) 0%, rgba(168,85,247,0.07) 100%);
+  border: 1.5px solid rgba(99,102,241,0.2);
+  // 增加轻微投影，提升"可交互"立体感
+  box-shadow: 0 2px 12px rgba(99,102,241,0.07), 0 1px 3px rgba(0,0,0,0.04);
   transition: all 0.2s ease;
 
   &.has-key {
     background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(168,85,247,0.1) 100%);
-    border-color: rgba(99,102,241,0.35);
+    border-color: rgba(99,102,241,0.38);
+    box-shadow: 0 4px 20px rgba(99,102,241,0.12);
   }
 
   &.rippling {
-    border-color: rgba(99,102,241,0.5);
+    border-color: rgba(99,102,241,0.55);
   }
 
   .dark & {
-    background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(168,85,247,0.08) 100%);
-    border-color: rgba(99,102,241,0.2);
+    background: linear-gradient(135deg, rgba(99,102,241,0.09) 0%, rgba(168,85,247,0.09) 100%);
+    border-color: rgba(99,102,241,0.22);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 
     &.has-key {
-      background: linear-gradient(135deg, rgba(99,102,241,0.14) 0%, rgba(168,85,247,0.14) 100%);
-      border-color: rgba(129,140,248,0.4);
+      background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%);
+      border-color: rgba(129,140,248,0.42);
     }
   }
 }
@@ -176,14 +199,8 @@ watch(ripple, (v) => {
 }
 
 @keyframes ripple-out {
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(4); opacity: 0; }
 }
 
 // ─── Key Display ──────────────────────────────────────────────
@@ -201,21 +218,18 @@ watch(ripple, (v) => {
 }
 
 @keyframes pop-in {
-  from {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
 
 .key-code-display {
   font-size: 14px;
-  opacity: 0.55;
+  // 提升对比度：opacity 0.55 → 固定深色，深色模式单独设
+  color: rgba(0, 0, 0, 0.52);
   margin-top: 6px;
   font-family: 'SF Mono', monospace;
+
+  .dark & { color: rgba(255,255,255,0.5); }
 }
 
 .modifier-badges {
@@ -228,10 +242,12 @@ watch(ripple, (v) => {
   padding: 3px 10px;
   border-radius: 20px;
   background: rgba(99,102,241,0.15);
-  color: #6366f1;
+  color: #4f46e5;  // 加深满足 WCAG
   border: 1px solid rgba(99,102,241,0.3);
   font-size: 11px;
   font-weight: 700;
+
+  .dark & { color: #a5b4fc; }
 }
 
 // ─── Placeholder ──────────────────────────────────────────────
@@ -239,28 +255,32 @@ watch(ripple, (v) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  opacity: 0.5;
+  gap: 8px;
 }
 
 .placeholder-icon {
   font-size: 40px;
   animation: float 2.5s ease-in-out infinite;
+  opacity: 0.55;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50%       { transform: translateY(-6px); }
 }
 
 .placeholder-text {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
+  // 提升对比度 - 从极浅灰到可读的深灰
+  color: rgba(0, 0, 0, 0.62);
+  .dark & { color: rgba(255,255,255,0.6); }
 }
 
 .placeholder-hint {
   font-size: 12px;
-  opacity: 0.7;
+  color: rgba(0, 0, 0, 0.42);
+  .dark & { color: rgba(255,255,255,0.35); }
 }
 
 // ─── Detail Cards ─────────────────────────────────────────────
@@ -282,21 +302,29 @@ watch(ripple, (v) => {
   border-radius: 10px;
   border: 1px solid rgba(99,102,241,0.12);
   background: rgba(99,102,241,0.04);
-  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
   animation: slide-up 0.2s ease both;
 
   &:hover {
-    border-color: rgba(99,102,241,0.25);
-    background: rgba(99,102,241,0.07);
+    border-color: rgba(99,102,241,0.28);
+    background: rgba(99,102,241,0.08);
+    transform: translateY(-1px);
+  }
+
+  &:active { transform: translateY(0); }
+
+  &.copied {
+    border-color: rgba(22,163,74,0.35);
+    background: rgba(22,163,74,0.06);
   }
 
   .dark & {
     background: rgba(99,102,241,0.07);
     border-color: rgba(129,140,248,0.15);
 
-    &:hover {
-      border-color: rgba(129,140,248,0.3);
-    }
+    &:hover { border-color: rgba(129,140,248,0.32); background: rgba(99,102,241,0.12); }
+    &.copied { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.07); }
   }
 }
 
@@ -322,8 +350,11 @@ watch(ripple, (v) => {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  opacity: 0.5;
+  // 提升标签对比度 opacity 0.5 → 固定色
+  color: rgba(0, 0, 0, 0.45);
   margin-bottom: 2px;
+
+  .dark & { color: rgba(255,255,255,0.42); }
 }
 
 .detail-value {
@@ -333,13 +364,12 @@ watch(ripple, (v) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #6366f1;
+  color: #4f46e5;  // 加深满足 WCAG（#6366f1 在浅背景下对比度偏弱）
 
-  .dark & {
-    color: #818cf8;
-  }
+  .dark & { color: #818cf8; }
 }
 
+// ─── Copy 按钮 ─────────────────────────────────────────────────
 .copy-btn {
   flex-shrink: 0;
   display: flex;
@@ -347,17 +377,17 @@ watch(ripple, (v) => {
   justify-content: center;
   width: 26px;
   height: 26px;
-  border: none;
   border-radius: 6px;
-  background: transparent;
-  cursor: pointer;
-  opacity: 0.4;
-  transition: opacity 0.15s, background 0.15s;
-  color: inherit;
+  opacity: 0;
+  transition: opacity 0.15s;
 
-  &:hover {
-    opacity: 1;
-    background: rgba(99,102,241,0.1);
-  }
+  .detail-card:hover & { opacity: 0.5; }
+  .detail-card:hover &:hover,
+  .detail-card.copied & { opacity: 1; }
+}
+
+.copy-icon {
+  font-size: 13px;
+  &.success { color: #16a34a; }
 }
 </style>

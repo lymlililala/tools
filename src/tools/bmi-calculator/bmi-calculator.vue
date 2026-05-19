@@ -9,8 +9,14 @@ const weight = ref<number>(65); // kg or lbs
 const heightCm = computed(() => unit.value === 'metric' ? height.value : height.value * 2.54);
 const weightKg = computed(() => unit.value === 'metric' ? weight.value : weight.value * 0.453592);
 
+// 身高/体重的合理边界（公制和英制各自的 min/max）
+const heightMin = computed(() => unit.value === 'metric' ? 50 : 20);
+const heightMax = computed(() => unit.value === 'metric' ? 300 : 118);
+const weightMin = computed(() => unit.value === 'metric' ? 10 : 22);
+const weightMax = computed(() => unit.value === 'metric' ? 500 : 1100);
+
 const bmi = computed(() => {
-  if (!heightCm.value || !weightKg.value) return null;
+  if (!heightCm.value || !weightKg.value || heightCm.value <= 0) return null;
   const heightM = heightCm.value / 100;
   return weightKg.value / (heightM * heightM);
 });
@@ -20,15 +26,16 @@ interface BmiCategory {
   min: number
   max: number
   color: string
+  darkColor: string // 深色模式下降低饱和度的颜色
   textColor: string
 }
 
 const categories: BmiCategory[] = [
-  { key: 'underweight', min: 0, max: 18.5, color: '#60a5fa', textColor: '#1d4ed8' },
-  { key: 'normal', min: 18.5, max: 24, color: '#34d399', textColor: '#065f46' },
-  { key: 'overweight', min: 24, max: 28, color: '#fbbf24', textColor: '#92400e' },
-  { key: 'obese1', min: 28, max: 32, color: '#f97316', textColor: '#7c2d12' },
-  { key: 'obese2', min: 32, max: 999, color: '#f87171', textColor: '#7f1d1d' },
+  { key: 'underweight', min: 0, max: 18.5, color: '#60a5fa', darkColor: '#4a8fd1', textColor: '#1d4ed8' },
+  { key: 'normal', min: 18.5, max: 24, color: '#34d399', darkColor: '#2aaa78', textColor: '#065f46' },
+  { key: 'overweight', min: 24, max: 28, color: '#fbbf24', darkColor: '#c9991a', textColor: '#92400e' },
+  { key: 'obese1', min: 28, max: 32, color: '#f97316', darkColor: '#cc5c0e', textColor: '#7c2d12' },
+  { key: 'obese2', min: 32, max: 999, color: '#f87171', darkColor: '#cc4c4c', textColor: '#7f1d1d' },
 ];
 
 const currentCategory = computed(() => {
@@ -48,7 +55,7 @@ const idealWeightMax = computed(() => {
   return unit.value === 'metric' ? kg : kg / 0.453592;
 });
 
-// BMI 指针位置（0%~100% 对应 BMI 10~40）
+// BMI 指针位置（0%~100% 对应 BMI 10~40），夹住防溢出
 const pointerPercent = computed(() => {
   if (bmi.value === null) return 0;
   const clamped = Math.min(Math.max(bmi.value, 10), 40);
@@ -63,12 +70,36 @@ const unitOptions = computed(() => [
 function formatWeight(val: number) {
   return val.toFixed(1);
 }
+
+// 步进器
+function stepHeight(delta: number) {
+  height.value = Math.min(Math.max((height.value ?? 0) + delta, heightMin.value), heightMax.value);
+}
+function stepWeight(delta: number) {
+  weight.value = Math.min(Math.max((weight.value ?? 0) + delta, weightMin.value), weightMax.value);
+}
+
+// 输入框失焦时夹住边界，防止非法值
+function clampHeight() {
+  if (!height.value || !Number.isFinite(height.value)) {
+    height.value = unit.value === 'metric' ? 170 : 67;
+    return;
+  }
+  height.value = Math.min(Math.max(height.value, heightMin.value), heightMax.value);
+}
+function clampWeight() {
+  if (!weight.value || !Number.isFinite(weight.value)) {
+    weight.value = unit.value === 'metric' ? 65 : 143;
+    return;
+  }
+  weight.value = Math.min(Math.max(weight.value, weightMin.value), weightMax.value);
+}
 </script>
 
 <template>
-  <div style="max-width: 600px; margin: 0 auto">
+  <div class="bmi-wrapper">
     <!-- 单位切换 -->
-    <div flex justify-center mb-4>
+    <div class="unit-switch-row">
       <n-radio-group v-model:value="unit" size="medium">
         <n-radio-button
           v-for="opt in unitOptions"
@@ -79,68 +110,88 @@ function formatWeight(val: number) {
       </n-radio-group>
     </div>
 
-    <c-card mb-4>
-      <n-form label-placement="left" label-width="100">
-        <n-form-item :label="t('tools.bmi-calculator.height')">
-          <n-input-number
-            v-model:value="height"
-            :min="50"
-            :max="unit === 'metric' ? 300 : 120"
-            :step="1"
-            style="width: 100%"
-          >
-            <template #suffix>
-              {{ unit === 'metric' ? 'cm' : 'in' }}
-            </template>
-          </n-input-number>
-        </n-form-item>
-        <n-form-item :label="t('tools.bmi-calculator.weight')">
-          <n-input-number
-            v-model:value="weight"
-            :min="10"
-            :max="unit === 'metric' ? 500 : 1100"
+    <!-- 输入卡片 -->
+    <c-card class="input-card">
+      <!-- 身高 -->
+      <div class="field-row">
+        <label class="field-label" for="bmi-height">{{ t('tools.bmi-calculator.height') }}</label>
+        <div class="field-control">
+          <input
+            id="bmi-height"
+            v-model.number="height"
+            class="num-input"
+            type="number"
+            :min="heightMin"
+            :max="heightMax"
+            :placeholder="unit === 'metric' ? '170' : '67'"
+            @blur="clampHeight"
+          />
+          <span class="field-unit">{{ unit === 'metric' ? 'cm' : 'in' }}</span>
+          <button class="stepper-btn" tabindex="0" aria-label="减少身高" @click="stepHeight(-1)" @keydown.enter.prevent="stepHeight(-1)">
+            −
+          </button>
+          <button class="stepper-btn" tabindex="0" aria-label="增加身高" @click="stepHeight(1)" @keydown.enter.prevent="stepHeight(1)">
+            +
+          </button>
+        </div>
+      </div>
+
+      <div class="field-divider" />
+
+      <!-- 体重 -->
+      <div class="field-row">
+        <label class="field-label" for="bmi-weight">{{ t('tools.bmi-calculator.weight') }}</label>
+        <div class="field-control">
+          <input
+            id="bmi-weight"
+            v-model.number="weight"
+            class="num-input"
+            type="number"
+            :min="weightMin"
+            :max="weightMax"
             :step="0.5"
-            style="width: 100%"
-          >
-            <template #suffix>
-              {{ unit === 'metric' ? 'kg' : 'lbs' }}
-            </template>
-          </n-input-number>
-        </n-form-item>
-      </n-form>
+            :placeholder="unit === 'metric' ? '65' : '143'"
+            @blur="clampWeight"
+          />
+          <span class="field-unit">{{ unit === 'metric' ? 'kg' : 'lbs' }}</span>
+          <button class="stepper-btn" tabindex="0" aria-label="减少体重" @click="stepWeight(-0.5)" @keydown.enter.prevent="stepWeight(-0.5)">
+            −
+          </button>
+          <button class="stepper-btn" tabindex="0" aria-label="增加体重" @click="stepWeight(0.5)" @keydown.enter.prevent="stepWeight(0.5)">
+            +
+          </button>
+        </div>
+      </div>
     </c-card>
 
-    <!-- BMI 结果 -->
-    <c-card v-if="bmi !== null" mb-4>
-      <div text-center mb-4>
-        <div style="font-size: 14px; opacity: 0.6; margin-bottom: 4px">
-          {{ t('tools.bmi-calculator.yourBmi') }}
-        </div>
-        <div
-          style="font-size: 48px; font-weight: 800; line-height: 1"
-          :style="{ color: currentCategory?.color }"
-        >
+    <!-- BMI 结果卡片 -->
+    <c-card v-if="bmi !== null" class="result-card">
+      <!-- 数值 Hero -->
+      <div class="result-hero">
+        <div class="result-label">{{ t('tools.bmi-calculator.yourBmi') }}</div>
+        <div class="result-value" :style="{ color: currentCategory?.color }">
           {{ bmi.toFixed(1) }}
         </div>
-        <div
-          v-if="currentCategory"
-          style="font-size: 18px; font-weight: 600; margin-top: 8px"
-          :style="{ color: currentCategory.color }"
-        >
+        <div v-if="currentCategory" class="result-status" :style="{ color: currentCategory.color }">
           {{ t(`tools.bmi-calculator.${currentCategory.key}`) }}
         </div>
       </div>
 
       <!-- 色条进度条 -->
-      <div class="bmi-bar" mb-2>
+      <div class="bmi-bar">
         <div class="bmi-bar-segments">
-          <div v-for="cat in categories" :key="cat.key" class="bmi-segment" :style="{ background: cat.color, flex: cat.key === 'obese2' ? 1.5 : 1 }" />
+          <div
+            v-for="cat in categories"
+            :key="cat.key"
+            class="bmi-segment"
+            :style="{ background: cat.color, flex: cat.key === 'obese2' ? 1.5 : 1 }"
+          />
         </div>
+        <!-- 指针：严格夹住在 0%~100% 内，不溢出 -->
         <div
           class="bmi-pointer"
-          :style="{ left: `${pointerPercent}%` }"
+          :style="{ left: `${Math.min(Math.max(pointerPercent, 1), 99)}%` }"
         >
-          <div class="bmi-pointer-line" />
           <div class="bmi-pointer-dot" :style="{ background: currentCategory?.color ?? '#888' }" />
         </div>
         <div class="bmi-labels">
@@ -153,14 +204,14 @@ function formatWeight(val: number) {
         </div>
       </div>
 
-      <!-- 分类说明 -->
+      <!-- 分类图例：紧凑 Grid 对齐 -->
       <div class="bmi-categories">
         <div
           v-for="cat in categories"
           :key="cat.key"
           class="bmi-cat-item"
           :class="{ active: currentCategory?.key === cat.key }"
-          :style="currentCategory?.key === cat.key ? { borderColor: cat.color, background: `${cat.color}15` } : {}"
+          :style="currentCategory?.key === cat.key ? { borderColor: cat.color, background: `${cat.color}18` } : {}"
         >
           <div class="bmi-cat-dot" :style="{ background: cat.color }" />
           <span class="bmi-cat-name">{{ t(`tools.bmi-calculator.${cat.key}`) }}</span>
@@ -171,16 +222,16 @@ function formatWeight(val: number) {
       </div>
     </c-card>
 
-    <!-- 理想体重 -->
-    <c-card v-if="heightCm > 0">
-      <template #title>
+    <!-- 理想体重卡片 -->
+    <c-card v-if="heightCm > 0" class="ideal-card">
+      <div class="ideal-title">
         {{ t('tools.bmi-calculator.idealWeight') }}
-      </template>
-      <div style="font-size: 15px; line-height: 2">
-        {{ t('tools.bmi-calculator.idealWeightDesc') }}:
-        <strong>{{ formatWeight(idealWeightMin) }} – {{ formatWeight(idealWeightMax) }} {{ unit === 'metric' ? 'kg' : 'lbs' }}</strong>
       </div>
-      <div style="font-size: 12px; opacity: 0.55; margin-top: 6px">
+      <div class="ideal-body">
+        {{ t('tools.bmi-calculator.idealWeightDesc') }}:
+        <strong class="ideal-range">{{ formatWeight(idealWeightMin) }} – {{ formatWeight(idealWeightMax) }} {{ unit === 'metric' ? 'kg' : 'lbs' }}</strong>
+      </div>
+      <div class="ideal-note">
         {{ t('tools.bmi-calculator.chineseStandard') }}
       </div>
     </c-card>
@@ -188,62 +239,219 @@ function formatWeight(val: number) {
 </template>
 
 <style scoped lang="less">
+/* ── 总容器 ── */
+.bmi-wrapper {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── 单位切换 ── */
+.unit-switch-row {
+  display: flex;
+  justify-content: center;
+}
+
+/* ── 输入卡片 ── */
+.input-card {
+  padding: 0;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  gap: 12px;
+}
+
+.field-label {
+  width: 56px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--n-text-color, #333);
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.field-control {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 数字输入框 */
+.num-input {
+  flex: 1;
+  border: 1.5px solid var(--n-border-color, #e0e0e0);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--n-input-color, #fafafa);
+  color: var(--n-text-color, #222);
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  /* 隐藏 number 步进箭头 */
+  appearance: textfield;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:hover {
+    border-color: var(--n-border-color-hover, #aaa);
+    background: var(--n-input-color-focus, #fff);
+  }
+
+  &:focus {
+    border-color: var(--primary-color, #18a058);
+    box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.14);
+    background: var(--n-input-color-focus, #fff);
+  }
+}
+
+.field-unit {
+  font-size: 13px;
+  color: #888;
+  min-width: 22px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+/* 步进器按钮 */
+.stepper-btn {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--n-border-color, #e0e0e0);
+  border-radius: 6px;
+  background: var(--n-card-color, #fff);
+  color: var(--n-text-color-2, #555);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: var(--primary-color, #18a058);
+    color: var(--primary-color, #18a058);
+    background: rgba(24, 160, 88, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color, #18a058);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.93);
+  }
+}
+
+.field-divider {
+  height: 1px;
+  background: var(--n-divider-color, #f0f0f0);
+  margin: 0 20px;
+}
+
+/* ── 结果卡片 ── */
+.result-hero {
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.result-label {
+  font-size: 13px;
+  color: #777; /* 明确颜色，对比度优于 opacity */
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.result-value {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-status {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* ── 色条 ── */
 .bmi-bar {
   position: relative;
-  margin: 12px 0 24px;
+  margin: 16px 0 28px;
 }
 
 .bmi-bar-segments {
   display: flex;
-  height: 14px;
-  border-radius: 7px;
+  height: 12px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .bmi-segment {
   min-width: 0;
+  // 深色模式下降低饱和度，防止刺眼
+  @media (prefers-color-scheme: dark) {
+    filter: saturate(0.7) brightness(0.85);
+  }
 }
 
+/* 指针 */
 .bmi-pointer {
   position: absolute;
-  top: 0;
+  top: -2px;
   transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   pointer-events: none;
 }
 
 .bmi-pointer-dot {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid white;
-  margin-top: -1px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  border: 2.5px solid #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.28);
+  transition: left 0.3s ease;
 }
 
 .bmi-labels {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  opacity: 0.55;
-  margin-top: 4px;
+  color: #888; /* 明确颜色 */
+  margin-top: 6px;
   padding: 0 2px;
 }
 
+/* ── 分类图例 ── */
 .bmi-categories {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 7px;
+  margin-top: 10px;
 }
 
 .bmi-cat-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 7px;
+  padding: 7px 10px;
   border-radius: 8px;
   border: 1px solid transparent;
   font-size: 13px;
@@ -262,12 +470,68 @@ function formatWeight(val: number) {
 }
 
 .bmi-cat-name {
-  flex: 1;
+  /* 文字不截断 */
 }
 
 .bmi-cat-range {
-  opacity: 0.6;
+  color: #888; /* 明确颜色，替代 opacity */
   font-size: 11px;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ── 理想体重卡片 ── */
+.ideal-card {
+  padding: 16px 20px;
+}
+
+.ideal-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--n-text-color, #333);
+  margin-bottom: 6px;
+}
+
+.ideal-body {
+  font-size: 14px;
+  color: var(--n-text-color-2, #555);
+  line-height: 1.8;
+}
+
+.ideal-range {
+  color: var(--n-text-color, #222);
+}
+
+.ideal-note {
+  font-size: 12px;
+  color: #777; /* 明确颜色，替代 opacity: 0.55 */
+  margin-top: 6px;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 480px) {
+  .bmi-categories {
+    grid-template-columns: 1fr;
+  }
+
+  .field-row {
+    padding: 12px 14px;
+  }
+}
+
+/* ── 深色模式适配 ── */
+:root[data-theme='dark'],
+.dark {
+  .bmi-segment {
+    filter: saturate(0.65) brightness(0.8);
+  }
+
+  .result-label,
+  .bmi-labels,
+  .bmi-cat-range,
+  .ideal-note {
+    color: #aaa;
+  }
 }
 </style>

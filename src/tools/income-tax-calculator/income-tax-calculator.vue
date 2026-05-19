@@ -1,28 +1,62 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import PieChart from '@/components/PieChart.vue';
 
 const { t } = useI18n();
 
-// ====== 输入参数 ======
-const grossSalary = ref<number>(15000); // 税前工资
-const city = ref<string>('beijing'); // 城市（影响社保比例）
+// ─── 输入参数 ──────────────────────────────────────────────────────────────────
+const grossSalaryStr = ref('15000');
+const grossSalary = computed(() => {
+  const n = Number(grossSalaryStr.value.replace(/,/g, ''));
+  return Number.isNaN(n) || n < 0 ? 0 : n;
+});
+
+const city = ref('beijing');
 
 // 专项附加扣除
-const childrenEdu = ref<number>(0); // 子女教育（每月 2000/人）
-const continuingEdu = ref<number>(0); // 继续教育（每月400）
-const housingLoanInterest = ref<number>(0); // 住房贷款利息（每月1000）
-const housingRent = ref<number>(0); // 住房租金（每月 800/1100/1500）
-const elderlySupport = ref<number>(0); // 赡养老人（每月最高3000）
-const childCare = ref<number>(0); // 3岁以下子女照护（每月2000/人）
+const childrenEduStr = ref('0');
+const continuingEduStr = ref('0');
+const housingLoanInterestStr = ref('0');
+const housingRentStr = ref('0');
+const elderlySupportStr = ref('0');
+const childCareStr = ref('0');
 
-// ====== 城市社保比例配置 ======
+function toNum(s: string) {
+  const n = Number(s.replace(/,/g, ''));
+  return Number.isNaN(n) || n < 0 ? 0 : n;
+}
+
+const childrenEdu = computed(() => toNum(childrenEduStr.value));
+const continuingEdu = computed(() => toNum(continuingEduStr.value));
+const housingLoanInterest = computed(() => toNum(housingLoanInterestStr.value));
+const housingRent = computed(() => toNum(housingRentStr.value));
+const elderlySupport = computed(() => toNum(elderlySupportStr.value));
+const childCare = computed(() => toNum(childCareStr.value));
+
+// 社保明细折叠状态
+const showSocialDetail = ref(false);
+// 税率表折叠状态
+const showBrackets = ref(false);
+
+// ─── 重置 ──────────────────────────────────────────────────────────────────────
+function resetAll() {
+  grossSalaryStr.value = '0';
+  childrenEduStr.value = '0';
+  continuingEduStr.value = '0';
+  housingLoanInterestStr.value = '0';
+  housingRentStr.value = '0';
+  elderlySupportStr.value = '0';
+  childCareStr.value = '0';
+}
+
+// ─── 城市社保配置 ──────────────────────────────────────────────────────────────
 interface CityConfig {
   label: string
-  pension: number // 养老保险
-  medical: number // 医疗保险
-  unemployment: number // 失业保险
-  housingFund: number // 公积金
-  medicalExtra: number // 大病医疗额外
+  pension: number
+  medical: number
+  unemployment: number
+  housingFund: number
+  medicalExtra: number
 }
 
 const CITIES: Record<string, CityConfig> = {
@@ -36,38 +70,33 @@ const CITIES: Record<string, CityConfig> = {
 };
 
 const cityOptions = Object.entries(CITIES).map(([value, cfg]) => ({ label: cfg.label, value }));
-
 const cityCfg = computed(() => CITIES[city.value] ?? CITIES.other);
 
-// ====== 五险一金计算 ======
+// ─── 五险一金 ──────────────────────────────────────────────────────────────────
 const socialInsurance = computed(() => {
   const s = grossSalary.value;
-  const pension = s * cityCfg.value.pension; // 养老
-  const medical = s * cityCfg.value.medical + cityCfg.value.medicalExtra; // 医疗（含大病）
-  const unemployment = s * cityCfg.value.unemployment; // 失业
-  const housingFund = s * cityCfg.value.housingFund; // 公积金
+  const pension = s * cityCfg.value.pension;
+  const medical = s * cityCfg.value.medical + cityCfg.value.medicalExtra;
+  const unemployment = s * cityCfg.value.unemployment;
+  const housingFund = s * cityCfg.value.housingFund;
   const total = pension + medical + unemployment + housingFund;
   return { pension, medical, unemployment, housingFund, total };
 });
 
-// ====== 专项附加扣除总额 ======
-const specialDeduction = computed(
-  () => childrenEdu.value + continuingEdu.value + housingLoanInterest.value + housingRent.value + elderlySupport.value + childCare.value,
+// ─── 专项附加扣除 ──────────────────────────────────────────────────────────────
+const specialDeduction = computed(() =>
+  childrenEdu.value + continuingEdu.value + housingLoanInterest.value
+  + housingRent.value + elderlySupport.value + childCare.value,
 );
 
-// ====== 应纳税所得额 ======
-const BASIC_DEDUCTION = 5000; // 基本减除费用
+// ─── 应纳税所得额 ──────────────────────────────────────────────────────────────
+const BASIC_DEDUCTION = 5000;
 const taxableIncome = computed(() =>
   Math.max(0, grossSalary.value - socialInsurance.value.total - BASIC_DEDUCTION - specialDeduction.value),
 );
 
-// ====== 累进税率（2018年新规） ======
-interface TaxBracket {
-  min: number
-  max: number
-  rate: number
-  quick: number
-}
+// ─── 累进税率 ──────────────────────────────────────────────────────────────────
+interface TaxBracket { min: number; max: number; rate: number; quick: number }
 
 const TAX_BRACKETS: TaxBracket[] = [
   { min: 0, max: 3000, rate: 0.03, quick: 0 },
@@ -87,326 +116,633 @@ const taxResult = computed(() => {
   return { tax, rate: bracket.rate, bracket };
 });
 
-// ====== 实发工资 ======
+// ─── 实发工资 & 综合税率 ───────────────────────────────────────────────────────
 const netSalary = computed(() => grossSalary.value - socialInsurance.value.total - taxResult.value.tax);
-
-// ====== 实际综合税率 ======
 const effectiveTaxRate = computed(() => {
   if (grossSalary.value <= 0) return 0;
   return (taxResult.value.tax + socialInsurance.value.total) / grossSalary.value * 100;
 });
 
-function fmt(v: number) {
-  return v.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-// 税率档次标签颜色
-function bracketColor(rate: number) {
-  if (rate <= 0.03) return '#34d399';
-  if (rate <= 0.10) return '#60a5fa';
-  if (rate <= 0.20) return '#fbbf24';
-  if (rate <= 0.25) return '#f97316';
-  if (rate <= 0.30) return '#f87171';
-  if (rate <= 0.35) return '#ef4444';
-  return '#dc2626';
-}
-
-// 饼图：工资构成
-const salaryChartSegments = computed(() => [
-  { label: t('tools.income-tax-calculator.netSalary'), value: netSalary.value, color: '#22c55e' },
-  { label: t('tools.income-tax-calculator.incomeTax'), value: taxResult.value.tax, color: '#f87171' },
-  { label: t('tools.income-tax-calculator.socialInsuranceTotal'), value: socialInsurance.value.total, color: '#f59e0b' },
-]);
-
+// ─── 快捷预设 ──────────────────────────────────────────────────────────────────
 const DEDUCTION_PRESETS = computed(() => [
   { label: t('tools.income-tax-calculator.preset1Child'), key: 'childrenEdu', value: 2000 },
   { label: t('tools.income-tax-calculator.presetRent'), key: 'housingRent', value: 1500 },
   { label: t('tools.income-tax-calculator.presetElderly'), key: 'elderlySupport', value: 3000 },
 ]);
+
+function applyPreset(key: string, value: number) {
+  const map: Record<string, (v: string) => void> = {
+    childrenEdu: v => (childrenEduStr.value = v),
+    housingRent: v => (housingRentStr.value = v),
+    elderlySupport: v => (elderlySupportStr.value = v),
+  };
+  map[key]?.(String(value));
+}
+
+// ─── 格式化 ────────────────────────────────────────────────────────────────────
+function fmt(v: number) {
+  return v.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function bracketColor(rate: number) {
+  if (rate <= 0.03) return '#16a34a';
+  if (rate <= 0.10) return '#2563eb';
+  if (rate <= 0.20) return '#d97706';
+  if (rate <= 0.25) return '#ea580c';
+  if (rate <= 0.30) return '#dc2626';
+  if (rate <= 0.35) return '#b91c1c';
+  return '#7f1d1d';
+}
+
+// ─── 饼图 ──────────────────────────────────────────────────────────────────────
+const salaryChartSegments = computed(() => [
+  { label: t('tools.income-tax-calculator.netSalary'), value: netSalary.value, color: '#22c55e' },
+  { label: t('tools.income-tax-calculator.incomeTax'), value: taxResult.value.tax, color: '#f87171' },
+  { label: t('tools.income-tax-calculator.socialInsuranceTotal'), value: socialInsurance.value.total, color: '#f59e0b' },
+]);
 </script>
 
 <template>
-  <div style="max-width: 820px; margin: 0 auto">
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <!-- 输入区 -->
-      <div flex flex-col gap-4>
-        <c-card>
-          <template #title>
-            {{ t('tools.income-tax-calculator.income') }}
-          </template>
-          <n-form label-placement="left" label-width="120">
-            <n-form-item :label="t('tools.income-tax-calculator.grossSalary')">
-              <n-input-number
-                v-model:value="grossSalary"
-                :min="0"
-                :step="500"
-                style="width: 100%"
-              >
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.city')">
-              <c-select
-                v-model:value="city"
-                :options="cityOptions"
-                style="width: 100%"
-              />
-            </n-form-item>
-          </n-form>
-        </c-card>
-
-        <c-card>
-          <template #title>
-            {{ t('tools.income-tax-calculator.specialDeductions') }}
-            <span style="font-size: 12px; opacity: 0.55; font-weight: 400; margin-left: 8px">
-              {{ t('tools.income-tax-calculator.optional') }}
-            </span>
-          </template>
-
-          <div flex flex-wrap gap-2 mb-3>
-            <n-button
-              v-for="preset in DEDUCTION_PRESETS"
-              :key="preset.key"
-              size="tiny"
-              @click="(preset.key === 'childrenEdu' ? (childrenEdu = preset.value) : preset.key === 'housingRent' ? (housingRent = preset.value) : (elderlySupport = preset.value))"
-            >
-              {{ preset.label }}
-            </n-button>
+  <div class="itc-root">
+    <div class="itc-grid">
+      <!-- ═══════════ 左栏：输入 ═══════════════════════════════════════════════ -->
+      <div class="col-input">
+        <!-- 基本收入 -->
+        <div class="itc-card">
+          <div class="card-hd">
+            <span class="card-title">{{ t('tools.income-tax-calculator.income') }}</span>
+            <button class="reset-btn" :title="'重置所有输入'" @click="resetAll">
+              <icon-mdi-refresh />
+              重置
+            </button>
           </div>
 
-          <n-form label-placement="left" label-width="130" :show-feedback="false">
-            <n-form-item :label="t('tools.income-tax-calculator.childrenEdu')">
-              <n-input-number v-model:value="childrenEdu" :min="0" :step="2000" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.childCare')" mt-2>
-              <n-input-number v-model:value="childCare" :min="0" :step="2000" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.continuingEdu')" mt-2>
-              <n-input-number v-model:value="continuingEdu" :min="0" :max="400" :step="400" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.housingLoan')" mt-2>
-              <n-input-number v-model:value="housingLoanInterest" :min="0" :max="1000" :step="1000" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.housingRent')" mt-2>
-              <n-input-number v-model:value="housingRent" :min="0" :max="1500" :step="500" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-            <n-form-item :label="t('tools.income-tax-calculator.elderlySupport')" mt-2>
-              <n-input-number v-model:value="elderlySupport" :min="0" :max="3000" :step="1000" style="width: 100%">
-                <template #suffix>
-                  {{ t('tools.income-tax-calculator.yuanPerMonth') }}
-                </template>
-              </n-input-number>
-            </n-form-item>
-          </n-form>
-        </c-card>
+          <!-- 税前月薪 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.grossSalary') }}</label>
+            <div class="fi-wrap">
+              <input
+                v-model="grossSalaryStr"
+                class="fi"
+                type="text"
+                inputmode="numeric"
+                placeholder="15,000"
+                data-test-id="grossSalary"
+              >
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+
+          <!-- 社保城市 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.city') }}</label>
+            <select v-model="city" class="fi fi-select">
+              <option v-for="opt in cityOptions" :key="opt.value" :value="opt.value">
+                {{ opt.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 专项附加扣除 -->
+        <div class="itc-card">
+          <div class="card-hd">
+            <span class="card-title">{{ t('tools.income-tax-calculator.specialDeductions') }}</span>
+            <span class="card-opt">{{ t('tools.income-tax-calculator.optional') }}</span>
+          </div>
+
+          <!-- 快捷预设 -->
+          <div class="preset-row">
+            <button
+              v-for="preset in DEDUCTION_PRESETS"
+              :key="preset.key"
+              class="preset-chip"
+              @click="applyPreset(preset.key, preset.value)"
+            >
+              {{ preset.label }}
+            </button>
+          </div>
+
+          <!-- 子女教育 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.childrenEdu') }}</label>
+            <div class="fi-wrap">
+              <input v-model="childrenEduStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+          <!-- 3岁以下子女照护 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.childCare') }}</label>
+            <div class="fi-wrap">
+              <input v-model="childCareStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+          <!-- 继续教育 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.continuingEdu') }}</label>
+            <div class="fi-wrap">
+              <input v-model="continuingEduStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+          <!-- 住房贷款利息 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.housingLoan') }}</label>
+            <div class="fi-wrap">
+              <input v-model="housingLoanInterestStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+          <!-- 住房租金 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.housingRent') }}</label>
+            <div class="fi-wrap">
+              <input v-model="housingRentStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+          <!-- 赡养老人 -->
+          <div class="field">
+            <label class="fl">{{ t('tools.income-tax-calculator.elderlySupport') }}</label>
+            <div class="fi-wrap">
+              <input v-model="elderlySupportStr" class="fi" type="text" inputmode="numeric" placeholder="0">
+              <span class="fi-suffix">元 / 月</span>
+            </div>
+          </div>
+
+          <!-- 专项合计提示 -->
+          <div v-if="specialDeduction > 0" class="deduction-total">
+            专项附加扣除合计：<strong>¥ {{ fmt(specialDeduction) }}</strong> / 月
+          </div>
+        </div>
       </div>
 
-      <!-- 结果区 -->
-      <div flex flex-col gap-4>
+      <!-- ═══════════ 右栏：结果 ═══════════════════════════════════════════════ -->
+      <div class="col-result">
         <!-- 核心结果卡 -->
-        <c-card>
-          <template #title>
+        <div class="itc-card">
+          <div class="card-title card-title--sm">
             {{ t('tools.income-tax-calculator.result') }}
-          </template>
+          </div>
 
-          <div class="result-highlight">
+          <!-- 实发工资（Hero） -->
+          <div class="hero-block">
+            <div class="hero-label">
+              {{ t('tools.income-tax-calculator.netSalary') }}
+            </div>
+            <div class="hero-val">
+              ¥ {{ fmt(netSalary) }}
+            </div>
+            <div class="hero-sub">
+              综合税率（个税 + 社保）<strong>{{ effectiveTaxRate.toFixed(1) }}%</strong>
+            </div>
+          </div>
+
+          <!-- 结果明细行 -->
+          <div class="res-rows">
             <div class="res-row">
-              <span class="res-label">{{ t('tools.income-tax-calculator.taxableIncome') }}</span>
-              <span class="res-val">¥ {{ fmt(taxableIncome) }}</span>
+              <span class="res-lbl">{{ t('tools.income-tax-calculator.taxableIncome') }}</span>
+              <span class="res-num">¥ {{ fmt(taxableIncome) }}</span>
             </div>
             <div class="res-row">
-              <span class="res-label">{{ t('tools.income-tax-calculator.taxBracket') }}</span>
-              <span class="res-badge" :style="{ background: `${bracketColor(taxResult.rate)}20`, color: bracketColor(taxResult.rate) }">
+              <span class="res-lbl">{{ t('tools.income-tax-calculator.taxBracket') }}</span>
+              <span
+                class="res-badge"
+                :style="{ background: `${bracketColor(taxResult.rate)}18`, color: bracketColor(taxResult.rate), border: `1px solid ${bracketColor(taxResult.rate)}40` }"
+              >
                 {{ (taxResult.rate * 100).toFixed(0) }}%
               </span>
             </div>
             <div class="res-row">
-              <span class="res-label">{{ t('tools.income-tax-calculator.incomeTax') }}</span>
-              <span class="res-val danger">¥ {{ fmt(taxResult.tax) }}</span>
+              <span class="res-lbl">{{ t('tools.income-tax-calculator.incomeTax') }}</span>
+              <span class="res-num res-num--red">¥ {{ fmt(taxResult.tax) }}</span>
             </div>
             <div class="res-row">
-              <span class="res-label">{{ t('tools.income-tax-calculator.socialInsuranceTotal') }}</span>
-              <span class="res-val danger">¥ {{ fmt(socialInsurance.total) }}</span>
-            </div>
-            <n-divider style="margin: 10px 0" />
-            <div class="res-row big">
-              <span class="res-label bold">{{ t('tools.income-tax-calculator.netSalary') }}</span>
-              <span class="res-val primary bold">¥ {{ fmt(netSalary) }}</span>
-            </div>
-            <div class="res-row">
-              <span class="res-label">{{ t('tools.income-tax-calculator.effectiveRate') }}</span>
-              <span class="res-val">{{ effectiveTaxRate.toFixed(1) }}%</span>
+              <span class="res-lbl">{{ t('tools.income-tax-calculator.socialInsuranceTotal') }}</span>
+              <span class="res-num res-num--amber">¥ {{ fmt(socialInsurance.total) }}</span>
             </div>
           </div>
-        </c-card>
+        </div>
 
-        <!-- 社保明细 -->
-        <c-card>
-          <template #title>
-            {{ t('tools.income-tax-calculator.socialInsuranceDetail') }}
-          </template>
-          <div class="detail-table">
-            <div class="dt-row">
-              <span>{{ t('tools.income-tax-calculator.pension') }}</span>
-              <span>{{ (cityCfg.pension * 100).toFixed(1) }}%</span>
-              <span>¥ {{ fmt(socialInsurance.pension) }}</span>
+        <!-- 五险一金明细（折叠） -->
+        <div class="itc-card">
+          <button class="collapse-hd" @click="showSocialDetail = !showSocialDetail">
+            <span class="card-title card-title--sm">{{ t('tools.income-tax-calculator.socialInsuranceDetail') }}</span>
+            <icon-mdi-chevron-down class="collapse-chevron" :class="{ 'collapse-chevron--open': showSocialDetail }" />
+          </button>
+          <transition name="accordion">
+            <div v-if="showSocialDetail" class="dt-table">
+              <div class="dt-row">
+                <span class="dt-name">{{ t('tools.income-tax-calculator.pension') }}</span>
+                <span class="dt-rate">{{ (cityCfg.pension * 100).toFixed(1) }}%</span>
+                <span class="dt-val">¥ {{ fmt(socialInsurance.pension) }}</span>
+              </div>
+              <div class="dt-row">
+                <span class="dt-name">{{ t('tools.income-tax-calculator.medical') }}</span>
+                <span class="dt-rate">{{ (cityCfg.medical * 100).toFixed(1) }}%+{{ cityCfg.medicalExtra }}</span>
+                <span class="dt-val">¥ {{ fmt(socialInsurance.medical) }}</span>
+              </div>
+              <div class="dt-row">
+                <span class="dt-name">{{ t('tools.income-tax-calculator.unemployment') }}</span>
+                <span class="dt-rate">{{ (cityCfg.unemployment * 100).toFixed(1) }}%</span>
+                <span class="dt-val">¥ {{ fmt(socialInsurance.unemployment) }}</span>
+              </div>
+              <div class="dt-row">
+                <span class="dt-name">{{ t('tools.income-tax-calculator.housingFund') }}</span>
+                <span class="dt-rate">{{ (cityCfg.housingFund * 100).toFixed(0) }}%</span>
+                <span class="dt-val">¥ {{ fmt(socialInsurance.housingFund) }}</span>
+              </div>
+              <div class="dt-row dt-row--total">
+                <span class="dt-name">{{ t('tools.income-tax-calculator.total') }}</span>
+                <span />
+                <span class="dt-val">¥ {{ fmt(socialInsurance.total) }}</span>
+              </div>
             </div>
-            <div class="dt-row">
-              <span>{{ t('tools.income-tax-calculator.medical') }}</span>
-              <span>{{ (cityCfg.medical * 100).toFixed(1) }}%+{{ cityCfg.medicalExtra }}</span>
-              <span>¥ {{ fmt(socialInsurance.medical) }}</span>
-            </div>
-            <div class="dt-row">
-              <span>{{ t('tools.income-tax-calculator.unemployment') }}</span>
-              <span>{{ (cityCfg.unemployment * 100).toFixed(1) }}%</span>
-              <span>¥ {{ fmt(socialInsurance.unemployment) }}</span>
-            </div>
-            <div class="dt-row">
-              <span>{{ t('tools.income-tax-calculator.housingFund') }}</span>
-              <span>{{ (cityCfg.housingFund * 100).toFixed(0) }}%</span>
-              <span>¥ {{ fmt(socialInsurance.housingFund) }}</span>
-            </div>
-            <div class="dt-row total">
-              <span>{{ t('tools.income-tax-calculator.total') }}</span>
-              <span />
-              <span>¥ {{ fmt(socialInsurance.total) }}</span>
-            </div>
-          </div>
-        </c-card>
+          </transition>
+        </div>
 
         <!-- 工资构成饼图 -->
-        <c-card>
-          <template #title>
+        <div class="itc-card">
+          <div class="card-title card-title--sm">
             工资构成
-          </template>
-          <PieChart :segments="salaryChartSegments" :size="160" />
-        </c-card>
-
-        <!-- 税率表 -->
-        <c-card>
-          <template #title>
-            {{ t('tools.income-tax-calculator.taxBrackets') }}
-          </template>
-          <div class="bracket-table">
-            <div
-              v-for="b in TAX_BRACKETS"
-              :key="b.rate"
-              class="bracket-row"
-              :class="{ active: taxResult.bracket === b }"
-              :style="taxResult.bracket === b ? { background: `${bracketColor(b.rate)}12`, borderColor: bracketColor(b.rate) } : {}"
-            >
-              <span class="bracket-range">
-                {{ b.max === Infinity ? `> ¥${(b.min).toLocaleString()}` : `¥${b.min.toLocaleString()} – ¥${b.max.toLocaleString()}` }}
-              </span>
-              <span class="bracket-rate" :style="{ color: bracketColor(b.rate) }">{{ (b.rate * 100).toFixed(0) }}%</span>
-            </div>
           </div>
-        </c-card>
+          <PieChart :segments="salaryChartSegments" :size="150" />
+        </div>
+
+        <!-- 税率表（折叠） -->
+        <div class="itc-card">
+          <button class="collapse-hd" @click="showBrackets = !showBrackets">
+            <span class="card-title card-title--sm">{{ t('tools.income-tax-calculator.taxBrackets') }}</span>
+            <span class="collapse-hint">当前档次：{{ (taxResult.rate * 100).toFixed(0) }}%</span>
+            <icon-mdi-chevron-down class="collapse-chevron" :class="{ 'collapse-chevron--open': showBrackets }" />
+          </button>
+          <transition name="accordion">
+            <div v-if="showBrackets" class="bracket-table">
+              <div
+                v-for="b in TAX_BRACKETS"
+                :key="b.rate"
+                class="bracket-row"
+                :class="{ 'bracket-row--active': taxResult.bracket === b }"
+                :style="taxResult.bracket === b ? { background: `${bracketColor(b.rate)}10`, borderColor: `${bracketColor(b.rate)}40` } : {}"
+              >
+                <span class="bracket-range">
+                  {{ b.max === Infinity ? `> ¥${b.min.toLocaleString()}` : `¥${b.min.toLocaleString()} – ¥${b.max.toLocaleString()}` }}
+                </span>
+                <span v-if="taxResult.bracket === b" class="bracket-cur-tag">当前</span>
+                <span class="bracket-rate" :style="{ color: bracketColor(b.rate) }">
+                  {{ (b.rate * 100).toFixed(0) }}%
+                </span>
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="less">
-.result-highlight {
+/* ── 根容器 & 双栏 ──────────────────────────────────────────── */
+.itc-root {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 4px 0 32px;
+}
+
+.itc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── 卡片 ──────────────────────────────────────────────────── */
+.itc-card {
+  background: var(--n-color, #fff);
+  border: 1px solid var(--n-border-color, rgba(0,0,0,.08));
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  margin-bottom: 16px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+/* ── 卡片头部 ──────────────────────────────────────────────── */
+.card-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--n-border-color, rgba(0,0,0,.07));
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--n-text-color-1, #1a1a1a);
+  letter-spacing: 0.02em;
+
+  &--sm {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--n-text-color-3, #777);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 14px;
+  }
+}
+
+.card-opt {
+  font-size: 11px;
+  color: var(--n-text-color-3, #aaa);
+  font-weight: 400;
+}
+
+/* ── 重置按钮 ──────────────────────────────────────────────── */
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--n-text-color-3, #888);
+  background: transparent;
+  border: 1px solid var(--n-border-color, rgba(0,0,0,.12));
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239,68,68,.06);
+  }
+}
+
+/* ── 字段 ──────────────────────────────────────────────────── */
+.field {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.fl {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--n-text-color-2, #444);
+  text-align: right;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.fi-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--n-border-color, rgba(0,0,0,.15));
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-within {
+    border-color: var(--primary-color, #6366f1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #6366f1) 14%, transparent);
+  }
+}
+
+.fi {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  background: transparent;
+  color: var(--n-text-color-1, #1a1a1a);
+  min-width: 0;
+
+  &-select {
+    width: 100%;
+    border: 1.5px solid var(--n-border-color, rgba(0,0,0,.15));
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+    background: var(--n-color, #fff);
+    color: var(--n-text-color-1, #1a1a1a);
+    cursor: pointer;
+    outline: none;
+    appearance: auto;
+
+    &:focus {
+      border-color: var(--primary-color, #6366f1);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #6366f1) 14%, transparent);
+    }
+  }
+}
+
+.fi-suffix {
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--n-text-color-3, #999);
+  background: var(--n-color-modal, rgba(0,0,0,.03));
+  border-left: 1px solid var(--n-border-color, rgba(0,0,0,.1));
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── 预设快捷按钮 ──────────────────────────────────────────── */
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.preset-chip {
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary-color, #6366f1);
+  background: color-mix(in srgb, var(--primary-color, #6366f1) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #6366f1) 30%, transparent);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: color-mix(in srgb, var(--primary-color, #6366f1) 18%, transparent);
+  }
+}
+
+/* ── 专项扣除合计提示 ──────────────────────────────────────── */
+.deduction-total {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary-color, #6366f1) 7%, transparent);
+  font-size: 12px;
+  color: var(--n-text-color-2, #555);
+
+  strong {
+    color: var(--primary-color, #6366f1);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ── 实发工资 Hero ─────────────────────────────────────────── */
+.hero-block {
+  background: linear-gradient(135deg, rgba(99,102,241,.08) 0%, rgba(99,102,241,.03) 100%);
+  border: 1px solid rgba(99,102,241,.2);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.hero-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--n-text-color-3, #888);
+  margin-bottom: 6px;
+}
+
+.hero-val {
+  font-size: 32px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #6366f1;
+  line-height: 1.2;
+}
+
+.hero-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--n-text-color-3, #888);
+
+  strong {
+    color: var(--n-text-color-2, #555);
+  }
+}
+
+/* ── 结果明细行 ────────────────────────────────────────────── */
+.res-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .res-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
-
-  &.big {
-    font-size: 16px;
-  }
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--n-color-modal, rgba(0,0,0,.025));
+  border: 1px solid var(--n-border-color, rgba(0,0,0,.05));
+  font-size: 13px;
 }
 
-.res-label {
-  opacity: 0.7;
-
-  &.bold {
-    opacity: 1;
-    font-weight: 600;
-  }
+.res-lbl {
+  color: var(--n-text-color-2, #444);
+  font-weight: 500;
 }
 
-.res-val {
-  font-weight: 600;
+.res-num {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--n-text-color-1, #1a1a1a);
 
-  &.primary {
-    color: #6366f1;
-    font-size: 20px;
-  }
-
-  &.danger {
-    color: #f87171;
-  }
-
-  &.bold {
-    font-size: 20px;
-  }
+  &--red { color: #dc2626; }
+  &--amber { color: #d97706; }
 }
 
 .res-badge {
   padding: 2px 10px;
-  border-radius: 12px;
+  border-radius: 20px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.detail-table {
+/* ── 折叠头部 ──────────────────────────────────────────────── */
+.collapse-hd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.collapse-hint {
+  font-size: 11px;
+  color: var(--n-text-color-3, #aaa);
+  margin-left: auto;
+  margin-right: 2px;
+}
+
+.collapse-chevron {
+  color: var(--n-text-color-3, #aaa);
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.25s;
+  margin-left: 2px;
+
+  &--open { transform: rotate(180deg); }
+}
+
+/* ── 社保明细表 ────────────────────────────────────────────── */
+.dt-table {
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .dt-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 12px;
-  font-size: 13px;
-  padding: 5px 6px;
+  grid-template-columns: 1fr 60px auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
   border-radius: 6px;
+  font-size: 13px;
+  color: var(--n-text-color-1, #333);
+  transition: background 0.1s;
 
-  &.total {
-    font-weight: 600;
-    border-top: 1px solid var(--n-border-color);
+  &:hover { background: rgba(0,0,0,.03); }
+
+  &--total {
+    border-top: 1px solid var(--n-border-color, rgba(0,0,0,.08));
     margin-top: 4px;
-    padding-top: 8px;
-  }
-
-  span:last-child {
-    text-align: right;
+    padding-top: 10px;
+    font-weight: 600;
   }
 }
 
+.dt-name { color: var(--n-text-color-2, #444); }
+.dt-rate { font-size: 12px; color: var(--n-text-color-3, #888); text-align: center; }
+.dt-val { font-variant-numeric: tabular-nums; text-align: right; font-weight: 500; }
+
+/* ── 税率表 ────────────────────────────────────────────────── */
 .bracket-table {
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -414,24 +750,69 @@ const DEDUCTION_PRESETS = computed(() => [
 
 .bracket-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
+  gap: 8px;
+  padding: 7px 10px;
   border-radius: 8px;
   border: 1px solid transparent;
   font-size: 12px;
   transition: all 0.15s;
 
-  &.active {
+  &--active {
     font-weight: 600;
   }
+}
+
+.bracket-range {
+  flex: 1;
+  color: var(--n-text-color-2, #444);
+  font-variant-numeric: tabular-nums;
+}
+
+.bracket-cur-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(99,102,241,.15);
+  color: #6366f1;
+  font-weight: 600;
 }
 
 .bracket-rate {
   font-weight: 700;
   font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  min-width: 32px;
+  text-align: right;
 }
 
-.bracket-range {
-  opacity: 0.8;
+/* ── Accordion 动画 ────────────────────────────────────────── */
+.accordion-enter-active,
+.accordion-leave-active {
+  transition: max-height 0.28s ease, opacity 0.22s ease;
+  overflow: hidden;
+  max-height: 600px;
+}
+.accordion-enter-from,
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* ── 响应式 ────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .itc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .col-result { order: 2; }
+  .col-input  { order: 1; }
+
+  .hero-val { font-size: 26px; }
+
+  .field {
+    grid-template-columns: 90px 1fr;
+  }
 }
 </style>

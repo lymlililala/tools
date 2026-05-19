@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { QRCodeErrorCorrectionLevel } from 'qrcode';
 import QRCode from 'qrcode';
-import { useStorage } from '@vueuse/core';
+import { useStorage, useClipboard } from '@vueuse/core';
 import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 import { useStyleStore } from '@/stores/style.store';
 
@@ -16,10 +16,10 @@ const margin = useStorage('qr:margin', 2);   // 边距 (0-10)
 const size = useStorage('qr:size', 300);     // 预览尺寸 px
 
 const errorCorrectionOptions = [
-  { label: 'Low (7%)', value: 'L' },
-  { label: 'Medium (15%)', value: 'M' },
-  { label: 'Quartile (25%)', value: 'Q' },
-  { label: 'High (30%)', value: 'H' },
+  { label: 'L – 低 (7%)', value: 'L', short: 'L' },
+  { label: 'M – 中 (15%)', value: 'M', short: 'M' },
+  { label: 'Q – 较高 (25%)', value: 'Q', short: 'Q' },
+  { label: 'H – 最高 (30%)', value: 'H', short: 'H' },
 ];
 
 // ── 生成二维码 ─────────────────────────────────────────────────
@@ -54,6 +54,30 @@ const { download } = useDownloadFileFromBase64({ source: qrcode, filename: 'qr-c
 // ── 统计 ──────────────────────────────────────────────────────
 const charCount = computed(() => text.value.length);
 const capacityWarning = computed(() => charCount.value > 200);
+
+// ── 前背景色相同警告 ───────────────────────────────────────────
+const sameColorWarning = computed(() => foreground.value.toLowerCase() === background.value.toLowerCase());
+
+// ── 复制图片到剪贴板 ───────────────────────────────────────────
+const copyImgFeedback = ref(false);
+async function copyImage() {
+  if (!qrcode.value) return;
+  try {
+    const blob = await (await fetch(qrcode.value)).blob();
+    await navigator.clipboard.write([
+      new ClipboardItem({ 'image/png': blob }),
+    ]);
+    copyImgFeedback.value = true;
+    setTimeout(() => (copyImgFeedback.value = false), 2000);
+  }
+  catch {
+    // 部分浏览器不支持 clipboard.write，降级为复制 data URL
+    const { copy } = useClipboard({ legacy: true });
+    await copy(qrcode.value);
+    copyImgFeedback.value = true;
+    setTimeout(() => (copyImgFeedback.value = false), 2000);
+  }
+}
 </script>
 
 <template>
@@ -61,13 +85,14 @@ const capacityWarning = computed(() => charCount.value > 200);
     <div class="qr-layout">
       <!-- 左：输入与参数 -->
       <div class="qr-controls">
+        <!-- 内容 -->
         <c-card mb-3>
           <div class="ctrl-label">
-            Content
+            二维码内容
           </div>
           <c-input-text
             v-model:value="text"
-            placeholder="Enter URL, text, or any content…"
+            placeholder="请输入网址、文本或任意内容…"
             multiline
             rows="3"
             raw-text
@@ -76,19 +101,20 @@ const capacityWarning = computed(() => charCount.value > 200);
             mb-1
           />
           <div class="char-count" :class="{ warn: capacityWarning }">
-            {{ charCount }} characters
-            <span v-if="capacityWarning" class="warn-hint">· Large content may reduce scannability</span>
+            {{ charCount }} 字符
+            <span v-if="capacityWarning" class="warn-hint">· 内容过多可能影响扫码识别率</span>
           </div>
         </c-card>
 
+        <!-- 颜色 -->
         <c-card mb-3>
           <div class="ctrl-label">
-            Colors
+            颜色设置
           </div>
           <div class="color-row">
             <div class="color-item">
               <div class="color-field-label">
-                Foreground
+                前景色（码点颜色）
               </div>
               <div class="color-input-wrap">
                 <input v-model="foreground" type="color" class="color-swatch" :title="foreground">
@@ -97,7 +123,7 @@ const capacityWarning = computed(() => charCount.value > 200);
             </div>
             <div class="color-item">
               <div class="color-field-label">
-                Background
+                背景色
               </div>
               <div class="color-input-wrap">
                 <input v-model="background" type="color" class="color-swatch" :title="background">
@@ -105,18 +131,29 @@ const capacityWarning = computed(() => charCount.value > 200);
               </div>
             </div>
           </div>
+          <!-- 前背景色相同警告 -->
+          <transition name="err-slide">
+            <div v-if="sameColorWarning" class="color-warning">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+                <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5" />
+                <path d="M8 5v3M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              前景色与背景色相同，二维码将无法被扫描识别
+            </div>
+          </transition>
         </c-card>
 
-        <c-card mb-3>
+        <!-- 高级设置 -->
+        <c-card>
           <div class="ctrl-label">
-            Settings
+            高级设置
           </div>
 
-          <!-- 错误纠正 -->
+          <!-- 容错率 -->
           <div class="setting-row">
             <div class="setting-label">
-              <span>Error correction</span>
-              <span class="setting-hint">Higher = more damage-tolerant</span>
+              <span>容错率</span>
+              <span class="setting-hint">越高 → 损坏后越易识别</span>
             </div>
             <div class="ec-buttons">
               <button
@@ -124,9 +161,10 @@ const capacityWarning = computed(() => charCount.value > 200);
                 :key="opt.value"
                 class="ec-btn"
                 :class="{ active: errorCorrectionLevel === opt.value }"
+                :title="opt.label"
                 @click="errorCorrectionLevel = opt.value as QRCodeErrorCorrectionLevel"
               >
-                {{ opt.value }}
+                {{ opt.short }}
               </button>
             </div>
           </div>
@@ -134,7 +172,7 @@ const capacityWarning = computed(() => charCount.value > 200);
           <!-- 边距滑块 -->
           <div class="setting-row mt-3">
             <div class="setting-label">
-              <span>Margin</span>
+              <span>白边边距</span>
               <span class="setting-value-badge">{{ margin }}</span>
             </div>
             <input
@@ -150,7 +188,7 @@ const capacityWarning = computed(() => charCount.value > 200);
           <!-- 预览尺寸 -->
           <div class="setting-row mt-3">
             <div class="setting-label">
-              <span>Preview size</span>
+              <span>预览尺寸</span>
               <span class="setting-value-badge">{{ size }}px</span>
             </div>
             <input
@@ -165,17 +203,11 @@ const capacityWarning = computed(() => charCount.value > 200);
         </c-card>
       </div>
 
-      <!-- 右：预览区 -->
+      <!-- 右：预览区（sticky 定位，不随左侧滚动） -->
       <div class="qr-preview-panel">
-        <c-card>
+        <c-card class="preview-card">
           <div class="preview-header">
-            <span class="ctrl-label">Preview</span>
-            <div class="preview-actions">
-              <c-button variant="text" size="small" @click="download">
-                <icon-mdi-download style="margin-right: 4px" />
-                Download PNG
-              </c-button>
-            </div>
+            <span class="ctrl-label">实时预览</span>
           </div>
 
           <div class="qr-preview-wrap" :style="{ background: background }">
@@ -192,20 +224,67 @@ const capacityWarning = computed(() => charCount.value > 200);
               <div class="qr-spinner" />
             </div>
             <div v-else class="qr-empty">
-              Enter content above to generate QR code
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" opacity="0.25">
+                <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+                <rect x="28" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+                <rect x="4" y="28" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+                <rect x="8" y="8" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="32" y="8" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="8" y="32" width="8" height="8" rx="1" fill="currentColor" />
+                <rect x="30" y="30" width="4" height="4" fill="currentColor" />
+                <rect x="37" y="30" width="4" height="4" fill="currentColor" />
+                <rect x="30" y="37" width="4" height="4" fill="currentColor" />
+                <rect x="37" y="37" width="4" height="4" fill="currentColor" />
+              </svg>
+              <span>在左侧输入内容后<br>自动生成二维码</span>
             </div>
           </div>
 
           <!-- 二维码信息 -->
           <div v-if="qrcode" class="qr-meta">
             <span class="meta-item">
-              <icon-mdi-qrcode style="opacity:0.5; font-size:13px" />
-              {{ errorCorrectionLevel }} correction
+              <icon-mdi-qrcode style="font-size:13px" />
+              容错 {{ errorCorrectionLevel }}
             </span>
             <span class="meta-item">
-              <icon-mdi-border-all style="opacity:0.5; font-size:13px" />
-              margin: {{ margin }}
+              <icon-mdi-border-all style="font-size:13px" />
+              边距 {{ margin }}
             </span>
+            <span class="meta-item">
+              <icon-mdi-image-size-select-actual style="font-size:13px" />
+              {{ size }}px
+            </span>
+          </div>
+
+          <!-- 主操作区 -->
+          <div class="preview-cta">
+            <button
+              class="btn-download"
+              :disabled="!qrcode || generating"
+              @click="download"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v13M6 11l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              下载 PNG
+            </button>
+            <button
+              class="btn-copy-img"
+              :class="{ copied: copyImgFeedback }"
+              :disabled="!qrcode || generating"
+              :title="copyImgFeedback ? '已复制！' : '复制图片到剪贴板'"
+              @click="copyImage"
+            >
+              <svg v-if="!copyImgFeedback" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2" />
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2" />
+              </svg>
+              <svg v-else width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {{ copyImgFeedback ? '已复制' : '复制图片' }}
+            </button>
           </div>
         </c-card>
       </div>
@@ -221,13 +300,19 @@ const capacityWarning = computed(() => charCount.value > 200);
 
 .qr-layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 300px;
   gap: 16px;
   align-items: start;
 
-  @media (max-width: 640px) {
+  @media (max-width: 680px) {
     grid-template-columns: 1fr;
   }
+}
+
+// 右侧预览卡片 sticky
+.qr-preview-panel {
+  position: sticky;
+  top: 16px;
 }
 
 .ctrl-label {
@@ -235,20 +320,23 @@ const capacityWarning = computed(() => charCount.value > 200);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  opacity: 0.5;
+  color: #888;
   margin-bottom: 10px;
+
+  .dark & { color: #aaa; }
 }
 
 .char-count {
   font-size: 12px;
-  opacity: 0.45;
+  color: #999;
   text-align: right;
   margin-top: 4px;
 
   &.warn {
     color: #f59e0b;
-    opacity: 0.85;
   }
+
+  .dark & { color: #666; }
 }
 
 .warn-hint {
@@ -270,7 +358,8 @@ const capacityWarning = computed(() => charCount.value > 200);
 
 .color-field-label {
   font-size: 12px;
-  opacity: 0.55;
+  color: #666;
+  .dark & { color: #bbb; }
 }
 
 .color-input-wrap {
@@ -285,7 +374,7 @@ const capacityWarning = computed(() => charCount.value > 200);
   transition: border-color 0.15s;
 
   &:hover {
-    border-color: rgba(99,102,241,0.3);
+    border-color: rgba(99,102,241,0.35);
   }
 }
 
@@ -300,21 +389,40 @@ const capacityWarning = computed(() => charCount.value > 200);
   -webkit-appearance: none;
   flex-shrink: 0;
 
-  &::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-
-  &::-webkit-color-swatch {
-    border: 2px solid rgba(0,0,0,0.12);
-    border-radius: 6px;
-  }
+  &::-webkit-color-swatch-wrapper { padding: 0; }
+  &::-webkit-color-swatch { border: 2px solid rgba(0,0,0,0.12); border-radius: 6px; }
 }
 
 .color-hex {
-  font-family: 'SF Mono', monospace;
+  font-family: 'SF Mono', 'Menlo', monospace;
   font-size: 12px;
   font-weight: 600;
-  opacity: 0.8;
+  color: #444;
+  .dark & { color: #ddd; }
+}
+
+// ── 颜色警告 ──────────────────────────────────────────────────
+.color-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #d97706;
+  padding: 6px 10px;
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.err-slide-enter-active,
+.err-slide-leave-active {
+  transition: opacity 0.2s, transform 0.2s;
+}
+.err-slide-enter-from,
+.err-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 
 // ── 设置行 ─────────────────────────────────────────────────────
@@ -329,11 +437,14 @@ const capacityWarning = computed(() => charCount.value > 200);
   align-items: center;
   justify-content: space-between;
   font-size: 13px;
+  color: #333;
+  .dark & { color: #ddd; }
 }
 
 .setting-hint {
   font-size: 11px;
-  opacity: 0.45;
+  color: #888;
+  .dark & { color: #aaa; }
 }
 
 .setting-value-badge {
@@ -355,25 +466,25 @@ const capacityWarning = computed(() => charCount.value > 200);
   flex: 1;
   padding: 5px 0;
   border-radius: 8px;
-  border: 1.5px solid rgba(99,102,241,0.18);
+  border: 1.5px solid rgba(99,102,241,0.2);
   background: transparent;
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
-  color: inherit;
-  opacity: 0.6;
+  color: #555;
   transition: all 0.15s;
 
+  .dark & { color: #ccc; border-color: rgba(99,102,241,0.25); }
+
   &:hover {
-    border-color: rgba(99,102,241,0.4);
-    opacity: 0.9;
+    border-color: rgba(99,102,241,0.5);
+    color: #6366f1;
   }
 
   &.active {
     background: rgba(99,102,241,0.12);
     border-color: #6366f1;
     color: #6366f1;
-    opacity: 1;
   }
 }
 
@@ -383,7 +494,7 @@ const capacityWarning = computed(() => charCount.value > 200);
   -webkit-appearance: none;
   height: 4px;
   border-radius: 4px;
-  background: rgba(99,102,241,0.2);
+  background: rgba(99,102,241,0.18);
   outline: none;
   cursor: pointer;
 
@@ -396,28 +507,15 @@ const capacityWarning = computed(() => charCount.value > 200);
     cursor: pointer;
     box-shadow: 0 1px 4px rgba(99,102,241,0.4);
     transition: transform 0.1s;
-
-    &:hover {
-      transform: scale(1.2);
-    }
+    &:hover { transform: scale(1.2); }
   }
 }
 
 // ── 预览 ──────────────────────────────────────────────────────
 .preview-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 
-  .ctrl-label {
-    margin-bottom: 0;
-  }
-}
-
-.preview-actions {
-  display: flex;
-  align-items: center;
+  .ctrl-label { margin-bottom: 0; }
 }
 
 .qr-preview-wrap {
@@ -432,7 +530,7 @@ const capacityWarning = computed(() => charCount.value > 200);
 
 .qr-img {
   max-width: 100%;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .qr-loading {
@@ -457,25 +555,123 @@ const capacityWarning = computed(() => charCount.value > 200);
 }
 
 .qr-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   font-size: 13px;
-  opacity: 0.4;
+  color: #aaa;
   text-align: center;
-  padding: 20px;
+  padding: 24px 16px;
+  line-height: 1.6;
+
+  .dark & { color: #555; }
 }
 
 // ── Meta ──────────────────────────────────────────────────────
 .qr-meta {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.5;
+  font-size: 11.5px;
+  color: #888;
+  .dark & { color: #aaa; }
 }
 
 .meta-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+}
+
+// ── CTA 操作区 ────────────────────────────────────────────────
+.preview-cta {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-download {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #6366f1;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+
+  &:hover:not(:disabled) {
+    background: #4f46e5;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: none;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.btn-copy-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  background: transparent;
+  color: #555;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #9ca3af;
+    background: #f3f4f6;
+    color: #222;
+  }
+
+  &.copied {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.08);
+    color: #16a34a;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .dark & {
+    border-color: #444;
+    color: #ccc;
+
+    &:hover:not(:disabled) {
+      border-color: #666;
+      background: #2a2a2a;
+      color: #eee;
+    }
+
+    &.copied {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+    }
+  }
 }
 
 .mt-3 {

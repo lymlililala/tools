@@ -101,8 +101,9 @@ canvas {
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 12px;
+  gap: 8px;
+  font-size: 13px;
+  padding: 3px 0;
 }
 
 .legend-dot {
@@ -114,12 +115,17 @@ canvas {
 
 .legend-label {
   flex: 1;
-  opacity: 0.75;
+  color: var(--n-text-color-2, #555);
+  font-size: 13px;
 }
 
 .legend-pct {
   font-weight: 700;
-  font-family: 'SF Mono', monospace;
-  font-size: 11px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--n-text-color-1, #333);
+  min-width: 40px;
+  text-align: right;
 }
 </style>

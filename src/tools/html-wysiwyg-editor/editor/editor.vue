@@ -23,30 +23,57 @@ tryOnBeforeUnmount(() => {
 </script>
 
 <template>
-  <c-card v-if="editor" important:p0>
-    <MenuBar class="editor-header" :editor="editor" />
-    <n-divider style="margin-top: 0" />
-
-    <div px8 pb6>
+  <div v-if="editor" class="editor-wrap">
+    <!-- 工具栏 -->
+    <div class="toolbar-row">
+      <MenuBar :editor="editor" />
+    </div>
+    <n-divider style="margin: 0" />
+    <!-- 编辑内容区 -->
+    <div class="content-area">
       <EditorContent class="editor-content" :editor="editor" />
     </div>
-  </c-card>
+  </div>
 </template>
+
+<style scoped lang="less">
+.editor-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 300px;
+}
+
+.toolbar-row {
+  padding: 6px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.content-area {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+}
+</style>
 
 <style scoped lang="less">
 ::v-deep(.ProseMirror-focused) {
   outline: none;
 }
-</style>
 
-<style scoped lang="less">
 ::v-deep(.ProseMirror) {
+  min-height: 200px;
+
   > * + * {
     margin-top: 0.75em;
   }
 
   p {
     margin: 0;
+    line-height: 1.6;
   }
 
   ul,
@@ -54,25 +81,22 @@ tryOnBeforeUnmount(() => {
     padding: 0 1rem;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: 1.1;
-  }
+  h1 { font-size: 1.6em; font-weight: 800; line-height: 1.2; }
+  h2 { font-size: 1.35em; font-weight: 700; line-height: 1.2; }
+  h3 { font-size: 1.15em; font-weight: 700; line-height: 1.2; }
+  h4 { font-size: 1em; font-weight: 700; line-height: 1.2; }
 
   code {
     background-color: v-bind('themeVars.codeColor');
-    padding: 2px 4px;
-    border-radius: 5px;
+    padding: 2px 5px;
+    border-radius: 4px;
     font-size: 85%;
+    font-family: 'SF Mono', 'Fira Code', monospace;
   }
 
   pre {
     background: v-bind('themeVars.codeColor');
-    font-family: monospace;
+    font-family: 'SF Mono', 'Fira Code', monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -86,6 +110,8 @@ tryOnBeforeUnmount(() => {
 
   mark {
     background-color: #faf594;
+    border-radius: 2px;
+    padding: 1px 2px;
   }
 
   img {
@@ -94,18 +120,17 @@ tryOnBeforeUnmount(() => {
   }
 
   hr {
-    margin: 1rem 0;
+    border: none;
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    margin: 1.5rem 0;
   }
 
   blockquote {
     padding-left: 1rem;
-    border-left: 2px solid rgba(#0d0d0d, 0.1);
-  }
-
-  hr {
-    border: none;
-    border-top: 2px solid rgba(#0d0d0d, 0.1);
-    margin: 2rem 0;
+    border-left: 3px solid rgba(99, 102, 241, 0.4);
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+    margin-left: 0;
   }
 
   ul[data-type='taskList'] {
