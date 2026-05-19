@@ -449,6 +449,30 @@ tools:
     faq2a: 'IBAN length varies by country from 15 (Norway) to 34 characters. It always starts with a 2-letter country code and 2 check digits.'
     title: IBAN validator and parser
     description: Validate and parse IBAN numbers. Check if an IBAN is valid and get the country, BBAN, if it is a QR-IBAN and the IBAN friendly format.
+    placeholder: Enter an IBAN to check for validity...
+    validate: Validate
+    clear: Clear
+    validExamples: Valid IBAN examples
+    resultTitle: Validation result
+    resultEmpty: Enter an IBAN above to see the result here
+    resultValid: IBAN is valid
+    resultInvalid: IBAN is invalid
+    labelIsValid: Is valid?
+    labelIsQR: Is QR-IBAN?
+    labelErrors: Errors
+    labelCountryCode: Country code
+    labelBBAN: BBAN
+    labelFriendly: IBAN friendly format
+    errNoIBAN: No IBAN provided
+    errNoCountry: Unknown country code
+    errWrongBBANLen: Wrong BBAN length
+    errWrongBBANFmt: Wrong BBAN format
+    errChecksumNaN: Checksum is not a number
+    errWrongChecksum: Wrong IBAN checksum
+    errWrongBranchChecksum: Wrong account bank branch checksum
+    errQRNotAllowed: QR-IBAN not allowed in this context
+    yes: Yes
+    no: No
 
   user-agent-parser:
     step1: 'Step 1: Your current browser User-Agent string is pre-filled automatically.'
@@ -706,6 +730,37 @@ tools:
     faq2a: 'You can determine the country, region, carrier (sometimes), and type (mobile, landline, toll-free, etc.).'
     title: Phone parser and formatter
     description: Parse, validate and format phone numbers. Get information about the phone number, like the country code, type, etc.
+    defaultCountryCode: Default country code
+    phoneNumber: Phone number
+    phonePlaceholder: Enter a phone number
+    invalidPhone: Only digits and valid phone symbols are allowed (+ - ( ) space)
+    resultTitle: Parse result
+    resultEmpty: Enter a phone number to see the parsed result here
+    resultInvalid: Invalid phone number format, please check and try again
+    unknown: Unknown
+    labelCountryCode: Country code (ISO)
+    labelCountryName: Country / Region
+    labelCallingCode: Calling code
+    labelIsValid: Is valid?
+    labelIsPossible: Is possible?
+    labelType: Type
+    labelIntl: International format
+    labelNational: National format
+    labelE164: E.164 format
+    labelRFC3966: RFC3966 format
+    typeMAMobile: Mobile
+    typeFixed: Fixed line
+    typeFixedOrMobile: Fixed line or mobile
+    typePersonal: Personal number
+    typePremium: Premium rate
+    typeShared: Shared cost
+    typeTollFree: Toll free
+    typeUAN: Universal access number
+    typeVoicemail: Voicemail
+    typeVoIP: VoIP
+    typePager: Pager
+    yes: Yes
+    no: No
 
   ipv4-subnet-calculator:
     step1: 'Step 1: Enter an IPv4 address with CIDR notation (e.g. 192.168.1.0/24).'
@@ -1063,6 +1118,10 @@ tools:
     fri: Fri
     sat: Sat
     sun: Sun
+    needAtLeastTwo: Please add at least 2 options to spin
+    needMoreOptions: At least 2 options needed
+    duplicateOption: This option already exists, please enter a different one
+    remove: Remove option
 
   income-tax-calculator:
     step1: 'Step 1: Enter your gross monthly salary.'

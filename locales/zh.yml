@@ -85,14 +85,14 @@ tools:
 
   chronometer:
     step1: '步骤 1：点击「开始」启动计时器。'
-    step2: '步骤 2：点击「分段」记录分段时间。'
-    step3: '步骤 3：点击「停止」暂停，点击「重置」清零。'
+    step2: '步骤 2：计时过程中点击「分段」记录每段时间，主计时器不会中断。'
+    step3: '步骤 3：点击「暂停」暂停计时，点击「继续」恢复，点击「重置」清零所有记录。'
     faq1q: '什么是计时器？'
-    faq1a: '计时器是用于测量经过时间的精密计时设备，常用于体育计时、基准测试和事件计时。'
+    faq1a: '计时器是用于精确测量经过时间的工具，支持毫秒级精度与分段记录，常用于运动计时、性能测试和事件计时等场景。'
     faq2q: '关闭标签页会停止计时吗？'
-    faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。'
+    faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
     title: 计时器
-    description: 监控事物的持续时间。基本上是一种具有简单计时器功能的计时器。
+    description: 简单易用的在线计时器，支持毫秒级精度与分段记录。
   token-generator:
     step1: '步骤 1：选择字符类型——大写字母、小写字母、数字和/或符号。'
     step2: '步骤 2：拖动滑块设置 Token 长度（1–512 个字符）。'
@@ -266,16 +266,16 @@ tools:
     title: Git 备忘录
     description: Git是一种去中心化的版本管理软件。使用此备忘单，您可以快速访问最常见的git命令.
 
-  slugify-string:
-    step1: '步骤 1：输入要转换为 slug 的文本。'
-    step2: '步骤 2：slug 在您输入时实时更新。'
-    step3: '步骤 3：点击「复制」复制结果。'
-    faq1q: '什么是 slug？'
-    faq1a: 'slug 是 URL 友好的字符串，通常为小写字母并用连字符替换空格，用于 URL 路径。'
-    faq2q: '支持非英文字符吗？'
-    faq2a: '支持。工具将重音符号和特殊字符转换为 ASCII 等效字符。'
-    title: 打乱字符串
-    description: 确保字符串 url、文件名和 id 安全。
+slugify-string:
+step1: '步骤 1：输入要转换为 Slug 的原始文本。'
+step2: '步骤 2：Slug 在您输入时实时更新。'
+step3: '步骤 3：点击「复制结果」将 Slug 复制到剪贴板。'
+faq1q: '什么是 Slug？'
+faq1a: 'Slug 是 URL 友好的字符串，通常为小写字母并用连字符替换空格，去除特殊符号，常用于 URL 路径、文件名和 ID。'
+faq2q: '支持非英文字符吗？'
+faq2a: '支持。工具会将重音符号和特殊字符转换为 ASCII 等效字符，例如 é → e，ü → u。'
+title: 生成 URL Slug
+description: 将文本转换为 URL、文件名和 ID 安全的 Slug 字符串。
 
   encryption:
     step1: '步骤 1：选择「加密」或「解密」模式。'
@@ -446,6 +446,30 @@ tools:
     faq2a: 'IBAN 长度因国而异，从 15 位（挪威）到 34 位不等。始终以 2 字母国家代码和 2 位校验位开头。'
     title: IBAN验证器和解析器
     description: 验证和分析IBAN编号。检查IBAN是否有效，并获取国家BBAN，如果它是QR-IBAN和IBAN友好格式。
+    placeholder: 请输入 IBAN 进行验证...
+    validate: 验证
+    clear: 清空
+    validExamples: 有效的 IBAN 示例
+    resultTitle: 验证结果
+    resultEmpty: 在上方输入 IBAN 号码，结果将显示在这里
+    resultValid: IBAN 有效
+    resultInvalid: IBAN 无效
+    labelIsValid: 是否有效
+    labelIsQR: 是否为 QR-IBAN
+    labelErrors: 错误详情
+    labelCountryCode: 国家代码
+    labelBBAN: BBAN（基本银行账号）
+    labelFriendly: 友好格式
+    errNoIBAN: 未提供 IBAN
+    errNoCountry: 无法识别国家代码
+    errWrongBBANLen: BBAN 长度不正确
+    errWrongBBANFmt: BBAN 格式不正确
+    errChecksumNaN: 校验位不是数字
+    errWrongChecksum: IBAN 校验和错误
+    errWrongBranchChecksum: 银行分行校验和错误
+    errQRNotAllowed: 此场景不允许使用 QR-IBAN
+    yes: 是
+    no: 否
 
   user-agent-parser:
     step1: '步骤 1：您当前浏览器的 User-Agent 字符串已自动填入。'
@@ -702,6 +726,37 @@ tools:
     faq2a: '从电话号码可以确定国家、地区、运营商（有时）和类型（移动、座机、免费电话等）。'
     title: 电话分析器和格式化程序
     description: 解析、验证和格式化电话号码。获取有关电话号码的信息，如国家/地区代码、类型等。
+    defaultCountryCode: 默认国家/地区代码
+    phoneNumber: 电话号码
+    phonePlaceholder: 请输入电话号码
+    invalidPhone: 仅支持数字及合法电话符号（+ - ( ) 空格）
+    resultTitle: 解析结果
+    resultEmpty: 输入电话号码后，解析结果将显示在这里
+    resultInvalid: 电话号码格式有误，请检查后重新输入
+    unknown: 未知
+    labelCountryCode: 国家代码（ISO）
+    labelCountryName: 国家/地区名称
+    labelCallingCode: 国际区号
+    labelIsValid: 是否有效
+    labelIsPossible: 是否可能有效
+    labelType: 号码类型
+    labelIntl: 国际格式
+    labelNational: 国内格式
+    labelE164: E.164 格式
+    labelRFC3966: RFC3966 格式
+    typeMAMobile: 移动电话
+    typeFixed: 固定电话
+    typeFixedOrMobile: 固定或移动
+    typePersonal: 个人号码
+    typePremium: 增值服务
+    typeShared: 共享费率
+    typeTollFree: 免费电话
+    typeUAN: 通用接入号
+    typeVoicemail: 语音信箱
+    typeVoIP: 网络电话 (VoIP)
+    typePager: 寻呼机
+    yes: 是
+    no: 否
 
   ipv4-subnet-calculator:
     step1: '步骤 1：输入带 CIDR 表示法的 IPv4 地址（如 192.168.1.0/24）。'
@@ -1059,6 +1114,10 @@ tools:
     fri: 周五
     sat: 周六
     sun: 周日
+    needAtLeastTwo: 请至少添加两个选项才能旋转
+    needMoreOptions: 至少需要 2 个选项
+    duplicateOption: 该选项已存在，请输入不同的内容
+    remove: 删除选项
 
   income-tax-calculator:
     step1: '步骤 1：输入您的税前月薪。'

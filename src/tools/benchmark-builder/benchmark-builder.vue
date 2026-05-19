@@ -48,14 +48,14 @@ const results = computed(() => {
     });
 });
 
-const { copy } = useCopy({ createToast: false });
+const { copy } = useCopy({ createToast: true });
 
 const header = {
-  position: 'Position',
-  title: 'Suite',
-  size: 'Samples',
-  mean: 'Mean',
-  variance: 'Variance',
+  position: '排名',
+  title: '组名',
+  size: '样本数',
+  mean: '均值',
+  variance: '方差',
 };
 
 function copyAsMarkdown() {
@@ -76,71 +76,423 @@ function copyAsBulletList() {
 
   copy(bulletList);
 }
+
+function addSuite() {
+  suites.value.push({ data: [0], title: `Suite ${suites.value.length + 1}` });
+}
+
+function deleteSuite(index: number) {
+  if (suites.value.length <= 1) {
+    return;
+  }
+  suites.value.splice(index, 1);
+}
+
+function resetSuites() {
+  suites.value = [
+    { title: 'Suite 1', data: [] },
+    { title: 'Suite 2', data: [] },
+  ];
+}
 </script>
 
 <template>
-  <n-scrollbar style="flex: 1" x-scrollable>
-    <div mb-5 flex flex-1 flex-nowrap justify-center gap-12px>
-      <div v-for="(suite, index) of suites" :key="index">
-        <c-card style="width: 294px">
-          <c-input-text
-            v-model:value="suite.title"
-            label-position="left"
-            label="Suite name"
-            placeholder="Suite name..."
-            clearable
-          />
+  <div class="benchmark-wrapper">
+    <!-- 卡片区 + 虚线"添加"占位 -->
+    <div class="suites-scroll-wrapper">
+      <div class="suites-row">
+        <!-- 每张 Suite 卡片 -->
+        <div v-for="(suite, index) of suites" :key="index" class="suite-card-wrapper">
+          <c-card class="suite-card">
+            <!-- 标题行 -->
+            <div class="suite-header">
+              <input
+                v-model="suite.title"
+                class="suite-title-input"
+                placeholder="组名..."
+              />
+              <c-tooltip tooltip="删除此组">
+                <button
+                  class="suite-close-btn"
+                  :class="{ disabled: suites.length <= 1 }"
+                  :disabled="suites.length <= 1"
+                  @click="deleteSuite(index)"
+                >
+                  ×
+                </button>
+              </c-tooltip>
+            </div>
 
-          <n-divider />
-          <n-form-item label="Suite values" :show-feedback="false">
-            <DynamicValues v-model:values="suite.data" />
-          </n-form-item>
-        </c-card>
+            <div class="suite-divider" />
 
-        <div flex justify-center>
-          <c-button v-if="suites.length > 1" variant="text" @click="suites.splice(index, 1)">
-            <n-icon :component="Trash" depth="3" mr-2 size="18" />
-            Delete suite
-          </c-button>
-          <c-button
-            variant="text"
-            @click="suites.splice(index + 1, 0, { data: [0], title: `Suite ${suites.length + 1}` })"
-          >
-            <n-icon :component="Plus" depth="3" mr-2 size="18" />
-            Add suite
-          </c-button>
+            <!-- 数值列表 -->
+            <div class="suite-values-section">
+              <span class="suite-values-label">测量值</span>
+              <DynamicValues v-model:values="suite.data" />
+            </div>
+          </c-card>
+        </div>
+
+        <!-- 虚线"添加新组"占位卡片 -->
+        <div class="add-suite-card" @click="addSuite">
+          <n-icon :component="Plus" size="24" class="add-suite-icon" />
+          <span>添加新组</span>
         </div>
       </div>
     </div>
-  </n-scrollbar>
 
-  <div style="flex: 0 0 100%">
-    <div style="max-width: 600px; margin: 0 auto">
-      <div mx-auto max-w-sm flex justify-center gap-3>
-        <c-input-text v-model:value="unit" placeholder="Unit (eg: ms)" label="Unit" label-position="left" mb-4 />
-
-        <c-button
-          @click="
-            suites = [
-              { title: 'Suite 1', data: [] },
-              { title: 'Suite 2', data: [] },
-            ]
-          "
-        >
-          Reset suites
-        </c-button>
+    <!-- 全局控制区 -->
+    <div class="controls-bar">
+      <div class="controls-inner">
+        <div class="unit-control">
+          <span class="control-label">单位</span>
+          <input
+            v-model="unit"
+            class="unit-input"
+            placeholder="如：ms"
+          />
+        </div>
+        <button class="reset-btn" @click="resetSuites">
+          重置所有组
+        </button>
       </div>
+    </div>
 
-      <c-table :data="results" :headers="header" />
+    <!-- 结果表格 -->
+    <div class="results-section">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th class="col-rank">排名</th>
+            <th class="col-suite">组名</th>
+            <th class="col-num">样本数</th>
+            <th class="col-num">均值</th>
+            <th class="col-num">方差</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="row in results"
+            :key="row.title"
+            :class="{ 'row-best': row.position === 1 }"
+          >
+            <td class="col-rank">
+              <span v-if="row.position === 1" class="badge-best">🥇</span>
+              <span v-else>{{ row.position }}</span>
+            </td>
+            <td class="col-suite">{{ row.title }}</td>
+            <td class="col-num">{{ row.size }}</td>
+            <td class="col-num">{{ row.mean }}</td>
+            <td class="col-num">{{ row.variance }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <div mt-5 flex justify-center gap-3>
-        <c-button @click="copyAsMarkdown()">
-          Copy as markdown table
-        </c-button>
-        <c-button @click="copyAsBulletList()">
-          Copy as bullet list
-        </c-button>
-      </div>
+    <!-- 复制按钮 -->
+    <div class="copy-btns">
+      <c-button @click="copyAsMarkdown">
+        复制为 Markdown 表格
+      </c-button>
+      <c-button @click="copyAsBulletList">
+        复制为列表
+      </c-button>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* ── 总容器 ── */
+.benchmark-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 4px;
+}
+
+/* ── 卡片滚动区 ── */
+.suites-scroll-wrapper {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.suites-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  min-width: min-content;
+}
+
+/* ── 单张卡片 ── */
+.suite-card-wrapper {
+  flex: 0 0 auto;
+}
+
+.suite-card {
+  width: 280px;
+}
+
+/* 卡片标题行 */
+.suite-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.suite-title-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid transparent;
+  outline: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--n-text-color, #1a1a1a);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.suite-title-input:hover,
+.suite-title-input:focus {
+  border-bottom-color: var(--primary-color, #18a058);
+  background: rgba(24, 160, 88, 0.04);
+}
+
+/* 关闭按钮 */
+.suite-close-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--n-text-color-3, #999);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.suite-close-btn:hover:not(.disabled) {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.suite-close-btn.disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.suite-divider {
+  height: 1px;
+  background: var(--n-divider-color, #e8e8e8);
+  margin: 10px 0;
+}
+
+.suite-values-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suite-values-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--n-text-color-3, #999);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── 虚线"添加新组"占位 ── */
+.add-suite-card {
+  flex: 0 0 auto;
+  width: 280px;
+  min-height: 100px;
+  border: 2px dashed var(--n-border-color, #ddd);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--n-text-color-3, #aaa);
+  font-size: 14px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.add-suite-card:hover {
+  border-color: var(--primary-color, #18a058);
+  color: var(--primary-color, #18a058);
+  background: rgba(24, 160, 88, 0.04);
+}
+
+.add-suite-icon {
+  opacity: 0.7;
+}
+
+/* ── 全局控制栏 ── */
+.controls-bar {
+  display: flex;
+  justify-content: center;
+}
+
+.controls-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.unit-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 13px;
+  color: var(--n-text-color-3, #888);
+  white-space: nowrap;
+}
+
+.unit-input {
+  width: 140px;
+  padding: 5px 10px;
+  border: 1.5px solid var(--n-border-color, #e0e0e0);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--n-input-color, #fff);
+  color: var(--n-text-color, #333);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.unit-input:hover {
+  border-color: var(--n-border-color-hover, #bbb);
+}
+
+.unit-input:focus {
+  border-color: var(--primary-color, #18a058);
+  box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.12);
+}
+
+.reset-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--n-border-color, #e0e0e0);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--n-card-color, #fff);
+  color: var(--n-text-color-2, #555);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.reset-btn:hover {
+  border-color: #dc3545;
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.05);
+}
+
+/* ── 结果表格 ── */
+.results-section {
+  overflow-x: auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.results-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--n-text-color-3, #999);
+  border-bottom: 1.5px solid var(--n-divider-color, #eee);
+}
+
+.results-table th.col-num,
+.results-table td.col-num {
+  text-align: right;
+}
+
+.results-table td {
+  padding: 10px 12px;
+  color: var(--n-text-color, #333);
+  border-bottom: 1px solid var(--n-divider-color, #f0f0f0);
+}
+
+.results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table tr:hover td {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+/* 最优行高亮 */
+.row-best td {
+  background: rgba(24, 160, 88, 0.06);
+  font-weight: 500;
+}
+
+.row-best:hover td {
+  background: rgba(24, 160, 88, 0.1);
+}
+
+.badge-best {
+  font-size: 16px;
+}
+
+.col-rank {
+  width: 60px;
+  text-align: center;
+}
+
+.col-suite {
+  min-width: 80px;
+}
+
+/* ── 复制按钮区 ── */
+.copy-btns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── 响应式：移动端单列 ── */
+@media (max-width: 600px) {
+  .suites-row {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .suite-card,
+  .add-suite-card {
+    width: 100%;
+  }
+
+  .controls-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .unit-input {
+    width: 100%;
+  }
+}
+</style>

@@ -7,11 +7,33 @@ const font = useStorage('ascii-text-drawer:font', 'Standard');
 const width = useStorage('ascii-text-drawer:width', 80);
 const output = ref('');
 const errored = ref(false);
+const errorReason = ref('');
 const processing = ref(false);
 
 figlet.defaults({ fontPath: '//unpkg.com/figlet@1.6.0/fonts/' });
 
+// 宽度边界值：10 ~ 500
+const WIDTH_MIN = 10;
+const WIDTH_MAX = 500;
+
+function stepWidth(delta: number) {
+  width.value = Math.min(Math.max((width.value ?? WIDTH_MIN) + delta, WIDTH_MIN), WIDTH_MAX);
+}
+function onWidthBlur() {
+  if (!Number.isFinite(width.value) || width.value < WIDTH_MIN) width.value = WIDTH_MIN;
+  if (width.value > WIDTH_MAX) width.value = WIDTH_MAX;
+}
+
 watchEffect(async () => {
+  // 空输入：直接清空，不报错
+  if (!input.value.trim()) {
+    output.value = '';
+    errored.value = false;
+    errorReason.value = '';
+    processing.value = false;
+    return;
+  }
+
   processing.value = true;
   try {
     const options: figlet.Options = {
@@ -22,17 +44,28 @@ watchEffect(async () => {
     output.value = await (new Promise<string>((resolve, reject) =>
       figlet.text(input.value, options,
         (err, text) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-
+          if (err) { reject(err); return; }
           resolve(text ?? '');
         })));
     errored.value = false;
+    errorReason.value = '';
   }
   catch (e: any) {
     errored.value = true;
+    // 尝试给出具体原因
+    const msg: string = e?.message ?? '';
+    if (/font/i.test(msg)) {
+      errorReason.value = '字体文件加载失败，请检查网络连接或更换字体';
+    }
+    else if (/width/i.test(msg) || (width.value ?? 0) < WIDTH_MIN) {
+      errorReason.value = `宽度需在 ${WIDTH_MIN}–${WIDTH_MAX} 之间`;
+    }
+    else if (/unsupported|encoding|non-ascii/i.test(msg)) {
+      errorReason.value = '当前字体不支持该字符（建议使用英文或数字）';
+    }
+    else {
+      errorReason.value = '当前设置无法生成字符画，请尝试更换字体或调整宽度';
+    }
   }
   processing.value = false;
 });
@@ -41,53 +74,378 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
 </script>
 
 <template>
-  <c-card style="max-width: 600px;">
-    <c-input-text
-      v-model:value="input"
-      label="Your text:"
-      placeholder="Your text to draw"
-      raw-text
-      multiline
-      rows="4"
-    />
-
-    <n-divider />
-
-    <n-grid cols="4" x-gap="12" w-full>
-      <n-gi span="2">
-        <c-select
-          v-model:value="font"
-          label-position="top"
-          label="Font:"
-          :options="fonts"
-          searchable="true"
-          placeholder="Select font to use"
+  <div class="atd-wrapper">
+    <c-card class="atd-card">
+      <!-- 输入区 -->
+      <div class="field-block">
+        <label class="field-label" for="atd-input">输入文本</label>
+        <c-input-text
+          id="atd-input"
+          v-model:value="input"
+          placeholder="输入要生成字符画的文本（建议使用英文或数字）"
+          raw-text
+          multiline
+          rows="3"
+          class="atd-input"
         />
-      </n-gi>
-      <n-gi span="2">
-        <n-form-item label="Width:" label-placement="top" label-width="100" :show-feedback="false">
-          <n-input-number v-model:value="width" min="0" max="10000" w-full placeholder="Width of the text" />
-        </n-form-item>
-      </n-gi>
-    </n-grid>
+        <!-- 字段级错误提示（不替换输出区） -->
+        <transition name="slide-down">
+          <div v-if="errored && !processing" class="field-error">
+            <icon-mdi-alert-circle-outline class="error-icon" />
+            {{ errorReason }}
+          </div>
+        </transition>
+      </div>
 
-    <n-divider />
+      <div class="divider" />
 
-    <div v-if="processing" flex items-center justify-center>
-      <n-spin size="medium" />
-      <span class="ml-2">Loading font...</span>
-    </div>
+      <!-- Font + Width 控件行 -->
+      <div class="controls-row">
+        <!-- 字体选择 -->
+        <div class="control-group control-group--font">
+          <label class="field-label">字体</label>
+          <c-select
+            v-model:value="font"
+            :options="fonts"
+            searchable="true"
+            placeholder="选择字体"
+            class="font-select"
+          />
+        </div>
 
-    <c-alert v-if="errored" mt-1 text-center type="error">
-      Current settings resulted in error.
-    </c-alert>
+        <!-- 宽度步进器 -->
+        <div class="control-group control-group--width">
+          <label class="field-label">宽度（{{ WIDTH_MIN }}–{{ WIDTH_MAX }}）</label>
+          <div class="stepper" :class="{ 'stepper--focus': false }">
+            <button
+              class="stepper-btn"
+              :disabled="(width ?? WIDTH_MIN) <= WIDTH_MIN"
+              aria-label="减小宽度"
+              @click="stepWidth(-10)"
+            >
+              −
+            </button>
+            <input
+              v-model.number="width"
+              class="stepper-input"
+              type="number"
+              :min="WIDTH_MIN"
+              :max="WIDTH_MAX"
+              placeholder="80"
+              @blur="onWidthBlur"
+            />
+            <button
+              class="stepper-btn"
+              :disabled="(width ?? 0) >= WIDTH_MAX"
+              aria-label="增大宽度"
+              @click="stepWidth(10)"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
 
-    <n-form-item v-if="!processing && !errored" label="Ascii Art text:">
-      <TextareaCopyable
-        :value="output"
-        mb-1 mt-1
-        copy-placement="outside"
-      />
-    </n-form-item>
-  </c-card>
+      <div class="divider" />
+
+      <!-- 输出区：始终显示，加载/错误/空 三种状态 -->
+      <div class="output-section">
+        <div class="output-header">
+          <label class="field-label">ASCII 字符画预览</label>
+          <!-- 加载指示 -->
+          <div v-if="processing" class="loading-badge">
+            <n-spin :size="12" />
+            <span>加载字体中…</span>
+          </div>
+        </div>
+
+        <div
+          class="output-frame"
+          :class="{
+            'output-frame--loading': processing,
+            'output-frame--error': errored && !processing,
+            'output-frame--empty': !input.trim() && !processing,
+          }"
+        >
+          <TextareaCopyable
+            v-if="!errored && !processing"
+            :value="output"
+            copy-placement="outside"
+            class="atd-output"
+          />
+
+          <!-- 错误状态遮罩 -->
+          <div v-else-if="errored && !processing" class="output-state-overlay">
+            <icon-mdi-alert-circle-outline class="state-icon state-icon--error" />
+            <span>字符画生成失败</span>
+            <span class="state-sub">{{ errorReason }}</span>
+          </div>
+
+          <!-- 加载状态遮罩 -->
+          <div v-else-if="processing" class="output-state-overlay">
+            <n-spin size="large" />
+            <span>正在生成…</span>
+          </div>
+
+          <!-- 空状态 -->
+          <div v-else class="output-state-overlay output-state-overlay--empty">
+            <icon-mdi-text-box-outline class="state-icon state-icon--empty" />
+            <span>在上方输入文本即可生成字符画</span>
+          </div>
+        </div>
+      </div>
+    </c-card>
+  </div>
 </template>
+
+<style scoped>
+/* ── 总容器 ── */
+.atd-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.atd-card {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ── 字段标签 ── */
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+/* ── 输入区 ── */
+.field-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.atd-input {
+  width: 100%;
+}
+
+/* 字段级错误 */
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #dc3545;
+  padding: 5px 8px;
+  background: rgba(220, 53, 69, 0.07);
+  border-radius: 6px;
+  border-left: 3px solid #dc3545;
+}
+
+.error-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* 滑入动画 */
+.slide-down-enter-active { transition: all 0.2s ease; }
+.slide-down-leave-active { transition: all 0.15s ease; }
+.slide-down-enter-from,
+.slide-down-leave-to { opacity: 0; transform: translateY(-4px); }
+
+/* ── 分割线 ── */
+.divider {
+  height: 1px;
+  background: var(--n-divider-color, #f0f0f0);
+  margin: 14px 0;
+}
+
+/* ── 控件行：Font + Width ── */
+.controls-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.control-group--font {
+  flex: 2;
+  min-width: 160px;
+}
+
+.control-group--width {
+  flex: 1;
+  min-width: 140px;
+}
+
+.font-select {
+  width: 100%;
+}
+
+/* ── 自定义步进器 ── */
+.stepper {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--n-border-color, #e0e0e0);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--n-card-color, #fff);
+  transition: border-color 0.2s;
+}
+
+.stepper:focus-within {
+  border-color: var(--primary-color, #18a058);
+  box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.1);
+}
+
+.stepper-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: var(--n-text-color-2, #555);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: rgba(24, 160, 88, 0.08);
+  color: var(--primary-color, #18a058);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.stepper-input {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  border: none;
+  border-left: 1px solid var(--n-border-color, #e8e8e8);
+  border-right: 1px solid var(--n-border-color, #e8e8e8);
+  outline: none;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--n-text-color, #333);
+  background: transparent;
+  padding: 6px 4px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  height: 36px;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ── 输出区 ── */
+.output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loading-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--primary-color, #18a058);
+}
+
+.output-frame {
+  border: 1.5px solid var(--n-border-color, #e8e8e8);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 120px;
+  transition: border-color 0.2s;
+}
+
+.output-frame--error {
+  border-color: rgba(220, 53, 69, 0.3);
+  background: rgba(220, 53, 69, 0.03);
+}
+
+.output-frame--empty {
+  border-style: dashed;
+}
+
+/* 状态遮罩（加载/错误/空） */
+.output-state-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: var(--n-text-color-3, #aaa);
+  font-size: 14px;
+}
+
+.output-state-overlay--empty {
+  color: #ccc;
+}
+
+.state-icon {
+  font-size: 32px;
+}
+
+.state-icon--error {
+  color: #dc3545;
+}
+
+.state-icon--empty {
+  color: #ccc;
+}
+
+.state-sub {
+  font-size: 12px;
+  color: #dc3545;
+  text-align: center;
+}
+
+.atd-output {
+  width: 100%;
+}
+
+/* ── 移动端：Font / Width 上下堆叠 ── */
+@media (max-width: 500px) {
+  .controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .control-group--font,
+  .control-group--width {
+    min-width: 0;
+    flex: none;
+    width: 100%;
+  }
+}
+</style>
