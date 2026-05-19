@@ -12147,4 +12147,430 @@ The -v flag shows full request and response headers. Always include it when debu
 
 → Start with the [URL Parser](/url-parser) to break down any endpoint URL and catch encoding or path mistakes immediately.`,
   },
+
+  // ─── SEO/GEO Batch 2 (2026-05) ─────────────────────────────────────────────
+  {
+    slug: 'what-is-a-slug-url-guide',
+    toolPath: '/slugify-string',
+    title: 'What Is a URL Slug? How Slugs Work and Why They Matter for SEO',
+    description: 'Learn what a slug is in web development, how slugification works, why slugs matter for SEO, and the rules for creating clean, durable URL slugs.',
+    keywords: ['url slug', 'what is a slug', 'slugify', 'seo url', 'url friendly string', 'slug generator'],
+    category: 'Web',
+    publishedAt: '2026-05-19',
+    content: `## What Is a Slug?
+
+A slug is the part of a URL that identifies a specific page in a human-readable, URL-friendly format. It comes after the domain and any path prefixes, and it represents the content's title or subject converted into a form that works safely in a web address.
+
+For a blog post titled "How to Bake Sourdough Bread at Home", the slug would look like this:
+
+\`\`\`
+https://example.com/blog/how-to-bake-sourdough-bread-at-home
+\`\`\`
+
+The slug is: \`how-to-bake-sourdough-bread-at-home\`
+
+## Why Not Just Use the Title Directly?
+
+Raw titles cause several problems in URLs:
+
+**Spaces** — URLs cannot contain spaces. Browsers encode them as \`%20\` or \`+\`, producing ugly URLs like \`how%20to%20bake%20sourdough%20bread\`.
+
+**Special characters** — Punctuation like apostrophes, commas, and question marks must be percent-encoded, making URLs unreadable and hard to copy.
+
+**Uppercase letters** — URLs are technically case-sensitive. \`/About\` and \`/about\` can be treated as different pages by some servers, causing duplicate content issues.
+
+**Non-ASCII characters** — Accented letters, Chinese characters, Arabic script, and emoji all require percent-encoding in URLs. A title like "Über uns" becomes \`%C3%9Cber%20uns\`.
+
+A slug solves all of these by normalizing the text before it goes into the URL.
+
+## How Slugification Works
+
+Converting a string to a slug follows a consistent set of steps:
+
+1. **Lowercase everything** — \`Hello World\` → \`hello world\`
+2. **Normalize unicode** — \`Ü\` → \`u\`, \`é\` → \`e\`, \`ñ\` → \`n\`
+3. **Replace spaces with hyphens** — \`hello world\` → \`hello-world\`
+4. **Remove characters that are not alphanumeric or hyphens** — apostrophes, quotes, slashes, etc.
+5. **Collapse multiple hyphens** — \`hello--world\` → \`hello-world\`
+6. **Trim leading and trailing hyphens** — \`-hello-world-\` → \`hello-world\`
+
+\`\`\`javascript
+// Simple slug function in JavaScript
+function slugify(text) {
+  return text
+    .toString()
+    .normalize('NFKD')               // split accented chars
+    .replace(/[\\u0300-\\u036f]/g, '')  // remove accent marks
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 -]/g, '')     // remove non-alphanumeric
+    .replace(/\\s+/g, '-')            // spaces to hyphens
+    .replace(/-+/g, '-')             // collapse multiple hyphens
+}
+
+slugify('Hello, World! It\\'s a test.')  // → 'hello-world-its-a-test'
+slugify('Ünternehmens-Bericht 2024')    // → 'unternehmens-bericht-2024'
+\`\`\`
+
+Most frameworks (Django, Rails, Laravel, Next.js) include a slugify utility or an equivalent. You rarely need to write this from scratch.
+
+## Slugs and SEO
+
+Slugs have a direct impact on search engine rankings. Here is why:
+
+**Keywords in the URL** — Search engines read URL paths as ranking signals. A URL containing the exact phrase users search for carries more weight than a generic ID like \`/posts/12345\`.
+
+**Readability signals click-through rate** — Users in search results are more likely to click a URL they can read and understand. A slug that mirrors the page title reassures the user they are going to the right place.
+
+**Link sharing** — When someone pastes a URL into a chat or tweet, a meaningful slug communicates the topic without the user needing to click.
+
+**Canonicalization** — If you have multiple URLs that could point to the same content (with trailing slash, without, with query string), a consistent slug structure makes canonical tags and redirects simpler to manage.
+
+## Slug Design Rules
+
+**Use hyphens, not underscores** — Google treats hyphens as word separators. Underscores join words together, so \`my_page\` is read as one word \`mypage\`, while \`my-page\` is read as two words. Use hyphens.
+
+**Keep slugs short but descriptive** — Aim for 3 to 5 meaningful words. \`how-to-format-json-online\` is better than both the full title and a bare \`json\`.
+
+**Avoid stop words when possible** — Words like "a", "an", "the", "and", "of" add length without keyword value. \`python-list-comprehension-guide\` outperforms \`a-guide-to-list-comprehensions-in-python\`.
+
+**Never change a slug once it is live** — Every slug change breaks existing links, loses backlink equity, and creates 404 errors unless you set up permanent redirects. Plan your slug structure before publishing.
+
+**Avoid dates in slugs unless necessary** — Dates make content feel stale and require redirects when you update the article. \`javascript-async-await-guide\` ages better than \`javascript-async-await-guide-2023\`.
+
+## Slugs in Different Platforms
+
+| Platform | Slug behavior |
+|----------|--------------|
+| WordPress | Auto-generated from title, editable before publish |
+| Shopify | Auto-generated for products and collections |
+| Next.js / Nuxt | File-based routing: the filename is the slug |
+| Django | SlugField + prepopulate_fields in admin |
+| Rails | \`FriendlyId\` gem or custom \`to_param\` |
+
+## Common Mistakes
+
+**Using the article ID as the slug** — URLs like \`/blog/4839\` tell search engines nothing about the content. If you must include an ID, append the readable slug: \`/blog/4839-how-to-format-json\`.
+
+**Duplicate slugs** — Two posts with the same slug cause one to overwrite the other or return a 500 error. Always check for uniqueness before saving.
+
+**Changing slugs without redirects** — A changed slug with no 301 redirect creates a 404 and orphans any inbound links. If you must change a slug, set up a permanent redirect immediately.
+
+**Overly long slugs** — Slugs longer than about 60 characters get truncated in search results and are hard to remember. Cut aggressively.
+
+→ Use the [Slugify String Tool](/slugify-string) to convert any title into a clean, URL-safe slug instantly.`,
+  },
+  {
+    slug: 'xml-vs-json-vs-yaml',
+    toolPath: '/json-to-yaml-converter',
+    title: 'XML vs JSON vs YAML: Which Data Format Should You Use?',
+    description: 'A practical comparison of XML, JSON, and YAML — covering syntax, use cases, strengths, and when to choose each format for APIs, config files, and data storage.',
+    keywords: ['xml vs json', 'json vs yaml', 'xml vs yaml', 'data formats comparison', 'when to use json', 'yaml vs json config'],
+    category: 'Development',
+    publishedAt: '2026-05-20',
+    content: `## Three Formats, One Purpose
+
+XML, JSON, and YAML all represent the same thing: structured data as text. They can all express objects (key-value pairs), arrays, strings, numbers, booleans, and null values. The difference is in syntax, verbosity, and the problems each format was designed to solve.
+
+Knowing when to use each one saves time and prevents the kind of architectural decisions that cause pain years later.
+
+## XML: The Verbose Veteran
+
+XML (eXtensible Markup Language) was standardized in 1998. It uses opening and closing tags like HTML:
+
+\`\`\`xml
+<?xml version="1.0" encoding="UTF-8"?>
+<person>
+  <name>Alice</name>
+  <age>30</age>
+  <active>true</active>
+  <roles>
+    <role>admin</role>
+    <role>editor</role>
+  </roles>
+</person>
+\`\`\`
+
+**What XML does well:**
+- Attributes on elements (metadata separate from content)
+- Namespaces (critical for large enterprise systems)
+- Comments that get preserved in the document
+- Schema validation via XSD or DTD
+- XSLT transformations directly on the data
+- Signatures and encryption (XML DSig, XMLENC)
+
+**Where XML struggles:**
+- Verbosity: the closing tags double the line count
+- No distinction between attributes and child elements in most use cases
+- Parsing is slower and libraries are heavier
+- Arrays require a wrapper element by convention (no native array type)
+
+## JSON: The Web Standard
+
+JSON (JavaScript Object Notation), formalized in RFC 7159 (now RFC 8259), became the default data exchange format for REST APIs around 2010. Its syntax maps directly to JavaScript objects and arrays:
+
+\`\`\`json
+{
+  "name": "Alice",
+  "age": 30,
+  "active": true,
+  "roles": ["admin", "editor"]
+}
+\`\`\`
+
+**What JSON does well:**
+- Native arrays — a first-class type with no wrapper required
+- Tight integration with JavaScript (and every modern language)
+- Compact and fast to parse
+- Clear distinction between strings, numbers, and booleans
+- Universally supported — every API client, database, and language handles it
+
+**Where JSON struggles:**
+- No comments — you cannot annotate a JSON file
+- Strict syntax — trailing commas, single quotes, and unquoted keys all cause parse errors
+- No support for binary data (must use Base64)
+- No schema enforcement built in (requires JSON Schema separately)
+- Verbose for config files with many similar repeated values
+
+## YAML: The Human-Friendly Config Format
+
+YAML (YAML Ain't Markup Language) was designed to be the most readable data format for humans. It uses indentation instead of brackets:
+
+\`\`\`yaml
+name: Alice
+age: 30
+active: true
+roles:
+  - admin
+  - editor
+\`\`\`
+
+**What YAML does well:**
+- No brackets, braces, or quotes required for simple strings
+- Comments with \`#\`
+- Multi-line strings are natural
+- Perfect for configuration files that developers read and edit daily
+- Supports references and anchors to avoid repetition (DRY configs)
+- Widely adopted for CI/CD (GitHub Actions, GitLab CI, CircleCI)
+
+**Where YAML struggles:**
+- Indentation-sensitive: a single wrong space breaks the file
+- Type inference can surprise you (Norway Problem: \`NO\` parses as boolean \`false\` in older parsers)
+- Not ideal for API responses — too slow to parse and too ambiguous
+- Anchors and aliases make large files hard to follow
+
+## Direct Comparison
+
+| Property | XML | JSON | YAML |
+|----------|-----|------|------|
+| First appeared | 1998 | 2001 | 2001 |
+| Primary use | Enterprise data, SOAP, documents | REST APIs, data storage | Configuration files |
+| Comments | Yes | No | Yes |
+| Native arrays | No (via convention) | Yes | Yes |
+| Schema validation | XSD, DTD | JSON Schema | No official standard |
+| Binary data | Base64 | Base64 | Base64 |
+| Human readability | Low | Medium | High |
+| Parse speed | Slow | Fast | Medium |
+| Verbosity | High | Medium | Low |
+| Indentation-sensitive | No | No | Yes |
+
+## When to Use Each
+
+**Choose XML when:**
+- Integrating with enterprise systems (SAP, Salesforce, SOAP APIs)
+- You need document-like features: mixed content, namespaces, element attributes
+- Your industry mandates it (healthcare HL7, finance FIX, publishing DocBook)
+- You need XML signatures or encryption
+
+**Choose JSON when:**
+- Building or consuming REST APIs
+- Storing document data in databases like MongoDB or PostgreSQL (JSONB)
+- Sending data between a browser and a server
+- You need maximum language and tooling compatibility
+
+**Choose YAML when:**
+- Writing configuration files for applications, CI/CD pipelines, or infrastructure-as-code
+- Using Kubernetes, Helm, Ansible, or Docker Compose (all YAML-native)
+- The file will be read and edited by humans frequently
+- You want inline comments to document decisions
+
+## Conversion Examples
+
+The same data in all three formats:
+
+\`\`\`xml
+<server>
+  <host>db.example.com</host>
+  <port>5432</port>
+  <ssl>true</ssl>
+</server>
+\`\`\`
+
+\`\`\`json
+{
+  "server": {
+    "host": "db.example.com",
+    "port": 5432,
+    "ssl": true
+  }
+}
+\`\`\`
+
+\`\`\`yaml
+server:
+  host: db.example.com
+  port: 5432
+  ssl: true
+\`\`\`
+
+Notice that YAML is 5 lines vs JSON's 7 vs XML's 8 for the same data. At scale, this difference adds up in both storage and readability.
+
+## Tools for Working with All Three
+
+| Task | Tool |
+|------|------|
+| Convert JSON to YAML | [JSON to YAML Converter](/json-to-yaml-converter) |
+| Convert XML to JSON | [XML to JSON Converter](/xml-to-json) |
+| Format and validate JSON | [JSON Formatter](/json-prettify) |
+| Format and validate XML | [XML Formatter](/xml-formatter) |
+| View and explore YAML | [YAML Viewer](/yaml-prettify) |
+
+→ Use the [JSON to YAML Converter](/json-to-yaml-converter) to switch between formats instantly without rewriting by hand.`,
+  },
+  {
+    slug: 'open-graph-meta-tags-guide',
+    toolPath: '/og-meta-generator',
+    title: 'Open Graph Meta Tags: The Complete Guide for Developers',
+    description: 'Learn how to implement Open Graph and Twitter Card meta tags correctly — title, description, image specs, og:type, locale, and how to debug social previews.',
+    keywords: ['open graph meta tags', 'og meta tags', 'twitter card', 'social media preview', 'og:image', 'meta tag generator'],
+    category: 'Web',
+    publishedAt: '2026-05-21',
+    content: `## What Open Graph Actually Does
+
+When you paste a URL into Slack, LinkedIn, Twitter, or iMessage and a preview card appears — with a title, description, and thumbnail image — that card is built from Open Graph tags. The platform fetches your page, reads specific \`<meta>\` tags in the \`<head>\`, and uses them to generate the preview.
+
+Without Open Graph tags, platforms fall back to guessing: they might pull the first image they find, use the page's \`<title>\` tag, and grab whatever description feels most relevant. The results are unpredictable, often broken, and sometimes embarrassing for a live product.
+
+Open Graph was created by Facebook in 2010 and is now supported by every major social platform and messaging app.
+
+## The Essential Tags
+
+These four tags are the minimum for any page that will be shared:
+
+\`\`\`html
+<meta property="og:title" content="How to Debug API Requests" />
+<meta property="og:description" content="A systematic approach to diagnosing 4xx and 5xx errors, CORS issues, and malformed requests." />
+<meta property="og:image" content="https://example.com/images/debug-api-og.png" />
+<meta property="og:url" content="https://example.com/blog/how-to-debug-api-requests" />
+\`\`\`
+
+**og:title** — The headline of the card. Can differ from the page's \`<title>\` tag. Keep it under 60 characters or it gets truncated on most platforms.
+
+**og:description** — One or two sentences describing the content. Twitter truncates after about 200 characters; LinkedIn after about 300. Be direct and informative.
+
+**og:image** — The thumbnail. This is the most visually impactful tag. Get it right (see image specs below).
+
+**og:url** — The canonical URL of the page. If your site has multiple URLs pointing to the same content, this tells the platform which one to use.
+
+## Image Specifications
+
+The og:image is where most implementations go wrong. Different platforms have different requirements, but these settings work everywhere:
+
+| Property | Recommended value |
+|----------|------------------|
+| Dimensions | 1200 × 630 pixels |
+| Minimum size | 600 × 315 pixels |
+| Maximum file size | 8 MB (aim for under 300 KB) |
+| Format | JPG or PNG (WebP has inconsistent support) |
+| Aspect ratio | 1.91:1 |
+| Text in image | Keep it readable at thumbnail size |
+
+If you do not provide an og:image, most platforms either show no image or pick one at random from the page. Always provide one.
+
+Use an absolute URL including the protocol and domain. A relative path like \`/images/og.png\` will not work.
+
+\`\`\`html
+<!-- Wrong: relative path -->
+<meta property="og:image" content="/images/og-image.png" />
+
+<!-- Correct: absolute URL -->
+<meta property="og:image" content="https://mysite.com/images/og-image.png" />
+\`\`\`
+
+## Twitter Card Tags
+
+Twitter has its own tag system alongside Open Graph. If both are present, Twitter prefers its own tags; if only Open Graph tags are present, Twitter falls back to them. For best results on Twitter, add both:
+
+\`\`\`html
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to Debug API Requests" />
+<meta name="twitter:description" content="A systematic approach to diagnosing 4xx errors, CORS issues, and malformed requests." />
+<meta name="twitter:image" content="https://example.com/images/debug-api-og.png" />
+\`\`\`
+
+**twitter:card** — Controls the card layout. \`summary_large_image\` shows a large image above the text, which performs better for articles and product pages. \`summary\` shows a small thumbnail to the left. Use \`summary_large_image\` for content you want to drive clicks.
+
+Twitter requires the image to be at least 300 × 157 pixels for summary_large_image. The 1200 × 630 image you create for Open Graph works here without modification.
+
+## The og:type Tag
+
+\`og:type\` tells platforms what kind of content the page represents. The default is \`website\`. For articles and blog posts, use \`article\`:
+
+\`\`\`html
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-05-17T09:00:00Z" />
+<meta property="article:author" content="https://example.com/about" />
+\`\`\`
+
+When \`og:type\` is \`article\`, Facebook and LinkedIn display the publication date and use the additional article tags. For product pages, use \`product\`. For videos, use \`video.movie\` or \`video.other\`.
+
+## Locale and Multi-Language Pages
+
+If your site serves multiple languages, add the locale tag and alternate locales:
+
+\`\`\`html
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="zh_CN" />
+<meta property="og:locale:alternate" content="es_ES" />
+\`\`\`
+
+The format is language code underscore region code: \`en_US\`, \`zh_CN\`, \`ja_JP\`. This helps platforms serve the right language to the right audience.
+
+## The Site Name Tag
+
+\`og:site_name\` adds context to the card — it shows the brand name separately from the title:
+
+\`\`\`html
+<meta property="og:site_name" content="MyUtl" />
+\`\`\`
+
+On Facebook and LinkedIn, this appears in a smaller font below or above the title, helping users recognize the source brand.
+
+## Testing Your Tags
+
+After adding or updating Open Graph tags, platforms cache the previous version. You need to use their official debugging tools to clear the cache and preview the new card:
+
+| Platform | Debugging tool |
+|----------|---------------|
+| Facebook | developers.facebook.com/tools/debug |
+| LinkedIn | linkedin.com/post-inspector |
+| Twitter | cards-dev.twitter.com/validator |
+| Slack | Paste URL in any channel to see live preview |
+
+Always test on at least Facebook and Twitter before launching. Even a single broken tag can result in a blank card or placeholder image appearing on thousands of shares.
+
+## Common Mistakes
+
+**Missing og:url** — Without this tag, the canonical URL in social shares is unpredictable. Always set it to the clean, canonical version of the page URL.
+
+**Using a relative image path** — The platform fetches og:image independently from outside your site. Relative paths will not resolve. Always use absolute URLs.
+
+**Too-small images** — A 400 × 200 image will appear blurry or cropped on high-DPI screens. Always use at least 1200 × 630.
+
+**Not refreshing the cache** — After fixing your tags, the platform still shows the old card until you use its debug tool to force a refetch.
+
+**Same og:image for every page** — One generic image works, but per-page images with relevant visuals or text significantly improve click-through rates on shared content.
+
+→ Use the [Meta Tag Generator](/og-meta-generator) to build a complete set of Open Graph and Twitter Card tags without memorizing the syntax.`,
+  },
 ];
