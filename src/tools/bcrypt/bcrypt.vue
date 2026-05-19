@@ -1,68 +1,339 @@
 <script setup lang="ts">
-import { compareSync, hashSync } from 'bcryptjs';
+import { compareSync } from 'bcryptjs';
 import { useThemeVars } from 'naive-ui';
 import { useCopy } from '@/composable/copy';
 
 const themeVars = useThemeVars();
 
+// ── Hash 区域 ──────────────────────────────────────────────────────────────────
 const input = ref('');
 const saltCount = ref(10);
-const hashed = computed(() => hashSync(input.value, saltCount.value));
-const { copy } = useCopy({ source: hashed, text: 'Hashed string copied to the clipboard' });
+const hashed = ref('');
+const isHashing = ref(false);
 
+// Web Worker 实例（Vite 支持 ?worker 语法）
+let worker: Worker | null = null;
+
+function getWorker() {
+  if (!worker) {
+    worker = new Worker(new URL('./bcrypt.worker.ts', import.meta.url), { type: 'module' });
+  }
+  return worker;
+}
+
+// 防抖计时器
+let hashDebounce: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleHash() {
+  if (hashDebounce) {
+    clearTimeout(hashDebounce);
+  }
+  if (!input.value) {
+    hashed.value = '';
+    isHashing.value = false;
+    return;
+  }
+  isHashing.value = true;
+  // 高 salt 值给更长的防抖，避免用户还在调节时频繁触发
+  const delay = saltCount.value >= 13 ? 600 : 300;
+  hashDebounce = setTimeout(() => {
+    const w = getWorker();
+    // 每次重新绑定，只处理最新的结果
+    w.onmessage = (e: MessageEvent<{ result: string | null; error: string | null }>) => {
+      if (e.data.result !== null) {
+        hashed.value = e.data.result;
+      }
+      isHashing.value = false;
+    };
+    w.postMessage({ text: input.value, salt: saltCount.value });
+  }, delay);
+}
+
+watch([input, saltCount], scheduleHash, { immediate: false });
+
+// 初始生成（空输入时不触发）
+onMounted(() => {
+  if (input.value) {
+    scheduleHash();
+  }
+});
+
+onUnmounted(() => {
+  worker?.terminate();
+  worker = null;
+});
+
+// ── 复制 ──────────────────────────────────────────────────────────────────────
+const { copy: copyHash, isJustCopied } = useCopy({ source: hashed, text: 'Hash copied to clipboard' });
+
+// ── Compare 区域 ───────────────────────────────────────────────────────────────
 const compareString = ref('');
 const compareHash = ref('');
-const compareMatch = computed(() => compareSync(compareString.value, compareHash.value));
+
+// 空状态、格式校验、匹配结果
+type CompareState = 'idle' | 'invalid' | 'match' | 'nomatch';
+
+const compareState = computed<CompareState>(() => {
+  if (!compareString.value || !compareHash.value) {
+    return 'idle';
+  }
+  // bcrypt hash 格式基本检查：以 $2a$ / $2b$ / $2y$ 开头，长度 60
+  const isBcryptFormat = /^\$2[aby]\$\d{2}\$.{53}$/.test(compareHash.value.trim());
+  if (!isBcryptFormat) {
+    return 'invalid';
+  }
+  try {
+    return compareSync(compareString.value, compareHash.value.trim()) ? 'match' : 'nomatch';
+  }
+  catch {
+    return 'invalid';
+  }
+});
 </script>
 
 <template>
-  <c-card title="Hash">
-    <c-input-text
-      v-model:value="input"
-      placeholder="Your string to bcrypt..."
-      raw-text
-      label="Your string: "
-      label-position="left"
-      label-align="right"
-      label-width="120px"
-      mb-2
-    />
-    <n-form-item label="Salt count: " label-placement="left" label-width="120">
-      <n-input-number v-model:value="saltCount" placeholder="Salt rounds..." :max="100" :min="0" w-full />
-    </n-form-item>
+  <div class="bcrypt-layout">
+    <!-- ① Hash 卡片 -->
+    <c-card title="Hash" class="bcrypt-card">
+      <c-input-text
+        v-model:value="input"
+        placeholder="Your string to bcrypt..."
+        raw-text
+        label="Your string:"
+        label-position="left"
+        label-align="right"
+        label-width="120px"
+        mb-2
+      />
 
-    <c-input-text :value="hashed" readonly text-center />
-
-    <div mt-5 flex justify-center>
-      <c-button @click="copy()">
-        Copy hash
-      </c-button>
-    </div>
-  </c-card>
-
-  <c-card title="Compare string with hash">
-    <n-form label-width="120">
-      <n-form-item label="Your string: " label-placement="left">
-        <c-input-text v-model:value="compareString" placeholder="Your string to compare..." raw-text />
+      <n-form-item label="Salt count:" label-placement="left" label-width="120" :show-feedback="false" mb-3>
+        <n-input-number v-model:value="saltCount" placeholder="Salt rounds..." :max="20" :min="4" w-full />
       </n-form-item>
-      <n-form-item label="Your hash: " label-placement="left">
-        <c-input-text v-model:value="compareHash" placeholder="Your hash to compare..." raw-text />
-      </n-form-item>
-      <n-form-item label="Do they match ? " label-placement="left" :show-feedback="false">
-        <div class="compare-result" :class="{ positive: compareMatch }">
-          {{ compareMatch ? 'Yes' : 'No' }}
+
+      <!-- 输出框：右侧内嵌复制按钮 -->
+      <div class="hash-output-wrap">
+        <div class="hash-output" :class="{ loading: isHashing }">
+          <span v-if="isHashing" class="hash-placeholder">Computing…</span>
+          <span v-else class="hash-text">{{ hashed }}</span>
         </div>
-      </n-form-item>
-    </n-form>
-  </c-card>
+        <c-tooltip :tooltip="isJustCopied ? 'Copied!' : 'Copy hash'" position="left">
+          <button
+            class="inline-copy-btn"
+            :class="{ copied: isJustCopied }"
+            :disabled="isHashing || !hashed"
+            @click="copyHash()"
+          >
+            <transition name="icon-switch" mode="out-in">
+              <icon-mdi-check v-if="isJustCopied" key="check" class="copy-icon success" />
+              <icon-mdi-content-copy v-else key="copy" class="copy-icon" />
+            </transition>
+          </button>
+        </c-tooltip>
+      </div>
+
+      <!-- Loading 提示（高 salt 时） -->
+      <div v-if="isHashing" class="loading-hint">
+        <n-spin size="small" />
+        <span>Computing bcrypt hash{{ saltCount >= 13 ? ` (salt=${saltCount}, may take a moment)` : '…' }}</span>
+      </div>
+    </c-card>
+
+    <!-- ② Compare 卡片 -->
+    <c-card title="Compare string with hash" class="bcrypt-card">
+      <n-form label-width="120">
+        <n-form-item label="Your string:" label-placement="left" :show-feedback="false">
+          <c-input-text v-model:value="compareString" placeholder="Your string to compare..." raw-text />
+        </n-form-item>
+        <n-form-item label="Your hash:" label-placement="left" :show-feedback="false">
+          <c-input-text v-model:value="compareHash" placeholder="Your hash to compare..." raw-text />
+        </n-form-item>
+
+        <!-- 校验结果：空时不显示，有内容时才显示状态 -->
+        <n-form-item v-if="compareState !== 'idle'" label="Do they match?" label-placement="left" :show-feedback="false">
+          <div class="compare-result" :class="compareState">
+            <!-- 匹配 -->
+            <template v-if="compareState === 'match'">
+              <icon-mdi-check-circle class="result-icon" />
+              <span>Yes</span>
+            </template>
+            <!-- 不匹配 -->
+            <template v-else-if="compareState === 'nomatch'">
+              <icon-mdi-close-circle class="result-icon" />
+              <span>No</span>
+            </template>
+            <!-- 格式无效 -->
+            <template v-else-if="compareState === 'invalid'">
+              <icon-mdi-alert-circle class="result-icon" />
+              <span>Invalid hash format</span>
+            </template>
+          </div>
+        </n-form-item>
+
+        <!-- 空状态提示 -->
+        <n-form-item v-else label="Do they match?" label-placement="left" :show-feedback="false">
+          <div class="compare-idle">
+            Waiting for input…
+          </div>
+        </n-form-item>
+      </n-form>
+    </c-card>
+  </div>
 </template>
 
 <style lang="less" scoped>
-.compare-result {
-  color: v-bind('themeVars.errorColor');
+/* ── 响应式双栏布局 ─────────────────────────────────────────────── */
+.bcrypt-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
 
-  &.positive {
+.bcrypt-card {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .bcrypt-layout {
+    flex-direction: column;
+  }
+
+  .bcrypt-card {
+    width: 100%;
+  }
+}
+
+/* ── 哈希输出框 ─────────────────────────────────────────────────── */
+.hash-output-wrap {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  min-height: 40px;
+}
+
+.hash-output {
+  flex: 1;
+  padding: 8px 12px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  word-break: break-all;
+  line-height: 1.6;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+
+  &.loading {
+    opacity: 0.5;
+  }
+}
+
+.hash-text {
+  word-break: break-all;
+}
+
+.hash-placeholder {
+  opacity: 0.45;
+  font-style: italic;
+}
+
+/* 内嵌复制按钮 */
+.inline-copy-btn {
+  flex: 0 0 36px;
+  width: 36px;
+  border: none;
+  border-left: 1px solid rgba(128, 128, 128, 0.2);
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
+
+  &.copied {
+    opacity: 1;
+    color: #22c55e;
+  }
+}
+
+.copy-icon {
+  font-size: 15px;
+}
+
+.copy-icon.success {
+  color: #22c55e;
+}
+
+/* Loading 提示 */
+.loading-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 8px;
+}
+
+/* ── 校验结果 ────────────────────────────────────────────────────── */
+.compare-result {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 15px;
+
+  &.match {
     color: v-bind('themeVars.successColor');
   }
+
+  &.nomatch {
+    color: v-bind('themeVars.errorColor');
+  }
+
+  &.invalid {
+    color: v-bind('themeVars.warningColor');
+    font-weight: 500;
+    font-size: 13px;
+  }
+}
+
+.result-icon {
+  font-size: 18px;
+}
+
+.compare-idle {
+  font-size: 13px;
+  opacity: 0.4;
+  font-style: italic;
+}
+
+/* ── 图标切换动画 ─────────────────────────────────────────────────── */
+.icon-switch-enter-active,
+.icon-switch-leave-active {
+  transition: all 0.16s ease;
+}
+
+.icon-switch-enter-from {
+  opacity: 0;
+  transform: scale(0.5) rotate(-10deg);
+}
+
+.icon-switch-leave-to {
+  opacity: 0;
+  transform: scale(0.5) rotate(10deg);
 }
 </style>
