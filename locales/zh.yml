@@ -206,8 +206,8 @@ tools:
     faq1a: 'bcrypt 是一种密码哈希算法，被设计为故意缓慢以抵御暴力破解攻击，并使用盐值防御彩虹表攻击。'
     faq2q: '什么是代价因子？'
     faq2a: '代价因子控制哈希轮数。每增加 1，计算时间翻倍，使暴力破解更加困难。'
-    title: 加密
-    description: 使用bcrypt对文本字符串进行哈希和比较。Bcrypt是一个基于Blowfish密码的密码哈希函数。
+    title: Bcrypt 哈希与校验
+    description: 使用 bcrypt 对文本进行哈希和校验。Bcrypt 是一种单向密码哈希函数，基于 Blowfish 加密算法设计，故意慢速以抵御暴力破解。
 
   crontab-generator:
     step1: '步骤 1：使用可视化编辑器设置分钟、小时、日、月和星期字段。'
