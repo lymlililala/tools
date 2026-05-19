@@ -266,16 +266,16 @@ tools:
     title: Git 备忘录
     description: Git是一种去中心化的版本管理软件。使用此备忘单，您可以快速访问最常见的git命令.
 
-slugify-string:
-step1: '步骤 1：输入要转换为 Slug 的原始文本。'
-step2: '步骤 2：Slug 在您输入时实时更新。'
-step3: '步骤 3：点击「复制结果」将 Slug 复制到剪贴板。'
-faq1q: '什么是 Slug？'
-faq1a: 'Slug 是 URL 友好的字符串，通常为小写字母并用连字符替换空格，去除特殊符号，常用于 URL 路径、文件名和 ID。'
-faq2q: '支持非英文字符吗？'
-faq2a: '支持。工具会将重音符号和特殊字符转换为 ASCII 等效字符，例如 é → e，ü → u。'
-title: 生成 URL Slug
-description: 将文本转换为 URL、文件名和 ID 安全的 Slug 字符串。
+  slugify-string:
+    step1: '步骤 1：输入要转换为 Slug 的原始文本。'
+    step2: '步骤 2：Slug 在您输入时实时更新。'
+    step3: '步骤 3：点击「复制结果」将 Slug 复制到剪贴板。'
+    faq1q: '什么是 Slug？'
+    faq1a: 'Slug 是 URL 友好的字符串，通常为小写字母并用连字符替换空格，去除特殊符号，常用于 URL 路径、文件名和 ID。'
+    faq2q: '支持非英文字符吗？'
+    faq2a: '支持。工具会将重音符号和特殊字符转换为 ASCII 等效字符，例如 é → e，ü → u。'
+    title: 生成 URL Slug
+    description: 将文本转换为 URL、文件名和 ID 安全的 Slug 字符串。
 
   encryption:
     step1: '步骤 1：选择「加密」或「解密」模式。'
