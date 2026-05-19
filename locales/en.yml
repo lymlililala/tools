@@ -114,6 +114,7 @@ tools:
     length: Length
     tokenPlaceholder: 'The token...'
     copied: Token copied to the clipboard
+    copiedFeedback: 'Copied!'
     button:
       copy: Copy
       refresh: Refresh

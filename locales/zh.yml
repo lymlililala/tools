@@ -113,6 +113,7 @@ tools:
     length: '长度'
     tokenPlaceholder: '令牌...'
     copied: 复制到剪贴板
+    copiedFeedback: '已复制！'
     button:
       copy: 复制
       refresh: 刷新
