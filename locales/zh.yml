@@ -190,7 +190,7 @@ tools:
     invalid: 无效
     formatJson: 格式化 JSON
     clearInput: 清空输入
-    inputPlaceholder: '粘贴 JSON 数组，例如 [{"name":"Alice","age":30}]'
+    inputPlaceholder: 在此粘贴 JSON 数组...
     csvOutput: CSV 输出
     stats: '{rows} 行 × {cols} 列'
     copied: 已复制！
@@ -839,7 +839,7 @@ tools:
     valid: 有效
     invalid: 无效
     clearInput: 清空输入
-    inputPlaceholder: '粘贴 JSON，例如 {"hello":"world"}'
+    inputPlaceholder: 在此粘贴 JSON...
     jsonCopied: JSON 已复制！
     justCopied: 已复制！
     copyResult: 复制格式化结果
