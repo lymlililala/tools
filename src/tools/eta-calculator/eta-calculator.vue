@@ -7,8 +7,9 @@ import {
   isTomorrow,
   isYesterday,
 } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
 import { formatMsDuration } from './eta-calculator.service';
+
+const { t } = useI18n();
 
 // ── 状态 ──────────────────────────────────────────────────────
 const unitCount        = ref(186);        // 待处理总任务量
@@ -18,14 +19,21 @@ const timeSpanMult     = ref(60000);      // 时间单位（ms）
 const startedAt        = ref(Date.now()); // 开始时间
 
 // 时间单位选项
-const TIME_UNITS = [
-  { label: '毫秒', value: 1 },
-  { label: '秒',   value: 1000 },
-  { label: '分钟', value: 60_000 },
-  { label: '小时', value: 3_600_000 },
-  { label: '天',   value: 86_400_000 },
-];
-const selectedUnit = ref(TIME_UNITS[2]); // 默认分钟
+const TIME_UNIT_VALUES = [1, 1000, 60_000, 3_600_000, 86_400_000];
+const TIME_UNITS = computed(() => [
+  { label: t('tools.eta-calculator.unitMs'), value: 1 },
+  { label: t('tools.eta-calculator.unitSec'), value: 1000 },
+  { label: t('tools.eta-calculator.unitMin'), value: 60_000 },
+  { label: t('tools.eta-calculator.unitHour'), value: 3_600_000 },
+  { label: t('tools.eta-calculator.unitDay'), value: 86_400_000 },
+]);
+const selectedUnit = ref({ label: '', value: 60_000 }); // 默认分钟
+
+// 同步标签
+watch(() => TIME_UNITS.value, (units) => {
+  const found = units.find(u => u.value === selectedUnit.value.value);
+  if (found) selectedUnit.value = found;
+}, { immediate: true });
 
 // 同步 mult
 watch(selectedUnit, u => { timeSpanMult.value = u.value; }, { immediate: true });
@@ -50,28 +58,21 @@ const endAtLabel = computed((): string => {
   const timeStr = format(d, 'HH:mm:ss');
   const dateStr = format(d, 'yyyy-MM-dd');
 
-  if (isToday(d))     return `今天 ${timeStr}`;
-  if (isTomorrow(d))  return `明天 ${timeStr}`;
-  if (isYesterday(d)) return `昨天 ${timeStr}`;
+  if (isToday(d))     return `${t('tools.eta-calculator.today')} ${timeStr}`;
+  if (isTomorrow(d))  return `${t('tools.eta-calculator.tomorrow')} ${timeStr}`;
+  if (isYesterday(d)) return `${t('tools.eta-calculator.yesterday')} ${timeStr}`;
 
   // 超过 7 天用绝对日期
   const diffDays = Math.abs((d.getTime() - Date.now()) / 86400000);
   if (diffDays > 7) return `${dateStr} ${timeStr}`;
 
-  return formatDistance(d, Date.now(), { locale: zhCN, addSuffix: true }) + ` (${dateStr} ${timeStr})`;
+  return formatDistance(d, Date.now(), { addSuffix: true }) + ` (${dateStr} ${timeStr})`;
 });
 
-// 总耗时中文化
+// 总耗时文本化
 const durationLabel = computed((): string => {
-  if (hasError.value) return '无法计算';
-  const raw = formatMsDuration(durationMs.value);
-  // 简单英→中
-  return raw
-    .replace(/hours?/, '小时')
-    .replace(/minutes?/, '分钟')
-    .replace(/seconds?/, '秒')
-    .replace(/days?/, '天')
-    || raw;
+  if (hasError.value) return t('tools.eta-calculator.cannotCalc');
+  return formatMsDuration(durationMs.value);
 });
 
 // ── 使用当前时间 ──────────────────────────────────────────────
@@ -101,7 +102,7 @@ const startedAtStr = computed(() => {
     <!-- ── 举例说明（中文） ──────────────────────────────── -->
     <div class="example-banner">
       <icon-mdi-lightbulb-outline class="example-icon" />
-      <span>举例：如果你每 3 分钟能洗 5 个盘子，那么洗完 500 个盘子总共需要 5 小时。</span>
+      <span>{{ t('tools.eta-calculator.example') }}</span>
     </div>
 
     <!-- ── 输入卡片 ───────────────────────────────────────── -->
@@ -109,7 +110,7 @@ const startedAtStr = computed(() => {
       <!-- 行 1：任务量 + 开始时间 -->
       <div class="form-row form-row--2col">
         <div class="field">
-          <label class="field-label">待处理总任务量</label>
+          <label class="field-label">{{ t('tools.eta-calculator.totalTasks') }}</label>
           <div class="num-wrap" :class="{ 'num-wrap--error': unitCount <= 0 }">
             <button class="num-btn" :disabled="unitCount <= 1" @click="unitCount = Math.max(1, unitCount - 1)">
               <icon-mdi-minus />
@@ -129,10 +130,10 @@ const startedAtStr = computed(() => {
 
         <div class="field">
           <label class="field-label">
-            开始时间
-            <button class="now-btn" title="使用当前时间" @click="setNow">
+            {{ t('tools.eta-calculator.startTime') }}
+            <button class="now-btn" :title="t('tools.eta-calculator.useNow')" @click="setNow">
               <icon-mdi-clock-outline />
-              现在
+              {{ t('tools.eta-calculator.now') }}
             </button>
           </label>
           <input
@@ -146,9 +147,9 @@ const startedAtStr = computed(() => {
 
       <!-- 行 2：处理速度 -->
       <div class="form-row">
-        <label class="field-label field-label--full">处理速度</label>
+        <label class="field-label field-label--full">{{ t('tools.eta-calculator.speed') }}</label>
         <div class="speed-row">
-          <span class="speed-text">每</span>
+          <span class="speed-text">{{ t('tools.eta-calculator.per') }}</span>
 
           <div class="num-wrap num-wrap--sm" :class="{ 'num-wrap--error': timeSpan <= 0 }">
             <button class="num-btn" :disabled="timeSpan <= 1" @click="timeSpan = Math.max(1, timeSpan - 1)">
@@ -178,7 +179,7 @@ const startedAtStr = computed(() => {
             </button>
           </div>
 
-          <span class="speed-text">完成</span>
+          <span class="speed-text">{{ t('tools.eta-calculator.complete') }}</span>
 
           <div class="num-wrap num-wrap--sm" :class="{ 'num-wrap--error': unitPerTimeSpan <= 0 }">
             <button class="num-btn" :disabled="unitPerTimeSpan <= 1" @click="unitPerTimeSpan = Math.max(1, unitPerTimeSpan - 1)">
@@ -196,12 +197,12 @@ const startedAtStr = computed(() => {
             </button>
           </div>
 
-          <span class="speed-text">个</span>
+          <span class="speed-text">{{ t('tools.eta-calculator.unit') }}</span>
         </div>
         <transition name="slide-down">
           <p v-if="hasError" class="field-error">
             <icon-mdi-alert-circle-outline />
-            所有数值必须大于 0
+            {{ t('tools.eta-calculator.allPositive') }}
           </p>
         </transition>
       </div>
@@ -212,13 +213,13 @@ const startedAtStr = computed(() => {
       <div v-if="!hasError" class="result-grid">
         <!-- 总耗时 -->
         <div class="result-card">
-          <span class="result-label">总耗时</span>
+          <span class="result-label">{{ t('tools.eta-calculator.totalDuration') }}</span>
           <span class="result-value">{{ durationLabel }}</span>
         </div>
 
         <!-- 预计完成时间 -->
         <div class="result-card result-card--accent">
-          <span class="result-label">预计完成时间</span>
+          <span class="result-label">{{ t('tools.eta-calculator.estimatedEnd') }}</span>
           <span class="result-value">{{ endAtLabel }}</span>
           <span class="result-date">{{ format(endDate, 'yyyy-MM-dd HH:mm:ss') }}</span>
         </div>
@@ -229,7 +230,7 @@ const startedAtStr = computed(() => {
     <transition name="fade">
       <div v-if="hasError" class="zero-error">
         <icon-mdi-calculator-variant-outline class="zero-icon" />
-        <span>请确保所有输入值均大于 0 以进行计算</span>
+          <span>{{ t('tools.eta-calculator.zeroErrorMsg') }}</span>
       </div>
     </transition>
   </div>

@@ -5,6 +5,7 @@ import { textToBase64 } from '@/utils/base64';
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 
 // ── 默认值 ────────────────────────────────────────────────────
 const DEFAULTS = { width: 600, height: 350, fontSize: 26, bgColor: '#cccccc', fgColor: '#333333', useExactSize: true, customText: '' };
@@ -45,7 +46,7 @@ function resetDefaults() {
 }
 
 // ── Tooltip 文案 ─────────────────────────────────────────────
-const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固定尺寸）\n关闭：仅保留 viewBox，SVG 可响应式缩放';
+const exactSizeTooltip = computed(() => t('tools.svg-placeholder-generator.exactSizeTooltip'));
 </script>
 
 <template>
@@ -56,34 +57,34 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
         <c-card>
           <!-- 顶部标题 + 重置 -->
           <div class="panel-header">
-            <span class="panel-title">参数设置</span>
-            <button class="reset-btn" title="恢复默认值" @click="resetDefaults">
+            <span class="panel-title">{{ t('tools.svg-placeholder-generator.settingsTitle') }}</span>
+            <button class="reset-btn" :title="t('tools.svg-placeholder-generator.resetTitle')" @click="resetDefaults">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M3 3v5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              恢复默认
+              {{ t('tools.svg-placeholder-generator.reset') }}
             </button>
           </div>
 
           <!-- 宽度 / 高度 -->
           <div class="field-row">
             <div class="field">
-              <label class="field-label">宽度 (px)</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.widthLabel') }}</label>
               <n-input-number
                 v-model:value="width"
                 class="num-input"
-                placeholder="宽度…"
+                :placeholder="t('tools.svg-placeholder-generator.widthPlaceholder')"
                 :min="1"
                 :max="4096"
               />
             </div>
             <div class="field">
-              <label class="field-label">高度 (px)</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.heightLabel') }}</label>
               <n-input-number
                 v-model:value="height"
                 class="num-input"
-                placeholder="高度…"
+                :placeholder="t('tools.svg-placeholder-generator.heightPlaceholder')"
                 :min="1"
                 :max="4096"
               />
@@ -93,7 +94,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
           <!-- 背景色 / 文字色 -->
           <div class="field-row">
             <div class="field">
-              <label class="field-label">背景色</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.bgColor') }}</label>
               <div class="color-input-wrap">
                 <input v-model="bgColor" type="color" class="color-swatch">
                 <input
@@ -106,7 +107,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
               </div>
             </div>
             <div class="field">
-              <label class="field-label">文字颜色</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.fgColor') }}</label>
               <div class="color-input-wrap">
                 <input v-model="fgColor" type="color" class="color-swatch">
                 <input
@@ -123,21 +124,21 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
           <!-- 字号 / 自定义文本 -->
           <div class="field-row">
             <div class="field">
-              <label class="field-label">字号 (px)</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.fontSizeLabel') }}</label>
               <n-input-number
                 v-model:value="fontSize"
                 class="num-input"
-                placeholder="字号…"
+                :placeholder="t('tools.svg-placeholder-generator.fontSizePlaceholder')"
                 :min="1"
                 :max="300"
               />
             </div>
             <div class="field">
-              <label class="field-label">自定义文本</label>
+              <label class="field-label">{{ t('tools.svg-placeholder-generator.customText') }}</label>
               <input
                 v-model="customText"
                 class="text-input"
-                :placeholder="`默认显示 ${width}x${height}`"
+                :placeholder="t('tools.svg-placeholder-generator.customTextPlaceholder', { w: width, h: height })"
                 maxlength="100"
                 spellcheck="false"
               >
@@ -146,7 +147,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
 
           <!-- Use exact size 开关 -->
           <div class="field-row-inline">
-            <label class="field-label">固定尺寸</label>
+            <label class="field-label">{{ t('tools.svg-placeholder-generator.exactSize') }}</label>
             <n-switch v-model:value="useExactSize" size="small" />
             <c-tooltip :tooltip="exactSizeTooltip" position="right">
               <span class="help-icon" title="">
@@ -157,7 +158,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
               </span>
             </c-tooltip>
             <span class="switch-hint">
-              {{ useExactSize ? '包含 width/height 属性' : '仅 viewBox（响应式缩放）' }}
+              {{ useExactSize ? t('tools.svg-placeholder-generator.exactSizeOn') : t('tools.svg-placeholder-generator.exactSizeOff') }}
             </span>
           </div>
         </c-card>
@@ -165,11 +166,11 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
         <!-- 代码输出 -->
         <c-card mt-4>
           <div class="output-section">
-            <div class="output-label">SVG HTML 代码</div>
+            <div class="output-label">{{ t('tools.svg-placeholder-generator.svgCode') }}</div>
             <TextareaCopyable :value="svgString" language="html" copy-placement="top-right" />
           </div>
           <div class="output-section" mt-4>
-            <div class="output-label">SVG Base64 编码</div>
+            <div class="output-label">{{ t('tools.svg-placeholder-generator.base64Code') }}</div>
             <TextareaCopyable :value="base64" copy-placement="top-right" />
           </div>
 
@@ -180,7 +181,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
                 <path d="M12 3v13M6 11l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
-              下载 SVG
+              {{ t('tools.svg-placeholder-generator.downloadSvg') }}
             </button>
           </div>
         </c-card>
@@ -190,7 +191,7 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
       <div class="svg-preview-panel">
         <c-card class="preview-card">
           <div class="preview-title">
-            实时预览
+            {{ t('tools.svg-placeholder-generator.livePreview') }}
           </div>
           <div class="preview-area">
             <img
@@ -201,8 +202,8 @@ const exactSizeTooltip = '开启：SVG 包含固定的 width/height 属性（固
           </div>
           <div class="preview-meta">
             <span class="meta-chip">{{ width }} × {{ height }}</span>
-            <span class="meta-chip">{{ fontSize }}px 字号</span>
-            <span class="meta-chip">{{ useExactSize ? '固定尺寸' : '响应式' }}</span>
+            <span class="meta-chip">{{ fontSize }}px {{ t('tools.svg-placeholder-generator.fontSizeUnit') }}</span>
+            <span class="meta-chip">{{ useExactSize ? t('tools.svg-placeholder-generator.exactSizeLabel') : t('tools.svg-placeholder-generator.responsiveLabel') }}</span>
           </div>
         </c-card>
       </div>

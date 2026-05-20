@@ -6,6 +6,7 @@ import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 
 // ── 输入参数（自动 LocalStorage 持久化）────────────────────────
 const text = useStorage('qr:text', 'https://it-tools.tech');
@@ -15,12 +16,12 @@ const errorCorrectionLevel = useStorage<QRCodeErrorCorrectionLevel>('qr:ec', 'M'
 const margin = useStorage('qr:margin', 2);   // 边距 (0-10)
 const size = useStorage('qr:size', 300);     // 预览尺寸 px
 
-const errorCorrectionOptions = [
-  { label: 'L – 低 (7%)', value: 'L', short: 'L' },
-  { label: 'M – 中 (15%)', value: 'M', short: 'M' },
-  { label: 'Q – 较高 (25%)', value: 'Q', short: 'Q' },
-  { label: 'H – 最高 (30%)', value: 'H', short: 'H' },
-];
+const errorCorrectionOptions = computed(() => [
+  { label: `L – ${t('tools.qr-code-generator.ecLow')} (7%)`, value: 'L', short: 'L' },
+  { label: `M – ${t('tools.qr-code-generator.ecMedium')} (15%)`, value: 'M', short: 'M' },
+  { label: `Q – ${t('tools.qr-code-generator.ecHigh')} (25%)`, value: 'Q', short: 'Q' },
+  { label: `H – ${t('tools.qr-code-generator.ecHighest')} (30%)`, value: 'H', short: 'H' },
+]);
 
 // ── 生成二维码 ─────────────────────────────────────────────────
 const qrcode = ref('');
@@ -88,11 +89,11 @@ async function copyImage() {
         <!-- 内容 -->
         <c-card mb-3>
           <div class="ctrl-label">
-            二维码内容
+            {{ t('tools.qr-code-generator.contentLabel') }}
           </div>
           <c-input-text
             v-model:value="text"
-            placeholder="请输入网址、文本或任意内容…"
+            :placeholder="t('tools.qr-code-generator.contentPlaceholder')"
             multiline
             rows="3"
             raw-text
@@ -101,20 +102,20 @@ async function copyImage() {
             mb-1
           />
           <div class="char-count" :class="{ warn: capacityWarning }">
-            {{ charCount }} 字符
-            <span v-if="capacityWarning" class="warn-hint">· 内容过多可能影响扫码识别率</span>
+            {{ charCount }} {{ t('tools.qr-code-generator.charUnit') }}
+            <span v-if="capacityWarning" class="warn-hint">· {{ t('tools.qr-code-generator.capacityWarning') }}</span>
           </div>
         </c-card>
 
         <!-- 颜色 -->
         <c-card mb-3>
           <div class="ctrl-label">
-            颜色设置
+            {{ t('tools.qr-code-generator.colorSettings') }}
           </div>
           <div class="color-row">
             <div class="color-item">
               <div class="color-field-label">
-                前景色（码点颜色）
+                {{ t('tools.qr-code-generator.fgColor') }}
               </div>
               <div class="color-input-wrap">
                 <input v-model="foreground" type="color" class="color-swatch" :title="foreground">
@@ -123,7 +124,7 @@ async function copyImage() {
             </div>
             <div class="color-item">
               <div class="color-field-label">
-                背景色
+                {{ t('tools.qr-code-generator.bgColor') }}
               </div>
               <div class="color-input-wrap">
                 <input v-model="background" type="color" class="color-swatch" :title="background">
@@ -138,7 +139,7 @@ async function copyImage() {
                 <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5" />
                 <path d="M8 5v3M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
               </svg>
-              前景色与背景色相同，二维码将无法被扫描识别
+              {{ t('tools.qr-code-generator.sameColorWarning') }}
             </div>
           </transition>
         </c-card>
@@ -146,14 +147,14 @@ async function copyImage() {
         <!-- 高级设置 -->
         <c-card>
           <div class="ctrl-label">
-            高级设置
+            {{ t('tools.qr-code-generator.advancedSettings') }}
           </div>
 
           <!-- 容错率 -->
           <div class="setting-row">
-            <div class="setting-label">
-              <span>容错率</span>
-              <span class="setting-hint">越高 → 损坏后越易识别</span>
+              <div class="setting-label">
+              <span>{{ t('tools.qr-code-generator.errorCorrection') }}</span>
+              <span class="setting-hint">{{ t('tools.qr-code-generator.errorCorrectionHint') }}</span>
             </div>
             <div class="ec-buttons">
               <button
@@ -172,7 +173,7 @@ async function copyImage() {
           <!-- 边距滑块 -->
           <div class="setting-row mt-3">
             <div class="setting-label">
-              <span>白边边距</span>
+              <span>{{ t('tools.qr-code-generator.marginLabel') }}</span>
               <span class="setting-value-badge">{{ margin }}</span>
             </div>
             <input
@@ -188,7 +189,7 @@ async function copyImage() {
           <!-- 预览尺寸 -->
           <div class="setting-row mt-3">
             <div class="setting-label">
-              <span>预览尺寸</span>
+              <span>{{ t('tools.qr-code-generator.previewSize') }}</span>
               <span class="setting-value-badge">{{ size }}px</span>
             </div>
             <input
@@ -207,7 +208,7 @@ async function copyImage() {
       <div class="qr-preview-panel">
         <c-card class="preview-card">
           <div class="preview-header">
-            <span class="ctrl-label">实时预览</span>
+            <span class="ctrl-label">{{ t('tools.qr-code-generator.livePreview') }}</span>
           </div>
 
           <div class="qr-preview-wrap" :style="{ background: background }">
@@ -236,7 +237,7 @@ async function copyImage() {
                 <rect x="30" y="37" width="4" height="4" fill="currentColor" />
                 <rect x="37" y="37" width="4" height="4" fill="currentColor" />
               </svg>
-              <span>在左侧输入内容后<br>自动生成二维码</span>
+              <span>{{ t('tools.qr-code-generator.qrEmptyHint') }}</span>
             </div>
           </div>
 
@@ -244,11 +245,11 @@ async function copyImage() {
           <div v-if="qrcode" class="qr-meta">
             <span class="meta-item">
               <icon-mdi-qrcode style="font-size:13px" />
-              容错 {{ errorCorrectionLevel }}
+              {{ t('tools.qr-code-generator.ecLabel') }} {{ errorCorrectionLevel }}
             </span>
             <span class="meta-item">
               <icon-mdi-border-all style="font-size:13px" />
-              边距 {{ margin }}
+              {{ t('tools.qr-code-generator.marginLabel') }} {{ margin }}
             </span>
             <span class="meta-item">
               <icon-mdi-image-size-select-actual style="font-size:13px" />
@@ -267,13 +268,13 @@ async function copyImage() {
                 <path d="M12 3v13M6 11l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
-              下载 PNG
+              {{ t('tools.qr-code-generator.downloadPng') }}
             </button>
             <button
               class="btn-copy-img"
               :class="{ copied: copyImgFeedback }"
               :disabled="!qrcode || generating"
-              :title="copyImgFeedback ? '已复制！' : '复制图片到剪贴板'"
+              :title="copyImgFeedback ? t('tools.qr-code-generator.copied') : t('tools.qr-code-generator.copyImageTitle')"
               @click="copyImage"
             >
               <svg v-if="!copyImgFeedback" width="15" height="15" viewBox="0 0 24 24" fill="none">
@@ -283,7 +284,7 @@ async function copyImage() {
               <svg v-else width="15" height="15" viewBox="0 0 24 24" fill="none">
                 <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              {{ copyImgFeedback ? '已复制' : '复制图片' }}
+              {{ copyImgFeedback ? t('tools.qr-code-generator.copied') : t('tools.qr-code-generator.copyImage') }}
             </button>
           </div>
         </c-card>

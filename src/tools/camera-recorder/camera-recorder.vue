@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n();
 import _ from 'lodash';
 import { useStyleStore } from '@/stores/style.store';
 import { useMediaRecorder } from './useMediaRecorder';
@@ -132,8 +133,8 @@ function formatTime(sec: number) {
         <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
       <div>
-        <div class="state-title">浏览器不支持</div>
-        <div class="state-desc">您的浏览器不支持从摄像头录制视频，请升级至最新版 Chrome、Firefox 或 Edge。</div>
+        <div class="state-title">{{ t('tools.camera-recorder.notSupported') }}</div>
+        <div class="state-desc">{{ t('tools.camera-recorder.notSupportedDesc') }}</div>
       </div>
     </div>
 
@@ -146,7 +147,7 @@ function formatTime(sec: number) {
             <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
             <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="1.5" />
           </svg>
-          <span class="placeholder-hint">摄像头画面将在此处显示</span>
+          <span class="placeholder-hint">{{ t('tools.camera-recorder.videoPlaceholder') }}</span>
         </div>
       </div>
 
@@ -157,8 +158,8 @@ function formatTime(sec: number) {
             <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
           <div>
-            <div style="font-weight:600;margin-bottom:2px">权限请求被阻止</div>
-            浏览器已拒绝权限请求，请手动在浏览器地址栏左侧的「锁形图标」中开启摄像头与麦克风权限，然后刷新页面。
+            <div style="font-weight:600;margin-bottom:2px">{{ t('tools.camera-recorder.permBlocked') }}</div>
+            {{ t('tools.camera-recorder.permBlockedDesc') }}
           </div>
         </div>
         <div v-else class="perm-prompt">
@@ -167,15 +168,15 @@ function formatTime(sec: number) {
               <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" stroke="currentColor" stroke-width="1.8" />
               <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
             </svg>
-            需要摄像头与麦克风权限
+            {{ t('tools.camera-recorder.permRequired') }}
           </div>
-          <p class="perm-desc">此工具需要访问您的摄像头和麦克风才能正常运行。您的数据不会上传至任何服务器，所有处理均在本地完成。</p>
+          <p class="perm-desc">{{ t('tools.camera-recorder.permRequiredDesc') }}</p>
           <button class="btn-primary btn-lg" @click="requestPermissions">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
               <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="2" />
             </svg>
-            开启摄像头权限
+            {{ t('tools.camera-recorder.enablePerm') }}
           </button>
         </div>
       </div>
@@ -191,12 +192,12 @@ function formatTime(sec: number) {
               <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
               <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="2" />
             </svg>
-            摄像头
+            {{ t('tools.camera-recorder.camera') }}
           </label>
           <c-select
             v-model:value="currentCamera"
             :options="cameras.map(({ deviceId, label }) => ({ value: deviceId, label }))"
-            placeholder="选择摄像头"
+            :placeholder="t('tools.camera-recorder.selectCamera')"
           />
         </div>
         <div v-if="currentMicrophone && microphones.length > 0" class="device-field">
@@ -205,12 +206,12 @@ function formatTime(sec: number) {
               <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" stroke="currentColor" stroke-width="1.8" />
               <path d="M19 10v2a7 7 0 01-14 0v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
             </svg>
-            麦克风
+            {{ t('tools.camera-recorder.microphone') }}
           </label>
           <c-select
             v-model:value="currentMicrophone"
             :options="microphones.map(({ deviceId, label }) => ({ value: deviceId, label }))"
-            placeholder="选择麦克风"
+            :placeholder="t('tools.camera-recorder.selectMicrophone')"
           />
         </div>
       </div>
@@ -222,7 +223,7 @@ function formatTime(sec: number) {
           <!-- 录制状态指示器 -->
           <div v-if="recordingState !== 'stopped'" class="rec-badge" :class="{ paused: recordingState === 'paused' }">
             <span class="rec-dot" />
-            {{ recordingState === 'paused' ? '已暂停' : '录制中' }}
+            {{ recordingState === 'paused' ? t('tools.camera-recorder.paused') : t('tools.camera-recorder.recording') }}
             {{ formatTime(recordingSeconds) }}
           </div>
         </template>
@@ -232,7 +233,7 @@ function formatTime(sec: number) {
               <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
               <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="1.5" />
             </svg>
-            <span class="placeholder-hint">点击下方按钮开启摄像头</span>
+            <span class="placeholder-hint">{{ t('tools.camera-recorder.clickToStart') }}</span>
           </div>
         </div>
       </div>
@@ -246,7 +247,7 @@ function formatTime(sec: number) {
               <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
               <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" stroke-width="2.2" />
             </svg>
-            开启摄像头
+            {{ t('tools.camera-recorder.startCamera') }}
           </button>
         </div>
 
@@ -258,7 +259,7 @@ function formatTime(sec: number) {
               <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke="currentColor" stroke-width="2" />
               <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2" />
             </svg>
-            截图
+            {{ t('tools.camera-recorder.screenshot') }}
           </button>
 
           <!-- 右侧：录制 -->
@@ -270,7 +271,7 @@ function formatTime(sec: number) {
                 @click="startRecording"
               >
                 <span class="dot-icon" />
-                开始录制
+                {{ t('tools.camera-recorder.startRecording') }}
               </button>
               <button
                 v-if="recordingState === 'recording'"
@@ -281,7 +282,7 @@ function formatTime(sec: number) {
                   <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" />
                   <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" />
                 </svg>
-                暂停
+                {{ t('tools.camera-recorder.pauseRecording') }}
               </button>
               <button
                 v-if="recordingState === 'paused'"
@@ -291,7 +292,7 @@ function formatTime(sec: number) {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                   <polygon points="5,3 19,12 5,21" fill="currentColor" />
                 </svg>
-                继续
+                {{ t('tools.camera-recorder.resumeRecording') }}
               </button>
               <button
                 v-if="recordingState !== 'stopped'"
@@ -301,10 +302,10 @@ function formatTime(sec: number) {
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                   <rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" />
                 </svg>
-                停止并保存
+                {{ t('tools.camera-recorder.stopAndSave') }}
               </button>
             </template>
-            <span v-else class="no-support-hint">此浏览器不支持视频录制</span>
+            <span v-else class="no-support-hint">{{ t('tools.camera-recorder.noRecordingSupport') }}</span>
           </div>
         </div>
       </div>
@@ -314,22 +315,22 @@ function formatTime(sec: number) {
     <div v-if="medias.length > 0" class="media-grid">
       <div v-for="({ type, value, createdAt }, index) in medias" :key="index" class="media-card">
         <div class="media-preview">
-          <img v-if="type === 'image'" :src="value" alt="截图">
+          <img v-if="type === 'image'" :src="value" :alt="t('tools.camera-recorder.screenshotAlt')">
           <video v-else :src="value" controls />
         </div>
         <div class="media-footer">
           <div class="media-info">
-            <span class="media-type-badge" :class="type">{{ type === 'image' ? '📷 截图' : '🎬 视频' }}</span>
+            <span class="media-type-badge" :class="type">{{ type === 'image' ? `📷 ${t('tools.camera-recorder.screenshotBadge')}` : `🎬 ${t('tools.camera-recorder.videoBadge')}` }}</span>
             <span class="media-time">{{ createdAt.toLocaleTimeString() }}</span>
           </div>
           <div class="media-actions">
-            <button class="icon-btn" title="下载" @click="downloadMedia({ type, value, createdAt })">
+            <button class="icon-btn" :title="t('tools.camera-recorder.download')" @click="downloadMedia({ type, value, createdAt })">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                 <path d="M12 3v13M6 11l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </button>
-            <button class="icon-btn icon-btn-del" title="删除" @click="medias = medias.filter((_ignored, i) => i !== index)">
+            <button class="icon-btn icon-btn-del" :title="t('tools.camera-recorder.delete')" @click="medias = medias.filter((_ignored, i) => i !== index)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 <path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
