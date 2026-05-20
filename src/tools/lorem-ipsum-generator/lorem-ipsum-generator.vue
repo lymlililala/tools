@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Copy, Refresh } from '@vicons/tabler';
 import { generateLoremIpsum } from './lorem-ipsum-generator.service';
+
+const { t } = useI18n();
 import { useCopy } from '@/composable/copy';
 import { randIntFromInterval } from '@/utils/random';
 import { computedRefreshable } from '@/composable/computedRefreshable';
@@ -23,7 +25,7 @@ const [loremIpsumText, refreshLoremIpsum] = computedRefreshable(() =>
 
 // 复制时显示成功反馈
 const copied = ref(false);
-const { copy } = useCopy({ source: loremIpsumText, text: '已复制到剪贴板！' });
+const { copy } = useCopy({ source: loremIpsumText, text: computed(() => t('tools.lorem-ipsum-generator.textCopied')) });
 
 async function handleCopy() {
   await copy();
@@ -38,34 +40,34 @@ async function handleCopy() {
       <!-- 参数区 -->
       <div class="params-grid">
         <!-- 段落数 -->
-        <label class="param-label">段落数</label>
+        <label class="param-label">{{ t('tools.lorem-ipsum-generator.paragraphs') }}</label>
         <div class="param-control">
           <n-slider v-model:value="paragraphs" :step="1" :min="1" :max="20" class="param-slider" />
           <span class="param-value">{{ paragraphs }}</span>
         </div>
 
         <!-- 每段句子数 -->
-        <label class="param-label">每段句子数</label>
+        <label class="param-label">{{ t('tools.lorem-ipsum-generator.sentencesPerParagraph') }}</label>
         <div class="param-control">
           <n-slider v-model:value="sentences" range :step="1" :min="1" :max="50" class="param-slider" />
           <span class="param-value">{{ sentences[0] }} – {{ sentences[1] }}</span>
         </div>
 
         <!-- 每句单词数 -->
-        <label class="param-label">每句单词数</label>
+        <label class="param-label">{{ t('tools.lorem-ipsum-generator.wordsPerSentence') }}</label>
         <div class="param-control">
           <n-slider v-model:value="words" range :step="1" :min="1" :max="50" class="param-slider" />
           <span class="param-value">{{ words[0] }} – {{ words[1] }}</span>
         </div>
 
         <!-- 以 Lorem ipsum 开头 -->
-        <label class="param-label">以 Lorem ipsum 开头</label>
+        <label class="param-label">{{ t('tools.lorem-ipsum-generator.startWithLorem') }}</label>
         <div class="param-control param-control--switch">
           <n-switch v-model:value="startWithLoremIpsum" />
         </div>
 
         <!-- 输出为 HTML -->
-        <label class="param-label">输出为 HTML</label>
+        <label class="param-label">{{ t('tools.lorem-ipsum-generator.outputHtml') }}</label>
         <div class="param-control param-control--switch">
           <n-switch v-model:value="asHTML" />
         </div>
@@ -78,7 +80,7 @@ async function handleCopy() {
           :value="loremIpsumText"
           readonly
           :rows="asHTML ? 8 : 6"
-          placeholder="生成的 Lorem ipsum 文本将出现在这里…"
+          :placeholder="t('tools.lorem-ipsum-generator.placeholder')"
         />
       </div>
 
@@ -88,13 +90,13 @@ async function handleCopy() {
         <button class="btn-primary" @click="handleCopy">
           <n-icon v-if="!copied" :component="Copy" size="15" />
           <span v-else class="check-icon">✓</span>
-          {{ copied ? '已复制！' : '复制' }}
+          {{ copied ? t('tools.lorem-ipsum-generator.justCopied') : t('tools.lorem-ipsum-generator.copy') }}
         </button>
 
         <!-- Refresh：次级按钮 -->
         <button class="btn-secondary" @click="refreshLoremIpsum">
           <n-icon :component="Refresh" size="15" />
-          重新生成
+          {{ t('tools.lorem-ipsum-generator.regenerate') }}
         </button>
       </div>
     </c-card>

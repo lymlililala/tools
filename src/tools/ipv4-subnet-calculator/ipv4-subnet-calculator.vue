@@ -6,6 +6,8 @@ import { withDefaultOnError } from '@/utils/defaults';
 import { isNotThrowing } from '@/utils/boolean';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const ip = useStorage('ipv4-subnet-calculator:ip', '192.168.0.1/24');
 
 const getNetworkInfo = (address: string) => new Netmask(address.trim());
@@ -16,7 +18,7 @@ const networkInfo = computed(() => withDefaultOnError(() => getNetworkInfo(ip.va
 const parseError = computed((): string => {
   if (!ip.value.trim()) return '';
   if (!isNotThrowing(() => getNetworkInfo(ip.value.trim()))) {
-    return '无法解析此地址，请检查格式（例如：192.168.1.0/24）';
+    return t('tools.ipv4-subnet-calculator.parseError');
   }
   return '';
 });
@@ -31,68 +33,68 @@ interface Section {
   isCode?: boolean
 }
 
-const sections: Section[] = [
+const sections = computed((): Section[] => [
   {
-    label: '网络（CIDR）',
+    label: t('tools.ipv4-subnet-calculator.labelNetwork'),
     getValue: block => block.toString(),
     isCode: true,
   },
   {
-    label: '网络地址',
+    label: t('tools.ipv4-subnet-calculator.labelNetworkAddr'),
     getValue: ({ base }) => base,
     isCode: true,
   },
   {
-    label: '子网掩码',
+    label: t('tools.ipv4-subnet-calculator.labelSubnetMask'),
     getValue: ({ mask }) => mask,
     isCode: true,
   },
   {
-    label: '子网掩码（二进制）',
+    label: t('tools.ipv4-subnet-calculator.labelSubnetMaskBin'),
     getValue: ({ bitmask }) =>
       ('1'.repeat(bitmask) + '0'.repeat(32 - bitmask)).match(/.{8}/g)?.join('.') ?? '',
     isCode: true,
   },
   {
-    label: 'CIDR 记法',
+    label: t('tools.ipv4-subnet-calculator.labelCidr'),
     getValue: ({ bitmask }) => `/${bitmask}`,
     isCode: true,
   },
   {
-    label: '通配符掩码',
+    label: t('tools.ipv4-subnet-calculator.labelWildcard'),
     getValue: ({ hostmask }) => hostmask,
     isCode: true,
   },
   {
-    label: '网络大小',
+    label: t('tools.ipv4-subnet-calculator.labelNetworkSize'),
     getValue: ({ size }) => String(size),
   },
   {
-    label: '可用主机数',
+    label: t('tools.ipv4-subnet-calculator.labelUsableHosts'),
     getValue: ({ size }) => String(Math.max(0, size - 2)),
   },
   {
-    label: '起始地址',
+    label: t('tools.ipv4-subnet-calculator.labelFirstAddr'),
     getValue: ({ first }) => first,
     isCode: true,
   },
   {
-    label: '结束地址',
+    label: t('tools.ipv4-subnet-calculator.labelLastAddr'),
     getValue: ({ last }) => last,
     isCode: true,
   },
   {
-    label: '广播地址',
+    label: t('tools.ipv4-subnet-calculator.labelBroadcast'),
     getValue: ({ broadcast }) => broadcast,
-    undefinedFallback: '该掩码无广播地址',
+    undefinedFallback: t('tools.ipv4-subnet-calculator.noBroadcast'),
     isCode: true,
   },
   {
-    label: 'IP 类别',
+    label: t('tools.ipv4-subnet-calculator.labelIpClass'),
     getValue: ({ base: ipAddr }) => getIPClass({ ip: ipAddr }),
-    undefinedFallback: '未知类别',
+    undefinedFallback: t('tools.ipv4-subnet-calculator.unknownClass'),
   },
-];
+]);
 
 // ── 翻页 ──────────────────────────────────────────────────────
 function switchToBlock(count: number) {
@@ -102,7 +104,7 @@ function switchToBlock(count: number) {
 
 // ── 行复制 ────────────────────────────────────────────────────
 const copiedKey = ref('');
-const { copy } = useCopy({ createToast: true, text: '已复制到剪贴板' });
+const { copy } = useCopy({ createToast: true, text: computed(() => t('tools.ipv4-subnet-calculator.copied')) });
 
 async function copyRow(label: string, value: string) {
   await copy(value);
@@ -115,12 +117,12 @@ async function copyRow(label: string, value: string) {
   <div class="sn-root">
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="input-section">
-      <label class="input-label">输入 IPv4 地址（可带或不带掩码）</label>
+      <label class="input-label">{{ t('tools.ipv4-subnet-calculator.inputLabel') }}</label>
       <div class="input-wrap" :class="{ 'input-wrap--error': hasError }">
         <input
           v-model="ip"
           class="ip-input"
-          placeholder="例如：192.168.1.0/24"
+          :placeholder="t('tools.ipv4-subnet-calculator.inputPlaceholder')"
           spellcheck="false"
           autocomplete="off"
         />
@@ -172,10 +174,10 @@ async function copyRow(label: string, value: string) {
         <div class="nav-row">
           <button class="nav-btn" @click="switchToBlock(-1)">
             <icon-mdi-arrow-left />
-            上一子网
+            {{ t('tools.ipv4-subnet-calculator.prevSubnet') }}
           </button>
           <button class="nav-btn nav-btn--next" @click="switchToBlock(1)">
-            下一子网
+            {{ t('tools.ipv4-subnet-calculator.nextSubnet') }}
             <icon-mdi-arrow-right />
           </button>
         </div>

@@ -3,6 +3,8 @@ import { Copy, Check } from '@vicons/tabler';
 import { generateNumeronymPhrase } from './numeronym-generator.service';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const word = ref('');
 
 // 使用短语级生成函数，支持多单词（TC-05）
@@ -13,7 +15,7 @@ const hasInput = computed(() => word.value.trim().length > 0);
 
 // 复制反馈
 const copied = ref(false);
-const { copy } = useCopy({ source: numeronym, text: '数字缩略词已复制！' });
+const { copy } = useCopy({ source: numeronym, text: computed(() => t('tools.numeronym-generator.numeronymCopied')) });
 
 async function handleCopy() {
   if (!numeronym.value) return;
@@ -27,11 +29,11 @@ async function handleCopy() {
   <div class="ng-wrapper">
     <!-- 输入框 -->
     <div class="input-section">
-      <label class="field-label" for="ng-input">输入单词或短语</label>
+      <label class="field-label" for="ng-input">{{ t('tools.numeronym-generator.inputLabel') }}</label>
       <c-input-text
         id="ng-input"
         v-model:value="word"
-        placeholder="输入单词，如 'internationalization'"
+        :placeholder="t('tools.numeronym-generator.inputPlaceholder')"
         size="large"
         clearable
         test-id="word-input"
@@ -44,22 +46,22 @@ async function handleCopy() {
       <div class="arrow-icon" :class="{ active: hasInput }">
         <icon-mdi-arrow-down />
       </div>
-      <span v-if="hasInput" class="arrow-hint">实时生成</span>
+      <span v-if="hasInput" class="arrow-hint">{{ t('tools.numeronym-generator.realtime') }}</span>
     </div>
 
     <!-- 输出框 -->
     <div class="output-section">
-      <label class="field-label">数字缩略词</label>
+      <label class="field-label">{{ t('tools.numeronym-generator.outputLabel') }}</label>
       <div class="output-card" :class="{ 'has-result': numeronym }">
         <span
           class="output-text"
           :class="{ 'output-placeholder': !numeronym }"
           :title="numeronym || ''"
         >
-          {{ numeronym || "结果将显示在此处，如 'i18n'" }}
+          {{ numeronym || t('tools.numeronym-generator.placeholder') }}
         </span>
 
-        <c-tooltip :tooltip="copied ? '已复制！' : '复制结果'" placement="top">
+        <c-tooltip :tooltip="copied ? t('tools.numeronym-generator.justCopied') : t('tools.numeronym-generator.copyResult')" placement="top">
           <button
             class="copy-btn"
             :class="{ copied, disabled: !numeronym }"
@@ -75,7 +77,7 @@ async function handleCopy() {
       <!-- 多单词说明 -->
       <div v-if="word.trim().includes(' ')" class="multi-word-hint">
         <icon-mdi-information-outline class="hint-icon" />
-        短语中每个单词已分别生成缩略词
+        {{ t('tools.numeronym-generator.multiWordHint') }}
       </div>
     </div>
   </div>

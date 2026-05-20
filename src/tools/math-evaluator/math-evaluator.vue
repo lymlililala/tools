@@ -4,6 +4,8 @@ import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 import { useStorage } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 输入 ──────────────────────────────────────────────────────
 const expression = ref('');
 const debouncedExpr = refDebounced(expression, 120);
@@ -25,11 +27,11 @@ const calcState = computed((): CalcState => {
   try {
     const raw = evaluate(expr);
     if (raw === undefined || raw === null) return { value: '', isError: false, isEmpty: true };
-    const val = typeof raw === 'function' ? '函数已定义' : String(raw);
+    const val = typeof raw === 'function' ? t('tools.math-evaluator.functionDefined') : String(raw);
     return { value: val, isError: false, isEmpty: false };
   }
   catch (e: any) {
-    const msg: string = e?.message ?? '无效的表达式';
+    const msg: string = e?.message ?? t('tools.math-evaluator.invalidExpr');
     return { value: msg, isError: true, isEmpty: false };
   }
 });
@@ -75,7 +77,7 @@ function applyHistory(entry: string) {
 const resultText = computed(() =>
   !calcState.value.isError && !calcState.value.isEmpty ? calcState.value.value : '',
 );
-const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果已复制' });
+const { copy, isJustCopied } = useCopy({ source: resultText, text: computed(() => t('tools.math-evaluator.resultCopied')) });
 </script>
 
 <template>
@@ -88,7 +90,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
           ref="inputRef"
           v-model="expression"
           class="expr-input"
-          placeholder="输入数学表达式，例如：2 * sqrt(9) + abs(-5)"
+          :placeholder="t('tools.math-evaluator.placeholder')"
           spellcheck="false"
           autocomplete="off"
           autofocus
@@ -97,7 +99,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
         <button
           v-if="expression"
           class="clear-btn"
-          title="清空"
+          :title="t('tools.math-evaluator.clear')"
           @click="expression = ''"
         >
           <icon-mdi-close />
@@ -107,7 +109,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
           v-if="history.length"
           class="history-btn"
           :class="{ 'history-btn--active': showHistory }"
-          title="计算历史"
+          :title="t('tools.math-evaluator.historyTitle')"
           @click="showHistory = !showHistory"
         >
           <icon-mdi-history />
@@ -118,9 +120,9 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
       <transition name="slide-down">
         <div v-if="showHistory && history.length" class="history-panel">
           <div class="history-title">
-            最近计算
+            {{ t('tools.math-evaluator.recentCalc') }}
             <button class="history-clear" @click="history = []">
-              清除记录
+              {{ t('tools.math-evaluator.clearHistory') }}
             </button>
           </div>
           <div
@@ -156,18 +158,18 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
         class="result-card"
       >
         <div class="result-header">
-          <span class="result-label">计算结果</span>
+          <span class="result-label">{{ t('tools.math-evaluator.resultLabel') }}</span>
           <button
             class="copy-btn"
             :class="{ 'copy-btn--copied': isJustCopied }"
-            title="复制结果"
+            :title="t('tools.math-evaluator.copyResult')"
             @click="copy()"
           >
             <transition name="icon-fade" mode="out-in">
               <icon-mdi-check v-if="isJustCopied" key="check" />
               <icon-mdi-content-copy v-else key="copy" />
             </transition>
-            {{ isJustCopied ? '已复制' : '复制' }}
+            {{ isJustCopied ? t('tools.math-evaluator.justCopied') : t('tools.math-evaluator.copy') }}
           </button>
         </div>
         <div class="result-value">
@@ -182,7 +184,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
       <div v-else-if="calcState.isError" key="error" class="error-card">
         <icon-mdi-alert-circle-outline class="error-icon" />
         <div>
-          <p class="error-title">表达式语法错误</p>
+          <p class="error-title">{{ t('tools.math-evaluator.syntaxError') }}</p>
           <p class="error-detail">
             {{ calcState.value }}
           </p>
@@ -192,7 +194,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: '计算结果
       <!-- 空状态（首次加载或已清空） -->
       <div v-else key="empty" class="empty-hint">
         <icon-mdi-calculator-variant-outline class="empty-icon" />
-        <span>输入表达式后，结果将实时显示</span>
+        <span>{{ t('tools.math-evaluator.hint') }}</span>
       </div>
     </transition>
   </div>

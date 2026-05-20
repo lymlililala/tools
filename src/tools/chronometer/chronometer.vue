@@ -2,6 +2,8 @@
 import { useRafFn } from '@vueuse/core';
 import { formatMs } from './chronometer.service';
 
+const { t } = useI18n();
+
 // ─── 状态 ──────────────────────────────────────────────────────────────────────
 type Status = 'idle' | 'running' | 'paused';
 
@@ -87,7 +89,7 @@ const hasLaps = computed(() => laps.value.length > 0);
       <div class="status-dot-wrap">
         <span class="status-dot" :class="`status-dot--${status}`" />
         <span class="status-label">
-          {{ status === 'idle' ? '待机' : status === 'running' ? '计时中' : '已暂停' }}
+          {{ status === 'idle' ? t('tools.chronometer.idle') : status === 'running' ? t('tools.chronometer.running') : t('tools.chronometer.paused') }}
         </span>
       </div>
 
@@ -99,7 +101,7 @@ const hasLaps = computed(() => laps.value.length > 0);
       <!-- 当前分段实时耗时（运行时且有至少一个 lap） -->
       <transition name="fade-sub">
         <div v-if="status === 'running' && hasLaps" class="lap-current">
-          当前段：{{ formatMs(currentLapElapsed) }}
+          {{ t('tools.chronometer.currentLap') }}: {{ formatMs(currentLapElapsed) }}
         </div>
       </transition>
     </div>
@@ -109,31 +111,31 @@ const hasLaps = computed(() => laps.value.length > 0);
       <!-- 开始 -->
       <button v-if="status === 'idle'" class="ctrl-btn ctrl-btn--start" @click="start">
         <icon-mdi-play />
-        开始
+        {{ t('tools.chronometer.start') }}
       </button>
 
       <!-- 暂停（运行中） -->
       <button v-if="status === 'running'" class="ctrl-btn ctrl-btn--pause" @click="pause">
         <icon-mdi-pause />
-        暂停
+        {{ t('tools.chronometer.pause') }}
       </button>
 
       <!-- 继续（已暂停） -->
       <button v-if="status === 'paused'" class="ctrl-btn ctrl-btn--resume" @click="resume">
         <icon-mdi-play />
-        继续
+        {{ t('tools.chronometer.resume') }}
       </button>
 
       <!-- 分段（运行时才显示） -->
       <button v-if="status === 'running'" class="ctrl-btn ctrl-btn--lap" @click="lap">
         <icon-mdi-flag-outline />
-        分段
+        {{ t('tools.chronometer.lap') }}
       </button>
 
       <!-- 重置（非 idle 时可用） -->
       <button class="ctrl-btn ctrl-btn--reset" :disabled="status === 'idle'" @click="reset">
         <icon-mdi-refresh />
-        重置
+        {{ t('tools.chronometer.reset') }}
       </button>
     </div>
 
@@ -141,16 +143,16 @@ const hasLaps = computed(() => laps.value.length > 0);
     <transition name="slide-down">
       <div v-if="hasLaps" class="lap-section">
         <div class="lap-header">
-          <span class="lap-title">分段记录</span>
-          <span class="lap-count">共 {{ laps.length }} 段</span>
+          <span class="lap-title">{{ t('tools.chronometer.lapHistory') }}</span>
+          <span class="lap-count">{{ t('tools.chronometer.lapCount', { n: laps.length }) }}</span>
         </div>
 
         <div class="lap-table">
           <!-- 表头 -->
           <div class="lap-row lap-row--head">
-            <span class="lc lc--idx">分段</span>
-            <span class="lc lc--elapsed">本段时间</span>
-            <span class="lc lc--total">累计时间</span>
+            <span class="lc lc--idx">{{ t('tools.chronometer.lapIndex') }}</span>
+            <span class="lc lc--elapsed">{{ t('tools.chronometer.lapElapsed') }}</span>
+            <span class="lc lc--total">{{ t('tools.chronometer.lapTotal') }}</span>
             <span class="lc lc--copy" />
           </div>
 
@@ -169,7 +171,7 @@ const hasLaps = computed(() => laps.value.length > 0);
             <span class="lc lc--copy">
               <button
                 class="lap-copy-btn"
-                :title="'复制分段时间'"
+                :title="t('tools.chronometer.copyLap')"
                 @click="copyLap(row.index, formatMs(row.elapsed))"
               >
                 <icon-mdi-check v-if="copiedIndex === row.index" />

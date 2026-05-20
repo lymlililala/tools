@@ -3,6 +3,8 @@ import { Copy, Check } from '@vicons/tabler';
 import { useObfuscateString } from './string-obfuscator.model';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const str = ref('Lorem ipsum dolor sit amet');
 const keepFirst = ref(4);
 const keepLast = ref(4);
@@ -17,7 +19,7 @@ const isOverLimit = computed(() => str.value.length > 0 && totalKept.value >= st
 
 // 复制反馈
 const copied = ref(false);
-const { copy } = useCopy({ source: obfuscatedString, text: '混淆字符串已复制！' });
+const { copy } = useCopy({ source: obfuscatedString, text: computed(() => t('tools.string-obfuscator.copiedMsg')) });
 
 async function handleCopy() {
   await copy();
@@ -49,11 +51,11 @@ function onKeepLastBlur() {
 <template>
   <div class="so-wrapper">
     <!-- 输入区 -->
-    <div class="section-label">要混淆的字符串：</div>
+    <div class="section-label">{{ t('tools.string-obfuscator.inputLabel') }}</div>
     <c-input-text
       v-model:value="str"
       raw-text
-      placeholder="在此输入需要脱敏的字符串…"
+      :placeholder="t('tools.string-obfuscator.inputPlaceholder')"
       clearable
       multiline
       class="so-input"
@@ -63,12 +65,12 @@ function onKeepLastBlur() {
     <div class="controls-row">
       <!-- 保留前几位 -->
       <div class="control-group">
-        <div class="control-label">保留前几位</div>
+        <div class="control-label">{{ t('tools.string-obfuscator.keepFirst') }}</div>
         <div class="stepper">
           <button
             class="stepper-btn"
             :disabled="keepFirst <= 0"
-            aria-label="减少"
+            :aria-label="t('tools.string-obfuscator.decrease')"
             @click="stepKeepFirst(-1)"
           >
             −
@@ -83,7 +85,7 @@ function onKeepLastBlur() {
           <button
             class="stepper-btn"
             :disabled="isOverLimit"
-            aria-label="增加"
+            :aria-label="t('tools.string-obfuscator.increase')"
             @click="stepKeepFirst(1)"
           >
             +
@@ -93,12 +95,12 @@ function onKeepLastBlur() {
 
       <!-- 保留后几位 -->
       <div class="control-group">
-        <div class="control-label">保留后几位</div>
+        <div class="control-label">{{ t('tools.string-obfuscator.keepLast') }}</div>
         <div class="stepper">
           <button
             class="stepper-btn"
             :disabled="keepLast <= 0"
-            aria-label="减少"
+            :aria-label="t('tools.string-obfuscator.decrease')"
             @click="stepKeepLast(-1)"
           >
             −
@@ -113,7 +115,7 @@ function onKeepLastBlur() {
           <button
             class="stepper-btn"
             :disabled="isOverLimit"
-            aria-label="增加"
+            :aria-label="t('tools.string-obfuscator.increase')"
             @click="stepKeepLast(1)"
           >
             +
@@ -123,26 +125,26 @@ function onKeepLastBlur() {
 
       <!-- 保留空格 -->
       <div class="control-group control-group--switch">
-        <div class="control-label">保留空格</div>
+        <div class="control-label">{{ t('tools.string-obfuscator.keepSpaces') }}</div>
         <n-switch v-model:value="keepSpace" />
       </div>
     </div>
 
     <!-- 超限警告 -->
     <div v-if="isOverLimit" class="over-limit-tip">
-      ⚠️ 保留字符数（{{ totalKept }}）已达到字符串总长度（{{ strLen }}），无法继续增加
+      ⚠️ {{ t('tools.string-obfuscator.overLimit', { kept: totalKept, total: strLen }) }}
     </div>
 
     <!-- 输出区：始终显示，空时给占位提示 -->
     <div class="output-card" :class="{ 'output-card--empty': !obfuscatedString }">
       <div class="output-text" :class="{ 'output-placeholder': !obfuscatedString }">
-        {{ obfuscatedString || '混淆结果将显示在此处…' }}
+        {{ obfuscatedString || t('tools.string-obfuscator.outputPlaceholder') }}
       </div>
       <button
         v-if="obfuscatedString"
         class="copy-btn"
         :class="{ copied }"
-        :title="copied ? '已复制' : '复制结果'"
+        :title="copied ? t('tools.string-obfuscator.copied') : t('tools.string-obfuscator.copyResult')"
         @click="handleCopy"
       >
         <n-icon v-if="!copied" :component="Copy" size="16" />

@@ -5,6 +5,8 @@ import { formatYaml } from './yaml-models';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 配置 ──────────────────────────────────────────────────────
 const indentSize = useStorage('yaml-prettify:indent-size', 2);
 const sortKeys   = useStorage('yaml-prettify:sort-keys', false);
@@ -27,7 +29,7 @@ const parseError = computed(() => {
     return null;
   }
   catch (e: any) {
-    return e?.message ?? 'YAML 格式无效';
+    return e?.message ?? t('tools.yaml-viewer.invalidYaml');
   }
 });
 
@@ -53,7 +55,7 @@ function clearInput() { rawYaml.value = ''; }
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy: copyYaml, isJustCopied } = useCopy({
   source: cleanYaml,
-  text: '格式化 YAML 已复制到剪贴板',
+  text: computed(() => t('tools.yaml-viewer.yamlCopied')),
 });
 
 // ── 下载 ──────────────────────────────────────────────────────
@@ -73,12 +75,12 @@ function downloadYaml() {
   <!-- ── 配置工具栏 ─────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
-      <span class="toolbar-label">排序键名</span>
+      <span class="toolbar-label">{{ t('tools.yaml-viewer.sortKeys') }}</span>
       <n-switch v-model:value="sortKeys" size="small" />
     </div>
     <div class="toolbar-divider" />
     <div class="toolbar-item">
-      <span class="toolbar-label">缩进大小</span>
+      <span class="toolbar-label">{{ t('tools.yaml-viewer.indentSize') }}</span>
       <div class="indent-ctrl">
         <button class="indent-btn" :disabled="indentSize <= 1" @click="indentSize = Math.max(1, indentSize - 1)">−</button>
         <span class="indent-val">{{ indentSize }}</span>
@@ -92,21 +94,21 @@ function downloadYaml() {
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">
-        <span class="pane-title">原始 YAML</span>
+        <span class="pane-title">{{ t('tools.yaml-viewer.rawYaml') }}</span>
 
         <!-- 状态徽章 -->
         <span v-if="isValid" class="status-badge status-badge--valid">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          合法
+          {{ t('tools.yaml-viewer.valid') }}
         </span>
         <span v-else-if="isInvalid" class="status-badge status-badge--error">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          无效
+          {{ t('tools.yaml-viewer.invalid') }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
-          <c-tooltip tooltip="上传 YAML 文件" position="bottom">
+          <c-tooltip :tooltip="t('tools.yaml-viewer.uploadFile')" position="bottom">
             <button class="hdr-btn" @click="triggerUpload">
               <icon-mdi-upload />
             </button>
@@ -118,7 +120,7 @@ function downloadYaml() {
             style="display:none"
             @change="onFileChange"
           />
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.yaml-viewer.clearInput')" position="bottom">
             <button class="hdr-btn" @click="clearInput">
               <icon-mdi-close-circle-outline />
             </button>
@@ -129,7 +131,7 @@ function downloadYaml() {
       <c-code-input
         v-model="rawYaml"
         language="yaml"
-        placeholder="在此粘贴原始 YAML..."
+        :placeholder="t('tools.yaml-viewer.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': isInvalid }"
       />
@@ -149,9 +151,9 @@ function downloadYaml() {
     <!-- 输出面板 -->
     <div class="pane">
       <div class="pane-header">
-        <span class="pane-title">格式化结果</span>
+        <span class="pane-title">{{ t('tools.yaml-viewer.formattedResult') }}</span>
         <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制 YAML'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.yaml-viewer.copied') : t('tools.yaml-viewer.copyYaml')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -162,7 +164,7 @@ function downloadYaml() {
               <icon-mdi-content-copy v-else />
             </button>
           </c-tooltip>
-          <c-tooltip tooltip="下载 formatted.yaml" position="bottom">
+          <c-tooltip :tooltip="t('tools.yaml-viewer.downloadFile')" position="bottom">
             <button class="hdr-btn" :disabled="!cleanYaml" @click="downloadYaml">
               <icon-mdi-download />
             </button>
@@ -173,7 +175,7 @@ function downloadYaml() {
       <c-code-input
         :model-value="cleanYaml"
         language="yaml"
-        placeholder="格式化结果将显示在此..."
+        :placeholder="t('tools.yaml-viewer.outputPlaceholder')"
         class="code-editor"
         readonly
       />

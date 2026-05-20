@@ -6,12 +6,13 @@ const props = defineProps<{ emojiInfo: EmojiInfo }>();
 const { emojiInfo } = toRefs(props);
 
 const { copy } = useCopy();
+const { t } = useI18n();
 
 // 复制主 Emoji 时的视觉反馈
 const justCopied = ref(false);
 
 async function copyEmoji() {
-  await copy(emojiInfo.value.emoji, { notificationMessage: `Emoji ${emojiInfo.value.emoji} 已复制` });
+  await copy(emojiInfo.value.emoji, { notificationMessage: t('tools.emoji-picker.cardCopied', { emoji: emojiInfo.value.emoji }) });
   justCopied.value = true;
   setTimeout(() => (justCopied.value = false), 1200);
 }
@@ -21,7 +22,7 @@ async function copyEmoji() {
   <div
     class="emoji-card"
     :class="{ 'just-copied': justCopied }"
-    :title="`点击复制 ${emojiInfo.emoji}`"
+    :title="t('tools.emoji-picker.cardTitle', { emoji: emojiInfo.emoji })"
     @click="copyEmoji"
   >
     <!-- Emoji 图标 -->
@@ -40,19 +41,19 @@ async function copyEmoji() {
 
       <!-- code points + unicode：单独可点击复制 -->
       <div class="emoji-codes">
-        <c-tooltip tooltip="复制 Code Point" placement="bottom">
+        <c-tooltip :tooltip="t('tools.emoji-picker.copyCodePoint')" placement="bottom">
           <span
             class="code-chip"
-            @click.stop="copy(emojiInfo.codePoints, { notificationMessage: `Code point '${emojiInfo.codePoints}' 已复制` })"
+            @click.stop="copy(emojiInfo.codePoints, { notificationMessage: t('tools.emoji-picker.codePointCopied', { codePoint: emojiInfo.codePoints }) })"
           >
             {{ emojiInfo.codePoints }}
           </span>
         </c-tooltip>
 
-        <c-tooltip :tooltip="`复制 Unicode: ${emojiInfo.unicode}`" placement="bottom">
+        <c-tooltip :tooltip="t('tools.emoji-picker.copyUnicode', { unicode: emojiInfo.unicode })" placement="bottom">
           <span
             class="code-chip code-chip--unicode"
-            @click.stop="copy(emojiInfo.unicode, { notificationMessage: `Unicode 已复制` })"
+            @click.stop="copy(emojiInfo.unicode, { notificationMessage: t('tools.emoji-picker.unicodeCopied') })"
           >
             {{ emojiInfo.unicode }}
           </span>

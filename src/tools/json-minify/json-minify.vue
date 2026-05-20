@@ -3,6 +3,8 @@ import JSON5 from 'json5';
 import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 状态 ──────────────────────────────────────────────────────
 const rawJson = useStorage('json-minify:raw-json', '{\n\t"hello": [\n\t\t"world"\n\t]\n}');
 const debouncedJson = refDebounced(rawJson, 150);
@@ -51,7 +53,6 @@ function clearInput() {
 // ── 复制压缩结果 ──────────────────────────────────────────────
 const { copy: copyMinified, isJustCopied } = useCopy({
   source: minifiedJson,
-  text: '压缩结果已复制到剪贴板',
 });
 
 // ── 下载 ──────────────────────────────────────────────────────
@@ -82,26 +83,26 @@ const compressionRatio = computed(() => {
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">
-        <span class="pane-title">原始 JSON</span>
+        <span class="pane-title">{{ t('tools.json-minify.rawJson') }}</span>
 
         <!-- 验证状态徽章 -->
-        <span v-if="isValid" class="status-badge status-badge--valid">
+          <span v-if="isValid" class="status-badge status-badge--valid">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          合法
+          {{ t('tools.json-minify.valid') }}
         </span>
         <span v-else-if="isInvalid" class="status-badge status-badge--error">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          无效
+          {{ t('tools.json-minify.invalid') }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
-          <c-tooltip tooltip="格式化输入" position="bottom">
+          <c-tooltip :tooltip="t('tools.json-minify.formatInput')" position="bottom">
             <button class="hdr-btn" :disabled="!hasInput" @click="formatInput">
               <icon-mdi-code-braces />
             </button>
           </c-tooltip>
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.json-minify.clearInput')" position="bottom">
             <button class="hdr-btn" @click="clearInput">
               <icon-mdi-close-circle-outline />
             </button>
@@ -113,7 +114,7 @@ const compressionRatio = computed(() => {
       <c-code-input
         v-model="rawJson"
         language="json"
-        placeholder="在此粘贴原始 JSON..."
+        :placeholder="t('tools.json-minify.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': isInvalid }"
       />
@@ -133,16 +134,16 @@ const compressionRatio = computed(() => {
     <!-- 输出面板 -->
     <div class="pane">
       <div class="pane-header">
-        <span class="pane-title">压缩结果</span>
+        <span class="pane-title">{{ t('tools.json-minify.minifiedResult') }}</span>
 
         <!-- 压缩率徽章 -->
         <span v-if="compressionRatio && compressionRatio.pct > 0" class="compress-badge">
-          节省 {{ compressionRatio.pct }}%
+          {{ t('tools.json-minify.saved', { pct: compressionRatio.pct }) }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制结果'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.json-minify.copied') : t('tools.json-minify.copyResult')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -153,7 +154,7 @@ const compressionRatio = computed(() => {
               <icon-mdi-content-copy v-else />
             </button>
           </c-tooltip>
-          <c-tooltip tooltip="下载 minified.json" position="bottom">
+          <c-tooltip :tooltip="t('tools.json-minify.download')" position="bottom">
             <button class="hdr-btn" :disabled="!minifiedJson" @click="downloadMinified">
               <icon-mdi-download />
             </button>
@@ -165,7 +166,7 @@ const compressionRatio = computed(() => {
       <c-code-input
         :model-value="minifiedJson"
         language="json"
-        placeholder="压缩结果将显示在此..."
+        :placeholder="t('tools.json-minify.outputPlaceholder')"
         class="code-editor"
         readonly
       />
@@ -173,11 +174,11 @@ const compressionRatio = computed(() => {
       <!-- 尺寸对比 -->
       <transition name="slide-down">
         <div v-if="compressionRatio" class="size-info">
-          <span>原始：<strong>{{ compressionRatio.orig.toLocaleString() }}</strong> 字节</span>
+          <span>{{ t('tools.json-minify.original') }}: <strong>{{ compressionRatio.orig.toLocaleString() }}</strong> {{ t('tools.json-minify.bytes') }}</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="opacity:0.4">
             <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span>压缩后：<strong>{{ compressionRatio.mini.toLocaleString() }}</strong> 字节</span>
+          <span>{{ t('tools.json-minify.minified') }}: <strong>{{ compressionRatio.mini.toLocaleString() }}</strong> {{ t('tools.json-minify.bytes') }}</span>
         </div>
       </transition>
     </div>

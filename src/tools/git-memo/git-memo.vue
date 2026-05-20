@@ -3,138 +3,139 @@ import { useStyleStore } from '@/stores/style.store';
 import { useWindowScroll } from '@vueuse/core';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 const { y: scrollY } = useWindowScroll();
 
 // ── 所有 Git 命令数据（结构化，易于扩展）─────────────────────
 interface Command { description: string; code: string; danger?: boolean }
 interface Section { id: string; title: string; commands: Command[] }
 
-const sections: Section[] = [
+const sections = computed((): Section[] => [
   {
     id: 'configuration',
     title: 'Configuration',
     commands: [
-      { description: '设置全局用户名', code: 'git config --global user.name "[name]"' },
-      { description: '设置全局邮箱', code: 'git config --global user.email "[email]"' },
-      { description: '查看当前配置', code: 'git config --list' },
-      { description: '设置默认编辑器', code: 'git config --global core.editor "[editor]"' },
+      { description: t('tools.git-memo.cmd.setGlobalName'), code: 'git config --global user.name "[name]"' },
+      { description: t('tools.git-memo.cmd.setGlobalEmail'), code: 'git config --global user.email "[email]"' },
+      { description: t('tools.git-memo.cmd.listConfig'), code: 'git config --list' },
+      { description: t('tools.git-memo.cmd.setEditor'), code: 'git config --global core.editor "[editor]"' },
     ],
   },
   {
     id: 'get-started',
     title: 'Get Started',
     commands: [
-      { description: '初始化新仓库', code: 'git init' },
-      { description: '克隆远程仓库', code: 'git clone [url]' },
-      { description: '克隆并指定目录名', code: 'git clone [url] [directory]' },
+      { description: t('tools.git-memo.cmd.initRepo'), code: 'git init' },
+      { description: t('tools.git-memo.cmd.cloneRepo'), code: 'git clone [url]' },
+      { description: t('tools.git-memo.cmd.cloneWithDir'), code: 'git clone [url] [directory]' },
     ],
   },
   {
     id: 'staging',
     title: 'Staging',
     commands: [
-      { description: '查看工作区状态', code: 'git status' },
-      { description: '暂存指定文件', code: 'git add [file]' },
-      { description: '暂存所有更改', code: 'git add .' },
-      { description: '取消暂存文件', code: 'git restore --staged [file]' },
-      { description: '丢弃工作区更改', code: 'git restore [file]' },
+      { description: t('tools.git-memo.cmd.statusCheck'), code: 'git status' },
+      { description: t('tools.git-memo.cmd.addFile'), code: 'git add [file]' },
+      { description: t('tools.git-memo.cmd.addAll'), code: 'git add .' },
+      { description: t('tools.git-memo.cmd.unstageFile'), code: 'git restore --staged [file]' },
+      { description: t('tools.git-memo.cmd.discardFile'), code: 'git restore [file]' },
     ],
   },
   {
     id: 'commit',
     title: 'Commit',
     commands: [
-      { description: '提交所有已追踪的更改', code: 'git commit -am "[commit message]"' },
-      { description: '仅提交暂存区内容', code: 'git commit -m "[commit message]"' },
-      { description: '修改最后一次提交信息', code: 'git commit --amend' },
-      { description: '追加更改到最后一次提交（不修改信息）', code: 'git commit --amend --no-edit' },
+      { description: t('tools.git-memo.cmd.commitAll'), code: 'git commit -am "[commit message]"' },
+      { description: t('tools.git-memo.cmd.commitStaged'), code: 'git commit -m "[commit message]"' },
+      { description: t('tools.git-memo.cmd.amendMsg'), code: 'git commit --amend' },
+      { description: t('tools.git-memo.cmd.amendNoEdit'), code: 'git commit --amend --no-edit' },
     ],
   },
   {
     id: 'branching',
     title: 'Branching',
     commands: [
-      { description: '列出所有本地分支', code: 'git branch' },
-      { description: '列出所有远程分支', code: 'git branch -r' },
-      { description: '创建新分支', code: 'git branch [branch-name]' },
-      { description: '创建并切换到新分支', code: 'git switch -c [branch-name]' },
-      { description: '切换分支', code: 'git switch [branch-name]' },
-      { description: '删除已合并的分支', code: 'git branch -d [branch-name]' },
-      { description: '强制删除分支', code: 'git branch -D [branch-name]', danger: true },
-      { description: '将本地 master 重命名为 main', code: 'git branch -m master main' },
+      { description: t('tools.git-memo.cmd.listBranches'), code: 'git branch' },
+      { description: t('tools.git-memo.cmd.listRemoteBranches'), code: 'git branch -r' },
+      { description: t('tools.git-memo.cmd.createBranch'), code: 'git branch [branch-name]' },
+      { description: t('tools.git-memo.cmd.createAndSwitch'), code: 'git switch -c [branch-name]' },
+      { description: t('tools.git-memo.cmd.switchBranch'), code: 'git switch [branch-name]' },
+      { description: t('tools.git-memo.cmd.deleteMergedBranch'), code: 'git branch -d [branch-name]' },
+      { description: t('tools.git-memo.cmd.deleteBranchForce'), code: 'git branch -D [branch-name]', danger: true },
+      { description: t('tools.git-memo.cmd.renameMasterToMain'), code: 'git branch -m master main' },
     ],
   },
   {
     id: 'merging',
     title: 'Merging & Rebasing',
     commands: [
-      { description: '合并指定分支到当前分支', code: 'git merge [branch-name]' },
-      { description: '以 rebase 方式合并', code: 'git rebase [branch-name]' },
-      { description: '中止 rebase', code: 'git rebase --abort' },
-      { description: '继续 rebase', code: 'git rebase --continue' },
+      { description: t('tools.git-memo.cmd.mergeBranch'), code: 'git merge [branch-name]' },
+      { description: t('tools.git-memo.cmd.rebaseBranch'), code: 'git rebase [branch-name]' },
+      { description: t('tools.git-memo.cmd.abortRebase'), code: 'git rebase --abort' },
+      { description: t('tools.git-memo.cmd.continueRebase'), code: 'git rebase --continue' },
     ],
   },
   {
     id: 'remote',
     title: 'Remote',
     commands: [
-      { description: '列出远程仓库', code: 'git remote -v' },
-      { description: '添加远程仓库', code: 'git remote add [name] [url]' },
-      { description: '拉取并合并远程更改', code: 'git pull' },
-      { description: '拉取不自动合并', code: 'git fetch origin' },
-      { description: '推送到远程', code: 'git push origin [branch-name]' },
-      { description: '推送并设置上游', code: 'git push -u origin [branch-name]' },
-      { description: '删除远程分支', code: 'git push origin --delete [branch-name]', danger: true },
+      { description: t('tools.git-memo.cmd.listRemotes'), code: 'git remote -v' },
+      { description: t('tools.git-memo.cmd.addRemote'), code: 'git remote add [name] [url]' },
+      { description: t('tools.git-memo.cmd.pullAndMerge'), code: 'git pull' },
+      { description: t('tools.git-memo.cmd.fetchOnly'), code: 'git fetch origin' },
+      { description: t('tools.git-memo.cmd.pushBranch'), code: 'git push origin [branch-name]' },
+      { description: t('tools.git-memo.cmd.pushAndSetUpstream'), code: 'git push -u origin [branch-name]' },
+      { description: t('tools.git-memo.cmd.deleteRemoteBranch'), code: 'git push origin --delete [branch-name]', danger: true },
     ],
   },
   {
     id: 'stash',
     title: 'Stash',
     commands: [
-      { description: '暂存当前更改', code: 'git stash' },
-      { description: '带描述的暂存', code: 'git stash save "[message]"' },
-      { description: '列出所有暂存', code: 'git stash list' },
-      { description: '恢复最近暂存', code: 'git stash pop' },
-      { description: '清除所有暂存', code: 'git stash clear', danger: true },
+      { description: t('tools.git-memo.cmd.stashChanges'), code: 'git stash' },
+      { description: t('tools.git-memo.cmd.stashWithMsg'), code: 'git stash save "[message]"' },
+      { description: t('tools.git-memo.cmd.listStashes'), code: 'git stash list' },
+      { description: t('tools.git-memo.cmd.popStash'), code: 'git stash pop' },
+      { description: t('tools.git-memo.cmd.clearStashes'), code: 'git stash clear', danger: true },
     ],
   },
   {
     id: 'history',
     title: 'History & Log',
     commands: [
-      { description: '查看提交历史', code: 'git log' },
-      { description: '紧凑单行历史', code: 'git log --oneline --graph' },
-      { description: '查看文件变更详情', code: 'git show [commit]' },
-      { description: '查看工作区与暂存区差异', code: 'git diff' },
-      { description: '查看暂存区与最后提交差异', code: 'git diff --staged' },
+      { description: t('tools.git-memo.cmd.viewLog'), code: 'git log' },
+      { description: t('tools.git-memo.cmd.compactLog'), code: 'git log --oneline --graph' },
+      { description: t('tools.git-memo.cmd.showCommit'), code: 'git show [commit]' },
+      { description: t('tools.git-memo.cmd.diffWorking'), code: 'git diff' },
+      { description: t('tools.git-memo.cmd.diffStaged'), code: 'git diff --staged' },
     ],
   },
   {
     id: 'mistakes',
     title: "I've Made a Mistake",
     commands: [
-      { description: '撤销最近提交并保留更改', code: 'git reset HEAD~1' },
-      { description: '撤销最近 N 次提交并保留更改', code: 'git reset HEAD~N' },
-      { description: '撤销最近提交并丢弃更改', code: 'git reset HEAD~1 --hard', danger: true },
-      { description: '重置分支到远程状态', code: 'git fetch origin\ngit reset --hard origin/[branch-name]', danger: true },
-      { description: '撤销某次提交（生成新提交）', code: 'git revert [commit-hash]' },
+      { description: t('tools.git-memo.cmd.resetKeep'), code: 'git reset HEAD~1' },
+      { description: t('tools.git-memo.cmd.resetNKeep'), code: 'git reset HEAD~N' },
+      { description: t('tools.git-memo.cmd.resetHard'), code: 'git reset HEAD~1 --hard', danger: true },
+      { description: t('tools.git-memo.cmd.resetToRemote'), code: 'git fetch origin\ngit reset --hard origin/[branch-name]', danger: true },
+      { description: t('tools.git-memo.cmd.revertCommit'), code: 'git revert [commit-hash]' },
     ],
   },
   {
     id: 'tags',
     title: 'Tags',
     commands: [
-      { description: '列出所有标签', code: 'git tag' },
-      { description: '创建轻量标签', code: 'git tag [tag-name]' },
-      { description: '创建带注释标签', code: 'git tag -a [tag-name] -m "[message]"' },
-      { description: '推送标签到远程', code: 'git push origin [tag-name]' },
-      { description: '删除本地标签', code: 'git tag -d [tag-name]' },
+      { description: t('tools.git-memo.cmd.listTags'), code: 'git tag' },
+      { description: t('tools.git-memo.cmd.createLightTag'), code: 'git tag [tag-name]' },
+      { description: t('tools.git-memo.cmd.createAnnotatedTag'), code: 'git tag -a [tag-name] -m "[message]"' },
+      { description: t('tools.git-memo.cmd.pushTag'), code: 'git push origin [tag-name]' },
+      { description: t('tools.git-memo.cmd.deleteLocalTag'), code: 'git tag -d [tag-name]' },
     ],
   },
-];
+]);
 
 // ── TOC 激活项（滚动跟随）────────────────────────────────────
-const activeSection = ref(sections[0].id);
+const activeSection = ref('configuration');
 
 onMounted(() => {
   const observer = new IntersectionObserver(
@@ -147,7 +148,7 @@ onMounted(() => {
     },
     { rootMargin: '-20% 0px -70% 0px' },
   );
-  sections.forEach(s => {
+  sections.value.forEach(s => {
     const el = document.getElementById(s.id);
     if (el) observer.observe(el);
   });
@@ -189,7 +190,7 @@ function scrollToTop() {
       <!-- ── 左侧 TOC (sticky) ─────────────────────────────── -->
       <nav class="toc-nav">
         <div class="toc-title">
-          目录
+          {{ t('tools.git-memo.toc') }}
         </div>
         <ul class="toc-list">
           <li
@@ -226,7 +227,7 @@ function scrollToTop() {
               :class="{ danger: cmd.danger }"
             >
               <div class="cmd-desc">
-                <span v-if="cmd.danger" class="danger-badge" title="危险操作，请谨慎使用">⚠</span>
+                <span v-if="cmd.danger" class="danger-badge" :title="t('tools.git-memo.dangerTooltip')">⚠</span>
                 {{ cmd.description }}
               </div>
               <div class="code-wrap" :class="{ copied: copiedCode === cmd.code }">
@@ -234,7 +235,7 @@ function scrollToTop() {
                 <button
                   class="copy-btn"
                   :class="{ copied: copiedCode === cmd.code }"
-                  :title="copiedCode === cmd.code ? '已复制！' : '复制命令'"
+                  :title="copiedCode === cmd.code ? t('tools.git-memo.copiedTooltip') : t('tools.git-memo.copyTooltip')"
                   @click="copyCode(cmd.code)"
                 >
                   <svg v-if="copiedCode !== cmd.code" width="13" height="13" viewBox="0 0 24 24" fill="none">
@@ -254,7 +255,7 @@ function scrollToTop() {
 
     <!-- ── 返回顶部 ──────────────────────────────────────────── -->
     <transition name="fade-up">
-      <button v-if="scrollY > 400" class="back-to-top" title="返回顶部" @click="scrollToTop">
+      <button v-if="scrollY > 400" class="back-to-top" :title="t('tools.git-memo.backToTop')" @click="scrollToTop">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>

@@ -6,6 +6,8 @@ import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 import { textToBase64 } from '@/utils/base64';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const dockerRun = useStorage(
   'docker-compose-converter:input',
   'docker run -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro --restart always --log-opt max-size=1g nginx',
@@ -52,7 +54,7 @@ function clearInput() {
 // ── 复制 YAML ─────────────────────────────────────────────────
 const { copy: copyYaml, isJustCopied } = useCopy({
   source: dockerCompose,
-  text: 'docker-compose.yml 已复制到剪贴板',
+  text: computed(() => t('tools.docker-run-to-docker-compose-converter.yamlCopied')),
 });
 
 // ── 下载 ──────────────────────────────────────────────────────
@@ -67,8 +69,8 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
       <!-- 输入面板 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Docker Run 命令</span>
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <span class="pane-title">{{ t('tools.docker-run-to-docker-compose-converter.inputTitle') }}</span>
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.docker-run-to-docker-compose-converter.clearInput')" position="bottom">
             <button class="hdr-btn" @click="clearInput">
               <icon-mdi-close-circle-outline />
             </button>
@@ -79,7 +81,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
           <textarea
             v-model="dockerRun"
             class="docker-textarea"
-            placeholder="在此粘贴 docker run 命令，例如：&#10;docker run -p 80:80 nginx"
+            :placeholder="t('tools.docker-run-to-docker-compose-converter.inputPlaceholder')"
             spellcheck="false"
             autocomplete="off"
             autocorrect="off"
@@ -94,7 +96,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
               <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
               <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             </svg>
-            <span>命令须以 <code>docker run</code> 开头</span>
+            <span>{{ t('tools.docker-run-to-docker-compose-converter.invalidFormat') }}</span>
           </div>
         </transition>
       </div>
@@ -105,7 +107,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
           <span class="pane-title">docker-compose.yml</span>
           <div class="action-group">
             <!-- 复制 -->
-            <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制 YAML'" position="bottom">
+            <c-tooltip :tooltip="isJustCopied ? t('tools.docker-run-to-docker-compose-converter.copied') : t('tools.docker-run-to-docker-compose-converter.copyYaml')" position="bottom">
               <button
                 class="hdr-btn"
                 :class="{ 'hdr-btn--success': isJustCopied }"
@@ -117,7 +119,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
               </button>
             </c-tooltip>
             <!-- 下载 -->
-            <c-tooltip tooltip="下载 docker-compose.yml" position="bottom">
+            <c-tooltip :tooltip="t('tools.docker-run-to-docker-compose-converter.downloadFile')" position="bottom">
               <button class="hdr-btn" :disabled="!hasOutput" @click="download">
                 <icon-mdi-download />
               </button>
@@ -129,7 +131,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
         <c-code-input
           :model-value="dockerCompose"
           language="yaml"
-          placeholder="转换结果将显示在此..."
+          :placeholder="t('tools.docker-run-to-docker-compose-converter.outputPlaceholder')"
           class="code-editor"
           readonly
         />
@@ -144,7 +146,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
             <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
-          转换出错
+          {{ t('tools.docker-run-to-docker-compose-converter.conversionError') }}
         </div>
         <ul class="alert-list">
           <li v-for="(message, i) in errors" :key="i">{{ message }}</li>
@@ -157,7 +159,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
             <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" />
             <path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
-          以下选项尚未支持转换
+          {{ t('tools.docker-run-to-docker-compose-converter.notImplemented') }}
         </div>
         <ul class="alert-list">
           <li v-for="(message, i) in notImplemented" :key="i">{{ message }}</li>
@@ -170,7 +172,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
             <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
-          以下选项无法转换为 docker-compose
+          {{ t('tools.docker-run-to-docker-compose-converter.notComposable') }}
         </div>
         <ul class="alert-list">
           <li v-for="(message, i) in notComposable" :key="i">{{ message }}</li>
@@ -184,7 +186,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        下载 docker-compose.yml
+        {{ t('tools.docker-run-to-docker-compose-converter.downloadBtn') }}
       </button>
     </div>
   </div>

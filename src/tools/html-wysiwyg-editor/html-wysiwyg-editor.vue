@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core';
 import { format } from 'prettier';
+
+const { t } = useI18n();
 import htmlParser from 'prettier/plugins/html';
 import { useStorage } from '@vueuse/core';
 import hljs from 'highlight.js/lib/core';
@@ -56,16 +58,16 @@ const highlightedHtml = computed(() => {
         <div class="pane-header">
           <span class="pane-title">
             <icon-mdi-pencil-outline class="pane-icon" />
-            编辑器
+            {{ t('tools.html-wysiwyg-editor.editorLabel') }}
           </span>
           <div class="pane-actions">
             <n-tooltip v-if="hasContent" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn icon-btn-danger" title="清空内容" @click="clearEditor">
+                <button class="icon-btn icon-btn-danger" :title="t('tools.html-wysiwyg-editor.clearContent')" @click="clearEditor">
                   <icon-mdi-delete-outline class="btn-icon" />
                 </button>
               </template>
-              清空内容
+              {{ t('tools.html-wysiwyg-editor.clearContent') }}
             </n-tooltip>
           </div>
         </div>
@@ -77,7 +79,7 @@ const highlightedHtml = computed(() => {
         <div class="pane-header">
           <span class="pane-title">
             <icon-mdi-code-tags class="pane-icon" />
-            HTML 源码
+            {{ t('tools.html-wysiwyg-editor.htmlSource') }}
           </span>
           <div class="pane-actions">
             <n-tooltip trigger="hover" placement="top">
@@ -86,14 +88,14 @@ const highlightedHtml = computed(() => {
                   class="icon-btn"
                   :class="{ 'icon-btn-success': copied }"
                   :disabled="!formattedHtml"
-                  title="复制 HTML"
+                  :title="t('tools.html-wysiwyg-editor.copyHtml')"
                   @click="copyHtml"
                 >
                   <icon-mdi-check v-if="copied" class="btn-icon" />
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copied ? '已复制！' : '复制 HTML' }}
+              {{ copied ? t('tools.html-wysiwyg-editor.justCopied') : t('tools.html-wysiwyg-editor.copyHtml') }}
             </n-tooltip>
           </div>
         </div>
@@ -105,7 +107,7 @@ const highlightedHtml = computed(() => {
           </div>
           <div v-else class="code-empty">
             <icon-mdi-code-tags-check class="ce-icon" />
-            <span>在左侧编辑器输入内容后，HTML 源码将自动出现在这里</span>
+            <span>{{ t('tools.html-wysiwyg-editor.emptyHint') }}</span>
           </div>
         </div>
       </div>

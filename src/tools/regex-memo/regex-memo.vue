@@ -2,12 +2,13 @@
 import { useClipboard } from '@vueuse/core';
 import { useMessage } from 'naive-ui';
 
+const { t } = useI18n();
 const { copy } = useClipboard({ legacy: true });
 const message = useMessage();
 
 async function copyExpr(expr: string) {
   await copy(expr);
-  message.success('已复制到剪贴板');
+  message.success(t('tools.regex-memo.copied'));
 }
 
 // ── 数据 ──────────────────────────────────────────────────────
@@ -213,7 +214,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
   <div class="rm-root">
     <!-- ── 右侧固定 TOC ───────────────────────────────────── -->
     <nav class="rm-toc">
-      <p class="toc-heading">目录</p>
+      <p class="toc-heading">{{ t('tools.regex-memo.toc') }}</p>
       <ul>
         <li
           v-for="sec in sections"
@@ -270,7 +271,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                     {{ row.desc }}
                   </td>
                   <td class="td-copy">
-                    <span class="copy-btn" title="复制表达式">
+                    <span class="copy-btn" :title="t('tools.regex-memo.copyExpr')">
                       <icon-mdi-content-copy />
                     </span>
                   </td>
@@ -305,7 +306,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
           </li>
           <li>
             <router-link to="/regex-tester">
-              Regex Tester（本工具）
+              {{ t('tools.regex-memo.regexTesterLink') }}
             </router-link>
           </li>
         </ul>

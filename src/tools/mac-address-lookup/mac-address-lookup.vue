@@ -3,6 +3,8 @@ import db from 'oui-data';
 import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 输入与校验 ────────────────────────────────────────────────
 const macAddress = ref('20:37:06:12:34:56');
 const debouncedMac = refDebounced(macAddress, 150);
@@ -33,7 +35,7 @@ const vendorAddress = computed(() => detailLines.value.slice(1).join('\n'));
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy, isJustCopied } = useCopy({
   source: () => details.value ?? '',
-  text: '厂商信息已复制到剪贴板',
+  text: computed(() => t('tools.mac-address-lookup.vendorCopied')),
 });
 </script>
 
@@ -41,13 +43,13 @@ const { copy, isJustCopied } = useCopy({
   <div class="mal-root">
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="input-section">
-      <label class="input-label">MAC 地址</label>
+      <label class="input-label">{{ t('tools.mac-address-lookup.macAddressLabel') }}</label>
       <div class="input-wrap" :class="{ 'input-wrap--error': showError }">
         <icon-mdi-chip class="input-icon" />
         <input
           v-model="macAddress"
           class="mac-input"
-          placeholder="例如：AA:BB:CC:DD:EE:FF"
+          :placeholder="t('tools.mac-address-lookup.placeholder')"
           spellcheck="false"
           autocomplete="off"
           autocorrect="off"
@@ -57,7 +59,7 @@ const { copy, isJustCopied } = useCopy({
         <button
           v-if="macAddress"
           class="clear-btn"
-          title="清空"
+          :title="t('tools.mac-address-lookup.clear')"
           @click="macAddress = ''"
         >
           <icon-mdi-close />
@@ -66,7 +68,7 @@ const { copy, isJustCopied } = useCopy({
       <transition name="slide-down">
         <div v-if="showError" class="error-msg">
           <icon-mdi-alert-circle-outline />
-          请输入有效的 MAC 地址（支持 `:`、`-`、`.` 分隔符或无分隔符，共 6 字节）
+          {{ t('tools.mac-address-lookup.errorMsg') }}
         </div>
       </transition>
     </div>
@@ -82,14 +84,14 @@ const { copy, isJustCopied } = useCopy({
           <button
             class="copy-btn"
             :class="{ 'copy-btn--copied': isJustCopied }"
-            title="复制厂商信息"
+            :title="t('tools.mac-address-lookup.copyVendor')"
             @click="copy()"
           >
             <transition name="icon-fade" mode="out-in">
               <icon-mdi-check v-if="isJustCopied" key="check" />
               <icon-mdi-content-copy v-else key="copy" />
             </transition>
-            {{ isJustCopied ? '已复制！' : '复制厂商信息' }}
+            {{ isJustCopied ? t('tools.mac-address-lookup.justCopied') : t('tools.mac-address-lookup.copyVendor') }}
           </button>
         </div>
 
@@ -107,8 +109,8 @@ const { copy, isJustCopied } = useCopy({
       <div v-else-if="isValidMac && !details" key="notfound" class="state-panel state-panel--warn">
         <icon-mdi-help-circle-outline class="state-icon" />
         <div>
-          <p class="state-title">未找到对应厂商</p>
-          <p class="state-sub">该 OUI（<code>{{ getVendorKey(macAddress) }}</code>）在数据库中暂无记录</p>
+          <p class="state-title">{{ t('tools.mac-address-lookup.notFound') }}</p>
+          <p class="state-sub">{{ t('tools.mac-address-lookup.notFoundSub') }}<code>{{ getVendorKey(macAddress) }}</code>{{ t('tools.mac-address-lookup.notFoundSuffix') }}</p>
         </div>
       </div>
 
@@ -116,7 +118,7 @@ const { copy, isJustCopied } = useCopy({
       <div v-else-if="!hasInput" key="empty" class="state-panel">
         <icon-mdi-magnify class="state-icon" />
         <p class="state-sub">
-          输入 MAC 地址后，厂商信息将实时显示
+          {{ t('tools.mac-address-lookup.emptyHint') }}
         </p>
       </div>
     </transition>

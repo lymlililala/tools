@@ -3,6 +3,8 @@ import { convertBase } from '../integer-base-converter/integer-base-converter.mo
 import { ipv4ToInt, ipv4ToIpv6, isValidIpv4 } from './ipv4-address-converter.service';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const rawIpAddress = useStorage('ipv4-converter:ip', '192.168.1.1');
 
 // ── 校验 ──────────────────────────────────────────────────────
@@ -26,17 +28,17 @@ const resultRows = computed((): ResultRow[] => {
   const binFormatted = bin.match(/.{8}/g)?.join('.') ?? bin;
 
   return [
-    { label: '十进制', value: String(ipInDecimal) },
-    { label: '十六进制', value: hex, mono: true },
-    { label: '二进制', value: binFormatted, mono: true },
-    { label: 'IPv6 映射', value: ipv4ToIpv6({ ip: rawIpAddress.value }), mono: true },
-    { label: 'IPv6 (简写)', value: ipv4ToIpv6({ ip: rawIpAddress.value, prefix: '::ffff:' }), mono: true },
+    { label: t('tools.ipv4-address-converter.labelDecimal'), value: String(ipInDecimal) },
+    { label: t('tools.ipv4-address-converter.labelHex'), value: hex, mono: true },
+    { label: t('tools.ipv4-address-converter.labelBinary'), value: binFormatted, mono: true },
+    { label: t('tools.ipv4-address-converter.labelIpv6'), value: ipv4ToIpv6({ ip: rawIpAddress.value }), mono: true },
+    { label: t('tools.ipv4-address-converter.labelIpv6Short'), value: ipv4ToIpv6({ ip: rawIpAddress.value, prefix: '::ffff:' }), mono: true },
   ];
 });
 
 // ── 复制 ──────────────────────────────────────────────────────
 const copiedLabel = ref('');
-const { copy } = useCopy({ createToast: true, text: '已复制到剪贴板' });
+const { copy } = useCopy({ createToast: true, text: computed(() => t('tools.ipv4-address-converter.copied')) });
 
 async function copyRow(label: string, value: string) {
   if (!value) return;
@@ -50,12 +52,12 @@ async function copyRow(label: string, value: string) {
   <div class="ipc-root">
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="input-section">
-      <label class="input-label">IPv4 地址</label>
+      <label class="input-label">{{ t('tools.ipv4-address-converter.inputLabel') }}</label>
       <div class="input-wrap" :class="{ 'input-wrap--error': showError }">
         <input
           v-model="rawIpAddress"
           class="ip-input"
-          placeholder="例如：192.168.1.1"
+          :placeholder="t('tools.ipv4-address-converter.inputPlaceholder')"
           spellcheck="false"
           autocomplete="off"
           autofocus
@@ -64,7 +66,7 @@ async function copyRow(label: string, value: string) {
       <transition name="slide-down">
         <div v-if="showError" class="error-msg">
           <icon-mdi-alert-circle-outline />
-          请输入有效的 IPv4 地址（每段范围 0–255，共四段，如 192.168.1.1）
+          {{ t('tools.ipv4-address-converter.errorMsg') }}
         </div>
       </transition>
     </div>
@@ -94,7 +96,7 @@ async function copyRow(label: string, value: string) {
     <transition name="fade">
       <div v-if="!hasInput" class="empty-hint">
         <icon-mdi-ip-network class="empty-icon" />
-        <span>输入 IPv4 地址后，结果将实时显示在这里</span>
+        <span>{{ t('tools.ipv4-address-converter.emptyHint') }}</span>
       </div>
     </transition>
   </div>

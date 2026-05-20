@@ -3,6 +3,8 @@ import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } f
 import { useCopy } from '@/composable/copy';
 import type { Group, Scope } from './chmod-calculator.types';
 
+const { t } = useI18n();
+
 // ── 权限矩阵定义 ──────────────────────────────────────────────
 const scopes: { scope: Scope; label: string; value: number }[] = [
   { scope: 'read',    label: 'Read',    value: 4 },
@@ -24,12 +26,12 @@ const permissions = ref({
 });
 
 // ── 快捷预设 ──────────────────────────────────────────────────
-const presets = [
-  { label: '755', desc: '目录推荐',   octal: '755' },
-  { label: '644', desc: '文件推荐',   octal: '644' },
-  { label: '700', desc: '仅所有者',   octal: '700' },
-  { label: '777', desc: '全部开放',   octal: '777' },
-];
+const presets = computed(() => [
+  { label: '755', desc: t('tools.chmod-calculator.preset755'), octal: '755' },
+  { label: '644', desc: t('tools.chmod-calculator.preset644'), octal: '644' },
+  { label: '700', desc: t('tools.chmod-calculator.preset700'), octal: '700' },
+  { label: '777', desc: t('tools.chmod-calculator.preset777'), octal: '777' },
+]);
 
 function applyPreset(octal: string) {
   const digits = octal.split('').map(Number);
@@ -74,8 +76,13 @@ const command = computed(() => `chmod ${octal.value} ${filename.value || 'path'}
 // ── 复制命令 ──────────────────────────────────────────────────
 const { copy: copyCmd, isJustCopied } = useCopy({
   source: command,
-  text: '命令已复制到剪贴板',
+  createToast: false,
 });
+const message = useMessage();
+async function handleCopyCmd() {
+  await copyCmd();
+  message.success(t('tools.chmod-calculator.copied'));
+}
 
 // ── 符号分组显示（每3个一段，加空格） ────────────────────────
 const symbolicGroups = computed(() => {
@@ -203,8 +210,8 @@ const symbolicGroups = computed(() => {
         <button
           class="copy-btn"
           :class="{ copied: isJustCopied }"
-          :title="isJustCopied ? '已复制！' : '复制命令'"
-          @click="copyCmd()"
+          :title="isJustCopied ? t('tools.chmod-calculator.justCopied') : t('tools.chmod-calculator.copyCommand')"
+          @click="handleCopyCmd()"
         >
           <svg v-if="!isJustCopied" width="15" height="15" viewBox="0 0 24 24" fill="none">
             <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2" />
@@ -213,7 +220,7 @@ const symbolicGroups = computed(() => {
           <svg v-else width="15" height="15" viewBox="0 0 24 24" fill="none">
             <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span>{{ isJustCopied ? '已复制' : '复制' }}</span>
+          <span>{{ isJustCopied ? t('tools.chmod-calculator.copiedLabel') : t('tools.chmod-calculator.copyLabel') }}</span>
         </button>
       </div>
     </div>

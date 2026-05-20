@@ -4,6 +4,8 @@ import { refDebounced } from '@vueuse/core';
 import { convertArrayToCsv } from './json-to-csv.service';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 状态 ──────────────────────────────────────────────────────
 const jsonInput = useStorage('json-to-csv:input', '');
 const debouncedJson = refDebounced(jsonInput, 200);
@@ -21,12 +23,12 @@ const result = computed((): Result => {
   try {
     const parsed = JSON5.parse(raw);
     if (!Array.isArray(parsed)) {
-      return { csv: '', error: '输入必须是 JSON 数组（以 [ 开头）' };
+      return { csv: '', error: t('tools.json-to-csv.mustBeArray') };
     }
     return { csv: convertArrayToCsv({ array: parsed }), error: null };
   }
   catch (e: any) {
-    return { csv: '', error: e?.message ?? 'JSON 格式无效' };
+    return { csv: '', error: e?.message ?? t('tools.json-to-csv.invalidJson') };
   }
 });
 
@@ -55,7 +57,7 @@ function clearInput() {
 // ── 复制 CSV ──────────────────────────────────────────────────
 const { copy: copyCsv, isJustCopied } = useCopy({
   source: csvOutput,
-  text: 'CSV 已复制到剪贴板',
+  text: computed(() => t('tools.json-to-csv.csvCopied')),
 });
 
 // ── 下载 CSV ──────────────────────────────────────────────────
@@ -86,26 +88,26 @@ const stats = computed(() => {
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">
-        <span class="pane-title">原始 JSON</span>
+        <span class="pane-title">{{ t('tools.json-to-csv.rawJson') }}</span>
 
         <!-- 验证状态徽章 -->
         <span v-if="isValid" class="status-badge status-badge--valid">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          合法
+          {{ t('tools.json-to-csv.valid') }}
         </span>
         <span v-else-if="isInvalid" class="status-badge status-badge--error">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          无效
+          {{ t('tools.json-to-csv.invalid') }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
-          <c-tooltip tooltip="格式化 JSON" position="bottom">
+          <c-tooltip :tooltip="t('tools.json-to-csv.formatJson')" position="bottom">
             <button class="hdr-btn" :disabled="!hasInput" @click="formatInput">
               <icon-mdi-code-braces />
             </button>
           </c-tooltip>
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.json-to-csv.clearInput')" position="bottom">
             <button class="hdr-btn" @click="clearInput">
               <icon-mdi-close-circle-outline />
             </button>
@@ -117,7 +119,7 @@ const stats = computed(() => {
       <c-code-input
         v-model="jsonInput"
         language="json"
-        placeholder="在此粘贴 JSON 数组，例如：[{&quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;}]"
+        :placeholder="t('tools.json-to-csv.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': isInvalid }"
       />
@@ -137,16 +139,16 @@ const stats = computed(() => {
     <!-- 输出面板 -->
     <div class="pane">
       <div class="pane-header">
-        <span class="pane-title">转换后的 CSV</span>
+        <span class="pane-title">{{ t('tools.json-to-csv.csvOutput') }}</span>
 
         <!-- 统计信息 -->
         <span v-if="stats" class="stats-badge">
-          {{ stats.rows }} 行 · {{ stats.cols }} 列
+          {{ t('tools.json-to-csv.stats', { rows: stats.rows, cols: stats.cols }) }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制 CSV'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.json-to-csv.copied') : t('tools.json-to-csv.copyCsv')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -157,7 +159,7 @@ const stats = computed(() => {
               <icon-mdi-content-copy v-else />
             </button>
           </c-tooltip>
-          <c-tooltip tooltip="下载 output.csv" position="bottom">
+          <c-tooltip :tooltip="t('tools.json-to-csv.downloadCsv')" position="bottom">
             <button class="hdr-btn" :disabled="!csvOutput" @click="downloadCsv">
               <icon-mdi-download />
             </button>
@@ -169,7 +171,7 @@ const stats = computed(() => {
       <c-code-input
         :model-value="csvOutput"
         language="json"
-        placeholder="CSV 结果将显示在此..."
+        :placeholder="t('tools.json-to-csv.outputPlaceholder')"
         class="code-editor"
         readonly
       />

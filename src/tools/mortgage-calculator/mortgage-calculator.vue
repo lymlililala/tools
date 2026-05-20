@@ -206,7 +206,7 @@ watch(totalLoanAmount, (v) => {
               inputmode="numeric"
               placeholder="1,000,000"
             >
-            <span class="field-suffix">元</span>
+            <span class="field-suffix">{{ t('tools.mortgage-calculator.yuan') }}</span>
           </div>
         </div>
 
@@ -226,7 +226,7 @@ watch(totalLoanAmount, (v) => {
           >
           <div class="slider-ticks">
             <span>20%</span>
-            <span>首付 {{ formatMoneyShort(downPayment) }}</span>
+            <span>{{ t('tools.mortgage-calculator.downPaymentLabel') }} {{ formatMoneyShort(downPayment) }}</span>
             <span>90%</span>
           </div>
         </div>
@@ -235,7 +235,7 @@ watch(totalLoanAmount, (v) => {
         <div class="field">
           <label class="field-label">
             {{ t('tools.mortgage-calculator.loanYears') }}
-            <span class="field-value-badge">{{ loanYears }} 年</span>
+            <span class="field-value-badge">{{ loanYears }} {{ t('tools.mortgage-calculator.year') }}</span>
           </label>
           <input
             v-model.number="loanYears"
@@ -314,10 +314,10 @@ watch(totalLoanAmount, (v) => {
                   step="10000"
                   placeholder="500000"
                 >
-                <span class="field-suffix">元</span>
-              </div>
+                <span class="field-suffix">{{ t('tools.mortgage-calculator.yuan') }}</span>
+          </div>
               <div class="field-hint">
-                最大可贷 {{ formatMoneyShort(totalLoanAmount) }}，商业贷款 {{ formatMoneyShort(commercialLoanAmount) }}
+                {{ t('tools.mortgage-calculator.maxLoan') }} {{ formatMoneyShort(totalLoanAmount) }}，{{ t('tools.mortgage-calculator.commercialLoan') }} {{ formatMoneyShort(commercialLoanAmount) }}
               </div>
             </div>
             <div class="field">
@@ -365,18 +365,18 @@ watch(totalLoanAmount, (v) => {
           <div class="stat-card stat-card--hero">
             <div class="stat-card__label">
               {{ loanType === 'equal-payment' ? t('tools.mortgage-calculator.monthlyPayment') : t('tools.mortgage-calculator.firstMonthPayment') }}
-              <span v-if="loanType === 'equal-principal'" class="stat-card__sub">（逐月递减）</span>
+              <span v-if="loanType === 'equal-principal'" class="stat-card__sub">{{ t('tools.mortgage-calculator.monthlyDecreasing') }}</span>
             </div>
             <div class="stat-card__value stat-card__value--hero">
               ¥ {{ formatMoney(firstMonthPayment) }}
             </div>
             <div v-if="loanType === 'equal-principal' && lastMonthPayment !== null" class="stat-card__extra">
-              末月还款 ¥ {{ formatMoney(lastMonthPayment) }}，月均递减 ¥ {{ formatMoney((firstMonthPayment - lastMonthPayment) / (totalMonths - 1)) }}
+              {{ t('tools.mortgage-calculator.lastMonth') }} ¥ {{ formatMoney(lastMonthPayment) }}，{{ t('tools.mortgage-calculator.avgMonthlyDecrease') }} ¥ {{ formatMoney((firstMonthPayment - lastMonthPayment) / (totalMonths - 1)) }}
             </div>
             <!-- 查看还款明细按钮 -->
             <button class="schedule-btn" @click="showSchedule = true">
               <icon-mdi-table-eye />
-              查看逐月还款明细
+              {{ t('tools.mortgage-calculator.viewSchedule') }}
             </button>
           </div>
           <!-- 还款总额 -->
@@ -415,7 +415,7 @@ watch(totalLoanAmount, (v) => {
         <!-- 饼图 -->
         <div class="chart-section">
           <div class="panel-title panel-title--sm">
-            资金构成
+            {{ t('tools.mortgage-calculator.fundComposition') }}
           </div>
           <PieChart :segments="chartSegments" :size="160" />
         </div>
@@ -439,29 +439,29 @@ watch(totalLoanAmount, (v) => {
       <div v-if="showSchedule" class="modal-overlay" @click.self="showSchedule = false">
         <div class="modal-box">
           <div class="modal-header">
-            <span class="modal-title">逐月还款明细</span>
+            <span class="modal-title">{{ t('tools.mortgage-calculator.scheduleTitle') }}</span>
             <button class="modal-close" @click="showSchedule = false">
               <icon-mdi-close />
             </button>
           </div>
           <div class="modal-meta">
-            共 {{ totalMonths }} 期 · 贷款本金 ¥{{ formatMoney(totalLoanAmount) }} · 总利息 ¥{{ formatMoney(totalInterest) }}
+            {{ t('tools.mortgage-calculator.scheduleMeta', { months: totalMonths, principal: formatMoney(totalLoanAmount), interest: formatMoney(totalInterest) }) }}
           </div>
           <div class="modal-table-wrap">
             <table class="schedule-table">
               <thead>
                 <tr>
-                  <th>期数</th>
-                  <th>月供</th>
-                  <th>还本金</th>
-                  <th>还利息</th>
-                  <th>剩余本金</th>
+                  <th>{{ t('tools.mortgage-calculator.thPeriod') }}</th>
+                  <th>{{ t('tools.mortgage-calculator.thMonthly') }}</th>
+                  <th>{{ t('tools.mortgage-calculator.thPrincipal') }}</th>
+                  <th>{{ t('tools.mortgage-calculator.thInterest') }}</th>
+                  <th>{{ t('tools.mortgage-calculator.thRemaining') }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="row in scheduleRows" :key="row.month" class="schedule-row">
                   <td class="td-month">
-                    第 {{ row.month }} 期
+                    {{ t('tools.mortgage-calculator.period', { n: row.month }) }}
                   </td>
                   <td class="td-payment">
                     ¥{{ formatMoney(row.payment) }}

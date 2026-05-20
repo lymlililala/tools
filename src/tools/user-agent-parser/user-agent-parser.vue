@@ -7,6 +7,7 @@ import type { UserAgentResultSection } from './user-agent-parser.types';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useStyleStore } from '@/stores/style.store';
 
+const { t } = useI18n();
 const styleStore = useStyleStore();
 const { copy } = useClipboard();
 
@@ -141,7 +142,7 @@ const sections: UserAgentResultSection[] = [
 
     <!-- 结果区标题栏 + 一键复制 JSON 按钮 -->
     <div v-if="hasResult" class="results-header">
-      <span class="results-label">解析结果</span>
+      <span class="results-label">{{ t('tools.user-agent-parser.resultsLabel') }}</span>
       <n-tooltip trigger="hover" placement="top">
         <template #trigger>
           <button
@@ -151,10 +152,10 @@ const sections: UserAgentResultSection[] = [
           >
             <icon-mdi-check v-if="copiedAll" class="btn-icon" />
             <icon-mdi-code-json v-else class="btn-icon" />
-            {{ copiedAll ? '已复制！' : '复制 JSON' }}
+            {{ copiedAll ? t('tools.user-agent-parser.copiedBtn') : t('tools.user-agent-parser.copyJsonBtn') }}
           </button>
         </template>
-        {{ copiedAll ? '已复制到剪贴板' : '将所有解析结果复制为 JSON' }}
+        {{ copiedAll ? t('tools.user-agent-parser.copiedTooltip') : t('tools.user-agent-parser.copyJsonTooltip') }}
       </n-tooltip>
     </div>
 

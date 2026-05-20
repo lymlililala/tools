@@ -93,9 +93,10 @@ function downloadResult() {
 }
 
 // ── 复制 ──────────────────────────────────────────────────────
+const { t } = useI18n();
+
 const { copy, isJustCopied } = useCopy({
   source: normalizedEmails,
-  text: '邮箱已复制到剪贴板',
 });
 </script>
 
@@ -104,10 +105,10 @@ const { copy, isJustCopied } = useCopy({
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="section">
       <div class="section-header">
-        <span class="section-label">待处理邮箱（每行一个）</span>
+        <span class="section-label">{{ t('tools.email-normalizer.inputLabel') }}</span>
         <div class="action-group">
           <!-- 上传文件 -->
-          <c-tooltip tooltip="上传 .txt / .csv 文件" position="bottom">
+          <c-tooltip :tooltip="t('tools.email-normalizer.uploadTooltip')" position="bottom">
             <button class="hdr-btn" @click="triggerUpload">
               <icon-mdi-upload />
             </button>
@@ -120,7 +121,7 @@ const { copy, isJustCopied } = useCopy({
             @change="onFileChange"
           />
           <!-- 清空 -->
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.email-normalizer.clearInput')" position="bottom">
             <button class="hdr-btn" @click="rawEmails = ''">
               <icon-mdi-close-circle-outline />
             </button>
@@ -132,7 +133,7 @@ const { copy, isJustCopied } = useCopy({
         <textarea
           v-model="rawEmails"
           class="email-textarea"
-          placeholder="在此粘贴邮箱地址，每行一个...&#10;例如：User@Example.com"
+          :placeholder="t('tools.email-normalizer.placeholder')"
           spellcheck="false"
           autocomplete="off"
           autocorrect="off"
@@ -147,31 +148,31 @@ const { copy, isJustCopied } = useCopy({
       <div v-if="hasInput" class="stats-bar">
         <div class="stat-item">
           <span class="stat-num">{{ processResult.totalCount }}</span>
-          <span class="stat-label">输入</span>
+          <span class="stat-label">{{ t('tools.email-normalizer.statInput') }}</span>
         </div>
         <div class="stat-sep">→</div>
         <div class="stat-item stat-item--valid">
           <span class="stat-num">{{ processResult.validCount }}</span>
-          <span class="stat-label">有效</span>
+          <span class="stat-label">{{ t('tools.email-normalizer.statValid') }}</span>
         </div>
         <template v-if="processResult.invalidCount > 0">
           <div class="stat-sep">·</div>
           <div class="stat-item stat-item--invalid">
             <span class="stat-num">{{ processResult.invalidCount }}</span>
-            <span class="stat-label">无效</span>
+            <span class="stat-label">{{ t('tools.email-normalizer.statInvalid') }}</span>
           </div>
         </template>
         <template v-if="processResult.dedupCount > 0">
           <div class="stat-sep">·</div>
           <div class="stat-item stat-item--dedup">
             <span class="stat-num">-{{ processResult.dedupCount }}</span>
-            <span class="stat-label">重复</span>
+            <span class="stat-label">{{ t('tools.email-normalizer.statDuplicate') }}</span>
           </div>
         </template>
         <div class="stat-sep">→</div>
         <div class="stat-item stat-item--output">
           <span class="stat-num">{{ processResult.outputCount }}</span>
-          <span class="stat-label">输出</span>
+          <span class="stat-label">{{ t('tools.email-normalizer.statOutput') }}</span>
         </div>
       </div>
     </transition>
@@ -179,10 +180,10 @@ const { copy, isJustCopied } = useCopy({
     <!-- ── 输出区 ──────────────────────────────────────────── -->
     <div class="section">
       <div class="section-header">
-        <span class="section-label">标准化结果</span>
+        <span class="section-label">{{ t('tools.email-normalizer.outputLabel') }}</span>
         <div class="action-group">
           <!-- 复制 -->
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制结果'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.email-normalizer.copied') : t('tools.email-normalizer.copyResult')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -194,7 +195,7 @@ const { copy, isJustCopied } = useCopy({
             </button>
           </c-tooltip>
           <!-- 下载 -->
-          <c-tooltip tooltip="下载为 .txt 文件" position="bottom">
+          <c-tooltip :tooltip="t('tools.email-normalizer.downloadTooltip')" position="bottom">
             <button class="hdr-btn" :disabled="!hasOutput" @click="downloadResult">
               <icon-mdi-download />
             </button>
@@ -206,7 +207,7 @@ const { copy, isJustCopied } = useCopy({
         <textarea
           :value="normalizedEmails"
           class="email-textarea email-textarea--readonly"
-          placeholder="标准化后的邮箱将显示在此..."
+          :placeholder="t('tools.email-normalizer.outputPlaceholder')"
           readonly
           spellcheck="false"
         />

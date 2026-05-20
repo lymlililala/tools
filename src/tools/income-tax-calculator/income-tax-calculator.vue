@@ -171,9 +171,9 @@ const salaryChartSegments = computed(() => [
         <div class="itc-card">
           <div class="card-hd">
             <span class="card-title">{{ t('tools.income-tax-calculator.income') }}</span>
-            <button class="reset-btn" :title="'重置所有输入'" @click="resetAll">
+            <button class="reset-btn" :title="t('tools.income-tax-calculator.resetTitle')" @click="resetAll">
               <icon-mdi-refresh />
-              重置
+              {{ t('tools.income-tax-calculator.reset') }}
             </button>
           </div>
 
@@ -189,7 +189,7 @@ const salaryChartSegments = computed(() => [
                 placeholder="15,000"
                 data-test-id="grossSalary"
               >
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
 
@@ -228,7 +228,7 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.childrenEdu') }}</label>
             <div class="fi-wrap">
               <input v-model="childrenEduStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
           <!-- 3岁以下子女照护 -->
@@ -236,7 +236,7 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.childCare') }}</label>
             <div class="fi-wrap">
               <input v-model="childCareStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
           <!-- 继续教育 -->
@@ -244,7 +244,7 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.continuingEdu') }}</label>
             <div class="fi-wrap">
               <input v-model="continuingEduStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
           <!-- 住房贷款利息 -->
@@ -252,7 +252,7 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.housingLoan') }}</label>
             <div class="fi-wrap">
               <input v-model="housingLoanInterestStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
           <!-- 住房租金 -->
@@ -260,7 +260,7 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.housingRent') }}</label>
             <div class="fi-wrap">
               <input v-model="housingRentStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
           <!-- 赡养老人 -->
@@ -268,13 +268,13 @@ const salaryChartSegments = computed(() => [
             <label class="fl">{{ t('tools.income-tax-calculator.elderlySupport') }}</label>
             <div class="fi-wrap">
               <input v-model="elderlySupportStr" class="fi" type="text" inputmode="numeric" placeholder="0">
-              <span class="fi-suffix">元 / 月</span>
+              <span class="fi-suffix">{{ t('tools.income-tax-calculator.yuanPerMonth') }}</span>
             </div>
           </div>
 
           <!-- 专项合计提示 -->
           <div v-if="specialDeduction > 0" class="deduction-total">
-            专项附加扣除合计：<strong>¥ {{ fmt(specialDeduction) }}</strong> / 月
+            {{ t('tools.income-tax-calculator.specialDeductionTotal') }}: <strong>¥ {{ fmt(specialDeduction) }}</strong> / {{ t('tools.income-tax-calculator.month') }}
           </div>
         </div>
       </div>
@@ -296,7 +296,7 @@ const salaryChartSegments = computed(() => [
               ¥ {{ fmt(netSalary) }}
             </div>
             <div class="hero-sub">
-              综合税率（个税 + 社保）<strong>{{ effectiveTaxRate.toFixed(1) }}%</strong>
+              {{ t('tools.income-tax-calculator.effectiveRate') }}<strong>{{ effectiveTaxRate.toFixed(1) }}%</strong>
             </div>
           </div>
 
@@ -366,7 +366,7 @@ const salaryChartSegments = computed(() => [
         <!-- 工资构成饼图 -->
         <div class="itc-card">
           <div class="card-title card-title--sm">
-            工资构成
+            {{ t('tools.income-tax-calculator.salaryComposition') }}
           </div>
           <PieChart :segments="salaryChartSegments" :size="150" />
         </div>
@@ -375,7 +375,7 @@ const salaryChartSegments = computed(() => [
         <div class="itc-card">
           <button class="collapse-hd" @click="showBrackets = !showBrackets">
             <span class="card-title card-title--sm">{{ t('tools.income-tax-calculator.taxBrackets') }}</span>
-            <span class="collapse-hint">当前档次：{{ (taxResult.rate * 100).toFixed(0) }}%</span>
+            <span class="collapse-hint">{{ t('tools.income-tax-calculator.currentBracket') }}: {{ (taxResult.rate * 100).toFixed(0) }}%</span>
             <icon-mdi-chevron-down class="collapse-chevron" :class="{ 'collapse-chevron--open': showBrackets }" />
           </button>
           <transition name="accordion">
@@ -390,7 +390,7 @@ const salaryChartSegments = computed(() => [
                 <span class="bracket-range">
                   {{ b.max === Infinity ? `> ¥${b.min.toLocaleString()}` : `¥${b.min.toLocaleString()} – ¥${b.max.toLocaleString()}` }}
                 </span>
-                <span v-if="taxResult.bracket === b" class="bracket-cur-tag">当前</span>
+                <span v-if="taxResult.bracket === b" class="bracket-cur-tag">{{ t('tools.income-tax-calculator.current') }}</span>
                 <span class="bracket-rate" :style="{ color: bracketColor(b.rate) }">
                   {{ (b.rate * 100).toFixed(0) }}%
                 </span>

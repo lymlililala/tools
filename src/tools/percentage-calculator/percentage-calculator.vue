@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+const { t } = useI18n();
+
 // ─── 工具函数 ─────────────────────────────────────────────────────────────────
 /** 格式化数字结果，最多保留 8 位有效小数；超大数用科学计数法 */
 function formatResult(n: number): string {
@@ -76,11 +78,11 @@ function copyValue(key: string, val: string) {
     <div class="pc-card">
       <div class="card-title">
         <span class="card-num">1</span>
-        <span>计算某数的百分之多少</span>
+        <span>{{ t('tools.percentage-calculator.card1Title') }}</span>
       </div>
       <div class="formula-row">
         <div class="formula-item formula-item--wide">
-          <label class="fi-label">数值</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.value') }}</label>
           <input
             v-model="pctY"
             class="fi-input"
@@ -89,9 +91,9 @@ function copyValue(key: string, val: string) {
             data-test-id="percentageY"
           >
         </div>
-        <span class="formula-op">的</span>
+        <span class="formula-op">{{ t('tools.percentage-calculator.of') }}</span>
         <div class="formula-item">
-          <label class="fi-label">百分比 (%)</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.percent') }}</label>
           <input
             v-model="pctX"
             class="fi-input"
@@ -102,14 +104,14 @@ function copyValue(key: string, val: string) {
         </div>
         <span class="formula-op">%&nbsp;=</span>
         <div class="formula-item formula-item--result">
-          <label class="fi-label">结果</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.result') }}</label>
           <div class="result-wrap" :class="{ 'result-wrap--filled': !!pctResult }">
             <span class="result-text">{{ pctResult || '—' }}</span>
             <button
               v-if="pctResult"
               class="copy-btn"
               :class="{ 'copy-btn--copied': copiedKey === 'pct' }"
-              :title="copiedKey === 'pct' ? '已复制！' : '复制结果'"
+              :title="copiedKey === 'pct' ? t('tools.percentage-calculator.copied') : t('tools.percentage-calculator.copyResult')"
               @click="copyValue('pct', pctResult)"
             >
               <icon-mdi-check v-if="copiedKey === 'pct'" />
@@ -119,7 +121,7 @@ function copyValue(key: string, val: string) {
         </div>
       </div>
       <div class="formula-desc">
-        即：<em>结果 = Y × X ÷ 100</em>
+        {{ t('tools.percentage-calculator.formula1') }}: <em>result = Y × X ÷ 100</em>
       </div>
     </div>
 
@@ -127,11 +129,11 @@ function copyValue(key: string, val: string) {
     <div class="pc-card">
       <div class="card-title">
         <span class="card-num">2</span>
-        <span>计算某数占另一数的百分比</span>
+        <span>{{ t('tools.percentage-calculator.card2Title') }}</span>
       </div>
       <div class="formula-row">
         <div class="formula-item formula-item--wide">
-          <label class="fi-label">分子</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.numerator') }}</label>
           <input
             v-model="numX"
             class="fi-input"
@@ -142,7 +144,7 @@ function copyValue(key: string, val: string) {
         </div>
         <span class="formula-op">÷</span>
         <div class="formula-item formula-item--wide">
-          <label class="fi-label">分母</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.denominator') }}</label>
           <input
             v-model="numY"
             class="fi-input"
@@ -154,14 +156,14 @@ function copyValue(key: string, val: string) {
         </div>
         <span class="formula-op">× 100 =</span>
         <div class="formula-item formula-item--result">
-          <label class="fi-label">结果 (%)</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.resultPct') }}</label>
           <div class="result-wrap" :class="{ 'result-wrap--filled': !!numResult }">
             <span class="result-text">{{ numResult ? `${numResult}%` : '—' }}</span>
             <button
               v-if="numResult"
               class="copy-btn"
               :class="{ 'copy-btn--copied': copiedKey === 'num' }"
-              :title="copiedKey === 'num' ? '已复制！' : '复制结果'"
+              :title="copiedKey === 'num' ? t('tools.percentage-calculator.copied') : t('tools.percentage-calculator.copyResult')"
               @click="copyValue('num', `${numResult}%`)"
             >
               <icon-mdi-check v-if="copiedKey === 'num'" />
@@ -173,11 +175,11 @@ function copyValue(key: string, val: string) {
       <transition name="slide-down">
         <div v-if="numYIsZero" class="error-hint">
           <icon-mdi-alert-circle-outline />
-          分母不能为 0，无法计算百分比
+          {{ t('tools.percentage-calculator.zeroDenominator') }}
         </div>
       </transition>
       <div class="formula-desc">
-        即：<em>结果 = X ÷ Y × 100%</em>
+        {{ t('tools.percentage-calculator.formula2') }}: <em>result = X ÷ Y × 100%</em>
       </div>
     </div>
 
@@ -185,11 +187,11 @@ function copyValue(key: string, val: string) {
     <div class="pc-card">
       <div class="card-title">
         <span class="card-num">3</span>
-        <span>计算百分比变化（增长 / 降低）</span>
+        <span>{{ t('tools.percentage-calculator.card3Title') }}</span>
       </div>
       <div class="formula-row">
         <div class="formula-item formula-item--wide">
-          <label class="fi-label">原始值</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.from') }}</label>
           <input
             v-model="numFrom"
             class="fi-input"
@@ -201,7 +203,7 @@ function copyValue(key: string, val: string) {
         </div>
         <span class="formula-op">→</span>
         <div class="formula-item formula-item--wide">
-          <label class="fi-label">变化后值</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.to') }}</label>
           <input
             v-model="numTo"
             class="fi-input"
@@ -212,7 +214,7 @@ function copyValue(key: string, val: string) {
         </div>
         <span class="formula-op">=</span>
         <div class="formula-item formula-item--result">
-          <label class="fi-label">变化幅度 (%)</label>
+          <label class="fi-label">{{ t('tools.percentage-calculator.change') }}</label>
           <div
             class="result-wrap"
             :class="{
@@ -231,7 +233,7 @@ function copyValue(key: string, val: string) {
               v-if="changeResult"
               class="copy-btn"
               :class="{ 'copy-btn--copied': copiedKey === 'chg' }"
-              :title="copiedKey === 'chg' ? '已复制！' : '复制结果'"
+              :title="copiedKey === 'chg' ? t('tools.percentage-calculator.copied') : t('tools.percentage-calculator.copyResult')"
               @click="copyValue('chg', `${parseFloat(changeResult) > 0 ? '+' : ''}${changeResult}%`)"
             >
               <icon-mdi-check v-if="copiedKey === 'chg'" />
@@ -243,11 +245,11 @@ function copyValue(key: string, val: string) {
       <transition name="slide-down">
         <div v-if="fromIsZero" class="error-hint">
           <icon-mdi-alert-circle-outline />
-          原始值不能为 0，无法计算百分比变化
+          {{ t('tools.percentage-calculator.zeroFrom') }}
         </div>
       </transition>
       <div class="formula-desc">
-        即：<em>变化幅度 = (To − From) ÷ From × 100%</em>
+        {{ t('tools.percentage-calculator.formula3') }}: <em>change = (To − From) ÷ From × 100%</em>
       </div>
     </div>
   </div>

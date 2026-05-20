@@ -4,6 +4,8 @@ import { getStringSizeInBytes } from './text-statistics.service';
 import { useCopy } from '@/composable/copy';
 import { formatBytes } from '@/utils/convert';
 
+const { t } = useI18n();
+
 const text = ref('');
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
@@ -34,10 +36,16 @@ watch(text, async () => {
 
 // ── 复制 ──────────────────────────────────────────
 const copied = ref(false);
-const { copy } = useCopy({ source: text, text: '已复制到剪贴板！' });
+const { copy: copyRaw } = useCopy({ source: text, createToast: false });
+const message = useMessage();
+
+async function handleCopyInternal() {
+  await copyRaw();
+  message.success(t('tools.text-statistics.copied'));
+}
 
 async function handleCopy() {
-  await copy();
+  await handleCopyInternal();
   copied.value = true;
   setTimeout(() => (copied.value = false), 1800);
 }
@@ -56,10 +64,10 @@ function clearText() {
 
 // 统计项配置
 const stats = computed(() => [
-  { key: 'char', label: '字符数', value: charCount.value },
-  { key: 'word', label: '单词数', value: wordCount.value },
-  { key: 'line', label: '行数', value: lineCount.value },
-  { key: 'byte', label: '字节大小', value: byteSize.value, isString: true },
+  { key: 'char', label: t('tools.text-statistics.chars'), value: charCount.value },
+  { key: 'word', label: t('tools.text-statistics.words'), value: wordCount.value },
+  { key: 'line', label: t('tools.text-statistics.lines'), value: lineCount.value },
+  { key: 'byte', label: t('tools.text-statistics.bytes'), value: byteSize.value, isString: true },
 ]);
 
 const hasContent = computed(() => text.value.length > 0);
@@ -74,12 +82,12 @@ const hasContent = computed(() => text.value.length > 0);
           ref="textareaRef"
           v-model="text"
           class="ts-textarea"
-          placeholder="在此输入或粘贴文本…"
+          :placeholder="t('tools.text-statistics.placeholder')"
           spellcheck="false"
         />
         <!-- 右上角操作图标 -->
         <div class="textarea-actions">
-          <c-tooltip tooltip="复制文本">
+          <c-tooltip :tooltip="t('tools.text-statistics.copyTooltip')">
             <button
               class="action-btn"
               :class="{ copied }"
@@ -90,7 +98,7 @@ const hasContent = computed(() => text.value.length > 0);
               <n-icon v-else :component="Copy" size="15" />
             </button>
           </c-tooltip>
-          <c-tooltip tooltip="清空文本">
+          <c-tooltip :tooltip="t('tools.text-statistics.clearTooltip')">
             <button
               class="action-btn"
               :disabled="!hasContent"
