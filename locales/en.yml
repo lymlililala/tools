@@ -189,7 +189,7 @@ tools:
     invalid: Invalid
     formatJson: Format JSON
     clearInput: Clear input
-    inputPlaceholder: 'Paste a JSON array, e.g. [{"name":"Alice","age":30}]'
+    inputPlaceholder: Paste a JSON array here...
     csvOutput: CSV Output
     stats: '{rows} rows × {cols} cols'
     copied: Copied!
@@ -820,7 +820,7 @@ tools:
     valid: Valid
     invalid: Invalid
     clearInput: Clear input
-    inputPlaceholder: 'Paste JSON, e.g. {"hello":"world"}'
+    inputPlaceholder: Paste JSON here...
     jsonCopied: JSON copied!
     justCopied: Copied!
     copyResult: Copy formatted JSON
