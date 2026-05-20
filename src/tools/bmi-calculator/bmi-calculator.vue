@@ -127,10 +127,10 @@ function clampWeight() {
             @blur="clampHeight"
           />
           <span class="field-unit">{{ unit === 'metric' ? 'cm' : 'in' }}</span>
-          <button class="stepper-btn" tabindex="0" aria-label="减少身高" @click="stepHeight(-1)" @keydown.enter.prevent="stepHeight(-1)">
+          <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.decreaseHeight')" @click="stepHeight(-1)" @keydown.enter.prevent="stepHeight(-1)">
             −
           </button>
-          <button class="stepper-btn" tabindex="0" aria-label="增加身高" @click="stepHeight(1)" @keydown.enter.prevent="stepHeight(1)">
+          <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.increaseHeight')" @click="stepHeight(1)" @keydown.enter.prevent="stepHeight(1)">
             +
           </button>
         </div>
@@ -154,10 +154,10 @@ function clampWeight() {
             @blur="clampWeight"
           />
           <span class="field-unit">{{ unit === 'metric' ? 'kg' : 'lbs' }}</span>
-          <button class="stepper-btn" tabindex="0" aria-label="减少体重" @click="stepWeight(-0.5)" @keydown.enter.prevent="stepWeight(-0.5)">
+          <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.decreaseWeight')" @click="stepWeight(-0.5)" @keydown.enter.prevent="stepWeight(-0.5)">
             −
           </button>
-          <button class="stepper-btn" tabindex="0" aria-label="增加体重" @click="stepWeight(0.5)" @keydown.enter.prevent="stepWeight(0.5)">
+          <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.increaseWeight')" @click="stepWeight(0.5)" @keydown.enter.prevent="stepWeight(0.5)">
             +
           </button>
         </div>

@@ -3,6 +3,7 @@ import { compareSync } from 'bcryptjs';
 import { useThemeVars } from 'naive-ui';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
 const themeVars = useThemeVars();
 
 // ── Hash 区域 ──────────────────────────────────────────────────────────────────
@@ -94,29 +95,29 @@ const compareState = computed<CompareState>(() => {
 <template>
   <div class="bcrypt-layout">
     <!-- ① Hash 卡片 -->
-    <c-card title="Hash" class="bcrypt-card">
+    <c-card :title="t('tools.bcrypt.hashTitle')" class="bcrypt-card">
       <c-input-text
         v-model:value="input"
-        placeholder="Your string to bcrypt..."
+        :placeholder="t('tools.bcrypt.inputPlaceholder')"
         raw-text
-        label="Your string:"
+        :label="t('tools.bcrypt.inputLabel')"
         label-position="left"
         label-align="right"
         label-width="120px"
         mb-2
       />
 
-      <n-form-item label="Salt count:" label-placement="left" label-width="120" :show-feedback="false" mb-3>
-        <n-input-number v-model:value="saltCount" placeholder="Salt rounds..." :max="20" :min="4" w-full />
+      <n-form-item :label="t('tools.bcrypt.saltLabel')" label-placement="left" label-width="120" :show-feedback="false" mb-3>
+        <n-input-number v-model:value="saltCount" :placeholder="t('tools.bcrypt.saltPlaceholder')" :max="20" :min="4" w-full />
       </n-form-item>
 
       <!-- 输出框：右侧内嵌复制按钮 -->
       <div class="hash-output-wrap">
         <div class="hash-output" :class="{ loading: isHashing }">
-          <span v-if="isHashing" class="hash-placeholder">Computing…</span>
+          <span v-if="isHashing" class="hash-placeholder">{{ t('tools.bcrypt.computing') }}</span>
           <span v-else class="hash-text">{{ hashed }}</span>
         </div>
-        <c-tooltip :tooltip="isJustCopied ? 'Copied!' : 'Copy hash'" position="left">
+        <c-tooltip :tooltip="isJustCopied ? t('tools.bcrypt.copied') : t('tools.bcrypt.copyHash')" position="left">
           <button
             class="inline-copy-btn"
             :class="{ copied: isJustCopied }"
@@ -134,45 +135,45 @@ const compareState = computed<CompareState>(() => {
       <!-- Loading 提示（高 salt 时） -->
       <div v-if="isHashing" class="loading-hint">
         <n-spin size="small" />
-        <span>Computing bcrypt hash{{ saltCount >= 13 ? ` (salt=${saltCount}, may take a moment)` : '…' }}</span>
+        <span>{{ t('tools.bcrypt.computingHint') }}{{ saltCount >= 13 ? ` (salt=${saltCount}, ${t('tools.bcrypt.computingMoment')})` : '…' }}</span>
       </div>
     </c-card>
 
     <!-- ② Compare 卡片 -->
-    <c-card title="Compare string with hash" class="bcrypt-card">
+    <c-card :title="t('tools.bcrypt.compareTitle')" class="bcrypt-card">
       <n-form label-width="120">
-        <n-form-item label="Your string:" label-placement="left" :show-feedback="false">
-          <c-input-text v-model:value="compareString" placeholder="Your string to compare..." raw-text />
+        <n-form-item :label="t('tools.bcrypt.compareStringLabel')" label-placement="left" :show-feedback="false">
+          <c-input-text v-model:value="compareString" :placeholder="t('tools.bcrypt.compareStringPlaceholder')" raw-text />
         </n-form-item>
-        <n-form-item label="Your hash:" label-placement="left" :show-feedback="false">
-          <c-input-text v-model:value="compareHash" placeholder="Your hash to compare..." raw-text />
+        <n-form-item :label="t('tools.bcrypt.compareHashLabel')" label-placement="left" :show-feedback="false">
+          <c-input-text v-model:value="compareHash" :placeholder="t('tools.bcrypt.compareHashPlaceholder')" raw-text />
         </n-form-item>
 
         <!-- 校验结果：空时不显示，有内容时才显示状态 -->
-        <n-form-item v-if="compareState !== 'idle'" label="Do they match?" label-placement="left" :show-feedback="false">
+        <n-form-item v-if="compareState !== 'idle'" :label="t('tools.bcrypt.doTheyMatch')" label-placement="left" :show-feedback="false">
           <div class="compare-result" :class="compareState">
             <!-- 匹配 -->
             <template v-if="compareState === 'match'">
               <icon-mdi-check-circle class="result-icon" />
-              <span>Yes</span>
+              <span>{{ t('tools.bcrypt.yes') }}</span>
             </template>
             <!-- 不匹配 -->
             <template v-else-if="compareState === 'nomatch'">
               <icon-mdi-close-circle class="result-icon" />
-              <span>No</span>
+              <span>{{ t('tools.bcrypt.no') }}</span>
             </template>
             <!-- 格式无效 -->
             <template v-else-if="compareState === 'invalid'">
               <icon-mdi-alert-circle class="result-icon" />
-              <span>Invalid hash format</span>
+              <span>{{ t('tools.bcrypt.invalidHashFormat') }}</span>
             </template>
           </div>
         </n-form-item>
 
         <!-- 空状态提示 -->
-        <n-form-item v-else label="Do they match?" label-placement="left" :show-feedback="false">
+        <n-form-item v-else :label="t('tools.bcrypt.doTheyMatch')" label-placement="left" :show-feedback="false">
           <div class="compare-idle">
-            Waiting for input…
+            {{ t('tools.bcrypt.waitingForInput') }}
           </div>
         </n-form-item>
       </n-form>

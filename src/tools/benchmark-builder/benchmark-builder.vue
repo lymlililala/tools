@@ -7,6 +7,8 @@ import { arrayToMarkdownTable, computeAverage, computeVariance } from './benchma
 import DynamicValues from './dynamic-values.vue';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const suites = useStorage('benchmark-builder:suites', [
   { title: 'Suite 1', data: [5, 10] },
   { title: 'Suite 2', data: [8, 12] },
@@ -50,16 +52,16 @@ const results = computed(() => {
 
 const { copy } = useCopy({ createToast: true });
 
-const header = {
-  position: '排名',
-  title: '组名',
-  size: '样本数',
-  mean: '均值',
-  variance: '方差',
-};
+const header = computed(() => ({
+  position: t('tools.benchmark-builder.rank'),
+  title: t('tools.benchmark-builder.groupName'),
+  size: t('tools.benchmark-builder.sampleSize'),
+  mean: t('tools.benchmark-builder.mean'),
+  variance: t('tools.benchmark-builder.variance'),
+}));
 
 function copyAsMarkdown() {
-  copy(arrayToMarkdownTable({ data: results.value, headerMap: header }));
+  copy(arrayToMarkdownTable({ data: results.value, headerMap: header.value }));
 }
 
 function copyAsBulletList() {
@@ -68,7 +70,7 @@ function copyAsBulletList() {
       return [
         ` - ${title}`,
         ...Object.entries(sections).map(
-          ([key, value]) => `    - ${header[key as keyof typeof header] ?? key}: ${value}`,
+          ([key, value]) => `    - ${header.value[key as keyof typeof header.value] ?? key}: ${value}`,
         ),
       ];
     })
@@ -109,9 +111,9 @@ function resetSuites() {
               <input
                 v-model="suite.title"
                 class="suite-title-input"
-                placeholder="组名..."
+                :placeholder="t('tools.benchmark-builder.groupNamePlaceholder')"
               />
-              <c-tooltip tooltip="删除此组">
+              <c-tooltip :tooltip="t('tools.benchmark-builder.deleteGroup')">
                 <button
                   class="suite-close-btn"
                   :class="{ disabled: suites.length <= 1 }"
@@ -127,7 +129,7 @@ function resetSuites() {
 
             <!-- 数值列表 -->
             <div class="suite-values-section">
-              <span class="suite-values-label">测量值</span>
+              <span class="suite-values-label">{{ t('tools.benchmark-builder.measurements') }}</span>
               <DynamicValues v-model:values="suite.data" />
             </div>
           </c-card>
@@ -136,7 +138,7 @@ function resetSuites() {
         <!-- 虚线"添加新组"占位卡片 -->
         <div class="add-suite-card" @click="addSuite">
           <n-icon :component="Plus" size="24" class="add-suite-icon" />
-          <span>添加新组</span>
+          <span>{{ t('tools.benchmark-builder.addGroup') }}</span>
         </div>
       </div>
     </div>
@@ -145,15 +147,15 @@ function resetSuites() {
     <div class="controls-bar">
       <div class="controls-inner">
         <div class="unit-control">
-          <span class="control-label">单位</span>
+          <span class="control-label">{{ t('tools.benchmark-builder.unit') }}</span>
           <input
             v-model="unit"
             class="unit-input"
-            placeholder="如：ms"
+            :placeholder="t('tools.benchmark-builder.unitPlaceholder')"
           />
         </div>
         <button class="reset-btn" @click="resetSuites">
-          重置所有组
+          {{ t('tools.benchmark-builder.resetAll') }}
         </button>
       </div>
     </div>
@@ -163,11 +165,11 @@ function resetSuites() {
       <table class="results-table">
         <thead>
           <tr>
-            <th class="col-rank">排名</th>
-            <th class="col-suite">组名</th>
-            <th class="col-num">样本数</th>
-            <th class="col-num">均值</th>
-            <th class="col-num">方差</th>
+            <th class="col-rank">{{ t('tools.benchmark-builder.rank') }}</th>
+            <th class="col-suite">{{ t('tools.benchmark-builder.groupName') }}</th>
+            <th class="col-num">{{ t('tools.benchmark-builder.sampleSize') }}</th>
+            <th class="col-num">{{ t('tools.benchmark-builder.mean') }}</th>
+            <th class="col-num">{{ t('tools.benchmark-builder.variance') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -192,10 +194,10 @@ function resetSuites() {
     <!-- 复制按钮 -->
     <div class="copy-btns">
       <c-button @click="copyAsMarkdown">
-        复制为 Markdown 表格
+        {{ t('tools.benchmark-builder.copyMarkdown') }}
       </c-button>
       <c-button @click="copyAsBulletList">
-        复制为列表
+        {{ t('tools.benchmark-builder.copyList') }}
       </c-button>
     </div>
   </div>

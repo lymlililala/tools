@@ -4,6 +4,8 @@ import { useCopy } from '@/composable/copy';
 import { computedRefreshable } from '@/composable/computedRefreshable';
 import { withDefaultOnError } from '@/utils/defaults';
 
+const { t } = useI18n();
+
 const versions = ['NIL', 'v1', 'v3', 'v4', 'v5'] as const;
 
 const version = useStorage<typeof versions[number]>('uuid-generator:version', 'v4');
@@ -86,25 +88,25 @@ watch(version, () => {
 <template>
   <div class="uuid-wrap">
     <!-- ① 版本选择 -->
-    <c-buttons-select v-model:value="version" :options="versions" label="UUID version" label-width="110px" mb-3 />
+    <c-buttons-select v-model:value="version" :options="versions" :label="t('tools.uuid-generator.versionLabel')" label-width="110px" mb-3 />
 
     <!-- ② 数量 -->
     <div mb-3 flex items-center gap-3>
-      <span class="field-label">Quantity</span>
-      <n-input-number v-model:value="safeCount" flex-1 :min="1" :max="1000" placeholder="UUID quantity" />
+      <span class="field-label">{{ t('tools.uuid-generator.quantity') }}</span>
+      <n-input-number v-model:value="safeCount" flex-1 :min="1" :max="1000" :placeholder="t('tools.uuid-generator.quantityPlaceholder')" />
     </div>
 
     <!-- ③ v3/v5 专用表单（条件渲染） -->
     <transition name="slide-down">
       <div v-if="version === 'v3' || version === 'v5'" class="v35-panel">
         <div class="v35-title">
-          {{ version === 'v3' ? 'UUID v3 uses MD5 hashing' : 'UUID v5 uses SHA-1 hashing' }}
-          — same Namespace + Name always produces the same UUID.
+          {{ version === 'v3' ? t('tools.uuid-generator.v3HashInfo') : t('tools.uuid-generator.v5HashInfo') }}
+          — {{ t('tools.uuid-generator.namespaceNameInfo') }}
         </div>
 
         <!-- Namespace 快捷预设 -->
         <div mb-2 flex items-center gap-2 flex-wrap>
-          <span class="field-label">Namespace</span>
+          <span class="field-label">{{ t('tools.uuid-generator.namespace') }}</span>
           <div class="preset-row">
             <button
               v-for="(val, key) in NAMESPACE_PRESETS"
@@ -136,8 +138,8 @@ watch(version, () => {
         <div mb-2>
           <c-input-text
             v-model:value="v35Args.name"
-            placeholder="Name (e.g. example.com)"
-            label="Name"
+            :placeholder="t('tools.uuid-generator.namePlaceholder')"
+            :label="t('tools.uuid-generator.nameLabel')"
             label-width="110px"
             label-position="left"
             raw-text
@@ -150,7 +152,7 @@ watch(version, () => {
     <c-input-text
       :value="uuids"
       multiline
-      placeholder="UUIDs will appear here…"
+      :placeholder="t('tools.uuid-generator.outputPlaceholder')"
       rows="1"
       readonly
       raw-text
@@ -166,12 +168,12 @@ watch(version, () => {
           <icon-mdi-check v-if="isJustCopied" key="check" class="btn-icon" />
           <icon-mdi-content-copy v-else key="copy" class="btn-icon" />
         </transition>
-        <span>{{ isJustCopied ? 'Copied!' : 'Copy' }}</span>
+        <span>{{ isJustCopied ? t('tools.uuid-generator.copied') : t('tools.uuid-generator.copy') }}</span>
       </c-button>
 
       <c-button @click="refreshUUIDs">
         <icon-mdi-refresh class="btn-icon" />
-        <span>Refresh</span>
+        <span>{{ t('tools.uuid-generator.refresh') }}</span>
       </c-button>
     </div>
   </div>

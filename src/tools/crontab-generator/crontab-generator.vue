@@ -6,6 +6,7 @@ import { useCopy } from '@/composable/copy';
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 
 // ── 输入 ──────────────────────────────────────────────────────
 const cron = ref('40 * * * *');
@@ -41,7 +42,7 @@ const cronString = computed(() => {
 });
 
 // ── 复制 ──────────────────────────────────────────────────────
-const { copy, isJustCopied } = useCopy({ source: cron, text: '表达式已复制到剪贴板' });
+const { copy, isJustCopied } = useCopy({ source: cron, text: computed(() => t('tools.crontab-generator.copiedTooltip')) });
 
 // ── 接下来 N 次执行时间（纯 JS 实现，无需额外依赖） ────────────
 // 解析 cron 字段（支持 *、数字、/步长、范围、逗号列表）
@@ -230,7 +231,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
       <button
         class="copy-btn"
         :class="{ copied: isJustCopied }"
-        :title="isJustCopied ? '已复制！' : '复制表达式'"
+        :title="isJustCopied ? t('tools.crontab-generator.copiedTooltip') : t('tools.crontab-generator.copyTooltip')"
         :disabled="!isValid"
         @click="copy()"
       >
@@ -241,7 +242,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
         <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        <span>{{ isJustCopied ? '已复制' : '复制' }}</span>
+        <span>{{ isJustCopied ? t('tools.crontab-generator.copied') : t('tools.crontab-generator.copy') }}</span>
       </button>
     </div>
 
@@ -251,7 +252,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
         <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
-      表达式无效，请检查语法
+      {{ t('tools.crontab-generator.invalidCron') }}
     </div>
 
     <!-- 自然语言描述 -->
@@ -259,7 +260,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
       {{ cronString }}
     </div>
     <div v-else class="cron-string cron-string--placeholder">
-      输入 cron 表达式查看描述
+      {{ t('tools.crontab-generator.inputPlaceholder') }}
     </div>
 
     <n-divider />
@@ -288,7 +289,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
             <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
-          接下来 5 次执行时间
+          {{ t('tools.crontab-generator.nextExecutions') }}
         </div>
         <div class="next-exec-list">
           <div v-for="(d, i) in nextExecutions" :key="i" class="exec-row">

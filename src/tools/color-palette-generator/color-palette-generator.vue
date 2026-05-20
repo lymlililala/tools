@@ -175,7 +175,7 @@ async function copyColor(hex: string) {
     document.body.removeChild(ta);
   }
   copied.value = hex;
-  message.success(`已复制 ${hex}`, { duration: 1800 });
+  message.success(t('tools.color-palette-generator.copiedMsg', { hex }), { duration: 1800 });
   setTimeout(() => { copied.value = ''; }, 1600);
 }
 
@@ -234,16 +234,16 @@ function selectColor(hex: string) {
     <c-card mb-4>
       <div class="picker-row">
         <!-- 颜色预览 + 原生 color input -->
-        <div class="color-preview-wrap" :title="'点击更换颜色'">
+        <div class="color-preview-wrap" :title="t('tools.color-palette-generator.clickToChange')">
           <div class="color-preview" :style="{ background: baseColor }" />
           <input
             type="color"
             class="color-native"
             :value="baseColor"
-            title="点击打开取色器"
+            :title="t('tools.color-palette-generator.openPicker')"
             @input="onColorPickerChange"
           >
-          <span class="picker-hint-icon" title="点击色块打开取色器">
+          <span class="picker-hint-icon" :title="t('tools.color-palette-generator.openPicker')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
               <path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z" stroke="currentColor" stroke-width="1.5" />
               <path d="M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0" fill="currentColor" opacity="0.3" />
@@ -263,7 +263,7 @@ function selectColor(hex: string) {
             @blur="onHexInput"
           >
           <transition name="fade">
-            <span v-if="hexInputError" class="hex-error-tip">请输入有效的十六进制颜色（如 #6366f1）</span>
+            <span v-if="hexInputError" class="hex-error-tip">{{ t('tools.color-palette-generator.hexError') }}</span>
           </transition>
         </div>
 
@@ -271,13 +271,13 @@ function selectColor(hex: string) {
         <div class="color-info">
           <span
             class="info-chip"
-            :title="'点击复制 ' + hexToRgb(baseColor)"
+            :title="t('tools.color-palette-generator.clickToCopyVal', { val: hexToRgb(baseColor) })"
             @click="copyColor(hexToRgb(baseColor))"
           >{{ hexToRgb(baseColor) }}</span>
           <span class="info-sep">|</span>
           <span
             class="info-chip"
-            :title="'点击复制 HSL'"
+            :title="t('tools.color-palette-generator.clickToCopyHsl')"
             @click="copyColor(`hsl(${hexToHsl(baseColor)?.h ?? 0}, ${hexToHsl(baseColor)?.s ?? 0}%, ${hexToHsl(baseColor)?.l ?? 0}%)`)"
           >
             HSL({{ hexToHsl(baseColor)?.h ?? 0 }}°, {{ hexToHsl(baseColor)?.s ?? 0 }}%, {{ hexToHsl(baseColor)?.l ?? 0 }}%)
@@ -289,7 +289,7 @@ function selectColor(hex: string) {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          导出代码
+          {{ t('tools.color-palette-generator.exportCode') }}
         </button>
       </div>
     </c-card>
@@ -306,11 +306,11 @@ function selectColor(hex: string) {
           class="shade-swatch"
           :class="{ copied: copied === s.hex }"
           :style="{ background: s.hex, color: textColor(s.hex) }"
-          :title="`点击复制 ${s.hex}`"
+          :title="t('tools.color-palette-generator.clickToCopyVal', { val: s.hex })"
           @click="copyColor(s.hex)"
         >
           <span class="shade-label">{{ s.label }}</span>
-          <span class="shade-hex">{{ copied === s.hex ? '✓ 已复制' : s.hex }}</span>
+          <span class="shade-hex">{{ copied === s.hex ? '✓ ' + t('tools.color-palette-generator.copiedShort') : s.hex }}</span>
         </div>
       </div>
     </c-card>
@@ -332,7 +332,7 @@ function selectColor(hex: string) {
               class="harmony-swatch"
               :class="{ copied: copied === c }"
               :style="{ background: c }"
-              :title="`点击复制 ${c}`"
+              :title="t('tools.color-palette-generator.clickToCopyVal', { val: c })"
               @click="copyColor(c)"
             >
               <span class="harmony-hex" :style="{ color: textColor(c) }">
@@ -356,11 +356,11 @@ function selectColor(hex: string) {
           class="shade-swatch"
           :class="{ copied: copied === s.hex }"
           :style="{ background: s.hex, color: textColor(s.hex) }"
-          :title="`点击复制 ${s.hex}`"
+          :title="t('tools.color-palette-generator.clickToCopyVal', { val: s.hex })"
           @click="copyColor(s.hex)"
         >
           <span class="shade-label">{{ s.label }}</span>
-          <span class="shade-hex">{{ copied === s.hex ? '✓ 已复制' : s.hex }}</span>
+          <span class="shade-hex">{{ copied === s.hex ? '✓ ' + t('tools.color-palette-generator.copiedShort') : s.hex }}</span>
         </div>
       </div>
       <div class="click-hint">
@@ -369,7 +369,7 @@ function selectColor(hex: string) {
     </c-card>
 
     <!-- ── 导出弹窗 ────────────────────────────────────────────── -->
-    <n-modal v-model:show="showExport" preset="card" style="max-width: 680px" title="导出颜色代码">
+    <n-modal v-model:show="showExport" preset="card" style="max-width: 680px" :title="t('tools.color-palette-generator.exportModalTitle')">
       <div class="export-modal">
         <div class="export-tabs">
           <button
@@ -398,7 +398,7 @@ function selectColor(hex: string) {
             <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none">
               <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            {{ exportCopied ? '已复制！' : '复制代码' }}
+            {{ exportCopied ? t('tools.color-palette-generator.copied') : t('tools.color-palette-generator.copyCode') }}
           </button>
         </div>
       </div>

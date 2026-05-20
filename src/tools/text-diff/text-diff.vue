@@ -2,6 +2,8 @@
 import { ArrowsLeftRight, Copy, Eraser } from '@vicons/tabler';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const originalText = ref('');
 const modifiedText = ref('');
 
@@ -9,7 +11,7 @@ const diffEditorRef = ref<InstanceType<typeof import('@/ui/c-diff-editor/c-diff-
 
 // 复制右侧结果
 const copied = ref(false);
-const { copy } = useCopy({ source: modifiedText, text: '已复制修改后的文本！' });
+const { copy } = useCopy({ source: modifiedText, text: computed(() => t('tools.text-diff.copied')) });
 
 async function handleCopy() {
   await copy();
@@ -36,33 +38,33 @@ function swapTexts() {
     <!-- 工具栏 -->
     <div class="td-toolbar">
       <div class="toolbar-left">
-        <span class="panel-tag panel-tag--original">原始文本</span>
-        <span class="panel-tag panel-tag--modified">修改后文本</span>
+        <span class="panel-tag panel-tag--original">{{ t('tools.text-diff.originalText') }}</span>
+        <span class="panel-tag panel-tag--modified">{{ t('tools.text-diff.modifiedText') }}</span>
       </div>
 
       <div class="toolbar-right">
         <!-- 交换 -->
-        <c-tooltip tooltip="交换左右文本">
+        <c-tooltip :tooltip="t('tools.text-diff.swapTooltip')">
           <button class="tool-btn" @click="swapTexts">
             <n-icon :component="ArrowsLeftRight" size="15" />
-            <span class="tool-btn-label">交换</span>
+            <span class="tool-btn-label">{{ t('tools.text-diff.swap') }}</span>
           </button>
         </c-tooltip>
 
         <!-- 清空 -->
-        <c-tooltip tooltip="清空所有内容">
+        <c-tooltip :tooltip="t('tools.text-diff.clearTooltip')">
           <button
             class="tool-btn tool-btn--danger"
             :disabled="!originalText && !modifiedText"
             @click="clearAll"
           >
             <n-icon :component="Eraser" size="15" />
-            <span class="tool-btn-label">清空</span>
+            <span class="tool-btn-label">{{ t('tools.text-diff.clear') }}</span>
           </button>
         </c-tooltip>
 
         <!-- 复制右侧 -->
-        <c-tooltip tooltip="复制修改后文本">
+        <c-tooltip :tooltip="t('tools.text-diff.copyTooltip')">
           <button
             class="tool-btn"
             :class="{ copied }"
@@ -70,7 +72,7 @@ function swapTexts() {
             @click="handleCopy"
           >
             <n-icon :component="Copy" size="15" />
-            <span class="tool-btn-label">{{ copied ? '已复制' : '复制结果' }}</span>
+            <span class="tool-btn-label">{{ copied ? t('tools.text-diff.justCopied') : t('tools.text-diff.copyResult') }}</span>
           </button>
         </c-tooltip>
       </div>
@@ -82,8 +84,8 @@ function swapTexts() {
         ref="diffEditorRef"
         v-model:original="originalText"
         v-model:modified="modifiedText"
-        original-placeholder="在此粘贴原始文本…"
-        modified-placeholder="在此粘贴修改后的文本…"
+        :original-placeholder="t('tools.text-diff.originalPlaceholder')"
+        :modified-placeholder="t('tools.text-diff.modifiedPlaceholder')"
         class="td-editor"
       />
     </c-card>

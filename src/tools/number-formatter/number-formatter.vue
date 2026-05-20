@@ -165,14 +165,14 @@ function copyLocale(code: string, val: string) {
               placeholder="1234567.89"
               data-test-id="numberInput"
             >
-            <button v-if="input" class="fi-clear" :title="'清空'" @click="clearInput">
+            <button v-if="input" class="fi-clear" :title="t('tools.number-formatter.clear')" @click="clearInput">
               <icon-mdi-close-circle />
             </button>
           </div>
           <transition name="slide-down">
             <div v-if="isInvalid" class="fi-error">
               <icon-mdi-alert-circle-outline />
-              请输入有效数字
+              {{ t('tools.number-formatter.invalidNumber') }}
             </div>
           </transition>
         </div>
@@ -254,12 +254,12 @@ function copyLocale(code: string, val: string) {
         <button
           class="hero-copy-btn"
           :class="{ 'hero-copy-btn--copied': isCopied }"
-          :title="isCopied ? '已复制！' : '点击复制'"
+          :title="isCopied ? t('tools.number-formatter.justCopied') : t('tools.number-formatter.clickToCopy')"
           @click.stop="copyResult"
         >
           <icon-mdi-check v-if="isCopied" />
           <icon-mdi-content-copy v-else />
-          <span>{{ isCopied ? '已复制' : '复制' }}</span>
+          <span>{{ isCopied ? t('tools.number-formatter.justCopied') : t('tools.number-formatter.copy') }}</span>
         </button>
       </div>
 
@@ -267,9 +267,9 @@ function copyLocale(code: string, val: string) {
       <div v-if="mainResult !== '—'" class="result-meta">
         <span class="meta-chip">{{ localeOptions.find(o => o.value === locale)?.label }}</span>
         <span class="meta-chip">{{ styleOptions.find(o => o.value === style)?.label }}</span>
-        <span v-if="style !== 'compact'" class="meta-chip">{{ decimalPlaces }} 位小数</span>
+        <span v-if="style !== 'compact'" class="meta-chip">{{ t('tools.number-formatter.decimalPlaces', { count: decimalPlaces }) }}</span>
         <span class="meta-chip" :class="{ 'meta-chip--off': !useGrouping }">
-          {{ useGrouping ? '千位分隔' : '无分隔' }}
+          {{ useGrouping ? t('tools.number-formatter.withGrouping') : t('tools.number-formatter.noGrouping') }}
         </span>
       </div>
     </div>
@@ -281,7 +281,7 @@ function copyLocale(code: string, val: string) {
       </div>
 
       <div v-if="comparisons.length === 0" class="comp-empty">
-        输入有效数字后显示多语言对比
+        {{ t('tools.number-formatter.comparisonEmpty') }}
       </div>
 
       <div v-else class="comp-grid">

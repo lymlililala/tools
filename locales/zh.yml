@@ -93,6 +93,21 @@ tools:
     faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
     title: 计时器
     description: 简单易用的在线计时器，支持毫秒级精度与分段记录。
+    idle: 就绪
+    running: 计时中
+    paused: 已暂停
+    currentLap: 当前分段
+    start: 开始
+    pause: 暂停
+    resume: 继续
+    lap: 分段
+    reset: 重置
+    lapHistory: 分段记录
+    lapCount: '共 {n} 段'
+    lapIndex: 序号
+    lapElapsed: 本段耗时
+    lapTotal: 累计时间
+    copyLap: 复制本段时间
   token-generator:
     step1: '步骤 1：选择字符类型——大写字母、小写字母、数字和/或符号。'
     step2: '步骤 2：拖动滑块设置 Token 长度（1–512 个字符）。'
@@ -127,6 +142,26 @@ tools:
     faq2a: 'Y 的 X% = Y × (X / 100)。例如，150 的 20% = 150 × 0.20 = 30。'
     title: 百分比计算器
     description: 轻松计算从一个值到另一个值的百分比，或从百分比到值的百分比。
+    card1Title: X 的 Y% 是多少？
+    card2Title: X 是 Y 的百分之多少？
+    card3Title: 从 X 到 Y 的百分比变化是多少？
+    value: 数值
+    of: 的
+    percent: 百分比 (%)
+    result: 结果
+    numerator: 分子 (X)
+    denominator: 分母 (Y)
+    resultPct: 结果 (%)
+    from: 起始值
+    to: 目标值
+    change: 变化
+    formula1: 公式
+    formula2: 公式
+    formula3: 公式
+    copied: 已复制！
+    copyResult: 复制结果
+    zeroDenominator: 分母不能为零
+    zeroFrom: 起始值不能为零（无法计算百分比变化）
 
   svg-placeholder-generator:
     step1: '步骤 1：设置占位图的宽度和高度。'
@@ -150,6 +185,21 @@ tools:
     faq2a: '工具会将所有对象中的唯一键合并为列标题。缺失字段在 CSV 输出中留空。'
     title: JSON 转 CSV
     description: 使用自动标头检测将JSON转换为CSV。
+    rawJson: 原始 JSON
+    valid: 有效
+    invalid: 无效
+    formatJson: 格式化 JSON
+    clearInput: 清空输入
+    inputPlaceholder: '粘贴 JSON 数组，例如 [{"name":"Alice","age":30}]'
+    csvOutput: CSV 输出
+    stats: '{rows} 行 × {cols} 列'
+    copied: 已复制！
+    copyCsv: 复制 CSV
+    downloadCsv: 下载 CSV
+    outputPlaceholder: CSV 将显示在这里...
+    mustBeArray: JSON 必须是数组格式
+    invalidJson: 无效的 JSON
+    csvCopied: CSV 已复制！
 
   camera-recorder:
     step1: '步骤 1：浏览器请求摄像头/麦克风权限时点击「允许」。'
@@ -185,6 +235,17 @@ tools:
     faq2a: '可以。每个 Emoji 都有 Unicode 码点，可用于 HTML 实体或 JSON。URL 中需要进行百分比编码。'
     title: Emoji 选择器
     description: 轻松复制和粘贴Emoji表情符号，并获得每个表情符号的unicode和code points值.
+    searchPlaceholder: "搜索 Emoji（如 'smile'）… 或按 ⌘K"
+    clearSearch: 清空搜索
+    noResults: 未找到相关 Emoji
+    noResultsHint: 试试换个关键词，或直接输入 Unicode 编码
+    searchResults: 搜索结果
+    cardTitle: '点击复制 {emoji}'
+    cardCopied: 'Emoji {emoji} 已复制'
+    copyCodePoint: 复制 Code Point
+    codePointCopied: 'Code point ''{codePoint}'' 已复制'
+    copyUnicode: '复制 Unicode: {unicode}'
+    unicodeCopied: Unicode 已复制
 
   color-converter:
     step1: '步骤 1：使用颜色选择器或直接输入任意格式的颜色值。'
@@ -197,6 +258,26 @@ tools:
     faq2a: 'WCAG 对比度衡量文本在背景上的可读性。4.5:1 达到 AA 标准；7:1 达到 AAA 标准。'
     title: Color 选择器
     description: 在不同格式（十六进制、rgb、hsl和css名称）之间转换颜色
+  ascii-text-drawer:
+    title: ASCII 艺术字生成器
+    description: 将文字转换为各种 ASCII 艺术字体风格。
+    inputLabel: 输入文字
+    inputPlaceholder: 在此输入文字...
+    fontLabel: 字体
+    fontPlaceholder: 选择字体...
+    widthLabel: '最大宽度（{min}–{max}）'
+    decreaseWidth: 减小宽度
+    increaseWidth: 增大宽度
+    previewLabel: 预览
+    loadingFont: 加载字体中...
+    generating: 生成中...
+    emptyHint: 请输入文字以生成 ASCII 艺术字
+    generateFailed: 生成失败
+    errorFont: 字体加载失败，请更换字体
+    errorWidth: '宽度必须在 {min}–{max} 之间'
+    errorUnsupported: 包含不支持的字符，请使用 ASCII 字符
+    errorGeneral: 生成失败，请尝试不同的字体或输入
+
   bcrypt:
     step1: '步骤 1：在「待哈希文本」字段中输入要哈希的内容。'
     step2: '步骤 2：调整代价因子（轮数）——数值越高越安全但越慢。'
@@ -239,6 +320,13 @@ tools:
     faq2a: '表示每 5 分钟执行一次。分钟字段中的 */5 表示在每小时的 0、5、10、15 分运行。'
     title: Crontab 表达式生成
     description: 验证并生成crontab，并获取cron调度的可读描述。
+    copiedTooltip: 已复制！
+    copyTooltip: 复制表达式
+    copied: 已复制
+    copy: 复制
+    invalidCron: 表达式无效，请检查语法
+    inputPlaceholder: 输入 cron 表达式查看描述
+    nextExecutions: 接下来 5 次执行时间
 
   http-status-codes:
     step1: '步骤 1：浏览按类别组织的 HTTP 状态码列表。'
@@ -250,6 +338,7 @@ tools:
     faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
     title: HTTP 状态码
     description: 所有HTTP状态的列表对其名称和含义解释。
+    backToTop: 回到顶部
 
   sql-prettify:
     step1: '步骤 1：将 SQL 查询语句粘贴到输入编辑器中。'
@@ -262,6 +351,20 @@ tools:
     faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
     title: SQL 美化和格式化
     description: 在线格式化和美化您的 SQL 查询（它支持各种 SQL 方言）。
+    dialect: 方言
+    keywordCase: 关键字大小写
+    preserve: 保持原样
+    indentStyle: 缩进风格
+    sqlQuery: SQL 查询
+    clearInput: 清空输入
+    inputPlaceholder: 粘贴 SQL 语句...
+    formattedResult: 格式化结果
+    copied: 已复制！
+    copySql: 复制 SQL
+    downloadFile: 下载文件
+    outputPlaceholder: 格式化后的 SQL 将显示在这里...
+    formatError: SQL 格式化错误
+    sqlCopied: SQL 已复制！
 
   benchmark-builder:
     step1: '步骤 1：点击「添加用例」添加基准测试用例。'
@@ -274,6 +377,23 @@ tools:
     faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
     title: 基准生成器
     description: 简单的在线基准构建器可以轻松比较任务的执行时间。
+    valuePlaceholder: 输入测量值...
+    deleteValue: 删除此值
+    addValue: 添加测量值
+    rank: 排名
+    groupName: 组名
+    groupNamePlaceholder: 组名称...
+    sampleSize: 样本数
+    mean: 均值
+    variance: 方差
+    deleteGroup: 删除该组
+    measurements: 测量值
+    addGroup: 添加新组
+    unit: 单位
+    unitPlaceholder: 例如：ms、ops...
+    resetAll: 重置全部
+    copyMarkdown: 复制为 Markdown
+    copyList: 复制为列表
 
   git-memo:
     step1: '步骤 1：浏览按类别组织的 Git 速查表。'
@@ -285,6 +405,67 @@ tools:
     faq2a: 'git fetch 下载远程变更但不合并。git pull = git fetch + git merge，将远程变更应用到当前分支。'
     title: Git 备忘录
     description: Git是一种去中心化的版本管理软件。使用此备忘单，您可以快速访问最常见的git命令.
+    toc: 目录
+    copiedTooltip: 已复制！
+    copyTooltip: 复制命令
+    backToTop: 返回顶部
+    dangerTooltip: 危险操作，请谨慎使用
+    cmd:
+      setGlobalName: 设置全局用户名
+      setGlobalEmail: 设置全局邮箱
+      listConfig: 查看当前配置
+      setEditor: 设置默认编辑器
+      initRepo: 初始化新仓库
+      cloneRepo: 克隆远程仓库
+      cloneWithDir: 克隆并指定目录名
+      statusCheck: 查看工作区状态
+      addFile: 暂存指定文件
+      addAll: 暂存所有更改
+      unstageFile: 取消暂存文件
+      discardFile: 丢弃工作区更改
+      commitAll: 提交所有已追踪的更改
+      commitStaged: 仅提交暂存区内容
+      amendMsg: 修改最后一次提交信息
+      amendNoEdit: 追加更改到最后一次提交（不修改信息）
+      listBranches: 列出所有本地分支
+      listRemoteBranches: 列出所有远程分支
+      createBranch: 创建新分支
+      createAndSwitch: 创建并切换到新分支
+      switchBranch: 切换分支
+      deleteMergedBranch: 删除已合并的分支
+      deleteBranchForce: 强制删除分支
+      renameMasterToMain: 将本地 master 重命名为 main
+      mergeBranch: 合并指定分支到当前分支
+      rebaseBranch: 以 rebase 方式合并
+      abortRebase: 中止 rebase
+      continueRebase: 继续 rebase
+      listRemotes: 列出远程仓库
+      addRemote: 添加远程仓库
+      pullAndMerge: 拉取并合并远程更改
+      fetchOnly: 拉取不自动合并
+      pushBranch: 推送到远程
+      pushAndSetUpstream: 推送并设置上游
+      deleteRemoteBranch: 删除远程分支
+      stashChanges: 暂存当前更改
+      stashWithMsg: 带描述的暂存
+      listStashes: 列出所有暂存
+      popStash: 恢复最近暂存
+      clearStashes: 清除所有暂存
+      viewLog: 查看提交历史
+      compactLog: 紧凑单行历史
+      showCommit: 查看文件变更详情
+      diffWorking: 查看工作区与暂存区差异
+      diffStaged: 查看暂存区与最后提交差异
+      resetKeep: 撤销最近提交并保留更改
+      resetNKeep: 撤销最近 N 次提交并保留更改
+      resetHard: 撤销最近提交并丢弃更改
+      resetToRemote: 重置分支到远程状态
+      revertCommit: 撤销某次提交（生成新提交）
+      listTags: 列出所有标签
+      createLightTag: 创建轻量标签
+      createAnnotatedTag: 创建带注释标签
+      pushTag: 推送标签到远程
+      deleteLocalTag: 删除本地标签
 
   slugify-string:
     step1: '步骤 1：输入要转换为 Slug 的原始文本。'
@@ -296,6 +477,16 @@ tools:
     faq2a: '支持。工具会将重音符号和特殊字符转换为 ASCII 等效字符，例如 é → e，ü → u。'
     title: 生成 URL Slug
     description: 将文本转换为 URL、文件名和 ID 安全的 Slug 字符串。
+    inputLabel: 输入文本
+    clear: 清空
+    inputPlaceholder: 例如：Hello World! 这是一个测试
+    hint: 特殊字符和重音符号将自动转换
+    outputLabel: Slug 结果
+    placeholder: Slug 将显示在这里...
+    readonly: 只读
+    justCopied: 已复制！
+    copyResult: 复制结果
+    charCount: '{count} 个字符'
 
   encryption:
     step1: '步骤 1：选择「加密」或「解密」模式。'
@@ -405,6 +596,18 @@ tools:
     faq2a: '共有 2048 的 12 次方种可能，使暴力破解在计算上不可行。'
     title: BIP39密码生成器
     description: 从现有或随机助记符生成BIP39密码短语，或从密码短语获取助记符。
+    warningLabel: 安全提示
+    warningText: 请勿将真实钱包的助记词输入任何在线工具，此工具仅供学习和测试使用。
+    language: 语言
+    wordCount: 单词数量
+    entropyLabel: 熵（十六进制）
+    entropyPlaceholder: 输入十六进制熵值...
+    generateEntropy: 生成新熵
+    copied: 已复制！
+    copyEntropy: 复制熵
+    mnemonicLabel: 助记词短语
+    mnemonicPlaceholder: 输入助记词短语...
+    copyMnemonic: 复制助记词
 
   base64-file-converter:
     step1: '步骤 1：拖放或选择文件。'
@@ -460,6 +663,20 @@ tools:
     faq2a: '支持。支持嵌套函数、单位、矩阵和复数。'
     title: 数学计算器
     description: 计算数学表达式的计算器。您可以使用sqrt、cos、sin、abs等函数。
+    placeholder: '输入表达式，例如 sqrt(2) * pi'
+    clear: 清空
+    historyTitle: 计算历史
+    recentCalc: 最近计算
+    clearHistory: 清除历史
+    resultLabel: 计算结果
+    copyResult: 复制结果
+    copy: 复制
+    justCopied: 已复制！
+    syntaxError: 表达式错误
+    hint: 输入数学表达式开始计算
+    functionDefined: 函数已定义
+    invalidExpr: 表达式无效
+    resultCopied: 结果已复制！
 
   json-to-yaml-converter:
     step1: '步骤 1：将 JSON 粘贴到左侧编辑器。'
@@ -528,6 +745,11 @@ tools:
     faq2a: '出于历史兼容性原因，现代浏览器在 UA 中包含多个旧浏览器标识符，导致字符串越来越复杂。'
     title: 用户代理分析器
     description: 从用户代理字符串中检测和分析浏览器、引擎、操作系统、CPU和设备类型/型号。
+    resultsLabel: 解析结果
+    copyJsonBtn: 复制 JSON
+    copiedBtn: 已复制！
+    copyJsonTooltip: 将所有解析结果复制为 JSON
+    copiedTooltip: 已复制到剪贴板
 
   numeronym-generator:
     step1: '步骤 1：输入单词或短语。'
@@ -538,7 +760,16 @@ tools:
     faq2q: '谁发明了数字缩略词？'
     faq2a: 'i18n 这个术语归功于 20 世纪 70 年代的 DEC，后来在软件开发中广泛流行。'
     title: 数字名称生成器
-    description: 数字名是一个用数字构成缩写的词。例如，“i18n”是“国际化”的名词，其中18表示单词中第一个i和最后一个n之间的字母数。
+    description: 数字名是一个用数字构成缩写的词。例如，"i18n"是"国际化"的名词，其中18表示单词中第一个i和最后一个n之间的字母数。
+    inputLabel: 输入单词或短语
+    inputPlaceholder: 例如 internationalization
+    outputLabel: 数字缩略词
+    placeholder: 数字缩略词将显示在这里...
+    realtime: 实时生成
+    numeronymCopied: 数字缩略词已复制！
+    justCopied: 已复制！
+    copyResult: 复制结果
+    multiWordHint: 多单词短语将分别生成各单词的缩略词
 
   case-converter:
     step1: '步骤 1：在输入框中输入或粘贴文本。'
@@ -575,6 +806,19 @@ tools:
     faq3q: 支持 JSON5（注释、尾随逗号）吗？
     faq3a: 支持。本工具使用 JSON5 进行解析，除标准 JSON 外，还支持注释和尾随逗号。
 
+  json-viewer:
+    sortKeys: 排序键
+    indentSize: 缩进大小
+    valid: 有效
+    invalid: 无效
+    clearInput: 清空输入
+    inputPlaceholder: '粘贴 JSON，例如 {"hello":"world"}'
+    jsonCopied: JSON 已复制！
+    justCopied: 已复制！
+    copyResult: 复制格式化结果
+    downloadJson: 下载 JSON
+    outputPlaceholder: 格式化后的 JSON 将显示在这里...
+
   docker-run-to-docker-compose-converter:
     step1: '步骤 1：将 docker run 命令粘贴到输入框中。'
     step2: '步骤 2：等效的 Docker Compose YAML 立即生成。'
@@ -585,6 +829,19 @@ tools:
     faq2a: '支持常用参数如 -p（端口）、-v（卷）、-e（环境变量）、--name、--network 等。'
     title: Docker Run 到 docker-compose 转换器
     description: 将 docker run 命令行转换为 docker-compose 文件!
+    inputTitle: Docker Run 命令
+    clearInput: 清空输入
+    inputPlaceholder: '粘贴 docker run 命令，例如：docker run -p 80:80 nginx'
+    invalidFormat: 输入格式有误，请以 docker run ... 开头
+    copied: 已复制！
+    copyYaml: 复制 YAML
+    downloadFile: 下载文件
+    outputPlaceholder: docker-compose.yml 将在此显示...
+    conversionError: 转换错误
+    notImplemented: 以下参数暂不支持转换
+    notComposable: 以下参数无法转换为 Compose 格式
+    downloadBtn: 下载 docker-compose.yml
+    yamlCopied: YAML 已复制！
 
   mac-address-lookup:
     step1: '步骤 1：输入 MAC 地址（如 AA:BB:CC:DD:EE:FF）。'
@@ -596,6 +853,17 @@ tools:
     faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
     title: MAC地址查找
     description: 通过设备的MAC地址查找设备的供应商和制造商。
+    macAddressLabel: MAC 地址
+    placeholder: '例如：20:37:06:12:34:56'
+    clear: 清空
+    errorMsg: 请输入有效的 MAC 地址（格式：AA:BB:CC:DD:EE:FF）
+    copyVendor: 复制厂商信息
+    justCopied: 已复制！
+    vendorCopied: 厂商信息已复制！
+    notFound: 未找到厂商信息
+    notFoundSub: OUI 数据库中未找到前缀
+    notFoundSuffix: 的厂商信息
+    emptyHint: 输入 MAC 地址以查询厂商信息
 
   mime-types:
     step1: '步骤 1：输入文件扩展名（如 .pdf）或 MIME 类型（如 application/pdf）。'
@@ -629,6 +897,16 @@ tools:
     faq2a: 'Lorem Ipsum 避免设计评审时被内容分散注意力，作为中性填充文本使用。'
     title: Lorem ipsum生成器
     description: Lorem ipsum是一种占位符文本，通常用于演示文档或字体的视觉形式，而不依赖于有意义的内容
+    paragraphs: 段落数
+    sentencesPerParagraph: 每段句子数
+    wordsPerSentence: 每句单词数
+    startWithLorem: 以 Lorem ipsum 开头
+    outputHtml: 输出为 HTML
+    placeholder: 生成的文本将显示在这里...
+    copy: 复制
+    justCopied: 已复制！
+    regenerate: 重新生成
+    textCopied: 文本已复制！
 
   qrcode-generator:
     title: 二维码生成器
@@ -663,6 +941,21 @@ tools:
     faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
     title: XML 格式化
     description: 将XML字符串修饰为友好的可读格式。
+    rawXml: 原始 XML
+    formattedResult: 格式化结果
+    collapseContent: 折叠内容
+    indentSize: 缩进大小
+    valid: 有效
+    invalid: 无效
+    invalidXml: XML 格式无效
+    uploadFile: 上传 XML 文件
+    clearInput: 清空输入
+    inputPlaceholder: 在此粘贴 XML 内容…
+    outputPlaceholder: 格式化后的 XML 将在此显示…
+    copyXml: 复制 XML
+    xmlCopied: XML 已复制！
+    copied: 已复制！
+    downloadFile: 下载 XML 文件
 
   temperature-converter:
     title: 温度转换器
@@ -673,6 +966,9 @@ tools:
     faq1a: 公式：°F = °C × 9/5 + 32。例如，100°C = 212°F（水的沸点）。
     faq2q: 什么是绝对零度？
     faq2a: 绝对零度是最低可能温度：0 开尔文 = −273.15°C = −459.67°F。在此温度下，粒子的热运动降至最低。
+    belowAbsoluteZero: '温度低于绝对零度（0 K / −273.15 °C），物理上不可能存在。'
+    minus1: 减 1
+    plus1: 加 1
 
   chmod-calculator:
     step1: '步骤 1：勾选所有者、组和其他用户的权限复选框。'
@@ -684,6 +980,15 @@ tools:
     faq2a: '755 表示所有者有读+写+执行权限（7），组和其他用户有读+执行权限（5）。常用于 Web 服务器目录。'
     title: Chmod 计算器
     description: 使用此在线的chmod计算器计算chmod权限和命令。
+    preset755: 目录推荐
+    preset644: 文件推荐
+    preset700: 仅所有者
+    preset777: 全部开放
+    copied: 命令已复制到剪贴板
+    copyCommand: 复制命令
+    justCopied: 已复制！
+    copyLabel: 复制
+    copiedLabel: 已复制
 
   rsa-key-pair-generator:
     step1: '步骤 1：选择密钥大小（1024、2048 或 4096 位）。'
@@ -707,6 +1012,37 @@ tools:
     faq2a: '编辑器生成语义化 HTML5，尽量避免内联样式。'
     title: HTML所见即所得编辑器
     description: 在线HTML编辑器具有功能丰富的所见即所得编辑器，立即获得内容的源代码。
+    editorLabel: 编辑器
+    htmlSource: HTML 源码
+    clearContent: 清空内容
+    copyHtml: 复制 HTML
+    justCopied: 已复制！
+    emptyHint: 在左侧编辑器输入内容后，HTML 源码将显示在这里
+
+  email-normalizer:
+    title: 邮箱地址规范化工具
+    description: 批量规范化和去重邮箱地址，支持 Gmail 和主流邮件服务商的别名处理。
+    step1: '步骤 1：粘贴或上传邮箱列表（每行一个）。'
+    step2: '步骤 2：工具自动规范化地址，去除别名和多余的点。'
+    step3: '步骤 3：复制或下载规范化后的邮箱列表。'
+    faq1q: '什么是邮箱规范化？'
+    faq1a: '邮箱规范化会移除别名（如 Gmail 的 + 标签）、统一大小写，并去除某些邮件提供商忽略的点号，以获取"真实"地址。'
+    faq2q: '支持哪些邮件服务商？'
+    faq2a: '支持 Gmail、Outlook、Yahoo 等主流服务商。不同提供商的规范化规则可能不同。'
+    inputLabel: 输入邮箱列表
+    uploadTooltip: 从文件导入（.txt 或 .csv）
+    clearInput: 清空输入
+    placeholder: '每行一个邮箱地址，例如：&#10;User.Name+tag@gmail.com&#10;another@outlook.com'
+    statInput: 输入
+    statValid: 有效
+    statInvalid: 无效
+    statDuplicate: 重复
+    statOutput: 输出
+    outputLabel: 规范化结果
+    copied: 已复制！
+    copyResult: 复制结果
+    downloadTooltip: 下载为 .txt 文件
+    outputPlaceholder: 规范化后的邮箱列表将在此显示...
 
   yaml-to-toml:
     step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
@@ -730,6 +1066,20 @@ tools:
     faq2a: '生成器默认创建单播地址。如果第一字节的最低有效位为 1，则该地址为组播地址。'
     title: MAC 地址生成器
     description: 输入数量和前缀。MAC地址将以您选择的大小写（大写或小写）生成
+    amount: 数量
+    ouiPrefix: OUI 前缀
+    prefixPlaceholder: '例如：64:16:7F'
+    clearPrefix: 清空前缀
+    letterCase: 大小写
+    uppercase: 大写
+    lowercase: 小写
+    separator: 分隔符
+    noSeparator: 无分隔符
+    resultPlaceholder: 生成的 MAC 地址将显示在这里...
+    regenerate: 重新生成
+    copyAll: 复制全部
+    justCopied: 已复制！
+    addressCopied: 地址已复制！
 
   json-diff:
     step1: '步骤 1：将第一个 JSON 对象粘贴到左侧面板。'
@@ -804,6 +1154,8 @@ tools:
     typePager: 寻呼机
     yes: 是
     no: 否
+    parsedBadge: '✓ 解析成功'
+    invalidBadge: '✕ 格式有误'
 
   ipv4-subnet-calculator:
     step1: '步骤 1：输入带 CIDR 表示法的 IPv4 地址（如 192.168.1.0/24）。'
@@ -815,6 +1167,26 @@ tools:
     faq2a: '/24 子网有 256 个地址（2 的 8 次方）。减去网络地址和广播地址，剩余 254 个可用主机地址。'
     title: IPv4子网计算器
     description: 解析IPv4 CIDR块，并获取有关子网络的所有所需信息。
+    inputLabel: 输入 IPv4 地址（可带或不带掩码）
+    inputPlaceholder: '例如：192.168.1.0/24'
+    parseError: '无法解析此地址，请检查格式（例如：192.168.1.0/24）'
+    copied: 已复制到剪贴板
+    prevSubnet: 上一子网
+    nextSubnet: 下一子网
+    labelNetwork: 网络（CIDR）
+    labelNetworkAddr: 网络地址
+    labelSubnetMask: 子网掩码
+    labelSubnetMaskBin: 子网掩码（二进制）
+    labelCidr: CIDR 记法
+    labelWildcard: 通配符掩码
+    labelNetworkSize: 网络大小
+    labelUsableHosts: 可用主机数
+    labelFirstAddr: 起始地址
+    labelLastAddr: 结束地址
+    labelBroadcast: 广播地址
+    labelIpClass: IP 类别
+    noBroadcast: 该掩码无广播地址
+    unknownClass: 未知类别
 
   og-meta-generator:
     step1: '步骤 1：输入您的页面标题、描述、URL 和图片。'
@@ -837,6 +1209,15 @@ tools:
     faq2a: '根据 RFC 4193，40 位全局 ID 应使用当前时间和 EUI-64 伪随机生成，以最小化不同组织间的碰撞概率。'
     title: IPv6 ULA生成器
     description: 根据RFC4193在网络上生成您自己的本地不可路由IP地址。
+    infoText: ULA 地址用于私有网络内部，不会在互联网上路由
+    macAddressLabel: MAC 地址（可选）
+    placeholder: 例如：00:1A:2B:3C:4D:5E
+    clear: 清空
+    generate: 生成新前缀
+    errorMsg: 生成失败，请检查 MAC 地址格式
+    copied: 已复制！
+    firstRoutable: 首个可路由地址
+    lastRoutable: 末个可路由地址
 
   hash-text:
     title: Hash 文本
@@ -892,6 +1273,21 @@ tools:
     faq2a: '不会。压缩只删除无关紧要的空白，数据值和结构保持完全不变。'
     title: JSON 压缩
     description: 通过删除不必要的空白来缩小和压缩JSON。
+    rawJson: 原始 JSON
+    minifiedResult: 压缩结果
+    valid: 合法
+    invalid: 非法
+    saved: '节省 {pct}%'
+    inputPlaceholder: 将 JSON 粘贴到这里…
+    outputPlaceholder: 压缩结果将在此显示…
+    formatInput: 格式化输入
+    clearInput: 清空输入
+    copyResult: 复制结果
+    copied: 已复制
+    download: 下载
+    original: 原始
+    minified: 压缩后
+    bytes: 字节
 
   ulid-generator:
     step1: '步骤 1：点击「生成」创建新的 ULID。'
@@ -914,6 +1310,18 @@ tools:
     faq2a: '不一样。脱敏是用于显示目的的视觉技术，原始字符串无法从脱敏输出中恢复。加密则产生可逆的密文。'
     title: 字符串混淆器
     description: 混淆字符串（如秘密、IBAN 或令牌），使其可共享和可识别，而不泄露其内容。
+    inputLabel: 输入字符串
+    inputPlaceholder: 输入要脱敏的字符串...
+    keepFirst: 保留开头字符数
+    keepLast: 保留末尾字符数
+    keepSpaces: 保留空格
+    decrease: 减少
+    increase: 增加
+    overLimit: '已保留 {kept} 个字符，超过字符串总长 {total}，无可脱敏内容'
+    outputPlaceholder: 脱敏结果将显示在这里...
+    copied: 已复制！
+    copyResult: 复制脱敏结果
+    copiedMsg: 脱敏字符串已复制！
 
   base-converter:
     step1: '步骤 1：在任意进制输入框中输入数字（二进制、八进制、十进制、十六进制或自定义）。'
@@ -936,6 +1344,32 @@ tools:
     faq2a: '不保留。JSON 不支持注释，因此所有 YAML 注释在转换时都会被丢弃。'
     title: YAML到JSON转换器
     description: 使用此在线转换器将YAML转换为JSON。
+
+  yaml-viewer:
+    step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
+    step2: '步骤 2：格式化且验证后的 YAML 出现在右侧。'
+    step3: '步骤 3：复制或下载格式化后的 YAML。'
+    faq1q: '什么是 YAML？'
+    faq1a: 'YAML（YAML Ain''t Markup Language）是一种人类友好的数据序列化语言，常用于配置文件，如 Docker Compose、Kubernetes 等。'
+    faq2q: 'YAML 缩进有何规则？'
+    faq2a: 'YAML 使用空格缩进表示层级，不允许使用 Tab 键。缩进量不固定，但同级节点必须保持一致。'
+    title: YAML 查看器
+    description: 验证并格式化 YAML 字符串，使其具有正确的语法高亮。
+    rawYaml: 原始 YAML
+    formattedResult: 格式化结果
+    sortKeys: 排序键
+    indentSize: 缩进大小
+    valid: 有效
+    invalid: 无效
+    invalidYaml: YAML 格式无效
+    uploadFile: 上传 YAML 文件
+    clearInput: 清空输入
+    inputPlaceholder: 在此粘贴 YAML 内容…
+    outputPlaceholder: 格式化后的 YAML 将在此显示…
+    copyYaml: 复制 YAML
+    yamlCopied: YAML 已复制！
+    copied: 已复制！
+    downloadFile: 下载 YAML 文件
 
   uuid-generator:
     title: UUIDs 生成器
@@ -971,6 +1405,16 @@ tools:
     faq2a: 'IPv4 映射的 IPv6 地址以 ::ffff:x.x.x.x 格式表示 IPv4 地址，用于同时支持 IPv4 和 IPv6 的双栈系统。'
     title: Ipv4地址转换器
     description: 在ipv6中，将ip地址转换为十进制、二进制、十六进制或事件
+    inputLabel: IPv4 地址
+    inputPlaceholder: '例如：192.168.1.1'
+    errorMsg: 请输入有效的 IPv4 地址（每段范围 0–255，共四段，如 192.168.1.1）
+    emptyHint: 输入 IPv4 地址后，结果将实时显示在这里
+    copied: 已复制到剪贴板
+    labelDecimal: 十进制
+    labelHex: 十六进制
+    labelBinary: 二进制
+    labelIpv6: IPv6 映射
+    labelIpv6Short: IPv6 (简写)
 
   text-statistics:
     step1: '步骤 1：在输入框中输入或粘贴文本。'
@@ -982,6 +1426,14 @@ tools:
     faq2a: '单词定义为由空白字符分隔的字符序列。附在单词上的标点符号算作单词的一部分。'
     title: 文本统计
     description: 获取有关文本、字符数、字数、大小等的信息
+    placeholder: 在此输入或粘贴文本…
+    copyTooltip: 复制文本
+    clearTooltip: 清空文本
+    copied: 已复制到剪贴板！
+    chars: 字符数
+    words: 单词数
+    lines: 行数
+    bytes: 字节大小
 
   text-to-nato-alphabet:
     step1: '步骤 1：输入要拼读的文本。'
@@ -1015,6 +1467,7 @@ tools:
     faq2a: 'Unicode 是分配码点的标准（如 U+0041 代表字母 A），UTF-8 是将这些码点在内存或文件中表示为 1–4 字节的编码方式。'
     title: 文本转 Unicode
     description: 解析文本并将其转换为 unicode，反之亦然
+    textPlaceholder: '例如：Hello 你好 🚀'
 
   ipv4-range-expander:
     step1: '步骤 1：输入 IP 范围的起始和结束 IPv4 地址。'
@@ -1026,6 +1479,18 @@ tools:
     faq2a: '不对齐 2 的幂次方边界的 IP 范围需要多个 CIDR 块来精确表示。'
     title: IPv4范围扩展器
     description: 给定起始和结束IPv4地址，此工具使用其CIDR表示法计算有效的IPv4网络。
+    startAddress: 起始地址
+    startPlaceholder: 例如：192.168.1.0
+    endAddress: 结束地址
+    endPlaceholder: 例如：192.168.1.255
+    clear: 清空
+    swapAddresses: 交换地址
+    orderError: 起始地址必须小于或等于结束地址
+    inputRange: 输入范围
+    expandedRange: 扩展的 CIDR 范围
+    copyCidr: 复制 CIDR
+    invalidIpv4: 请输入有效的 IPv4 地址
+    cidrCopied: CIDR 已复制！
 
   text-diff:
     step1: '步骤 1：将原始文本粘贴到左侧面板。'
@@ -1037,6 +1502,18 @@ tools:
     faq2a: '可以。工具适用于任何文本内容，包括代码、散文、JSON 和 YAML。'
     title: 文本比较
     description: 比较两个文本并查看它们之间的差异。
+    originalText: 原始文本
+    modifiedText: 修改后文本
+    originalPlaceholder: 在此粘贴原始文本…
+    modifiedPlaceholder: 在此粘贴修改后的文本…
+    swap: 交换
+    swapTooltip: 交换左右两侧文本
+    clear: 清空
+    clearTooltip: 清空两侧内容
+    copyResult: 复制结果
+    copyTooltip: 复制右侧修改后的文本
+    copied: 已复制！
+    justCopied: 已复制！
 
   otp-generator:
     step1: '步骤 1：输入您的 TOTP 密钥（来自您的身份验证器应用或服务）。'
@@ -1113,6 +1590,23 @@ tools:
     faq2a: 大多数城市首套房最低首付为 20%，部分城市和贷款类型可能要求 30% 或更高。
     faq3q: 月供如何计算？
     faq3a: 等额还款公式：M = P × r × (1+r)^n / ((1+r)^n - 1)，其中 P 为贷款本金，r 为月利率（年利率 ÷ 12），n 为总还款月数。
+    year: 年
+    downPaymentLabel: 首付
+    maxLoan: 最大贷款额
+    commercialLoan: 商业贷款额
+    monthlyDecreasing: 逐月递减
+    lastMonth: 末月还款
+    avgMonthlyDecrease: 月均减少
+    fundComposition: 资金构成
+    viewSchedule: 查看还款明细
+    scheduleTitle: 还款明细计划
+    scheduleMeta: '共 {months} 期，本金 ¥{principal}，总利息 ¥{interest}'
+    period: '第 {n} 期'
+    thPeriod: 期数
+    thMonthly: 月供
+    thPrincipal: 本金
+    thInterest: 利息
+    thRemaining: 剩余本金
 
   bmi-calculator:
     title: BMI 体重指数计算器
@@ -1139,6 +1633,10 @@ tools:
     faq2a: WHO 标准：18.5–24.9 为正常。中国卫健委标准：18.5–23.9 为正常体重；24–27.9 为超重；≥28 为肥胖。
     faq3q: 这个计算器会上传我的数据吗？
     faq3a: 不会。所有计算完全在您的浏览器中运行，不会收集或传输任何健康数据。
+    decreaseHeight: 减少身高
+    increaseHeight: 增加身高
+    decreaseWeight: 减少体重
+    increaseWeight: 增加体重
 
   random-decision-picker:
     step1: '步骤 1：输入您的选项，每行一个。'
@@ -1219,6 +1717,18 @@ tools:
     preset1Child: 子女教育 2000/月
     presetRent: 租房扣除 1500/月
     presetElderly: 赡养老人 3000/月
+    pension: 养老保险
+    medical: 医疗保险
+    unemployment: 失业保险
+    housingFund: 住房公积金
+    total: 合计
+    salaryComposition: 工资构成
+    currentBracket: 当前税档
+    current: 当前
+    reset: 重置
+    resetTitle: 重置所有输入
+    month: 月
+    specialDeductionTotal: 专项附加扣除合计
 
   css-unit-converter:
     title: CSS 单位转换器
@@ -1284,6 +1794,15 @@ tools:
     faq1a: 数字格式化根据地区和样式调整数字的显示方式。例如 1234.56 在美国显示为 "1,234.56"，在法国显示为 "1 234,56"，在中国加货币符号则显示为 "￥1,234.56"。
     faq2q: 紧凑模式和科学计数法有什么区别？
     faq2a: 科学计数法总是显示系数和指数（如 1.23E3）。紧凑模式使用本地化缩写（如 "1.2K"、"1.2万"），对大数字更直观易读。
+    clear: 清空
+    copy: 复制
+    justCopied: 已复制！
+    clickToCopy: 点击复制
+    decimalPlaces: '{count} 位小数'
+    withGrouping: 有千位分隔符
+    noGrouping: 无千位分隔符
+    invalidNumber: 请输入有效数字
+    comparisonEmpty: 输入数字后显示多语言对比
 
   color-palette-generator:
     title: 调色板生成器
@@ -1305,6 +1824,17 @@ tools:
     faq1a: 配色方案是基于色轮上颜色位置关系得出的视觉和谐的色彩组合。常见类型包括互补色（对侧）、类比色（相邻）和三角配色（等距分布）。
     faq2q: 色阶（Tints）和暗色阶（Shades）有什么区别？
     faq2a: 色阶是在基础色中加入白色（使颜色变浅），暗色阶是在基础色中加入黑色（使颜色变深）。本工具同时生成两者，提供完整的色彩范围。
+    clickToChange: 点击更改颜色
+    openPicker: 打开取色器
+    hexError: 无效的十六进制颜色值
+    clickToCopyVal: '点击复制 {val}'
+    clickToCopyHsl: 点击复制 HSL 值
+    exportCode: 导出代码
+    copiedMsg: '已复制 {hex}'
+    copiedShort: 已复制
+    exportModalTitle: 导出调色板代码
+    copied: 已复制！
+    copyCode: 复制代码
 
   camera-recorder:
     notSupported: 浏览器不支持
@@ -1438,6 +1968,48 @@ tools:
     unitMin: 分钟
     unitHour: 小时
     unitDay: 天
+
+  regex-tester:
+    title: 正则表达式测试器
+    description: 实时测试正则表达式，查看匹配结果、捕获组和命名分组。
+    regexPlaceholder: 输入正则表达式...
+    testText: 测试文本
+    textPlaceholder: 在此输入要匹配的文本...
+    matchResults: 匹配结果
+    matchCount: '匹配 {n} 处'
+    emptyHint: 输入正则表达式和测试文本后显示结果
+    syntaxError: 正则表达式语法错误
+    noMatch: 未找到匹配
+    position: 位置
+    captureGroup: 捕获组
+    namedGroup: 命名分组
+    undefined: 未定义
+    invalidRegex: 无效的正则表达式
+    flagGlobal: 全局匹配 (g)
+    flagIgnoreCase: 忽略大小写 (i)
+    flagMultiline: 多行模式 (m)
+    flagDotAll: 点号匹配换行 (s)
+    flagUnicode: Unicode 模式 (u)
+    flagUnicodeSets: Unicode 集合模式 (v)
+    sampleText: 示例文本
+    visualization: 可视化
+    viewMemo: 查看正则速查表
+    clear: 清空
+
+  regex-memo:
+    step1: '步骤 1：浏览常用正则表达式速查表。'
+    step2: '步骤 2：点击任意一行可复制对应的表达式。'
+    step3: '步骤 3：参考右侧目录快速定位章节。'
+    faq1q: '什么是正则表达式？'
+    faq1a: '正则表达式（Regex）是用于匹配字符串中字符组合的模式，被广泛用于搜索、替换、验证等文本处理场景。'
+    faq2q: '如何测试正则表达式？'
+    faq2a: '可以使用本站的 Regex Tester 工具实时测试和调试正则表达式。'
+    title: 正则表达式速查表
+    description: 常用正则表达式速查参考。
+    toc: 目录
+    copied: 已复制到剪贴板
+    copyExpr: 复制表达式
+    regexTesterLink: Regex Tester（本工具）
 
   common:
     faqSafe: 这个工具安全吗？我的数据会被上传吗？

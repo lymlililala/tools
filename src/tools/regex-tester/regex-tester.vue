@@ -6,6 +6,8 @@ import { refDebounced } from '@vueuse/core';
 import { matchRegex } from './regex-tester.service';
 import { useQueryParamOrStorage } from '@/composable/queryParams';
 
+const { t } = useI18n();
+
 // ── 输入状态 ─────────────────────────────────────────────────
 const regex = useQueryParamOrStorage({ name: 'regex', storageName: 'regex-tester:regex', defaultValue: '' });
 const text = ref('');
@@ -29,14 +31,14 @@ const flags = computed(() => {
   return f;
 });
 
-const FLAG_DEFS = [
-  { key: 'g', label: 'g', title: '全局搜索 (Global)', ref: flagGlobal },
-  { key: 'i', label: 'i', title: '忽略大小写 (Case-insensitive)', ref: flagIgnoreCase },
-  { key: 'm', label: 'm', title: '多行模式，^ $ 匹配行首/行尾 (Multiline)', ref: flagMultiline },
-  { key: 's', label: 's', title: '. 匹配换行符 (Singleline / dotAll)', ref: flagDotAll },
-  { key: 'u', label: 'u', title: 'Unicode 模式', ref: flagUnicode },
-  { key: 'v', label: 'v', title: 'Unicode Sets（v 与 u 互斥）', ref: flagUnicodeSets },
-] as const;
+const FLAG_DEFS = computed(() => [
+  { key: 'g', label: 'g', title: t('tools.regex-tester.flagGlobal'), ref: flagGlobal },
+  { key: 'i', label: 'i', title: t('tools.regex-tester.flagIgnoreCase'), ref: flagIgnoreCase },
+  { key: 'm', label: 'm', title: t('tools.regex-tester.flagMultiline'), ref: flagMultiline },
+  { key: 's', label: 's', title: t('tools.regex-tester.flagDotAll'), ref: flagDotAll },
+  { key: 'u', label: 'u', title: t('tools.regex-tester.flagUnicode'), ref: flagUnicode },
+  { key: 'v', label: 'v', title: t('tools.regex-tester.flagUnicodeSets'), ref: flagUnicodeSets },
+]);
 
 // ── 正则解析 & 错误 ────────────────────────────────────────────
 const regexError = computed((): string => {
@@ -47,7 +49,7 @@ const regexError = computed((): string => {
     return '';
   }
   catch (e: any) {
-    return e?.message ?? '无效的正则表达式';
+    return e?.message ?? t('tools.regex-tester.invalidRegex');
   }
 });
 
@@ -140,7 +142,7 @@ watchEffect(async () => {
       <input
         v-model="regex"
         class="regex-input"
-        placeholder="输入正则表达式..."
+        :placeholder="t('tools.regex-tester.regexPlaceholder')"
         spellcheck="false"
         autocomplete="off"
         autofocus
@@ -162,7 +164,7 @@ watchEffect(async () => {
       </div>
 
       <!-- 跳转备忘录 -->
-      <router-link target="_blank" to="/regex-memo" class="memo-link" title="查看正则备忘录">
+      <router-link target="_blank" to="/regex-memo" class="memo-link" :title="t('tools.regex-tester.viewMemo')">
         <icon-mdi-book-open-variant />
       </router-link>
     </div>
@@ -180,13 +182,13 @@ watchEffect(async () => {
       <!-- 左列：待测文本 -->
       <div class="panel panel--left">
         <div class="panel-header">
-          <span class="panel-title">待测文本</span>
+          <span class="panel-title">{{ t('tools.regex-tester.testText') }}</span>
           <transition name="fade">
             <span v-if="hasMatch" class="match-badge">
-              {{ matchCount }} 处匹配
+              {{ t('tools.regex-tester.matchCount', { n: matchCount }) }}
             </span>
           </transition>
-          <button v-if="text" class="panel-btn" title="清空" @click="text = ''">
+          <button v-if="text" class="panel-btn" :title="t('tools.regex-tester.clear')" @click="text = ''">
             <icon-mdi-close-circle-outline />
           </button>
         </div>
@@ -201,7 +203,7 @@ watchEffect(async () => {
           <textarea
             v-model="text"
             class="editor-textarea"
-            placeholder="在此输入待匹配文本..."
+            :placeholder="t('tools.regex-tester.textPlaceholder')"
             spellcheck="false"
             autocomplete="off"
           />
@@ -211,25 +213,25 @@ watchEffect(async () => {
       <!-- 右列：匹配结果 -->
       <div class="panel panel--right">
         <div class="panel-header">
-          <span class="panel-title">匹配结果</span>
+          <span class="panel-title">{{ t('tools.regex-tester.matchResults') }}</span>
         </div>
 
         <!-- 空状态（灰色，无警告感） -->
         <div v-if="isEmpty" class="state-empty">
           <icon-mdi-regex class="state-icon" />
-          <span>请输入正则表达式与测试文本</span>
+          <span>{{ t('tools.regex-tester.emptyHint') }}</span>
         </div>
 
         <!-- 正则有错误 -->
         <div v-else-if="regexError" class="state-error">
           <icon-mdi-alert-circle-outline class="state-icon" />
-          <span>正则表达式有语法错误</span>
+          <span>{{ t('tools.regex-tester.syntaxError') }}</span>
         </div>
 
         <!-- 无匹配（灰色中性） -->
         <div v-else-if="!hasMatch" class="state-empty">
           <icon-mdi-text-search class="state-icon" />
-          <span>未找到匹配项</span>
+          <span>{{ t('tools.regex-tester.noMatch') }}</span>
         </div>
 
         <!-- 匹配列表 -->
@@ -243,20 +245,20 @@ watchEffect(async () => {
             <div class="match-header">
               <span class="match-num">#{{ idx + 1 }}</span>
               <code class="match-value">{{ match.value }}</code>
-              <span class="match-pos">位置 {{ match.index }} – {{ match.index + match.value.length }}</span>
+              <span class="match-pos">{{ t('tools.regex-tester.position') }} {{ match.index }} – {{ match.index + match.value.length }}</span>
             </div>
             <div v-if="match.captures.length || match.groups.length" class="match-details">
               <template v-if="match.captures.length">
                 <div v-for="cap in match.captures" :key="cap.name" class="detail-row">
-                  <span class="detail-key">捕获组 {{ cap.name }}</span>
-                  <code class="detail-val">{{ cap.value ?? '未定义' }}</code>
+                  <span class="detail-key">{{ t('tools.regex-tester.captureGroup') }} {{ cap.name }}</span>
+                  <code class="detail-val">{{ cap.value ?? t('tools.regex-tester.undefined') }}</code>
                   <span class="detail-range">[{{ cap.start }} – {{ cap.end }}]</span>
                 </div>
               </template>
               <template v-if="match.groups.length">
                 <div v-for="grp in match.groups" :key="grp.name" class="detail-row">
-                  <span class="detail-key">命名组 "{{ grp.name }}"</span>
-                  <code class="detail-val">{{ grp.value ?? '未定义' }}</code>
+                  <span class="detail-key">{{ t('tools.regex-tester.namedGroup') }} "{{ grp.name }}"</span>
+                  <code class="detail-val">{{ grp.value ?? t('tools.regex-tester.undefined') }}</code>
                   <span class="detail-range">[{{ grp.start }} – {{ grp.end }}]</span>
                 </div>
               </template>
@@ -268,10 +270,10 @@ watchEffect(async () => {
 
     <!-- ── 底部辅助卡片 ──────────────────────────────────── -->
     <div class="aux-grid">
-      <c-card v-if="sample" title="随机示例文本">
+      <c-card v-if="sample" :title="t('tools.regex-tester.sampleText')">
         <pre class="aux-pre">{{ sample }}</pre>
       </c-card>
-      <c-card title="正则可视化图" style="overflow-x:auto;">
+      <c-card :title="t('tools.regex-tester.visualization')" style="overflow-x:auto;">
         <shadow-root ref="visualizerSVG">&#xa0;</shadow-root>
       </c-card>
     </div>

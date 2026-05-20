@@ -4,6 +4,7 @@ import { codesByCategories } from './http-status-codes.constants';
 import { useFuzzySearch } from '@/composable/fuzzySearch';
 import { useStyleStore } from '@/stores/style.store';
 
+const { t } = useI18n();
 const styleStore = useStyleStore();
 const { copy } = useClipboard();
 
@@ -197,7 +198,7 @@ async function copyCode(code: number, name: string) {
 
     <!-- ── 回到顶部悬浮按钮 ───────────────────────────────────────────── -->
     <transition name="fade-up">
-      <button v-if="showBackToTop" class="back-to-top" title="回到顶部" @click="scrollToTop">
+      <button v-if="showBackToTop" class="back-to-top" :title="t('tools.http-status-codes.backToTop')" @click="scrollToTop">
         <icon-mdi-chevron-up class="btt-icon" />
       </button>
     </transition>

@@ -4,6 +4,8 @@ import slugify from '@sindresorhus/slugify';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useStyleStore } from '@/stores/style.store';
 
+const { t } = useI18n();
+
 const { copy } = useClipboard();
 const styleStore = useStyleStore();
 
@@ -32,8 +34,8 @@ function clearInput() {
     <!-- ① 输入区 ─────────────────────────────────────────────────── -->
     <div class="field-group">
       <div class="field-header">
-        <label class="field-label" for="slug-input">原始文本</label>
-        <button v-if="hasInput" class="clear-btn" title="清空" @click="clearInput">
+        <label class="field-label" for="slug-input">{{ t('tools.slugify-string.inputLabel') }}</label>
+        <button v-if="hasInput" class="clear-btn" :title="t('tools.slugify-string.clear')" @click="clearInput">
           <icon-mdi-close class="clear-icon" />
         </button>
       </div>
@@ -41,28 +43,28 @@ function clearInput() {
         id="slug-input"
         v-model="input"
         class="slug-textarea input-area"
-        placeholder="在此输入文本，例如：My File Path 2024"
+        :placeholder="t('tools.slugify-string.inputPlaceholder')"
         rows="3"
         spellcheck="false"
         autofocus
       />
       <div class="field-hint">
-        空格、特殊字符将被自动转换为连字符并转为小写
+        {{ t('tools.slugify-string.hint') }}
       </div>
     </div>
 
     <!-- ② 输出区 ─────────────────────────────────────────────────── -->
     <div class="field-group">
       <div class="field-header">
-        <label class="field-label">生成的 Slug 结果</label>
+        <label class="field-label">{{ t('tools.slugify-string.outputLabel') }}</label>
         <span class="readonly-badge">
           <icon-mdi-lock-outline class="lock-icon" />
-          只读
+          {{ t('tools.slugify-string.readonly') }}
         </span>
       </div>
       <div class="slug-output" :class="{ empty: !hasSlug }">
         <span v-if="hasSlug" class="slug-text">{{ slug }}</span>
-        <span v-else class="slug-placeholder">生成的 Slug 将显示在此处（例如：my-file-path-2024）</span>
+        <span v-else class="slug-placeholder">{{ t('tools.slugify-string.placeholder') }}</span>
       </div>
     </div>
 
@@ -76,12 +78,12 @@ function clearInput() {
       >
         <icon-mdi-check v-if="copied" class="btn-icon" />
         <icon-mdi-content-copy v-else class="btn-icon" />
-        {{ copied ? '已复制！' : '复制结果' }}
+        {{ copied ? t('tools.slugify-string.justCopied') : t('tools.slugify-string.copyResult') }}
       </button>
 
       <!-- 实时字符统计 -->
       <div v-if="hasSlug" class="char-stats">
-        <span>{{ slug.length }} 个字符</span>
+        <span>{{ t('tools.slugify-string.charCount', { count: slug.length }) }}</span>
       </div>
     </div>
   </div>

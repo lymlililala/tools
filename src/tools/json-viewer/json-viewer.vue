@@ -2,6 +2,8 @@
 import JSON5 from 'json5';
 import { useStorage } from '@vueuse/core';
 import { formatJson } from './json.models';
+
+const { t } = useI18n();
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
 import { useCopy } from '@/composable/copy';
@@ -43,7 +45,7 @@ const parseError = computed(() => {
 // ── 复制格式化结果 ────────────────────────────────────────────
 const { copy: copyFormatted, isJustCopied: isFormattedCopied } = useCopy({
   source: cleanJson,
-  text: '格式化 JSON 已复制到剪贴板',
+  text: computed(() => t('tools.json-viewer.jsonCopied')),
 });
 
 // ── 清除 ──────────────────────────────────────────────────────
@@ -68,12 +70,12 @@ function downloadJson() {
   <!-- ── 配置栏 ────────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-group">
-      <span class="toolbar-label">排序键名</span>
+      <span class="toolbar-label">{{ t('tools.json-viewer.sortKeys') }}</span>
       <n-switch v-model:value="sortKeys" size="small" />
     </div>
     <div class="toolbar-divider" />
     <div class="toolbar-group">
-      <span class="toolbar-label">缩进大小</span>
+      <span class="toolbar-label">{{ t('tools.json-viewer.indentSize') }}</span>
       <div class="indent-ctrl">
         <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">−</button>
         <span class="indent-val">{{ indentSize }}</span>
@@ -91,14 +93,14 @@ function downloadJson() {
         <!-- 验证徽章 -->
         <span v-if="isValid" class="status-badge status-badge--valid">
           <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
-          合法
+          {{ t('tools.json-viewer.valid') }}
         </span>
         <span v-else-if="isInvalid" class="status-badge status-badge--error">
           <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
-          无效
+          {{ t('tools.json-viewer.invalid') }}
         </span>
         <!-- 清除按钮（在输入面板） -->
-        <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+        <c-tooltip v-if="hasInput" :tooltip="t('tools.json-viewer.clearInput')" position="bottom">
           <button class="hdr-btn" @click="clearInput">
             <icon-mdi-close-circle-outline />
           </button>
@@ -108,7 +110,7 @@ function downloadJson() {
       <c-code-input
         v-model="rawJson"
         language="json"
-        placeholder="在此粘贴原始 JSON..."
+        :placeholder="t('tools.json-viewer.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': isInvalid }"
       />
@@ -132,7 +134,7 @@ function downloadJson() {
         <!-- 操作按钮组 -->
         <div class="action-group">
           <!-- 复制 -->
-          <c-tooltip :tooltip="isFormattedCopied ? '已复制！' : '复制结果'" position="bottom">
+          <c-tooltip :tooltip="isFormattedCopied ? t('tools.json-viewer.justCopied') : t('tools.json-viewer.copyResult')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isFormattedCopied }"
@@ -144,7 +146,7 @@ function downloadJson() {
             </button>
           </c-tooltip>
           <!-- 下载 -->
-          <c-tooltip tooltip="下载 .json" position="bottom">
+          <c-tooltip :tooltip="t('tools.json-viewer.downloadJson')" position="bottom">
             <button
               class="hdr-btn"
               :disabled="!cleanJson"
@@ -159,7 +161,7 @@ function downloadJson() {
       <c-code-input
         :model-value="cleanJson"
         language="json"
-        placeholder="格式化结果将显示在此..."
+        :placeholder="t('tools.json-viewer.outputPlaceholder')"
         class="code-editor"
         readonly
       />

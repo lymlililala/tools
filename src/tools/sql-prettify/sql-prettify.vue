@@ -3,6 +3,8 @@ import { type FormatOptionsWithLanguage, format as formatSQL } from 'sql-formatt
 import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 配置 ──────────────────────────────────────────────────────
 const config = reactive<FormatOptionsWithLanguage>({
   keywordCase: 'upper',
@@ -28,11 +30,11 @@ const dialectOptions = [
   { label: 'Couchbase N1QL', value: 'n1ql' },
 ];
 
-const keywordCaseOptions = [
+const keywordCaseOptions = computed(() => [
   { label: 'UPPERCASE', value: 'upper' },
   { label: 'lowercase', value: 'lower' },
-  { label: '保留原样', value: 'preserve' },
-];
+  { label: t('tools.sql-prettify.preserve'), value: 'preserve' },
+]);
 
 const indentStyleOptions = [
   { label: 'Standard', value: 'standard' },
@@ -59,7 +61,7 @@ const result = computed((): Result => {
     return { sql: formatted, error: null };
   }
   catch (e: any) {
-    return { sql: '', error: e?.message ?? 'SQL 格式化失败' };
+    return { sql: '', error: e?.message ?? t('tools.sql-prettify.formatError') };
   }
 });
 
@@ -77,7 +79,7 @@ function clearInput() {
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy: copySQL, isJustCopied } = useCopy({
   source: prettySQL,
-  text: '格式化 SQL 已复制到剪贴板',
+  text: computed(() => t('tools.sql-prettify.sqlCopied')),
 });
 
 // ── 下载 ──────────────────────────────────────────────────────
@@ -97,7 +99,7 @@ function downloadSQL() {
   <!-- ── 配置栏 ────────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
-      <span class="toolbar-label">方言</span>
+      <span class="toolbar-label">{{ t('tools.sql-prettify.dialect') }}</span>
       <c-select
         v-model:value="config.language"
         :options="dialectOptions"
@@ -106,7 +108,7 @@ function downloadSQL() {
     </div>
     <div class="toolbar-divider" />
     <div class="toolbar-item">
-      <span class="toolbar-label">关键字大小写</span>
+      <span class="toolbar-label">{{ t('tools.sql-prettify.keywordCase') }}</span>
       <c-select
         v-model:value="config.keywordCase"
         :options="keywordCaseOptions"
@@ -115,7 +117,7 @@ function downloadSQL() {
     </div>
     <div class="toolbar-divider" />
     <div class="toolbar-item">
-      <span class="toolbar-label">缩进风格</span>
+      <span class="toolbar-label">{{ t('tools.sql-prettify.indentStyle') }}</span>
       <c-select
         v-model:value="config.indentStyle"
         :options="indentStyleOptions"
@@ -129,8 +131,8 @@ function downloadSQL() {
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': hasError }">
       <div class="pane-header">
-        <span class="pane-title">SQL 查询</span>
-        <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+        <span class="pane-title">{{ t('tools.sql-prettify.sqlQuery') }}</span>
+        <c-tooltip v-if="hasInput" :tooltip="t('tools.sql-prettify.clearInput')" position="bottom">
           <button class="hdr-btn" @click="clearInput">
             <icon-mdi-close-circle-outline />
           </button>
@@ -140,7 +142,7 @@ function downloadSQL() {
       <c-code-input
         v-model="rawSQL"
         language="sql"
-        placeholder="在此粘贴您的 SQL 查询语句..."
+        :placeholder="t('tools.sql-prettify.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': hasError }"
       />
@@ -160,9 +162,9 @@ function downloadSQL() {
     <!-- 输出面板 -->
     <div class="pane">
       <div class="pane-header">
-        <span class="pane-title">格式化结果</span>
+        <span class="pane-title">{{ t('tools.sql-prettify.formattedResult') }}</span>
         <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制 SQL'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.sql-prettify.copied') : t('tools.sql-prettify.copySql')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -173,7 +175,7 @@ function downloadSQL() {
               <icon-mdi-content-copy v-else />
             </button>
           </c-tooltip>
-          <c-tooltip tooltip="下载 formatted.sql" position="bottom">
+          <c-tooltip :tooltip="t('tools.sql-prettify.downloadFile')" position="bottom">
             <button class="hdr-btn" :disabled="!prettySQL" @click="downloadSQL">
               <icon-mdi-download />
             </button>
@@ -184,7 +186,7 @@ function downloadSQL() {
       <c-code-input
         :model-value="prettySQL"
         language="sql"
-        placeholder="格式化结果将显示在此..."
+        :placeholder="t('tools.sql-prettify.outputPlaceholder')"
         class="code-editor"
         readonly
       />

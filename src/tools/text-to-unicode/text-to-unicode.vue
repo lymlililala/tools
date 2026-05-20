@@ -8,6 +8,8 @@ import {
 import { useCopy } from '@/composable/copy';
 import { withDefaultOnError } from '@/utils/defaults';
 
+const { t } = useI18n();
+
 // ── 格式选项 ─────────────────────────────────────────────────────────────
 const selectedFormat = ref<UnicodeFormat>('js');
 const currentFormatOption = computed(() =>
@@ -124,7 +126,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
           :rows="5"
           raw-text
           autofocus
-          placeholder="e.g. Hello 你好 🚀"
+          :placeholder="t('tools.text-to-unicode.textPlaceholder')"
           class="pane-textarea"
           test-id="text-to-unicode-input"
           @update:value="onTextInput"

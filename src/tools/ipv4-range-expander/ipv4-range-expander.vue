@@ -5,6 +5,8 @@ import { calculateCidr } from './ipv4-range-expander.service';
 import { useValidation } from '@/composable/validation';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const rawStartAddress = useStorage('ipv4-range-expander:startAddress', '192.168.1.1');
 const rawEndAddress   = useStorage('ipv4-range-expander:endAddress',   '192.168.6.255');
 
@@ -16,11 +18,11 @@ const result = computed(() => calculateCidr({
 // ── 校验 ──────────────────────────────────────────────────────
 const startIpValidation = useValidation({
   source: rawStartAddress,
-  rules: [{ message: '请输入有效的 IPv4 地址', validator: ip => isValidIpv4({ ip }) }],
+  rules: [{ message: computed(() => t('tools.ipv4-range-expander.invalidIpv4')), validator: ip => isValidIpv4({ ip }) }],
 });
 const endIpValidation = useValidation({
   source: rawEndAddress,
-  rules: [{ message: '请输入有效的 IPv4 地址', validator: ip => isValidIpv4({ ip }) }],
+  rules: [{ message: computed(() => t('tools.ipv4-range-expander.invalidIpv4')), validator: ip => isValidIpv4({ ip }) }],
 });
 
 const bothValid   = computed(() => startIpValidation.isValid && endIpValidation.isValid);
@@ -29,7 +31,7 @@ const showResult  = computed(() => bothValid.value && result.value !== undefined
 
 // ── 结果行定义 ────────────────────────────────────────────────
 interface CalcRow {
-  label: string
+  labelKey: string
   getOldValue: (r: Ipv4RangeExpanderResult | undefined) => string
   getNewValue:  (r: Ipv4RangeExpanderResult | undefined) => string
   isCode?: boolean
@@ -38,24 +40,24 @@ interface CalcRow {
 
 const rows: CalcRow[] = [
   {
-    label: '起始地址',
+    labelKey: 'tools.ipv4-range-expander.startAddress',
     getOldValue: () => rawStartAddress.value,
     getNewValue: r => r?.newStart ?? '',
     isCode: true,
   },
   {
-    label: '结束地址',
+    labelKey: 'tools.ipv4-range-expander.endAddress',
     getOldValue: () => rawEndAddress.value,
     getNewValue: r => r?.newEnd ?? '',
     isCode: true,
   },
   {
-    label: '地址数量',
+    labelKey: 'tools.ipv4-range-expander.addressCount',
     getOldValue: r => r?.oldSize?.toLocaleString() ?? '',
     getNewValue: r => r?.newSize?.toLocaleString() ?? '',
   },
   {
-    label: 'CIDR',
+    labelKey: 'tools.ipv4-range-expander.cidr',
     getOldValue: () => '',
     getNewValue: r => r?.newCidr ?? '',
     isCode: true,
@@ -74,7 +76,7 @@ function switchAddresses() {
 const cidrValue = computed(() => result.value?.newCidr ?? '');
 const { copy: copyCidr, isJustCopied } = useCopy({
   source: cidrValue,
-  text: 'CIDR 已复制到剪贴板',
+  text: computed(() => t('tools.ipv4-range-expander.cidrCopied')),
 });
 </script>
 
@@ -84,12 +86,12 @@ const { copy: copyCidr, isJustCopied } = useCopy({
     <div class="input-row">
       <!-- 起始地址 -->
       <div class="input-group">
-        <label class="input-label">起始地址</label>
+        <label class="input-label">{{ t('tools.ipv4-range-expander.startAddress') }}</label>
         <div class="input-wrap" :class="{ 'input-wrap--error': startIpValidation.status === 'error' }">
           <input
             v-model="rawStartAddress"
             class="ip-input"
-            placeholder="例如：192.168.1.1"
+            :placeholder="t('tools.ipv4-range-expander.startPlaceholder')"
             spellcheck="false"
             autocomplete="off"
             autofocus
@@ -97,7 +99,7 @@ const { copy: copyCidr, isJustCopied } = useCopy({
           <button
             v-if="rawStartAddress"
             class="clear-btn"
-            title="清空"
+            :title="t('tools.ipv4-range-expander.clear')"
             @click="rawStartAddress = ''"
           >
             <icon-mdi-close />
@@ -112,26 +114,26 @@ const { copy: copyCidr, isJustCopied } = useCopy({
 
       <!-- 互换按钮 -->
       <div class="swap-col">
-        <button class="swap-btn" title="互换起止地址" @click="switchAddresses">
+        <button class="swap-btn" :title="t('tools.ipv4-range-expander.swapAddresses')" @click="switchAddresses">
           <icon-mdi-swap-horizontal />
         </button>
       </div>
 
       <!-- 结束地址 -->
       <div class="input-group">
-        <label class="input-label">结束地址</label>
+        <label class="input-label">{{ t('tools.ipv4-range-expander.endAddress') }}</label>
         <div class="input-wrap" :class="{ 'input-wrap--error': endIpValidation.status === 'error' }">
           <input
             v-model="rawEndAddress"
             class="ip-input"
-            placeholder="例如：192.168.6.255"
+            :placeholder="t('tools.ipv4-range-expander.endPlaceholder')"
             spellcheck="false"
             autocomplete="off"
           />
           <button
             v-if="rawEndAddress"
             class="clear-btn"
-            title="清空"
+            :title="t('tools.ipv4-range-expander.clear')"
             @click="rawEndAddress = ''"
           >
             <icon-mdi-close />
@@ -150,10 +152,10 @@ const { copy: copyCidr, isJustCopied } = useCopy({
       <div v-if="orderError" class="order-error">
         <icon-mdi-alert-circle-outline class="oe-icon" />
         <div class="oe-body">
-          <p>起始地址不能大于结束地址，请检查或点击下方按钮互换。</p>
+          <p>{{ t('tools.ipv4-range-expander.orderError') }}</p>
           <button class="oe-swap-btn" @click="switchAddresses">
             <icon-mdi-swap-horizontal />
-            互换起止地址
+            {{ t('tools.ipv4-range-expander.swapAddresses') }}
           </button>
         </div>
       </div>
@@ -166,11 +168,11 @@ const { copy: copyCidr, isJustCopied } = useCopy({
           <thead>
             <tr>
               <th class="th-label" />
-              <th>输入范围</th>
+              <th>{{ t('tools.ipv4-range-expander.inputRange') }}</th>
               <th>
                 <span class="th-new-wrap">
-                  扩展范围（CIDR 对齐）
-                  <c-tooltip tooltip="复制 CIDR 值" position="top">
+                  {{ t('tools.ipv4-range-expander.expandedRange') }}
+                  <c-tooltip :tooltip="t('tools.ipv4-range-expander.copyCidr')" position="top">
                     <button
                       class="copy-cidr-btn"
                       :class="{ 'copy-cidr-btn--copied': isJustCopied }"
@@ -187,11 +189,11 @@ const { copy: copyCidr, isJustCopied } = useCopy({
           <tbody>
             <tr
               v-for="row in rows"
-              :key="row.label"
+              :key="row.labelKey"
               class="re-row"
             >
               <td class="td-label">
-                {{ row.label }}
+                {{ t(row.labelKey) }}
               </td>
               <td class="td-value">
                 <code v-if="row.getOldValue(result) && row.isCode">{{ row.getOldValue(result) }}</code>

@@ -86,6 +86,8 @@ function step(key: TemperatureScale, delta: number) {
   update(key);
 }
 
+const { t } = useI18n();
+
 // 初始化
 update('kelvin');
 </script>
@@ -96,7 +98,7 @@ update('kelvin');
     <transition name="slide-down">
       <div v-if="anyBelowZero" class="abs-zero-warn">
         <icon-mdi-alert-circle-outline class="warn-icon" />
-        <span>温度低于绝对零度（0 K / −273.15 °C），物理上不可能存在。</span>
+        <span>{{ t('tools.temperature-converter.belowAbsoluteZero') }}</span>
       </div>
     </transition>
 
@@ -115,7 +117,7 @@ update('kelvin');
         <div class="tc-input-group" :class="{ 'tc-input-group--error': belowAbsoluteZero[key] }">
           <button
             class="step-btn step-btn--dec"
-            :title="`${title} 减 1`"
+            :title="`${title} ${t('tools.temperature-converter.minus1')}`"
             @click="step(key as TemperatureScale, -1)"
           >
             −
@@ -130,7 +132,7 @@ update('kelvin');
           >
           <button
             class="step-btn step-btn--inc"
-            :title="`${title} 加 1`"
+            :title="`${title} ${t('tools.temperature-converter.plus1')}`"
             @click="step(key as TemperatureScale, 1)"
           >
             +

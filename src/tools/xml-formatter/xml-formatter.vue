@@ -3,6 +3,8 @@ import { formatXml, isValidXML } from './xml-formatter.service';
 import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 配置 ──────────────────────────────────────────────────────
 const indentSize = useStorage('xml-formatter:indent-size', 2);
 const collapseContent = useStorage('xml-formatter:collapse-content', true);
@@ -32,11 +34,11 @@ const parseError = computed(() => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(raw, 'application/xml');
     const errEl = doc.querySelector('parsererror');
-    if (errEl) return errEl.textContent?.split('\n')[0]?.trim() ?? 'XML 格式无效';
-    return 'XML 格式无效';
+    if (errEl) return errEl.textContent?.split('\n')[0]?.trim() ?? t('tools.xml-formatter.invalidXml');
+    return t('tools.xml-formatter.invalidXml');
   }
   catch {
-    return 'XML 格式无效';
+    return t('tools.xml-formatter.invalidXml');
   }
 });
 
@@ -61,7 +63,7 @@ function clearInput() { xmlInput.value = ''; }
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy: copyXml, isJustCopied } = useCopy({
   source: formattedXml,
-  text: '格式化 XML 已复制到剪贴板',
+  text: computed(() => t('tools.xml-formatter.xmlCopied')),
 });
 
 // ── 下载 ──────────────────────────────────────────────────────
@@ -81,12 +83,12 @@ function downloadXml() {
   <!-- ── 配置工具栏 ────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
-      <span class="toolbar-label">折叠内容</span>
+      <span class="toolbar-label">{{ t('tools.xml-formatter.collapseContent') }}</span>
       <n-switch v-model:value="collapseContent" size="small" />
     </div>
     <div class="toolbar-divider" />
     <div class="toolbar-item">
-      <span class="toolbar-label">缩进大小</span>
+      <span class="toolbar-label">{{ t('tools.xml-formatter.indentSize') }}</span>
       <div class="indent-ctrl">
         <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">−</button>
         <span class="indent-val">{{ indentSize }}</span>
@@ -100,22 +102,22 @@ function downloadXml() {
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">
-        <span class="pane-title">原始 XML</span>
+        <span class="pane-title">{{ t('tools.xml-formatter.rawXml') }}</span>
 
         <!-- 状态徽章 -->
         <span v-if="hasInput && !isInvalid" class="status-badge status-badge--valid">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          合法
+          {{ t('tools.xml-formatter.valid') }}
         </span>
         <span v-else-if="isInvalid" class="status-badge status-badge--error">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          无效
+          {{ t('tools.xml-formatter.invalid') }}
         </span>
 
         <!-- 操作按钮 -->
         <div class="action-group">
           <!-- 上传文件 -->
-          <c-tooltip tooltip="上传 XML 文件" position="bottom">
+          <c-tooltip :tooltip="t('tools.xml-formatter.uploadFile')" position="bottom">
             <button class="hdr-btn" @click="triggerUpload">
               <icon-mdi-upload />
             </button>
@@ -128,7 +130,7 @@ function downloadXml() {
             @change="onFileChange"
           />
           <!-- 清空 -->
-          <c-tooltip v-if="hasInput" tooltip="清除输入" position="bottom">
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.xml-formatter.clearInput')" position="bottom">
             <button class="hdr-btn" @click="clearInput">
               <icon-mdi-close-circle-outline />
             </button>
@@ -139,7 +141,7 @@ function downloadXml() {
       <c-code-input
         v-model="xmlInput"
         language="xml"
-        placeholder="在此粘贴原始 XML..."
+        :placeholder="t('tools.xml-formatter.inputPlaceholder')"
         class="code-editor"
         :class="{ 'editor--error': isInvalid }"
       />
@@ -159,10 +161,10 @@ function downloadXml() {
     <!-- 输出面板 -->
     <div class="pane">
       <div class="pane-header">
-        <span class="pane-title">格式化结果</span>
+        <span class="pane-title">{{ t('tools.xml-formatter.formattedResult') }}</span>
         <div class="action-group">
           <!-- 复制 -->
-          <c-tooltip :tooltip="isJustCopied ? '已复制！' : '复制 XML'" position="bottom">
+          <c-tooltip :tooltip="isJustCopied ? t('tools.xml-formatter.copied') : t('tools.xml-formatter.copyXml')" position="bottom">
             <button
               class="hdr-btn"
               :class="{ 'hdr-btn--success': isJustCopied }"
@@ -174,7 +176,7 @@ function downloadXml() {
             </button>
           </c-tooltip>
           <!-- 下载 -->
-          <c-tooltip tooltip="下载 formatted.xml" position="bottom">
+          <c-tooltip :tooltip="t('tools.xml-formatter.downloadFile')" position="bottom">
             <button class="hdr-btn" :disabled="!formattedXml" @click="downloadXml">
               <icon-mdi-download />
             </button>
@@ -185,7 +187,7 @@ function downloadXml() {
       <c-code-input
         :model-value="formattedXml"
         language="xml"
-        placeholder="格式化结果将显示在此..."
+        :placeholder="t('tools.xml-formatter.outputPlaceholder')"
         class="code-editor"
         readonly
       />

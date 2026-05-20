@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import _ from 'lodash';
 import { generateRandomMacAddress } from './mac-adress-generator.models';
+
+const { t } = useI18n();
 import { computedRefreshable } from '@/composable/computedRefreshable';
 import { useCopy } from '@/composable/copy';
 import { usePartialMacAddressValidation } from '@/utils/macAddress';
@@ -11,20 +13,20 @@ const macAddressPrefix = useStorage('mac-address-generator-prefix', '64:16:7F');
 const prefixValidation = usePartialMacAddressValidation(macAddressPrefix);
 
 // 大小写
-const caseOptions = [
-  { label: '大写', key: 'upper', fn: (v: string) => v.toUpperCase() },
-  { label: '小写', key: 'lower', fn: (v: string) => v.toLowerCase() },
-] as const;
+const caseOptions = computed(() => [
+  { label: t('tools.mac-address-generator.uppercase'), key: 'upper', fn: (v: string) => v.toUpperCase() },
+  { label: t('tools.mac-address-generator.lowercase'), key: 'lower', fn: (v: string) => v.toLowerCase() },
+] as const);
 const selectedCase = useStorage<'upper' | 'lower'>('mac-address-generator-case', 'upper');
-const caseTransformer = computed(() => caseOptions.find(o => o.key === selectedCase.value)!.fn);
+const caseTransformer = computed(() => caseOptions.value.find(o => o.key === selectedCase.value)!.fn);
 
 // 分隔符
-const separators = [
+const separators = computed(() => [
   { label: ':', value: ':' },
   { label: '-', value: '-' },
   { label: '.', value: '.' },
-  { label: '无', value: '' },
-];
+  { label: t('tools.mac-address-generator.noSeparator'), value: '' },
+]);
 const separator = useStorage('mac-address-generator-separator', ':');
 
 // ── 生成 ──────────────────────────────────────────────────────
@@ -40,7 +42,7 @@ const [macAddresses, refreshMacAddresses] = computedRefreshable(() => {
 });
 
 // ── 复制 ──────────────────────────────────────────────────────
-const { copy, isJustCopied } = useCopy({ source: macAddresses, text: 'MAC 地址已复制到剪贴板' });
+const { copy, isJustCopied } = useCopy({ source: macAddresses, text: computed(() => t('tools.mac-address-generator.addressCopied')) });
 
 // ── 数量控制 ──────────────────────────────────────────────────
 const MIN = 1;
@@ -59,7 +61,7 @@ function onAmountInput(e: Event) {
     <div class="config-card">
       <!-- 数量 -->
       <div class="config-row">
-        <span class="config-label">数量</span>
+        <span class="config-label">{{ t('tools.mac-address-generator.amount') }}</span>
         <div class="qty-wrap">
           <button class="qty-btn" :disabled="amount <= MIN" @click="decAmount">
             <icon-mdi-minus />
@@ -81,7 +83,7 @@ function onAmountInput(e: Event) {
 
       <!-- 前缀 -->
       <div class="config-row">
-        <span class="config-label">OUI 前缀</span>
+        <span class="config-label">{{ t('tools.mac-address-generator.ouiPrefix') }}</span>
         <div
           class="prefix-wrap"
           :class="{ 'prefix-wrap--error': prefixValidation.status === 'error' }"
@@ -89,14 +91,14 @@ function onAmountInput(e: Event) {
           <input
             v-model="macAddressPrefix"
             class="prefix-input"
-            placeholder="可选，如 64:16:7F"
+            :placeholder="t('tools.mac-address-generator.prefixPlaceholder')"
             spellcheck="false"
             autocomplete="off"
           />
           <button
             v-if="macAddressPrefix"
             class="prefix-clear"
-            title="清空前缀"
+            :title="t('tools.mac-address-generator.clearPrefix')"
             @click="macAddressPrefix = ''"
           >
             <icon-mdi-close />
@@ -111,10 +113,10 @@ function onAmountInput(e: Event) {
 
       <!-- 大小写 -->
       <div class="config-row">
-        <span class="config-label">大小写</span>
+        <span class="config-label">{{ t('tools.mac-address-generator.letterCase') }}</span>
         <div class="toggle-group">
           <button
-            v-for="opt in caseOptions"
+            v-for="opt in caseOptions.value"
             :key="opt.key"
             class="toggle-btn"
             :class="{ 'toggle-btn--on': selectedCase === opt.key }"
@@ -127,10 +129,10 @@ function onAmountInput(e: Event) {
 
       <!-- 分隔符 -->
       <div class="config-row">
-        <span class="config-label">分隔符</span>
+        <span class="config-label">{{ t('tools.mac-address-generator.separator') }}</span>
         <div class="toggle-group">
           <button
-            v-for="sep in separators"
+            v-for="sep in separators.value"
             :key="sep.value"
             class="toggle-btn"
             :class="{ 'toggle-btn--on': separator === sep.value }"
@@ -150,7 +152,7 @@ function onAmountInput(e: Event) {
         :rows="Math.min(Math.max(amount, 1), 12)"
         readonly
         spellcheck="false"
-        placeholder="生成的 MAC 地址将显示在这里..."
+        :placeholder="t('tools.mac-address-generator.resultPlaceholder')"
       />
     </div>
 
@@ -158,7 +160,7 @@ function onAmountInput(e: Event) {
     <div class="btn-row">
       <button class="btn btn--primary" data-test-id="refresh" @click="refreshMacAddresses()">
         <icon-mdi-refresh class="btn-icon" />
-        重新生成
+        {{ t('tools.mac-address-generator.regenerate') }}
       </button>
       <button
         class="btn"
@@ -170,7 +172,7 @@ function onAmountInput(e: Event) {
           <icon-mdi-check v-if="isJustCopied" key="check" class="btn-icon" />
           <icon-mdi-content-copy v-else key="copy" class="btn-icon" />
         </transition>
-        {{ isJustCopied ? '已复制！' : '复制全部' }}
+        {{ isJustCopied ? t('tools.mac-address-generator.justCopied') : t('tools.mac-address-generator.copyAll') }}
       </button>
     </div>
   </div>

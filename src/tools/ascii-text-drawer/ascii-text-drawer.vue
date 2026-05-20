@@ -2,6 +2,8 @@
 import figlet from 'figlet';
 import TextareaCopyable from '@/components/TextareaCopyable.vue';
 
+const { t } = useI18n();
+
 const input = ref('Ascii ART');
 const font = useStorage('ascii-text-drawer:font', 'Standard');
 const width = useStorage('ascii-text-drawer:width', 80);
@@ -55,16 +57,16 @@ watchEffect(async () => {
     // 尝试给出具体原因
     const msg: string = e?.message ?? '';
     if (/font/i.test(msg)) {
-      errorReason.value = '字体文件加载失败，请检查网络连接或更换字体';
+      errorReason.value = t('tools.ascii-text-drawer.errorFont');
     }
     else if (/width/i.test(msg) || (width.value ?? 0) < WIDTH_MIN) {
-      errorReason.value = `宽度需在 ${WIDTH_MIN}–${WIDTH_MAX} 之间`;
+      errorReason.value = t('tools.ascii-text-drawer.errorWidth', { min: WIDTH_MIN, max: WIDTH_MAX });
     }
     else if (/unsupported|encoding|non-ascii/i.test(msg)) {
-      errorReason.value = '当前字体不支持该字符（建议使用英文或数字）';
+      errorReason.value = t('tools.ascii-text-drawer.errorUnsupported');
     }
     else {
-      errorReason.value = '当前设置无法生成字符画，请尝试更换字体或调整宽度';
+      errorReason.value = t('tools.ascii-text-drawer.errorGeneral');
     }
   }
   processing.value = false;
@@ -78,11 +80,11 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
     <c-card class="atd-card">
       <!-- 输入区 -->
       <div class="field-block">
-        <label class="field-label" for="atd-input">输入文本</label>
+        <label class="field-label" for="atd-input">{{ t('tools.ascii-text-drawer.inputLabel') }}</label>
         <c-input-text
           id="atd-input"
           v-model:value="input"
-          placeholder="输入要生成字符画的文本（建议使用英文或数字）"
+          :placeholder="t('tools.ascii-text-drawer.inputPlaceholder')"
           raw-text
           multiline
           rows="3"
@@ -103,24 +105,24 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
       <div class="controls-row">
         <!-- 字体选择 -->
         <div class="control-group control-group--font">
-          <label class="field-label">字体</label>
+          <label class="field-label">{{ t('tools.ascii-text-drawer.fontLabel') }}</label>
           <c-select
             v-model:value="font"
             :options="fonts"
             searchable="true"
-            placeholder="选择字体"
+            :placeholder="t('tools.ascii-text-drawer.fontPlaceholder')"
             class="font-select"
           />
         </div>
 
         <!-- 宽度步进器 -->
         <div class="control-group control-group--width">
-          <label class="field-label">宽度（{{ WIDTH_MIN }}–{{ WIDTH_MAX }}）</label>
+          <label class="field-label">{{ t('tools.ascii-text-drawer.widthLabel', { min: WIDTH_MIN, max: WIDTH_MAX }) }}</label>
           <div class="stepper" :class="{ 'stepper--focus': false }">
             <button
               class="stepper-btn"
               :disabled="(width ?? WIDTH_MIN) <= WIDTH_MIN"
-              aria-label="减小宽度"
+              :aria-label="t('tools.ascii-text-drawer.decreaseWidth')"
               @click="stepWidth(-10)"
             >
               −
@@ -137,7 +139,7 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
             <button
               class="stepper-btn"
               :disabled="(width ?? 0) >= WIDTH_MAX"
-              aria-label="增大宽度"
+              :aria-label="t('tools.ascii-text-drawer.increaseWidth')"
               @click="stepWidth(10)"
             >
               +
@@ -151,11 +153,11 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
       <!-- 输出区：始终显示，加载/错误/空 三种状态 -->
       <div class="output-section">
         <div class="output-header">
-          <label class="field-label">ASCII 字符画预览</label>
+          <label class="field-label">{{ t('tools.ascii-text-drawer.previewLabel') }}</label>
           <!-- 加载指示 -->
           <div v-if="processing" class="loading-badge">
             <n-spin :size="12" />
-            <span>加载字体中…</span>
+            <span>{{ t('tools.ascii-text-drawer.loadingFont') }}</span>
           </div>
         </div>
 
@@ -177,20 +179,20 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
           <!-- 错误状态遮罩 -->
           <div v-else-if="errored && !processing" class="output-state-overlay">
             <icon-mdi-alert-circle-outline class="state-icon state-icon--error" />
-            <span>字符画生成失败</span>
+            <span>{{ t('tools.ascii-text-drawer.generateFailed') }}</span>
             <span class="state-sub">{{ errorReason }}</span>
           </div>
 
           <!-- 加载状态遮罩 -->
           <div v-else-if="processing" class="output-state-overlay">
             <n-spin size="large" />
-            <span>正在生成…</span>
+            <span>{{ t('tools.ascii-text-drawer.generating') }}</span>
           </div>
 
           <!-- 空状态 -->
           <div v-else class="output-state-overlay output-state-overlay--empty">
             <icon-mdi-text-box-outline class="state-icon state-icon--empty" />
-            <span>在上方输入文本即可生成字符画</span>
+            <span>{{ t('tools.ascii-text-drawer.emptyHint') }}</span>
           </div>
         </div>
       </div>

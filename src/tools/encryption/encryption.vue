@@ -3,6 +3,8 @@ import { AES, RC4, Rabbit, TripleDES, enc } from 'crypto-js';
 import { computedCatch } from '@/composable/computed/catchedComputed';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const algos = { AES, TripleDES, Rabbit, RC4 };
 const algoOptions = Object.keys(algos).map(label => ({ label, value: label }));
 
@@ -54,12 +56,12 @@ function transferToDecrypt() {
 <template>
   <div class="enc-layout">
     <!-- ① 加密卡片 -->
-    <c-card title="Encrypt" class="enc-card">
+    <c-card :title="t('tools.encryption.encryptTitle')" class="enc-card">
       <div class="inputs-row">
         <c-input-text
           v-model:value="cypherInput"
-          label="Your text:"
-          placeholder="The string to encrypt…"
+          :label="t('tools.encryption.yourText')"
+          :placeholder="t('tools.encryption.encryptPlaceholder')"
           rows="4"
           multiline
           raw-text
@@ -68,10 +70,10 @@ function transferToDecrypt() {
           class="input-flex"
         />
         <div class="settings-col">
-          <c-input-text v-model:value="cypherSecret" label="Your secret key:" clearable raw-text />
+          <c-input-text v-model:value="cypherSecret" :label="t('tools.encryption.secretKey')" clearable raw-text />
           <c-select
             v-model:value="cypherAlgo"
-            label="Encryption algorithm:"
+            :label="t('tools.encryption.algorithm')"
             :options="algoOptions"
           />
         </div>
@@ -80,13 +82,13 @@ function transferToDecrypt() {
       <!-- 加密输出框：内嵌复制按钮 -->
       <div class="output-wrap" mt-5>
         <div class="output-label">
-          Your text encrypted:
+          {{ t('tools.encryption.encryptedOutput') }}
         </div>
         <div class="output-box-row">
           <div class="output-box">
             <pre class="output-pre">{{ cypherOutput }}</pre>
           </div>
-          <c-tooltip :tooltip="encCopied ? 'Copied!' : 'Copy'" position="left">
+          <c-tooltip :tooltip="encCopied ? t('tools.encryption.copied') : t('tools.encryption.copy')" position="left">
             <button
               class="output-copy-btn"
               :class="{ copied: encCopied }"
@@ -105,7 +107,7 @@ function transferToDecrypt() {
 
     <!-- ② 中间转移按钮 -->
     <div class="transfer-col">
-      <c-tooltip tooltip="Transfer encrypted text & key to Decrypt" position="top">
+      <c-tooltip :tooltip="t('tools.encryption.transferTooltip')" position="top">
         <button class="transfer-btn" :disabled="!cypherOutput" @click="transferToDecrypt">
           <icon-mdi-arrow-right class="transfer-icon" />
         </button>
@@ -113,12 +115,12 @@ function transferToDecrypt() {
     </div>
 
     <!-- ③ 解密卡片 -->
-    <c-card title="Decrypt" class="enc-card">
+    <c-card :title="t('tools.encryption.decryptTitle')" class="enc-card">
       <div class="inputs-row">
         <c-input-text
           v-model:value="decryptInput"
-          label="Your encrypted text:"
-          placeholder="The string to decrypt…"
+          :label="t('tools.encryption.encryptedText')"
+          :placeholder="t('tools.encryption.decryptPlaceholder')"
           rows="4"
           multiline
           raw-text
@@ -127,10 +129,10 @@ function transferToDecrypt() {
           class="input-flex"
         />
         <div class="settings-col">
-          <c-input-text v-model:value="decryptSecret" label="Your secret key:" clearable raw-text />
+          <c-input-text v-model:value="decryptSecret" :label="t('tools.encryption.secretKey')" clearable raw-text />
           <c-select
             v-model:value="decryptAlgo"
-            label="Encryption algorithm:"
+            :label="t('tools.encryption.algorithm')"
             :options="algoOptions"
           />
         </div>
@@ -139,19 +141,19 @@ function transferToDecrypt() {
       <!-- 解密输出框 / 错误提示 -->
       <div class="output-wrap" mt-5>
         <div class="output-label">
-          Your decrypted text:
+          {{ t('tools.encryption.decryptedOutput') }}
         </div>
 
         <!-- 有 cryptojs 错误 -->
         <div v-if="decryptError" class="decrypt-error">
           <icon-mdi-alert-circle class="err-icon" />
-          Decryption failed: {{ decryptError }}
+          {{ t('tools.encryption.decryptionFailed') }}: {{ decryptError }}
         </div>
 
         <!-- 密钥不匹配（空输出但无异常） -->
         <div v-else-if="decryptFailed" class="decrypt-error">
           <icon-mdi-alert-circle class="err-icon" />
-          Decryption failed: key mismatch or corrupted ciphertext
+          {{ t('tools.encryption.decryptionFailedMismatch') }}
         </div>
 
         <!-- 正常输出 + 内嵌复制 -->
@@ -159,7 +161,7 @@ function transferToDecrypt() {
           <div class="output-box">
             <pre class="output-pre">{{ decryptOutput }}</pre>
           </div>
-          <c-tooltip :tooltip="decCopied ? 'Copied!' : 'Copy'" position="left">
+          <c-tooltip :tooltip="decCopied ? t('tools.encryption.copied') : t('tools.encryption.copy')" position="left">
             <button
               class="output-copy-btn"
               :class="{ copied: decCopied }"

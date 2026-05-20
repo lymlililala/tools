@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { randIntFromInterval } from '@/utils/random';
 import { useStyleStore } from '@/stores/style.store';
-import { useCopy } from '@/composable/copy';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const styleStore = useStyleStore();
 
 // ── 配置参数 ──────────────────────────────────────────────────
@@ -61,9 +62,9 @@ async function copyAll() {
 
 // ── 范围说明 ─────────────────────────────────────────────────
 const rangeLabel = computed(() => {
-  if (includeWellKnown.value && !excludeRegistered.value) return '0 – 65535（全范围）';
-  if (!includeWellKnown.value && excludeRegistered.value) return '49152 – 65535（动态端口）';
-  return '1024 – 65535（非知名端口）';
+  if (includeWellKnown.value && !excludeRegistered.value) return `0 – 65535（${t('tools.random-port-generator.rangeAll')}）`;
+  if (!includeWellKnown.value && excludeRegistered.value) return `49152 – 65535（${t('tools.random-port-generator.rangeDynamic')}）`;
+  return `1024 – 65535（${t('tools.random-port-generator.rangeNonWell')}）`;
 });
 </script>
 
@@ -75,7 +76,7 @@ const rangeLabel = computed(() => {
       <div class="settings-row">
         <!-- 生成数量 -->
         <div class="setting-item">
-          <label class="setting-label">生成数量</label>
+          <label class="setting-label">{{ t('tools.random-port-generator.countLabel') }}</label>
           <div class="count-ctrl">
             <button class="count-btn" :disabled="count <= 1" @click="count = Math.max(1, count - 1)">−</button>
             <span class="count-val">{{ count }}</span>
@@ -85,13 +86,13 @@ const rangeLabel = computed(() => {
 
         <!-- 包含知名端口 -->
         <div class="setting-item">
-          <label class="setting-label">包含知名端口（0–1023）</label>
+          <label class="setting-label">{{ t('tools.random-port-generator.includeWellKnown') }}</label>
           <n-switch v-model:value="includeWellKnown" size="small" />
         </div>
 
         <!-- 仅动态端口 -->
         <div class="setting-item">
-          <label class="setting-label">仅动态端口（49152–65535）</label>
+          <label class="setting-label">{{ t('tools.random-port-generator.dynamicOnly') }}</label>
           <n-switch v-model:value="excludeRegistered" size="small" />
         </div>
       </div>
@@ -105,7 +106,7 @@ const rangeLabel = computed(() => {
           <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" />
           <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
-        当前范围：{{ rangeLabel }}
+        {{ t('tools.random-port-generator.currentRange') }}：{{ rangeLabel }}
       </div>
 
       <!-- 端口展示区 -->
@@ -117,7 +118,7 @@ const rangeLabel = computed(() => {
             <button
               class="inline-copy-btn"
               :class="{ copied: copiedPort === ports[0] }"
-              :title="copiedPort === ports[0] ? '已复制！' : '复制端口'"
+              :title="copiedPort === ports[0] ? t('tools.random-port-generator.copied') : t('tools.random-port-generator.copy')"
               @click="copySingle(ports[0])"
             >
               <svg v-if="copiedPort !== ports[0]" width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -150,7 +151,7 @@ const rangeLabel = computed(() => {
                 <svg v-else width="12" height="12" viewBox="0 0 24 24" fill="none">
                   <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                {{ copiedPort === p ? '已复制' : '点击复制' }}
+                {{ copiedPort === p ? t('tools.random-port-generator.copied') : t('tools.random-port-generator.clickToCopy') }}
               </span>
             </div>
           </div>
@@ -164,7 +165,7 @@ const rangeLabel = computed(() => {
             <path d="M23 4v6h-6M1 20v-6h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          重新生成
+          {{ t('tools.random-port-generator.regenerate') }}
         </button>
         <button
           class="btn-secondary"
@@ -178,7 +179,7 @@ const rangeLabel = computed(() => {
           <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          {{ allCopied ? '已复制！' : (count === 1 ? '复制' : '复制全部') }}
+          {{ allCopied ? t('tools.random-port-generator.copied') : (count === 1 ? t('tools.random-port-generator.copy') : t('tools.random-port-generator.copyAll')) }}
         </button>
       </div>
     </div>

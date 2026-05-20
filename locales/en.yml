@@ -93,6 +93,21 @@ tools:
     faq2a: 'Yes, closing or refreshing the tab will reset the timer since it runs in the browser JavaScript context.'
     title: Chronometer
     description: Monitor the duration of a thing. Basically a chronometer with simple chronometer features.
+    idle: Ready
+    running: Running
+    paused: Paused
+    currentLap: Current lap
+    start: Start
+    pause: Pause
+    resume: Resume
+    lap: Lap
+    reset: Reset
+    lapHistory: Lap History
+    lapCount: '{n} laps'
+    lapIndex: '#'
+    lapElapsed: Lap Time
+    lapTotal: Total
+    copyLap: Copy lap time
 
   token-generator:
     step1: 'Step 1: Choose character types - uppercase, lowercase, numbers, and/or symbols.'
@@ -128,6 +143,24 @@ tools:
     faq2a: 'Multiply Y by (X / 100). For example 20% of 150 = 150 x 0.20 = 30.'
     title: Percentage calculator
     description: Easily calculate percentages from a value to another value, or from a percentage to a value.
+    card1Title: What is Y% of X?
+    card2Title: X is what percent of Y?
+    card3Title: Percentage change from X to Y?
+    value: Value
+    of: of
+    percent: Percent (%)
+    result: Result
+    numerator: Numerator (X)
+    denominator: Denominator (Y)
+    resultPct: Result (%)
+    from: From
+    to: To
+    change: Change
+    formula1: Formula
+    formula2: Formula
+    formula3: Formula
+    zeroDenominator: Denominator cannot be zero
+    zeroFrom: Starting value cannot be zero (cannot compute percentage change)
 
   svg-placeholder-generator:
     step1: 'Step 1: Set the desired width and height for the placeholder image.'
@@ -151,6 +184,21 @@ tools:
     faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
     title: JSON to CSV
     description: Convert JSON to CSV with automatic header detection.
+    rawJson: Raw JSON
+    valid: Valid
+    invalid: Invalid
+    formatJson: Format JSON
+    clearInput: Clear input
+    inputPlaceholder: 'Paste a JSON array, e.g. [{"name":"Alice","age":30}]'
+    csvOutput: CSV Output
+    stats: '{rows} rows × {cols} cols'
+    copied: Copied!
+    copyCsv: Copy CSV
+    downloadCsv: Download CSV
+    outputPlaceholder: CSV will appear here...
+    mustBeArray: JSON must be an array
+    invalidJson: Invalid JSON
+    csvCopied: CSV copied!
 
   camera-recorder:
     step1: 'Step 1: Click Allow when the browser requests camera and microphone permissions.'
@@ -186,6 +234,17 @@ tools:
     faq2a: 'Yes. Each emoji has a unicode code point usable in HTML entities or JSON. URLs require percent-encoding.'
     title: Emoji picker
     description: Copy and paste emojis easily and get the unicode and code points value of each emoji.
+    searchPlaceholder: "Search emoji (e.g. 'smile')… or press ⌘K"
+    clearSearch: Clear search
+    noResults: No emoji found
+    noResultsHint: Try different keywords or enter a Unicode code point
+    searchResults: Search results
+    cardTitle: 'Click to copy {emoji}'
+    cardCopied: 'Emoji {emoji} copied'
+    copyCodePoint: Copy Code Point
+    codePointCopied: "Code point '{codePoint}' copied"
+    copyUnicode: 'Copy Unicode: {unicode}'
+    unicodeCopied: Unicode copied
 
   color-converter:
     step1: 'Step 1: Use the color picker or type a color value in any format.'
@@ -198,6 +257,26 @@ tools:
     faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
     title: Color converter
     description: Convert color between the different formats (hex, rgb, hsl and css name)
+
+  ascii-text-drawer:
+    title: ASCII Art Text Generator
+    description: Convert text into various ASCII art font styles.
+    inputLabel: Input Text
+    inputPlaceholder: Enter your text here...
+    fontLabel: Font
+    fontPlaceholder: Select a font...
+    widthLabel: 'Max Width ({min}–{max})'
+    decreaseWidth: Decrease width
+    increaseWidth: Increase width
+    previewLabel: Preview
+    loadingFont: Loading font...
+    generating: Generating...
+    emptyHint: Enter text above to generate ASCII art
+    generateFailed: Generation failed
+    errorFont: Font failed to load, please try another
+    errorWidth: 'Width must be between {min} and {max}'
+    errorUnsupported: Unsupported characters detected, please use ASCII characters
+    errorGeneral: Generation failed, please try a different font or input
 
   bcrypt:
     step1: 'Step 1: Enter the text you want to hash.'
@@ -241,6 +320,13 @@ tools:
     faq2a: 'It means every 5 units. In the minute field it runs at 0, 5, 10, 15... minutes past each hour.'
     title: Crontab generator
     description: Validate and generate crontab and get the human-readable description of the cron schedule.
+    copiedTooltip: Copied!
+    copyTooltip: Copy expression
+    copied: Copied
+    copy: Copy
+    invalidCron: Invalid cron expression, please check syntax
+    inputPlaceholder: Enter a cron expression to see the description
+    nextExecutions: Next 5 execution times
 
   http-status-codes:
     step1: 'Step 1: Browse the list of all HTTP status codes organized by category.'
@@ -252,6 +338,7 @@ tools:
     faq2a: '401 Unauthorized means authentication is required but not provided. 403 Forbidden means the server refuses to authorize the request.'
     title: HTTP status codes
     description: The list of all HTTP status codes, their name, and their meaning.
+    backToTop: Back to top
 
   sql-prettify:
     step1: 'Step 1: Paste your SQL query into the input editor.'
@@ -264,6 +351,15 @@ tools:
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
     title: SQL prettify and format
     description: Format and prettify your SQL queries online (it supports various SQL dialects).
+    dialect: Dialect
+    keywordCase: Keyword Case
+    preserve: Preserve
+    indentStyle: Indent Style
+    sqlQuery: SQL Query
+    formattedResult: Formatted Result
+    copySql: Copy SQL
+    sqlCopied: SQL copied!
+    formatError: SQL format error
 
   benchmark-builder:
     step1: 'Step 1: Add benchmark cases by clicking Add case.'
@@ -276,6 +372,23 @@ tools:
     faq2a: 'The benchmark runs in your browser JavaScript engine. Results vary by device. Use it for relative comparisons.'
     title: Benchmark builder
     description: Easily compare execution time of tasks with this very simple online benchmark builder.
+    valuePlaceholder: Enter measurement value...
+    deleteValue: Delete this value
+    addValue: Add measurement value
+    rank: Rank
+    groupName: Group Name
+    groupNamePlaceholder: Group name...
+    sampleSize: Samples
+    mean: Mean
+    variance: Variance
+    deleteGroup: Delete this group
+    measurements: Measurements
+    addGroup: Add Group
+    unit: Unit
+    unitPlaceholder: e.g. ms, ops...
+    resetAll: Reset All
+    copyMarkdown: Copy as Markdown
+    copyList: Copy as List
 
   git-memo:
     step1: 'Step 1: Browse the Git cheatsheet organized by category.'
@@ -287,6 +400,67 @@ tools:
     faq2a: 'git fetch downloads remote changes but does not merge them. git pull equals git fetch plus git merge.'
     title: Git cheatsheet
     description: Git is a decentralized version management software. With this cheatsheet, you will have quick access to the most common git commands.
+    toc: Contents
+    copiedTooltip: Copied!
+    copyTooltip: Copy command
+    backToTop: Back to top
+    dangerTooltip: Dangerous operation, use with caution
+    cmd:
+      setGlobalName: Set global username
+      setGlobalEmail: Set global email
+      listConfig: View current config
+      setEditor: Set default editor
+      initRepo: Initialize a new repository
+      cloneRepo: Clone a remote repository
+      cloneWithDir: Clone with custom directory name
+      statusCheck: View working directory status
+      addFile: Stage a specific file
+      addAll: Stage all changes
+      unstageFile: Unstage a file
+      discardFile: Discard working directory changes
+      commitAll: Commit all tracked changes
+      commitStaged: Commit only staged content
+      amendMsg: Amend the last commit message
+      amendNoEdit: Append changes to last commit (no message change)
+      listBranches: List all local branches
+      listRemoteBranches: List all remote branches
+      createBranch: Create a new branch
+      createAndSwitch: Create and switch to a new branch
+      switchBranch: Switch branch
+      deleteMergedBranch: Delete a merged branch
+      deleteBranchForce: Force delete a branch
+      renameMasterToMain: Rename local master to main
+      mergeBranch: Merge a branch into current branch
+      rebaseBranch: Merge via rebase
+      abortRebase: Abort rebase
+      continueRebase: Continue rebase
+      listRemotes: List remote repositories
+      addRemote: Add a remote repository
+      pullAndMerge: Pull and merge remote changes
+      fetchOnly: Fetch without auto-merge
+      pushBranch: Push to remote
+      pushAndSetUpstream: Push and set upstream
+      deleteRemoteBranch: Delete a remote branch
+      stashChanges: Stash current changes
+      stashWithMsg: Stash with description
+      listStashes: List all stashes
+      popStash: Restore most recent stash
+      clearStashes: Clear all stashes
+      viewLog: View commit history
+      compactLog: Compact one-line history
+      showCommit: Show commit details
+      diffWorking: Show diff between working dir and staging
+      diffStaged: Show diff between staging and last commit
+      resetKeep: Undo last commit keeping changes
+      resetNKeep: Undo last N commits keeping changes
+      resetHard: Undo last commit discarding changes
+      resetToRemote: Reset branch to remote state
+      revertCommit: Revert a commit (creates new commit)
+      listTags: List all tags
+      createLightTag: Create a lightweight tag
+      createAnnotatedTag: Create an annotated tag
+      pushTag: Push a tag to remote
+      deleteLocalTag: Delete a local tag
 
   slugify-string:
     step1: 'Step 1: Enter the text you want to convert into a slug.'
@@ -298,6 +472,7 @@ tools:
     faq2a: 'Yes. The tool converts accented and special characters to their ASCII equivalents.'
     title: Slugify string
     description: Make a string url, filename and id safe.
+    readonly: Read-only
 
   encryption:
     step1: 'Step 1: Select Encrypt or Decrypt mode.'
@@ -407,6 +582,18 @@ tools:
     faq2a: 'There are 2048 to the power of 12 possible phrases making brute-force attacks computationally infeasible.'
     title: BIP39 passphrase generator
     description: Generate a BIP39 passphrase from an existing or random mnemonic, or get the mnemonic from the passphrase.
+    warningLabel: Security Warning
+    warningText: Never enter your real wallet mnemonic into any online tool. This tool is for learning and testing only.
+    language: Language
+    wordCount: Word Count
+    entropyLabel: Entropy (hex)
+    entropyPlaceholder: Enter hex entropy value...
+    generateEntropy: Generate new entropy
+    copied: Copied!
+    copyEntropy: Copy entropy
+    mnemonicLabel: Mnemonic Phrase
+    mnemonicPlaceholder: Enter mnemonic phrase...
+    copyMnemonic: Copy mnemonic
 
   base64-file-converter:
     step1: 'Step 1: Drop or select a file using the file picker.'
@@ -463,6 +650,20 @@ tools:
     faq2a: 'Yes. The evaluator supports nested functions, units, matrices, and complex numbers.'
     title: Math evaluator
     description: A calculator for evaluating mathematical expressions. You can use functions like sqrt, cos, sin, abs, etc.
+    placeholder: 'Enter an expression, e.g. sqrt(2) * pi'
+    clear: Clear
+    historyTitle: Calculation history
+    recentCalc: Recent calculations
+    clearHistory: Clear history
+    resultLabel: Result
+    copyResult: Copy result
+    copy: Copy
+    justCopied: Copied!
+    syntaxError: Expression error
+    hint: Enter a mathematical expression to start
+    functionDefined: Function defined
+    invalidExpr: Invalid expression
+    resultCopied: Result copied!
 
   json-to-yaml-converter:
     step1: 'Step 1: Paste your JSON into the left editor.'
@@ -531,6 +732,11 @@ tools:
     faq2a: 'For historical compatibility reasons modern browsers include multiple older browser identifiers.'
     title: User-agent parser
     description: Detect and parse Browser, Engine, OS, CPU, and Device type/model from an user-agent string.
+    resultsLabel: Parse result
+    copyJsonBtn: Copy JSON
+    copiedBtn: Copied!
+    copyJsonTooltip: Copy all parsed results as JSON
+    copiedTooltip: Copied to clipboard
 
   numeronym-generator:
     step1: 'Step 1: Enter a word or phrase.'
@@ -542,6 +748,9 @@ tools:
     faq2a: 'The term i18n is attributed to DEC in the 1970s and has been popularized in software development.'
     title: Numeronym generator
     description: A numeronym is a word where a number is used to form an abbreviation. For example, "i18n" is a numeronym of "internationalization" where 18 stands for the number of letters between the first i and the last n in the word.
+    realtime: Real-time
+    numeronymCopied: Numeronym copied!
+    multiWordHint: Multi-word phrases generate a numeronym for each word separately
 
   case-converter:
     step1: 'Step 1: Enter or paste your text into the input field.'
@@ -578,6 +787,19 @@ tools:
     faq3q: Does it support JSON5 (comments, trailing commas)?
     faq3a: 'Yes. This tool uses JSON5 for parsing, so it accepts comments and trailing commas in addition to standard JSON.'
 
+  json-viewer:
+    sortKeys: Sort keys
+    indentSize: Indent size
+    valid: Valid
+    invalid: Invalid
+    clearInput: Clear input
+    inputPlaceholder: 'Paste JSON, e.g. {"hello":"world"}'
+    jsonCopied: JSON copied!
+    justCopied: Copied!
+    copyResult: Copy formatted JSON
+    downloadJson: Download JSON
+    outputPlaceholder: Formatted JSON will appear here...
+
   docker-run-to-docker-compose-converter:
     step1: 'Step 1: Paste your docker run command into the input field.'
     step2: 'Step 2: The equivalent Docker Compose YAML is generated instantly.'
@@ -588,6 +810,19 @@ tools:
     faq2a: 'The tool supports common flags like -p (ports), -v (volumes), -e (env vars), --name, and --network.'
     title: Docker run to Docker compose converter
     description: Transforms "docker run" commands into docker-compose files!
+    inputTitle: Docker Run Command
+    clearInput: Clear input
+    inputPlaceholder: 'Paste docker run command, e.g.: docker run -p 80:80 nginx'
+    invalidFormat: Invalid format, input should start with docker run ...
+    copied: Copied!
+    copyYaml: Copy YAML
+    downloadFile: Download file
+    outputPlaceholder: docker-compose.yml will appear here...
+    conversionError: Conversion error
+    notImplemented: The following flags are not yet supported
+    notComposable: The following flags cannot be converted to Compose format
+    downloadBtn: Download docker-compose.yml
+    yamlCopied: YAML copied!
 
   mac-address-lookup:
     step1: 'Step 1: Enter a MAC address (e.g. AA:BB:CC:DD:EE:FF).'
@@ -599,6 +834,17 @@ tools:
     faq2a: 'The first 3 bytes (OUI) are assigned by the IEEE to manufacturers. The last 3 bytes are assigned by the manufacturer.'
     title: MAC address lookup
     description: Find the vendor and manufacturer of a device by its MAC address.
+    macAddressLabel: MAC Address
+    placeholder: 'e.g. 20:37:06:12:34:56'
+    clear: Clear
+    errorMsg: 'Please enter a valid MAC address (e.g. AA:BB:CC:DD:EE:FF)'
+    copyVendor: Copy vendor info
+    justCopied: Copied!
+    vendorCopied: Vendor info copied!
+    notFound: Vendor not found
+    notFoundSub: 'No vendor found in OUI database for prefix '
+    notFoundSuffix: ''
+    emptyHint: Enter a MAC address to look up vendor information
 
   mime-types:
     step1: 'Step 1: Enter a file extension (e.g. .pdf) or a MIME type (e.g. application/pdf).'
@@ -632,6 +878,16 @@ tools:
     faq2a: 'Lorem Ipsum avoids distraction from layout design. Readable text causes viewers to focus on content rather than visual design.'
     title: Lorem ipsum generator
     description: Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content
+    paragraphs: Paragraphs
+    sentencesPerParagraph: Sentences per paragraph
+    wordsPerSentence: Words per sentence
+    startWithLorem: Start with Lorem ipsum
+    outputHtml: Output as HTML
+    placeholder: Generated text will appear here...
+    copy: Copy
+    justCopied: Copied!
+    regenerate: Regenerate
+    textCopied: Text copied!
 
   qrcode-generator:
     title: QR Code generator
@@ -666,6 +922,13 @@ tools:
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
     title: XML formatter
     description: Prettify your XML string into a friendly, human-readable format.
+    rawXml: Raw XML
+    formattedResult: Formatted Result
+    collapseContent: Collapse Content
+    invalidXml: Invalid XML
+    uploadFile: Upload XML file
+    copyXml: Copy XML
+    xmlCopied: XML copied!
 
   temperature-converter:
     title: Temperature converter
@@ -676,6 +939,9 @@ tools:
     faq1a: 'Formula: °F = °C × 9/5 + 32. For example, 100°C = 212°F (boiling point of water).'
     faq2q: What is absolute zero?
     faq2a: 'Absolute zero is the lowest possible temperature: 0 Kelvin = −273.15°C = −459.67°F. At this temperature, particles have minimum thermal motion.'
+    belowAbsoluteZero: 'Temperature is below absolute zero (0 K / −273.15 °C), which is physically impossible.'
+    minus1: minus 1
+    plus1: plus 1
 
   chmod-calculator:
     step1: 'Step 1: Check the permission boxes for owner, group, and others.'
@@ -687,6 +953,15 @@ tools:
     faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
     title: Chmod calculator
     description: Compute your chmod permissions and commands with this online chmod calculator.
+    preset755: Recommended for dirs
+    preset644: Recommended for files
+    preset700: Owner only
+    preset777: All open
+    copied: Command copied to clipboard
+    copyCommand: Copy command
+    justCopied: Copied!
+    copyLabel: Copy
+    copiedLabel: Copied
 
   rsa-key-pair-generator:
     step1: 'Step 1: Select the key size (1024, 2048, or 4096 bits).'
@@ -708,8 +983,34 @@ tools:
     faq1a: 'WYSIWYG stands for What You See Is What You Get. The editor displays content as it will appear in a browser.'
     faq2q: 'Is the generated HTML clean?'
     faq2a: 'The editor generates semantic HTML5 and avoids inline styles where possible.'
-    title: HTML WYSIWYG editor
-    description: Online, feature-rich WYSIWYG HTML editor which generates the source code of the content immediately.
+    editorLabel: Editor
+    htmlSource: HTML Source
+    clearContent: Clear Content
+    copyHtml: Copy HTML
+  email-normalizer:
+    title: Email Address Normalizer
+    description: Batch normalize and deduplicate email addresses with support for Gmail and major provider aliases.
+    step1: 'Step 1: Paste or upload your email list (one per line).'
+    step2: 'Step 2: The tool normalizes addresses, removing aliases and extra dots.'
+    step3: 'Step 3: Copy or download the normalized email list.'
+    faq1q: What is email normalization?
+    faq1a: Email normalization removes aliases (like Gmail + tags), unifies casing, and removes dots that some providers ignore, to get the "real" address.
+    faq2q: Which email providers are supported?
+    faq2a: Gmail, Outlook, Yahoo, and other major providers are supported. Normalization rules vary by provider.
+    inputLabel: Input Email List
+    uploadTooltip: Import from file (.txt or .csv)
+    clearInput: Clear input
+    placeholder: 'One email address per line, e.g.:'
+    statInput: Input
+    statValid: Valid
+    statInvalid: Invalid
+    statDuplicate: Duplicates
+    statOutput: Output
+    outputLabel: Normalized Result
+    copied: Copied!
+    copyResult: Copy result
+    downloadTooltip: Download as .txt file
+    outputPlaceholder: Normalized email list will appear here...
 
   yaml-to-toml:
     step1: 'Step 1: Paste your YAML content into the left editor.'
@@ -733,6 +1034,20 @@ tools:
     faq2a: 'The generator creates unicast addresses by default. A MAC address is multicast if the LSB of the first byte is 1.'
     title: MAC address generator
     description: Enter the quantity and prefix. MAC addresses will be generated in your chosen case (uppercase or lowercase)
+    amount: Amount
+    ouiPrefix: OUI Prefix
+    prefixPlaceholder: 'e.g. 64:16:7F'
+    clearPrefix: Clear prefix
+    letterCase: Case
+    uppercase: Uppercase
+    lowercase: Lowercase
+    separator: Separator
+    noSeparator: No separator
+    resultPlaceholder: Generated MAC addresses will appear here...
+    regenerate: Regenerate
+    copyAll: Copy all
+    justCopied: Copied!
+    addressCopied: Addresses copied!
 
   json-diff:
     step1: 'Step 1: Paste the first JSON object into the left panel.'
@@ -808,6 +1123,8 @@ tools:
     typePager: Pager
     yes: Yes
     no: No
+    parsedBadge: '✓ Parsed'
+    invalidBadge: '✕ Invalid'
 
   ipv4-subnet-calculator:
     step1: 'Step 1: Enter an IPv4 address with CIDR notation (e.g. 192.168.1.0/24).'
@@ -819,6 +1136,26 @@ tools:
     faq2a: 'A /24 subnet has 256 addresses. Subtract 2 for network and broadcast addresses leaving 254 usable hosts.'
     title: IPv4 subnet calculator
     description: Parse your IPv4 CIDR blocks and get all the info you need about your subnet.
+    inputLabel: Enter IPv4 address (with or without mask)
+    inputPlaceholder: 'e.g. 192.168.1.0/24'
+    parseError: 'Unable to parse this address, please check the format (e.g. 192.168.1.0/24)'
+    copied: Copied to clipboard
+    prevSubnet: Previous subnet
+    nextSubnet: Next subnet
+    labelNetwork: Network (CIDR)
+    labelNetworkAddr: Network address
+    labelSubnetMask: Subnet mask
+    labelSubnetMaskBin: Subnet mask (binary)
+    labelCidr: CIDR notation
+    labelWildcard: Wildcard mask
+    labelNetworkSize: Network size
+    labelUsableHosts: Usable hosts
+    labelFirstAddr: First address
+    labelLastAddr: Last address
+    labelBroadcast: Broadcast address
+    labelIpClass: IP class
+    noBroadcast: No broadcast for this mask
+    unknownClass: Unknown class
 
   og-meta-generator:
     step1: 'Step 1: Enter your page title, description, URL, and image.'
@@ -841,6 +1178,15 @@ tools:
     faq2a: 'Per RFC 4193 the 40-bit global ID is generated pseudo-randomly to minimize collision probability.'
     title: IPv6 ULA generator
     description: Generate your own local, non-routable IP addresses for your network according to RFC4193.
+    infoText: ULA addresses are used within private networks and are not routed on the internet
+    macAddressLabel: MAC Address (optional)
+    placeholder: 'e.g. 00:1A:2B:3C:4D:5E'
+    clear: Clear
+    generate: Generate New Prefix
+    errorMsg: Generation failed, please check the MAC address format
+    copied: Copied!
+    firstRoutable: First Routable Address
+    lastRoutable: Last Routable Address
 
   hash-text:
     title: Hash text
@@ -896,6 +1242,21 @@ tools:
     faq2a: 'No. Minifying only removes insignificant whitespace. The data values and structure remain identical.'
     title: JSON minify
     description: Minify and compress your JSON by removing unnecessary whitespace.
+    rawJson: Raw JSON
+    minifiedResult: Minified result
+    valid: Valid
+    invalid: Invalid
+    saved: 'Saved {pct}%'
+    inputPlaceholder: Paste your JSON here…
+    outputPlaceholder: Minified result will appear here…
+    formatInput: Format input
+    clearInput: Clear input
+    copyResult: Copy result
+    copied: Copied
+    download: Download
+    original: Original
+    minified: Minified
+    bytes: bytes
 
   ulid-generator:
     step1: 'Step 1: Click Generate to create a new ULID.'
@@ -918,6 +1279,11 @@ tools:
     faq2a: 'No. Obfuscation is a visual technique - the original string is not recoverable. Encryption produces a reversible ciphertext.'
     title: String obfuscator
     description: Obfuscate a string (like a secret, an IBAN, or a token) to make it shareable and identifiable without revealing its content.
+    keepFirst: Keep first chars
+    keepLast: Keep last chars
+    keepSpaces: Keep spaces
+    decrease: Decrease
+    increase: Increase
 
   base-converter:
     step1: 'Step 1: Enter a number in any base (binary, octal, decimal, hexadecimal, or custom).'
@@ -975,6 +1341,16 @@ tools:
     faq2a: 'An IPv4-mapped IPv6 address represents an IPv4 in IPv6 format: ::ffff:x.x.x.x. Used in dual-stack systems.'
     title: IPv4 address converter
     description: Convert an IP address into decimal, binary, hexadecimal, or even an IPv6 representation of it.
+    inputLabel: IPv4 address
+    inputPlaceholder: 'e.g. 192.168.1.1'
+    errorMsg: Please enter a valid IPv4 address (each octet 0–255, four octets, e.g. 192.168.1.1)
+    emptyHint: Enter an IPv4 address to see results here in real-time
+    copied: Copied to clipboard
+    labelDecimal: Decimal
+    labelHex: Hexadecimal
+    labelBinary: Binary
+    labelIpv6: IPv6 mapped
+    labelIpv6Short: IPv6 (short)
 
   text-statistics:
     step1: 'Step 1: Type or paste your text into the input field.'
@@ -986,6 +1362,14 @@ tools:
     faq2a: 'Words are sequences of characters separated by whitespace. Punctuation attached to a word is counted as part of the word.'
     title: Text statistics
     description: Get information about a text, the number of characters, the number of words, its size in bytes, ...
+    placeholder: Type or paste your text here…
+    copyTooltip: Copy text
+    clearTooltip: Clear text
+    copied: Copied to clipboard!
+    chars: Characters
+    words: Words
+    lines: Lines
+    bytes: Byte size
 
   text-to-nato-alphabet:
     step1: 'Step 1: Enter the text you want to spell out.'
@@ -1019,6 +1403,7 @@ tools:
     faq2a: 'Unicode assigns code points (e.g. U+0041 for A). UTF-8 is an encoding that represents those code points as 1-4 bytes.'
     title: Text to Unicode
     description: Parse and convert text to unicode and vice-versa
+    textPlaceholder: 'e.g. Hello 你好 🚀'
 
   ipv4-range-expander:
     step1: 'Step 1: Enter the start and end IPv4 addresses of the range.'
@@ -1030,6 +1415,18 @@ tools:
     faq2a: 'IP ranges that do not align on power-of-2 boundaries require multiple CIDR blocks to represent exactly.'
     title: IPv4 range expander
     description: Given a start and an end IPv4 address, this tool calculates a valid IPv4 subnet along with its CIDR notation.
+    startAddress: Start Address
+    startPlaceholder: 'e.g. 192.168.1.0'
+    endAddress: End Address
+    endPlaceholder: 'e.g. 192.168.1.255'
+    clear: Clear
+    swapAddresses: Swap Addresses
+    orderError: Start address must be less than or equal to end address
+    inputRange: Input Range
+    expandedRange: Expanded CIDR Range
+    copyCidr: Copy CIDR
+    invalidIpv4: Please enter a valid IPv4 address
+    cidrCopied: CIDR copied!
 
   text-diff:
     step1: 'Step 1: Paste the original text in the left panel.'
@@ -1041,6 +1438,12 @@ tools:
     faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
     title: Text diff
     description: Compare two texts and see the differences between them.
+    originalText: Original Text
+    modifiedText: Modified Text
+    originalPlaceholder: Paste original text here…
+    modifiedPlaceholder: Paste modified text here…
+    swap: Swap
+    swapTooltip: Swap left and right texts
 
   otp-generator:
     step1: 'Step 1: Enter your TOTP secret key from your authenticator app.'
@@ -1117,6 +1520,21 @@ tools:
     faq2a: For first-time homebuyers in most Chinese cities, the minimum down payment is 20%. Some cities and loan types may require 30% or more.
     faq3q: How is the monthly payment calculated?
     faq3a: 'For Equal Payment: M = P × r × (1+r)^n / ((1+r)^n - 1), where P is loan principal, r is monthly interest rate (annual rate / 12), and n is total months.'
+    year: yr
+    downPaymentLabel: Down Payment
+    maxLoan: Max Loan
+    commercialLoan: Commercial Loan
+    monthlyDecreasing: Decreasing Monthly
+    lastMonth: Last Month Payment
+    avgMonthlyDecrease: Avg Monthly Decrease
+    fundComposition: Fund Composition
+    viewSchedule: View Schedule
+    scheduleTitle: Repayment Schedule
+    thPeriod: Period
+    thMonthly: Monthly
+    thPrincipal: Principal
+    thInterest: Interest
+    thRemaining: Remaining
 
   bmi-calculator:
     title: BMI Calculator
@@ -1143,6 +1561,10 @@ tools:
     faq2a: 'WHO standard: 18.5–24.9 is normal. Chinese national standard (NHC): 18.5–23.9 is normal weight; 24–27.9 is overweight; ≥28 is obese.'
     faq3q: Does this calculator send my data anywhere?
     faq3a: No. All calculations run entirely in your browser. No health data is collected or transmitted.
+    decreaseHeight: Decrease height
+    increaseHeight: Increase height
+    decreaseWeight: Decrease weight
+    increaseWeight: Increase weight
 
   random-decision-picker:
     step1: 'Step 1: Enter your options, one per line.'
@@ -1212,7 +1634,7 @@ tools:
     incomeTax: Income Tax
     socialInsuranceTotal: Social Insurance Total
     netSalary: Net Salary
-    effectiveRate: Effective Rate (tax + insurance)
+    effectiveRate: 'Effective Rate (tax + insurance): '
     socialInsuranceDetail: Social Insurance Breakdown
     pension: Pension Insurance
     medical: Medical Insurance
@@ -1223,6 +1645,13 @@ tools:
     preset1Child: Children's edu ¥2,000/mo
     presetRent: Housing rent ¥1,500/mo
     presetElderly: Elderly care ¥3,000/mo
+    salaryComposition: Salary Composition
+    currentBracket: Current Bracket
+    current: Current
+    reset: Reset
+    resetTitle: Reset all inputs
+    month: month
+    specialDeductionTotal: Special deductions total
 
   css-unit-converter:
     title: CSS Unit Converter
@@ -1288,6 +1717,10 @@ tools:
     faq1a: Number formatting adapts how numbers are displayed based on locale and style — for example, 1234.56 can become "1,234.56" (US), "1 234,56" (France), or "￥1,234.56" (China with currency).
     faq2q: What is the difference between compact and scientific notation?
     faq2a: Scientific notation always shows a coefficient and exponent (e.g. 1.23E3). Compact notation uses locale-aware abbreviations (e.g. "1.2K", "1.2万") which are more readable for large numbers.
+    withGrouping: With thousands separator
+    noGrouping: No thousands separator
+    invalidNumber: Please enter a valid number
+    comparisonEmpty: Enter a number to see multi-locale comparison
 
   color-palette-generator:
     title: Color Palette Generator
@@ -1309,6 +1742,17 @@ tools:
     faq1a: Color harmonies are combinations of colors that are visually pleasing based on their positions on the color wheel. Common types include complementary (opposite), analogous (adjacent), and triadic (evenly spaced).
     faq2q: What is the difference between tints and shades?
     faq2a: Tints are created by adding white to a color (making it lighter), while shades are created by adding black (making it darker). This tool generates both to give you a full range.
+    clickToChange: Click to change color
+    openPicker: Open color picker
+    hexError: Invalid hex color value
+    clickToCopyVal: 'Click to copy {val}'
+    clickToCopyHsl: Click to copy HSL value
+    exportCode: Export Code
+    copiedMsg: 'Copied {hex}'
+    copiedShort: Copied
+    exportModalTitle: Export Palette Code
+    copied: Copied!
+    copyCode: Copy Code
 
   camera-recorder:
     notSupported: Browser Not Supported
@@ -1442,6 +1886,81 @@ tools:
     unitMin: min
     unitHour: hour
     unitDay: day
+
+  regex-tester:
+    step1: 'Step 1: Enter a regular expression in the top input.'
+    step2: 'Step 2: Enter test text in the middle panel.'
+    step3: 'Step 3: Matches are highlighted and listed below with group details.'
+    faq1q: 'What regex flags are supported?'
+    faq1a: 'Supported flags: g (global), i (case-insensitive), m (multiline), s (dotAll), u (unicode), v (unicode sets).'
+    faq2q: 'How do I use capture groups?'
+    faq2a: 'Use parentheses () for numbered groups, (?<name>...) for named groups. Both are shown in the match results.'
+    title: Regex tester
+    description: Test regular expressions with real-time match highlighting, capture groups, and named groups.
+    regexPlaceholder: Enter regular expression…
+    testText: Test Text
+    textPlaceholder: Enter text to match against…
+    matchResults: Match Results
+    matchCount: '{n} match(es) found'
+    emptyHint: Enter a regex and test text to see results
+    syntaxError: Regex syntax error
+    noMatch: No matches found
+    position: Position
+    captureGroup: Capture group
+    namedGroup: Named group
+    undefined: undefined
+    invalidRegex: Invalid regular expression
+    flagGlobal: Global (g)
+    flagIgnoreCase: Case-insensitive (i)
+    flagMultiline: Multiline (m)
+    flagDotAll: Dot matches newline (s)
+    flagUnicode: Unicode (u)
+    flagUnicodeSets: Unicode sets (v)
+    sampleText: Sample Text
+    visualization: Visualization
+    viewMemo: View Regex Cheat Sheet
+    clear: Clear
+
+  yaml-viewer:
+    step1: 'Step 1: Paste your YAML content into the left editor.'
+    step2: 'Step 2: The formatted and validated YAML appears on the right.'
+    step3: 'Step 3: Copy or download the formatted YAML.'
+    faq1q: 'What is YAML?'
+    faq1a: "YAML (YAML Ain't Markup Language) is a human-friendly data serialization language, commonly used in config files like Docker Compose and Kubernetes."
+    faq2q: 'What are the indentation rules for YAML?'
+    faq2a: 'YAML uses spaces (not tabs) for indentation. Sibling nodes must use the same indentation level.'
+    title: YAML viewer
+    description: Validate and format a YAML string with correct syntax highlighting.
+    rawYaml: Raw YAML
+    formattedResult: Formatted Result
+    sortKeys: Sort Keys
+    indentSize: Indent Size
+    valid: Valid
+    invalid: Invalid
+    invalidYaml: Invalid YAML
+    uploadFile: Upload YAML file
+    clearInput: Clear input
+    inputPlaceholder: Paste YAML content here…
+    outputPlaceholder: Formatted YAML will appear here…
+    copyYaml: Copy YAML
+    yamlCopied: YAML copied!
+    copied: Copied!
+    downloadFile: Download YAML file
+
+  regex-memo:
+    step1: 'Step 1: Browse the regex cheat sheet.'
+    step2: 'Step 2: Click any row to copy the expression.'
+    step3: 'Step 3: Use the table of contents on the right to navigate sections.'
+    faq1q: 'What is a regular expression?'
+    faq1a: 'A regular expression (regex) is a pattern used to match character combinations in strings, widely used for search, replace, and validation.'
+    faq2q: 'How do I test a regex?'
+    faq2a: 'Use the Regex Tester tool on this site to test and debug regular expressions in real-time.'
+    title: Regex cheat sheet
+    description: Common regular expressions quick reference.
+    toc: Contents
+    copied: Copied to clipboard
+    copyExpr: Copy expression
+    regexTesterLink: Regex Tester (this tool)
 
   common:
     faqSafe: Is this tool safe? Will my data be uploaded?

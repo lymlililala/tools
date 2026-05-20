@@ -3,6 +3,8 @@ import { SHA1 } from 'crypto-js';
 import { macAddressValidation } from '@/utils/macAddress';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 输入与校验 ────────────────────────────────────────────────
 const macAddress = ref('20:37:06:12:34:56');
 const addressValidation = macAddressValidation(macAddress);
@@ -47,7 +49,7 @@ function onGenerate() {
 
 // ── 单行复制 ──────────────────────────────────────────────────
 const copiedKey = ref('');
-const { copy: copyText } = useCopy({ createToast: true, text: '已复制到剪贴板' });
+const { copy: copyText } = useCopy({ createToast: true, text: computed(() => t('tools.ipv6-ula-generator.copied')) });
 
 async function copyRow(key: string, value: string) {
   await copyText(value);
@@ -58,9 +60,9 @@ async function copyRow(key: string, value: string) {
 // ── 结果行定义 ────────────────────────────────────────────────
 const resultRows = computed(() => result.value
   ? [
-      { key: 'ula48',   label: 'IPv6 ULA',         value: result.value.ula48 },
-      { key: 'first64', label: '首个可路由块',      value: result.value.first64 },
-      { key: 'last64',  label: '末个可路由块',      value: result.value.last64 },
+      { key: 'ula48',   label: 'IPv6 ULA',                                               value: result.value.ula48 },
+      { key: 'first64', label: t('tools.ipv6-ula-generator.firstRoutable'),              value: result.value.first64 },
+      { key: 'last64',  label: t('tools.ipv6-ula-generator.lastRoutable'),               value: result.value.last64 },
     ]
   : [],
 );
@@ -72,14 +74,13 @@ const resultRows = computed(() => result.value
     <div class="info-banner">
       <icon-mdi-information-outline class="info-icon" />
       <p class="info-text">
-        本工具使用 IETF 建议的第一种方法：对当前时间戳与 MAC 地址进行 SHA1 哈希运算，
-        取低 40 位生成您的随机 IPv6 ULA（唯一本地地址，RFC 4193）。
+        {{ t('tools.ipv6-ula-generator.infoText') }}
       </p>
     </div>
 
     <!-- ── MAC 输入区 ─────────────────────────────────────── -->
     <div class="input-section">
-      <label class="input-label">MAC 地址</label>
+      <label class="input-label">{{ t('tools.ipv6-ula-generator.macAddressLabel') }}</label>
       <div class="input-row">
         <div
           class="input-wrap"
@@ -89,7 +90,7 @@ const resultRows = computed(() => result.value
           <input
             v-model="macAddress"
             class="mac-input"
-            placeholder="例如：20:37:06:12:34:56"
+            :placeholder="t('tools.ipv6-ula-generator.placeholder')"
             spellcheck="false"
             autocomplete="off"
             autocorrect="off"
@@ -99,7 +100,7 @@ const resultRows = computed(() => result.value
           <button
             v-if="macAddress"
             class="clear-btn"
-            title="清空"
+            :title="t('tools.ipv6-ula-generator.clear')"
             @click="macAddress = ''"
           >
             <icon-mdi-close />
@@ -112,14 +113,14 @@ const resultRows = computed(() => result.value
           @click="onGenerate"
         >
           <icon-mdi-refresh class="gen-btn-icon" />
-          生成
+          {{ t('tools.ipv6-ula-generator.generate') }}
         </button>
       </div>
 
       <transition name="slide-down">
         <div v-if="addressValidation.status === 'error'" class="field-error">
           <icon-mdi-alert-circle-outline />
-          请输入有效的 MAC 地址（如 AA:BB:CC:DD:EE:FF）
+          {{ t('tools.ipv6-ula-generator.errorMsg') }}
         </div>
       </transition>
     </div>

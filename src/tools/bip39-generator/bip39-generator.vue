@@ -20,6 +20,8 @@ import { useValidation } from '@/composable/validation';
 import { isNotThrowing } from '@/utils/boolean';
 import { withDefaultOnError } from '@/utils/defaults';
 
+const { t } = useI18n();
+
 // ── 词库 ──────────────────────────────────────────────────────────────────────
 const languages = {
   'English': englishWordList,
@@ -129,7 +131,7 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
     <div class="security-alert">
       <icon-mdi-alert class="alert-icon" />
       <span>
-        <strong>Warning:</strong> Never use online tools to generate mnemonics for real wallets or assets. This tool is for development and testing only.
+        <strong>{{ t('tools.bip39-generator.warningLabel') }}:</strong> {{ t('tools.bip39-generator.warningText') }}
       </span>
     </div>
 
@@ -138,13 +140,13 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
       <c-select
         v-model:value="language"
         searchable
-        label="Language:"
+        :label="t('tools.bip39-generator.language')"
         :options="Object.keys(languages)"
         class="ctrl-item"
       />
       <c-select
         v-model:value="wordCount"
-        label="Word count:"
+        :label="t('tools.bip39-generator.wordCount')"
         :options="wordCountOptions"
         class="ctrl-item"
       />
@@ -152,23 +154,23 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
 
     <!-- ③ Entropy 行 -->
     <n-form-item
-      label="Entropy (seed):"
+      :label="t('tools.bip39-generator.entropyLabel')"
       :feedback="entropyValidation.message"
       :validation-status="entropyValidation.status"
       mb-2
     >
       <div class="input-action-row">
-        <c-input-text v-model:value="entropy" placeholder="Hex entropy…" raw-text monospace class="grow" />
+        <c-input-text v-model:value="entropy" :placeholder="t('tools.bip39-generator.entropyPlaceholder')" raw-text monospace class="grow" />
 
         <!-- 刷新 -->
-        <c-tooltip tooltip="Generate new entropy" position="top">
+        <c-tooltip :tooltip="t('tools.bip39-generator.generateEntropy')" position="top">
           <button class="action-btn" @click="refreshEntropy()">
             <icon-mdi-refresh class="action-icon" />
           </button>
         </c-tooltip>
 
         <!-- 复制熵 -->
-        <c-tooltip :tooltip="entropyCopied ? 'Copied!' : 'Copy entropy'" position="top">
+        <c-tooltip :tooltip="entropyCopied ? t('tools.bip39-generator.copied') : t('tools.bip39-generator.copyEntropy')" position="top">
           <button class="action-btn" :class="{ copied: entropyCopied }" @click="copyEntropy()">
             <transition name="icon-switch" mode="out-in">
               <icon-mdi-check v-if="entropyCopied" key="check" class="action-icon success" />
@@ -181,15 +183,15 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
 
     <!-- ④ Mnemonic Phrase 行 -->
     <n-form-item
-      label="Mnemonic Phrase:"
+      :label="t('tools.bip39-generator.mnemonicLabel')"
       :feedback="mnemonicValidation.message"
       :validation-status="mnemonicValidation.status"
     >
       <div class="input-action-row">
-        <c-input-text v-model:value="mnemonic" placeholder="Your mnemonic phrase…" raw-text class="grow" />
+        <c-input-text v-model:value="mnemonic" :placeholder="t('tools.bip39-generator.mnemonicPlaceholder')" raw-text class="grow" />
 
         <!-- 复制助记词 -->
-        <c-tooltip :tooltip="mnemonicCopied ? 'Copied!' : 'Copy mnemonic'" position="top">
+        <c-tooltip :tooltip="mnemonicCopied ? t('tools.bip39-generator.copied') : t('tools.bip39-generator.copyMnemonic')" position="top">
           <button class="action-btn" :class="{ copied: mnemonicCopied }" @click="copyMnemonic()">
             <transition name="icon-switch" mode="out-in">
               <icon-mdi-check v-if="mnemonicCopied" key="check" class="action-icon success" />

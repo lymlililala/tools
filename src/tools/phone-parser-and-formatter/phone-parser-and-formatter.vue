@@ -136,8 +136,8 @@ const countriesOptions = getCountries().map(code => ({
         <div class="result-header">
           <span class="result-title">{{ t('tools.phone-parser-and-formatter.resultTitle') }}</span>
           <!-- 状态指示器 -->
-          <span v-if="parseState === 'parsed'" class="result-badge result-badge--success">✓ 解析成功</span>
-          <span v-else-if="parseState === 'invalid'" class="result-badge result-badge--error">✕ 格式有误</span>
+          <span v-if="parseState === 'parsed'" class="result-badge result-badge--success">{{ t('tools.phone-parser-and-formatter.parsedBadge') }}</span>
+          <span v-else-if="parseState === 'invalid'" class="result-badge result-badge--error">{{ t('tools.phone-parser-and-formatter.invalidBadge') }}</span>
         </div>
 
         <!-- 空状态 -->

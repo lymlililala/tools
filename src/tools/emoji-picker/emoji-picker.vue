@@ -6,6 +6,8 @@ import type { EmojiInfo } from './emoji.types';
 import { useFuzzySearch } from '@/composable/fuzzySearch';
 import useDebouncedRef from '@/composable/debouncedref';
 
+const { t } = useI18n();
+
 const escapeUnicode = ({ emoji }: { emoji: string }) => emoji.split('').map(unit => `\\u${unit.charCodeAt(0).toString(16).padStart(4, '0')}`).join('');
 const getEmojiCodePoints = ({ emoji }: { emoji: string }) => emoji.codePointAt(0) ? `0x${emoji.codePointAt(0)?.toString(16)}` : undefined;
 
@@ -99,14 +101,14 @@ const isSearching = computed(() => searchQuery.trim().length > 0);
           v-model="searchQuery"
           class="search-input"
           type="text"
-          placeholder="搜索 Emoji（如 'smile'）… 或按 ⌘K"
+          :placeholder="t('tools.emoji-picker.searchPlaceholder')"
           autocomplete="off"
           spellcheck="false"
         />
         <button
           v-if="searchQuery"
           class="search-clear"
-          title="清空搜索"
+          :title="t('tools.emoji-picker.clearSearch')"
           @click="searchQuery = ''"
         >
           ×
@@ -118,13 +120,13 @@ const isSearching = computed(() => searchQuery.trim().length > 0);
     <div v-if="isSearching">
       <div v-if="searchResult.length === 0" class="empty-state">
         <div class="empty-icon">🔍</div>
-        <div class="empty-title">未找到相关 Emoji</div>
-        <div class="empty-hint">试试换个关键词，或直接输入 Unicode 编码</div>
+        <div class="empty-title">{{ t('tools.emoji-picker.noResults') }}</div>
+        <div class="empty-hint">{{ t('tools.emoji-picker.noResultsHint') }}</div>
       </div>
 
       <div v-else>
         <div class="group-title">
-          搜索结果 <span class="group-count">{{ searchResult.length }}</span>
+          {{ t('tools.emoji-picker.searchResults') }} <span class="group-count">{{ searchResult.length }}</span>
         </div>
         <emoji-grid :emoji-infos="searchResult" />
       </div>

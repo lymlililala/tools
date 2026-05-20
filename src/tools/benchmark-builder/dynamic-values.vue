@@ -3,6 +3,8 @@ import { Plus, Trash } from '@vicons/tabler';
 import { useTemplateRefsList, useVModel } from '@vueuse/core';
 import { nextTick } from 'vue';
 
+const { t } = useI18n();
+
 const props = defineProps<{ values: (number | null)[] }>();
 
 const emit = defineEmits(['update:values']);
@@ -47,12 +49,12 @@ function displayValue(v: number | null) {
           type="number"
           class="dv-input"
           :value="displayValue(value)"
-          placeholder="输入测量值..."
+          :placeholder="t('tools.benchmark-builder.valuePlaceholder')"
           @input="onInput(index, $event)"
           @keydown.enter="onInputEnter(index)"
         />
       </div>
-      <c-tooltip tooltip="删除此值">
+      <c-tooltip :tooltip="t('tools.benchmark-builder.deleteValue')">
         <button class="dv-delete-btn" @click="values.splice(index, 1)">
           <n-icon :component="Trash" depth="3" size="16" />
         </button>
@@ -61,7 +63,7 @@ function displayValue(v: number | null) {
 
     <button class="dv-add-btn" @click="addValue">
       <n-icon :component="Plus" depth="3" size="15" />
-      <span>添加测量值</span>
+      <span>{{ t('tools.benchmark-builder.addValue') }}</span>
     </button>
   </div>
 </template>
