@@ -211,6 +211,33 @@ tools:
     faq2a: 'Photos are saved as PNG. Videos are saved in WebM format supported by most modern browsers.'
     title: Camera recorder
     description: Take a picture or record a video from your webcam or camera.
+    notSupported: Browser Not Supported
+    notSupportedDesc: Your browser does not support recording video from a camera. Please upgrade to the latest version of Chrome, Firefox, or Edge.
+    videoPlaceholder: Camera feed will appear here
+    permBlocked: Permission Blocked
+    permBlockedDesc: The browser has denied the permission request. Please manually enable camera and microphone access via the lock icon in the address bar, then refresh the page.
+    permRequired: Camera & Microphone Required
+    permRequiredDesc: This tool needs access to your camera and microphone to work. Your data is never uploaded to any server — all processing happens locally.
+    enablePerm: Enable Camera Access
+    camera: Camera
+    selectCamera: Select camera
+    microphone: Microphone
+    selectMicrophone: Select microphone
+    recording: Recording
+    paused: Paused
+    clickToStart: Click the button below to start camera
+    startCamera: Start Camera
+    screenshot: Screenshot
+    startRecording: Start Recording
+    pauseRecording: Pause
+    resumeRecording: Resume
+    stopAndSave: Stop & Save
+    noRecordingSupport: This browser does not support video recording
+    screenshotAlt: Screenshot
+    screenshotBadge: Screenshot
+    videoBadge: Video
+    download: Download
+    delete: Delete
 
   keycode-info:
     step1: 'Step 1: Click anywhere on the page to focus the keyboard listener.'
@@ -1754,35 +1781,6 @@ tools:
     copied: Copied!
     copyCode: Copy Code
 
-  camera-recorder:
-    notSupported: Browser Not Supported
-    notSupportedDesc: Your browser does not support recording video from a camera. Please upgrade to the latest version of Chrome, Firefox, or Edge.
-    videoPlaceholder: Camera feed will appear here
-    permBlocked: Permission Blocked
-    permBlockedDesc: The browser has denied the permission request. Please manually enable camera and microphone access via the lock icon in the address bar, then refresh the page.
-    permRequired: Camera & Microphone Required
-    permRequiredDesc: This tool needs access to your camera and microphone to work. Your data is never uploaded to any server — all processing happens locally.
-    enablePerm: Enable Camera Access
-    camera: Camera
-    selectCamera: Select camera
-    microphone: Microphone
-    selectMicrophone: Select microphone
-    recording: Recording
-    paused: Paused
-    clickToStart: Click the button below to start camera
-    startCamera: Start Camera
-    screenshot: Screenshot
-    startRecording: Start Recording
-    pauseRecording: Pause
-    resumeRecording: Resume
-    stopAndSave: Stop & Save
-    noRecordingSupport: This browser does not support video recording
-    screenshotAlt: Screenshot
-    screenshotBadge: Screenshot
-    videoBadge: Video
-    download: Download
-    delete: Delete
-
   wifi-qr-code-generator:
     encryption: Encryption
     recommended: Recommended
@@ -1810,33 +1808,6 @@ tools:
     copied: Copied!
     copyImage: Copy Image
     ssidRequired: Please enter a WiFi name (SSID) first
-
-  svg-placeholder-generator:
-    settingsTitle: Parameters
-    resetTitle: Reset to defaults
-    reset: Reset
-    widthLabel: Width (px)
-    widthPlaceholder: Width…
-    heightLabel: Height (px)
-    heightPlaceholder: Height…
-    bgColor: Background Color
-    fgColor: Text Color
-    fontSizeLabel: Font Size (px)
-    fontSizePlaceholder: Font size…
-    customText: Custom Text
-    customTextPlaceholder: Defaults to {w}x{h}
-    exactSize: Fixed Size
-    exactSizeOn: Includes width/height attributes
-    exactSizeOff: viewBox only (responsive)
-    exactSizeTooltip: "On: SVG includes fixed width/height attributes (fixed size)\nOff: viewBox only — SVG scales responsively"
-    svgCode: SVG HTML Code
-    base64Code: SVG Base64 Encoded
-    downloadSvg: Download SVG
-    livePreview: Live Preview
-    fontSizeUnit: font size
-    exactSizeLabel: Fixed
-    responsiveLabel: Responsive
-
   qr-code-generator:
     contentLabel: QR Code Content
     contentPlaceholder: Enter a URL, text, or any content…
@@ -1862,31 +1833,6 @@ tools:
     copied: Copied!
     copyImage: Copy Image
     copyImageTitle: Copy image to clipboard
-
-  eta-calculator:
-    example: 'Example: If you can wash 5 dishes every 3 minutes, it will take 5 hours to wash 500 dishes.'
-    totalTasks: Total Tasks
-    startTime: Start Time
-    useNow: Use current time
-    now: Now
-    speed: Processing Speed
-    per: Every
-    complete: process
-    unit: items
-    allPositive: All values must be greater than 0
-    totalDuration: Total Duration
-    estimatedEnd: Estimated Completion
-    cannotCalc: Cannot calculate
-    zeroErrorMsg: Please ensure all input values are greater than 0
-    today: Today
-    tomorrow: Tomorrow
-    yesterday: Yesterday
-    unitMs: ms
-    unitSec: sec
-    unitMin: min
-    unitHour: hour
-    unitDay: day
-
   regex-tester:
     step1: 'Step 1: Enter a regular expression in the top input.'
     step2: 'Step 2: Enter test text in the middle panel.'
