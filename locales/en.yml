@@ -210,6 +210,26 @@ tools:
     faq2a: 'The cost factor controls how many hashing rounds are performed. Increasing it by 1 doubles the computation time.'
     title: Bcrypt
     description: Hash and compare text string using bcrypt. Bcrypt is a password-hashing function based on the Blowfish cipher.
+    hashTitle: Hash
+    inputLabel: 'Your string:'
+    inputPlaceholder: 'Your string to bcrypt...'
+    saltLabel: 'Salt count:'
+    saltPlaceholder: 'Salt rounds...'
+    computing: 'Computing…'
+    copyHash: 'Copy hash'
+    copied: 'Copied!'
+    computingHint: 'Computing bcrypt hash'
+    computingMoment: 'may take a moment'
+    compareTitle: 'Compare string with hash'
+    compareStringLabel: 'Your string:'
+    compareStringPlaceholder: 'Your string to compare...'
+    compareHashLabel: 'Your hash:'
+    compareHashPlaceholder: 'Your hash to compare...'
+    doTheyMatch: 'Do they match?'
+    yes: 'Yes'
+    no: 'No'
+    invalidHashFormat: 'Invalid hash format'
+    waitingForInput: 'Waiting for input…'
 
   crontab-generator:
     step1: 'Step 1: Use the visual editor to set minute, hour, day, month, and weekday fields.'
@@ -290,6 +310,21 @@ tools:
     faq2a: 'All encryption and decryption is performed locally in your browser. Your data and keys never leave your device.'
     title: Encrypt / decrypt text
     description: Encrypt clear text and decrypt ciphertext using crypto algorithms like AES, TripleDES, Rabbit or RC4.
+    encryptTitle: Encrypt
+    decryptTitle: Decrypt
+    yourText: 'Your text:'
+    encryptPlaceholder: 'The string to encrypt…'
+    secretKey: 'Your secret key:'
+    algorithm: 'Encryption algorithm:'
+    encryptedOutput: 'Your text encrypted:'
+    decryptedOutput: 'Your decrypted text:'
+    encryptedText: 'Your encrypted text:'
+    decryptPlaceholder: 'The string to decrypt…'
+    decryptionFailed: 'Decryption failed'
+    decryptionFailedMismatch: 'Decryption failed: key mismatch or corrupted ciphertext'
+    transferTooltip: 'Transfer encrypted text & key to Decrypt'
+    copy: 'Copy'
+    copied: 'Copied!'
 
   random-port-generator:
     step1: 'Step 1: Set the quantity of port numbers to generate.'
@@ -302,6 +337,18 @@ tools:
     faq2a: 'Random ports are used when starting local dev servers or containers to avoid conflicts with already-running processes.'
     title: Random port generator
     description: Generate random port numbers outside of the range of "known" ports (0-1023).
+    countLabel: Count
+    includeWellKnown: Include well-known ports (0–1023)
+    dynamicOnly: Dynamic ports only (49152–65535)
+    currentRange: Current range
+    rangeAll: Full range
+    rangeDynamic: Dynamic ports
+    rangeNonWell: Non-well-known
+    regenerate: Regenerate
+    copy: Copy
+    copyAll: Copy all
+    copied: Copied!
+    clickToCopy: Click to copy
 
   yaml-prettify:
     step1: 'Step 1: Paste your YAML content into the left editor.'
@@ -904,6 +951,19 @@ tools:
     faq1a: A UUID (Universally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. There are approximately 5.3 × 10²² possible UUIDs in version 4.
     faq2q: What is the difference between UUID v1 and v4?
     faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
+    versionLabel: UUID version
+    quantity: Quantity
+    quantityPlaceholder: UUID quantity
+    v3HashInfo: UUID v3 uses MD5 hashing
+    v5HashInfo: UUID v5 uses SHA-1 hashing
+    namespaceNameInfo: same Namespace + Name always produces the same UUID
+    namespace: Namespace
+    nameLabel: Name
+    namePlaceholder: 'Name (e.g. example.com)'
+    outputPlaceholder: UUIDs will appear here…
+    copy: Copy
+    copied: Copied!
+    refresh: Refresh
 
   ipv4-address-converter:
     step1: 'Step 1: Enter an IPv4 address in dotted-decimal format (e.g. 192.168.1.1).'
@@ -1249,6 +1309,139 @@ tools:
     faq1a: Color harmonies are combinations of colors that are visually pleasing based on their positions on the color wheel. Common types include complementary (opposite), analogous (adjacent), and triadic (evenly spaced).
     faq2q: What is the difference between tints and shades?
     faq2a: Tints are created by adding white to a color (making it lighter), while shades are created by adding black (making it darker). This tool generates both to give you a full range.
+
+  camera-recorder:
+    notSupported: Browser Not Supported
+    notSupportedDesc: Your browser does not support recording video from a camera. Please upgrade to the latest version of Chrome, Firefox, or Edge.
+    videoPlaceholder: Camera feed will appear here
+    permBlocked: Permission Blocked
+    permBlockedDesc: The browser has denied the permission request. Please manually enable camera and microphone access via the lock icon in the address bar, then refresh the page.
+    permRequired: Camera & Microphone Required
+    permRequiredDesc: This tool needs access to your camera and microphone to work. Your data is never uploaded to any server — all processing happens locally.
+    enablePerm: Enable Camera Access
+    camera: Camera
+    selectCamera: Select camera
+    microphone: Microphone
+    selectMicrophone: Select microphone
+    recording: Recording
+    paused: Paused
+    clickToStart: Click the button below to start camera
+    startCamera: Start Camera
+    screenshot: Screenshot
+    startRecording: Start Recording
+    pauseRecording: Pause
+    resumeRecording: Resume
+    stopAndSave: Stop & Save
+    noRecordingSupport: This browser does not support video recording
+    screenshotAlt: Screenshot
+    screenshotBadge: Screenshot
+    videoBadge: Video
+    download: Download
+    delete: Delete
+
+  wifi-qr-code-generator:
+    encryption: Encryption
+    recommended: Recommended
+    noPassword: No Password
+    enterprise: Enterprise
+    ssidLabel: Network Name (SSID)
+    ssidPlaceholder: Enter WiFi name…
+    hiddenNetwork: Hidden Network
+    passwordLabel: WiFi Password
+    passwordPlaceholder: Enter WiFi password…
+    hidePassword: Hide password
+    showPassword: Show password
+    eapMethod: EAP Method
+    eapIdentityLabel: Identity
+    anonymous: Anonymous
+    eapIdentityPlaceholder: Enter EAP identity…
+    eapPhase2Label: EAP Phase 2 Method
+    colorSettings: Color Settings
+    fgColor: Foreground (dots)
+    bgColor: Background
+    sameColorWarning: Foreground and background colors are the same — the QR code cannot be scanned.
+    livePreview: Live Preview
+    qrEmptyHint: Enter a WiFi name to generate QR code
+    downloadPng: Download PNG
+    copied: Copied!
+    copyImage: Copy Image
+    ssidRequired: Please enter a WiFi name (SSID) first
+
+  svg-placeholder-generator:
+    settingsTitle: Parameters
+    resetTitle: Reset to defaults
+    reset: Reset
+    widthLabel: Width (px)
+    widthPlaceholder: Width…
+    heightLabel: Height (px)
+    heightPlaceholder: Height…
+    bgColor: Background Color
+    fgColor: Text Color
+    fontSizeLabel: Font Size (px)
+    fontSizePlaceholder: Font size…
+    customText: Custom Text
+    customTextPlaceholder: Defaults to {w}x{h}
+    exactSize: Fixed Size
+    exactSizeOn: Includes width/height attributes
+    exactSizeOff: viewBox only (responsive)
+    exactSizeTooltip: "On: SVG includes fixed width/height attributes (fixed size)\nOff: viewBox only — SVG scales responsively"
+    svgCode: SVG HTML Code
+    base64Code: SVG Base64 Encoded
+    downloadSvg: Download SVG
+    livePreview: Live Preview
+    fontSizeUnit: font size
+    exactSizeLabel: Fixed
+    responsiveLabel: Responsive
+
+  qr-code-generator:
+    contentLabel: QR Code Content
+    contentPlaceholder: Enter a URL, text, or any content…
+    charUnit: chars
+    capacityWarning: Too much content may reduce scan reliability
+    colorSettings: Color Settings
+    fgColor: Foreground (dot color)
+    bgColor: Background
+    sameColorWarning: Foreground and background are the same — the QR code cannot be scanned.
+    advancedSettings: Advanced Settings
+    errorCorrection: Error Correction
+    errorCorrectionHint: Higher → more damage-resistant
+    ecLow: Low
+    ecMedium: Medium
+    ecHigh: High
+    ecHighest: Highest
+    ecLabel: EC
+    marginLabel: Margin
+    previewSize: Preview Size
+    livePreview: Live Preview
+    qrEmptyHint: Enter content on the left to generate a QR code
+    downloadPng: Download PNG
+    copied: Copied!
+    copyImage: Copy Image
+    copyImageTitle: Copy image to clipboard
+
+  eta-calculator:
+    example: 'Example: If you can wash 5 dishes every 3 minutes, it will take 5 hours to wash 500 dishes.'
+    totalTasks: Total Tasks
+    startTime: Start Time
+    useNow: Use current time
+    now: Now
+    speed: Processing Speed
+    per: Every
+    complete: process
+    unit: items
+    allPositive: All values must be greater than 0
+    totalDuration: Total Duration
+    estimatedEnd: Estimated Completion
+    cannotCalc: Cannot calculate
+    zeroErrorMsg: Please ensure all input values are greater than 0
+    today: Today
+    tomorrow: Tomorrow
+    yesterday: Yesterday
+    unitMs: ms
+    unitSec: sec
+    unitMin: min
+    unitHour: hour
+    unitDay: day
 
   common:
     faqSafe: Is this tool safe? Will my data be uploaded?

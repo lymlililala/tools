@@ -9,6 +9,7 @@ import { useStyleStore } from '@/stores/style.store';
 import { useClipboard } from '@vueuse/core';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 
 // ── 颜色（只存 6 位 hex，内部拼接 ff 用于 useWifiQRCode） ────────
 const fgHex = ref('#000000');
@@ -64,12 +65,12 @@ async function copyImage() {
 }
 
 // ── 加密方式选项 ─────────────────────────────────────────────
-const encryptionOptions = [
-  { label: 'WPA / WPA2（推荐）', value: 'WPA' },
+const encryptionOptions = computed(() => [
+  { label: `WPA / WPA2 (${t('tools.wifi-qr-code-generator.recommended')})`, value: 'WPA' },
   { label: 'WEP', value: 'WEP' },
-  { label: '无密码', value: 'nopass' },
-  { label: 'WPA2-EAP（企业级）', value: 'WPA2-EAP' },
-];
+  { label: t('tools.wifi-qr-code-generator.noPassword'), value: 'nopass' },
+  { label: `WPA2-EAP (${t('tools.wifi-qr-code-generator.enterprise')})`, value: 'WPA2-EAP' },
+]);
 </script>
 
 <template>
@@ -79,7 +80,7 @@ const encryptionOptions = [
       <div class="wifi-form">
         <!-- 加密方式 -->
         <div class="field">
-          <label class="field-label">加密方式</label>
+          <label class="field-label">{{ t('tools.wifi-qr-code-generator.encryption') }}</label>
           <c-select
             v-model:value="encryption"
             :options="encryptionOptions"
@@ -89,38 +90,38 @@ const encryptionOptions = [
         <!-- SSID -->
         <div class="field">
           <label class="field-label">
-            网络名称（SSID）
+            {{ t('tools.wifi-qr-code-generator.ssidLabel') }}
             <span class="required">*</span>
           </label>
           <div class="ssid-row">
             <input
               v-model="ssid"
               class="text-input"
-              placeholder="请输入 WiFi 名称…"
+              :placeholder="t('tools.wifi-qr-code-generator.ssidPlaceholder')"
               maxlength="32"
               autocomplete="off"
               spellcheck="false"
             >
             <label class="checkbox-label">
               <input v-model="isHiddenSSID" type="checkbox" class="checkbox">
-              <span>隐藏网络</span>
+              <span>{{ t('tools.wifi-qr-code-generator.hiddenNetwork') }}</span>
             </label>
           </div>
         </div>
 
         <!-- 密码 -->
         <div v-if="needPassword" class="field">
-          <label class="field-label">WiFi 密码</label>
+          <label class="field-label">{{ t('tools.wifi-qr-code-generator.passwordLabel') }}</label>
           <div class="password-wrap">
             <input
               v-model="password"
               class="text-input"
               :type="showPassword ? 'text' : 'password'"
-              placeholder="请输入 WiFi 密码…"
+              :placeholder="t('tools.wifi-qr-code-generator.passwordPlaceholder')"
               maxlength="63"
               autocomplete="off"
             >
-            <button class="eye-btn" :title="showPassword ? '隐藏密码' : '显示密码'" @click="showPassword = !showPassword">
+            <button class="eye-btn" :title="showPassword ? t('tools.wifi-qr-code-generator.hidePassword') : t('tools.wifi-qr-code-generator.showPassword')" @click="showPassword = !showPassword">
               <svg v-if="!showPassword" width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke="currentColor" stroke-width="2" />
                 <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
@@ -135,7 +136,7 @@ const encryptionOptions = [
         <!-- EAP 专属字段 -->
         <template v-if="isEAP">
           <div class="field">
-            <label class="field-label">EAP 方法</label>
+            <label class="field-label">{{ t('tools.wifi-qr-code-generator.eapMethod') }}</label>
             <c-select
               v-model:value="eapMethod"
               :options="EAPMethods.map(m => ({ label: m, value: m }))"
@@ -144,21 +145,21 @@ const encryptionOptions = [
           </div>
           <div class="field">
             <label class="field-label">
-              身份标识（Identity）
+              {{ t('tools.wifi-qr-code-generator.eapIdentityLabel') }}
               <label class="checkbox-label inline-ml">
                 <input v-model="eapAnonymous" type="checkbox" class="checkbox">
-                <span>匿名</span>
+                <span>{{ t('tools.wifi-qr-code-generator.anonymous') }}</span>
               </label>
             </label>
             <input
               v-model="eapIdentity"
               class="text-input"
-              placeholder="请输入 EAP 身份标识…"
+              :placeholder="t('tools.wifi-qr-code-generator.eapIdentityPlaceholder')"
               :disabled="eapAnonymous"
             >
           </div>
           <div class="field">
-            <label class="field-label">EAP 第二阶段方法</label>
+            <label class="field-label">{{ t('tools.wifi-qr-code-generator.eapPhase2Label') }}</label>
             <c-select
               v-model:value="eapPhase2Method"
               :options="EAPPhase2Methods.map(m => ({ label: m, value: m }))"
@@ -168,10 +169,10 @@ const encryptionOptions = [
 
         <!-- 颜色设置 -->
         <div class="field">
-          <label class="field-label">颜色设置</label>
+          <label class="field-label">{{ t('tools.wifi-qr-code-generator.colorSettings') }}</label>
           <div class="color-row">
             <div class="color-item">
-              <span class="color-sub-label">前景色（码点）</span>
+              <span class="color-sub-label">{{ t('tools.wifi-qr-code-generator.fgColor') }}</span>
               <div class="color-input-wrap">
                 <input v-model="fgHex" type="color" class="color-swatch">
                 <input
@@ -184,7 +185,7 @@ const encryptionOptions = [
               </div>
             </div>
             <div class="color-item">
-              <span class="color-sub-label">背景色</span>
+              <span class="color-sub-label">{{ t('tools.wifi-qr-code-generator.bgColor') }}</span>
               <div class="color-input-wrap">
                 <input v-model="bgHex" type="color" class="color-swatch">
                 <input
@@ -204,7 +205,7 @@ const encryptionOptions = [
                 <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.5" />
                 <path d="M8 5v3M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
               </svg>
-              前景色与背景色相同，二维码将无法被扫描识别
+              {{ t('tools.wifi-qr-code-generator.sameColorWarning') }}
             </div>
           </transition>
         </div>
@@ -214,7 +215,7 @@ const encryptionOptions = [
       <div class="wifi-preview">
         <c-card class="preview-card">
           <div class="preview-title">
-            实时预览
+            {{ t('tools.wifi-qr-code-generator.livePreview') }}
           </div>
 
           <!-- QR 区域 -->
@@ -235,7 +236,7 @@ const encryptionOptions = [
                 <rect x="32" y="40" width="5" height="5" fill="currentColor" />
                 <rect x="40" y="40" width="5" height="5" fill="currentColor" />
               </svg>
-              <span>输入 WiFi 名称后<br>自动生成二维码</span>
+              <span>{{ t('tools.wifi-qr-code-generator.qrEmptyHint') }}</span>
             </div>
           </div>
 
@@ -245,8 +246,8 @@ const encryptionOptions = [
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
               {{ ssid }}
             </span>
-            <span class="meta-chip">{{ encryption === 'nopass' ? '无密码' : encryption }}</span>
-            <span v-if="isHiddenSSID" class="meta-chip">隐藏网络</span>
+            <span class="meta-chip">{{ encryption === 'nopass' ? t('tools.wifi-qr-code-generator.noPassword') : encryption }}</span>
+            <span v-if="isHiddenSSID" class="meta-chip">{{ t('tools.wifi-qr-code-generator.hiddenNetwork') }}</span>
           </div>
 
           <!-- CTA 按钮 -->
@@ -256,7 +257,7 @@ const encryptionOptions = [
                 <path d="M12 3v13M6 11l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
-              下载 PNG
+              {{ t('tools.wifi-qr-code-generator.downloadPng') }}
             </button>
             <button
               class="btn-copy"
@@ -271,12 +272,12 @@ const encryptionOptions = [
               <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              {{ copyFeedback ? '已复制' : '复制图片' }}
+              {{ copyFeedback ? t('tools.wifi-qr-code-generator.copied') : t('tools.wifi-qr-code-generator.copyImage') }}
             </button>
           </div>
 
           <p v-if="!ssid.trim()" class="hint-text">
-            请先填写 WiFi 名称（SSID）
+            {{ t('tools.wifi-qr-code-generator.ssidRequired') }}
           </p>
         </c-card>
       </div>
