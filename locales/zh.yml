@@ -1059,7 +1059,7 @@ tools:
     inputLabel: 输入邮箱列表
     uploadTooltip: 从文件导入（.txt 或 .csv）
     clearInput: 清空输入
-    placeholder: '每行一个邮箱地址，例如：&#10;User.Name+tag@gmail.com&#10;another@outlook.com'
+    placeholder: 每行一个邮箱地址，每行输入一个…
     statInput: 输入
     statValid: 有效
     statInvalid: 无效
