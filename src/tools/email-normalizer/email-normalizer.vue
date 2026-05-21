@@ -101,7 +101,7 @@ const { copy, isJustCopied } = useCopy({
 </script>
 
 <template>
-  <div class="email-root">
+  <div class="email-root tool-wide">
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="section">
       <div class="section-header">

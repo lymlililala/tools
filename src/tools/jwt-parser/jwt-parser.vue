@@ -120,7 +120,7 @@ const COLORS = {
 </script>
 
 <template>
-  <div class="jwt-container" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="jwt-container tool-wide" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ① 输入区 ────────────────────────────────────────────────────── -->
     <c-card mb-4>
       <div class="input-header">

@@ -1,4 +1,39 @@
+# SPA 已知路由：返回 index.html（200）
 [[redirects]]
-  from = "/*"
+  from = "/"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/blog"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/index.html"
+  status = 200
+
+# 工具页：优先尝试预渲染文件，不存在则 SPA fallback（200）
+# Prerender 脚本会在 dist/tools/{slug}/index.html 生成静态文件
+[[redirects]]
+  from = "/:slug"
+  to = "/tools/:slug/index.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/:slug"
+  to = "/index.html"
+  status = 200
+
+# 未匹配的路径返回真实 404
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

@@ -54,7 +54,7 @@ function transferToDecrypt() {
 </script>
 
 <template>
-  <div class="enc-layout">
+  <div class="enc-layout tool-wide">
     <!-- ① 加密卡片 -->
     <c-card :title="t('tools.encryption.encryptTitle')" class="enc-card">
       <div class="inputs-row">

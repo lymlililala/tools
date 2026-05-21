@@ -1,3 +1,54 @@
 {
-  "rewrites": [{ "source": "/((?!.*\\.).*)", "destination": "/index.html" }]
+  "routes": [
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/llms.txt",
+      "dest": "/llms.txt"
+    },
+    {
+      "src": "/sw.js",
+      "dest": "/sw.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*\\.(ico|png|svg|webp|jpg|jpeg|gif|webmanifest|json|txt|xml|css|js|woff|woff2|ttf|eot)$)",
+      "dest": "/$1"
+    },
+    {
+      "src": "^/$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(blog|about|articles)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(blog|articles)/([^/]+)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/([a-z][a-z0-9-]*)/?$",
+      "dest": "/tools/$1/index.html",
+      "continue": true
+    },
+    {
+      "src": "^/([a-z][a-z0-9-]*)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/404.html",
+      "status": 404
+    }
+  ]
 }

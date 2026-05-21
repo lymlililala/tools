@@ -49,7 +49,7 @@ function onKeepLastBlur() {
 </script>
 
 <template>
-  <div class="so-wrapper">
+  <div class="so-wrapper tool-wide">
     <!-- 输入区 -->
     <div class="section-label">{{ t('tools.string-obfuscator.inputLabel') }}</div>
     <c-input-text
