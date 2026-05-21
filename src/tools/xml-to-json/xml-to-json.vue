@@ -124,7 +124,7 @@ async function copyJson() {
 </script>
 
 <template>
-  <div class="xml-json-wrap">
+  <div class="xml-json-wrap tool-wide">
     <!-- 设置栏 -->
     <div class="settings-bar">
       <label class="setting-item">

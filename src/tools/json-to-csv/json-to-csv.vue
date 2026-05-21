@@ -84,7 +84,7 @@ const stats = computed(() => {
 
 <template>
   <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="csv-panes">
+  <div class="csv-panes tool-wide">
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">

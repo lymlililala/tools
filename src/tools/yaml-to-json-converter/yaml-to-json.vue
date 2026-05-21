@@ -48,7 +48,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="yaml-json-wrap">
+  <div class="yaml-json-wrap tool-wide">
     <!-- 两栏代码编辑器 -->
     <div class="editor-grid">
       <!-- 左：YAML 输入 -->

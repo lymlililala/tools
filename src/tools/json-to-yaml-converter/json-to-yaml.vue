@@ -48,7 +48,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="json-yaml-wrap">
+  <div class="json-yaml-wrap tool-wide">
     <div class="editor-grid">
       <!-- 左：JSON 输入 -->
       <div class="pane">

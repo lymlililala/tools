@@ -50,7 +50,7 @@ const highlightedHtml = computed(() => {
 </script>
 
 <template>
-  <div class="wysiwyg-wrap" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="wysiwyg-wrap tool-wide" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ── 主编辑区（左右分栏）─────────────────────────────────────── -->
     <div class="editor-grid">
       <!-- 左侧：所见即所得编辑器 -->

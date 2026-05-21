@@ -183,31 +183,43 @@ const howToSteps = computed(() => {
 </template>
 
 <style lang="less" scoped>
+// ── 工具内容区 ────────────────────────────────────────────────────────────
+// 默认：居中，子元素最宽 600px（适合表单类工具）
+// 全宽模式（子元素带 .tool-wide 时）：撑满可用宽度
 .tool-content {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 
-  ::v-deep(& > *) {
-    flex: 0 1 600px;
+  // 默认子元素宽度：最宽 600px（窄工具）
+  ::v-deep(& > *:not(.tool-wide)) {
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+  }
+
+  // 全宽子元素：撑满可用宽度（双面板编辑器等）
+  ::v-deep(& > .tool-wide) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
+// ── 工具标题区 ────────────────────────────────────────────────────────────
 .tool-layout {
-  max-width: 600px;
-  margin: 0 auto;
+  width: 100%;
   box-sizing: border-box;
 
   .tool-header {
-    padding: 40px 0;
+    max-width: 760px;
+    padding: 36px 0 28px;
     width: 100%;
 
     .n-h1 {
       opacity: 0.9;
-      font-size: 40px;
+      font-size: 38px;
       font-weight: 400;
       margin: 0;
       line-height: 1;
@@ -230,6 +242,7 @@ const howToSteps = computed(() => {
 
 .seo-section {
   max-width: 860px;
+  width: 100%;
   margin: 48px auto 0;
   padding: 0 4px;
   display: flex;

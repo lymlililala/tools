@@ -67,6 +67,7 @@ function downloadJson() {
 </script>
 
 <template>
+  <div class="tool-wide">
   <!-- ── 配置栏 ────────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-group">
@@ -166,6 +167,7 @@ function downloadJson() {
         readonly
       />
     </div>
+  </div>
   </div>
 </template>
 
