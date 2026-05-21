@@ -12573,4 +12573,740 @@ Always test on at least Facebook and Twitter before launching. Even a single bro
 
 → Use the [Meta Tag Generator](/og-meta-generator) to build a complete set of Open Graph and Twitter Card tags without memorizing the syntax.`,
   },
+
+  // ─── New articles 2026-05 ──────────────────────────────────────
+  {
+    slug: 'qr-code-generator-guide',
+    toolPath: '/qrcode-generator',
+    title: 'QR Code Generator: Create QR Codes for URLs, Text, and WiFi',
+    description: 'Learn how to generate QR codes for websites, plain text, and WiFi credentials. Covers QR code structure, error correction levels, and best practices for print and digital use.',
+    keywords: ['qr code generator', 'free qr code', 'create qr code', 'qr code url', 'wifi qr code', 'qr code for website'],
+    category: 'Web',
+    publishedAt: '2026-05-21',
+    content: `## What Is a QR Code?
+
+A QR code (Quick Response code) is a two-dimensional barcode that encodes data as a grid of black and white squares. Originally developed by Denso Wave in 1994 for tracking automotive parts, QR codes became ubiquitous after smartphones gained built-in camera scanning. Today they appear on restaurant menus, product packaging, business cards, event tickets, and payment terminals worldwide.
+
+Unlike a 1D barcode that stores only ~20 numeric characters, a single QR code can hold up to 4,296 alphanumeric characters or 7,089 numeric characters — enough for a full URL, a vCard contact, or a WiFi password.
+
+## QR Code Structure Explained
+
+### Finder Patterns
+The three square patterns in the corners let scanners detect the code's position and orientation. Even if the code is rotated, skewed, or photographed at an angle, the finder patterns allow the decoder to reorient and read it correctly.
+
+### Timing Patterns
+Alternating black and white modules running between the finder patterns establish a coordinate grid. They let the decoder calculate module size and account for any distortion.
+
+### Data Modules
+The bulk of the QR code. Encoded using Reed-Solomon error correction, meaning the data is redundant — a partially damaged or obscured code can still be read.
+
+### Quiet Zone
+The blank white border surrounding the code. Without enough quiet zone, scanners may fail to detect the boundaries. Standard requirement is 4 modules of white space on all sides.
+
+## Error Correction Levels
+
+QR codes include built-in redundancy so they can survive physical damage, dirt, or design overlays:
+
+| Level | Recovers from | Typical use |
+|-------|--------------|-------------|
+| L (Low) | ~7% damage | Clean digital displays |
+| M (Medium) | ~15% damage | Most general uses |
+| Q (Quartile) | ~25% damage | Industrial environments |
+| H (High) | ~30% damage | Logo overlay, printed materials |
+
+Higher error correction increases the code's density (more modules = larger or denser code). For most URLs, **M level** offers a good balance between scan reliability and code size.
+
+## What Data Can a QR Code Store?
+
+### URLs
+The most common use case. Encode any HTTPS URL. Keep URLs short — shorter URLs produce less dense codes that scan more reliably at small sizes.
+
+\`\`\`
+https://myutl.com/json-format
+\`\`\`
+
+### Plain Text
+Encode instructions, addresses, or notes that don't require internet access to read.
+
+### WiFi Credentials
+A special format lets phones join a network without typing a password:
+
+\`\`\`
+WIFI:T:WPA;S:MyNetworkName;P:MyPassword;;
+\`\`\`
+
+Scan this with iOS 11+ or Android 10+ to connect instantly. No app needed.
+
+### Contact Information (vCard)
+A standardized vCard QR code lets people add your contact details with one scan:
+
+\`\`\`
+BEGIN:VCARD
+VERSION:3.0
+N:Smith;John;;;
+FN:John Smith
+ORG:Acme Inc.
+TEL:+1-555-0100
+EMAIL:john@example.com
+END:VCARD
+\`\`\`
+
+### Email and SMS
+Pre-fill an email or SMS for easy one-tap actions:
+
+\`\`\`
+mailto:support@example.com?subject=Help%20Request
+sms:+15550100?body=Hello
+\`\`\`
+
+## Best Practices for Print
+
+**Minimum size**: 2 cm × 2 cm for codes scanned from arm's length. Larger for billboards or codes scanned from greater distances.
+
+**Color contrast**: Dark modules on a light background. Avoid low-contrast color combinations. The scanner looks for a 4:1 contrast ratio minimum.
+
+**Testing before printing**: Print a test copy at actual size and scan it with multiple devices before sending to the printer.
+
+**Avoid placing text inside the quiet zone**: Surrounding text must not intrude on the 4-module border.
+
+**Use H-level error correction with logos**: If you embed a logo or icon over the center of the QR code, the logo covers some modules. High error correction compensates.
+
+## Best Practices for Digital Use
+
+On screens, QR codes are typically shown for people to scan with their phone. Considerations differ from print:
+
+- Brightness and glare from the display can make scanning difficult — provide adequate contrast settings
+- Animation or transitions behind the code interfere with scanning; keep the background static
+- On small phone screens, show QR codes at full width or provide a "save image" option
+
+## QR Code vs Barcode: When to Use Which
+
+| Feature | QR Code | 1D Barcode |
+|---------|---------|-----------|
+| Data capacity | Up to 4,296 chars | ~20 chars |
+| Scan direction | Any angle | Must align |
+| Damage tolerance | Yes (error correction) | No |
+| Common uses | URLs, payments, menus | Retail products, logistics |
+| Requires app | No (modern phones) | Sometimes |
+
+Use a standard 1D barcode for retail products where scanner infrastructure already expects it. Use QR codes for everything else — especially consumer-facing content where the user brings their own phone.
+
+## Generate QR Codes Instantly
+
+→ Use the [QR Code Generator](/qrcode-generator) to create a QR code for any URL or text, with customizable foreground and background colors.
+
+→ For WiFi networks specifically, the [WiFi QR Code Generator](/wifi-qrcode-generator) creates properly formatted WiFi QR codes that work with iOS and Android native camera apps.`,
+  },
+  {
+    slug: 'regex-cheat-sheet-guide',
+    toolPath: '/regex-memo',
+    title: 'Regex Cheat Sheet: Every Regular Expression Pattern You Actually Need',
+    description: 'A practical reference for regular expressions — anchors, quantifiers, character classes, lookaheads, and real-world patterns for emails, URLs, IPs, and dates.',
+    keywords: ['regex cheat sheet', 'regular expressions examples', 'regex patterns', 'regex tutorial', 'regular expression syntax', 'regex reference'],
+    category: 'Development',
+    publishedAt: '2026-05-21',
+    content: `## Regular Expressions at a Glance
+
+A regular expression (regex) is a sequence of characters that defines a search pattern. The same syntax works across JavaScript, Python, Go, Java, PHP, Ruby, and most modern languages — with minor dialect differences.
+
+Learning regex once gives you a tool that works everywhere: in your editor's find-and-replace, command-line tools like \`grep\` and \`sed\`, log analysis pipelines, form validation, and data extraction scripts.
+
+## Anchors
+
+Anchors don't match characters — they match positions.
+
+| Pattern | Matches |
+|---------|---------|
+| \`^\` | Start of string (or line in multiline mode) |
+| \`$\` | End of string (or line in multiline mode) |
+| \`\\b\` | Word boundary (between \\w and \\W) |
+| \`\\B\` | Non-word boundary |
+
+\`\`\`regex
+^hello        matches "hello world" but not "say hello"
+world$        matches "hello world" but not "worldwide"
+\\bcat\\b      matches "cat" but not "concatenate"
+\`\`\`
+
+## Character Classes
+
+| Pattern | Matches |
+|---------|---------|
+| \`.\` | Any character except newline |
+| \`\\d\` | Digit: \`[0-9]\` |
+| \`\\D\` | Non-digit: \`[^0-9]\` |
+| \`\\w\` | Word char: \`[a-zA-Z0-9_]\` |
+| \`\\W\` | Non-word char |
+| \`\\s\` | Whitespace: space, tab, newline |
+| \`\\S\` | Non-whitespace |
+| \`[abc]\` | a, b, or c |
+| \`[^abc]\` | Anything except a, b, or c |
+| \`[a-z]\` | Any lowercase letter |
+| \`[A-Za-z0-9]\` | Alphanumeric |
+
+## Quantifiers
+
+| Pattern | Meaning |
+|---------|---------|
+| \`*\` | 0 or more |
+| \`+\` | 1 or more |
+| \`?\` | 0 or 1 (optional) |
+| \`{n}\` | Exactly n times |
+| \`{n,}\` | n or more times |
+| \`{n,m}\` | Between n and m times |
+| \`*?\` | 0 or more, lazy (non-greedy) |
+| \`+?\` | 1 or more, lazy |
+
+**Greedy vs lazy**: By default, quantifiers are greedy — they match as much as possible. Adding \`?\` makes them lazy — they match as little as possible.
+
+\`\`\`regex
+Input: <b>bold</b> and <i>italic</i>
+
+Greedy  <.*>   matches entire string
+Lazy    <.*?>  matches <b>, </b>, <i>, </i> separately
+\`\`\`
+
+## Groups and Alternation
+
+| Pattern | Meaning |
+|---------|---------|
+| \`(abc)\` | Capturing group |
+| \`(?:abc)\` | Non-capturing group |
+| \`(?<name>abc)\` | Named capturing group |
+| \`a\|b\` | Alternation: a or b |
+| \`\\1\` | Backreference to group 1 |
+
+Named groups make complex patterns readable:
+
+\`\`\`regex
+(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})
+\`\`\`
+
+Matches \`2026-05-21\` and lets you access \`match.groups.year\`, \`match.groups.month\`, \`match.groups.day\`.
+
+## Lookaheads and Lookbehinds
+
+These assert what comes before or after a position without including it in the match:
+
+| Pattern | Meaning |
+|---------|---------|
+| \`(?=abc)\` | Positive lookahead: followed by abc |
+| \`(?!abc)\` | Negative lookahead: NOT followed by abc |
+| \`(?<=abc)\` | Positive lookbehind: preceded by abc |
+| \`(?<!abc)\` | Negative lookbehind: NOT preceded by abc |
+
+\`\`\`regex
+\\d+(?= dollars)   matches "100" in "100 dollars" but not "100 euros"
+(?<=\\$)\\d+        matches digits after a dollar sign
+\`\`\`
+
+## Flags
+
+| Flag | Effect |
+|------|--------|
+| \`g\` | Global — find all matches, not just first |
+| \`i\` | Case-insensitive |
+| \`m\` | Multiline — ^ and $ match line boundaries |
+| \`s\` | Dotall — dot matches newline too |
+| \`u\` | Unicode mode |
+
+## Real-World Patterns
+
+### Email Address (practical)
+\`\`\`regex
+^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$
+\`\`\`
+Covers the vast majority of real email addresses. Note: the full RFC 5321 spec allows characters most real-world emails never use. This pattern rejects edge cases intentionally.
+
+### URL
+\`\`\`regex
+https?://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,}(/[\\w\\-\\./\\?\\=\\&\\#\\%]*)?
+\`\`\`
+
+### IPv4 Address
+\`\`\`regex
+^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$
+\`\`\`
+Validates each octet is 0–255, rejecting \`999.0.0.1\`.
+
+### ISO Date (YYYY-MM-DD)
+\`\`\`regex
+^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$
+\`\`\`
+
+### Hex Color Code
+\`\`\`regex
+^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$
+\`\`\`
+
+### Credit Card Number (basic format check)
+\`\`\`regex
+^(?:4\\d{12}(?:\\d{3})?|5[1-5]\\d{14}|3[47]\\d{13}|6(?:011|5\\d{2})\\d{12})$
+\`\`\`
+Matches Visa, Mastercard, Amex, Discover formats. Does not validate using Luhn algorithm.
+
+### Password (min 8 chars, requires letter + digit)
+\`\`\`regex
+^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$
+\`\`\`
+
+### Slug (URL-safe string)
+\`\`\`regex
+^[a-z0-9]+(?:-[a-z0-9]+)*$
+\`\`\`
+
+## Common Mistakes
+
+**Forgetting to escape dots**: In regex, \`.\` matches any character. To match a literal period, write \`\\.\`. The pattern \`myfile.txt\` matches \`myfileXtxt\` — usually not what you want.
+
+**Catastrophic backtracking**: Nested quantifiers like \`(a+)+\` can cause exponential time on certain inputs. Avoid patterns where multiple quantifiers can match the same characters.
+
+**Not anchoring validation patterns**: Without \`^\` and \`$\`, a pattern like \`\\d{4}\` matches the four-digit substring anywhere in the input — it won't reject \`abc1234def\`.
+
+**Using greedy match when lazy is needed**: When extracting content between tags, greedy \`<.*>\` grabs everything from first open to last close tag. Use \`<.*?>\` instead.
+
+## Testing Your Patterns
+
+→ Use the [Regex Tester](/regex-tester) to write and test patterns with live highlighting, capture group inspection, and match details.
+
+→ The [Regex Cheat Sheet](/regex-memo) provides a quick-reference card for the most common patterns, all in one scrollable view.`,
+  },
+  {
+    slug: 'toml-yaml-json-config-comparison',
+    toolPath: '/toml-to-json',
+    title: 'TOML vs YAML vs JSON for Config Files: A Practical Comparison',
+    description: 'Compare TOML, YAML, and JSON as configuration file formats. Covers syntax, readability, tooling support, and which to choose for different projects.',
+    keywords: ['toml vs yaml', 'toml vs json', 'yaml vs json config', 'best config file format', 'toml configuration', 'yaml configuration'],
+    category: 'Data',
+    publishedAt: '2026-05-21',
+    content: `## Why Config File Format Matters
+
+Configuration files are the interface between your software and the humans who operate it. A poor format choice creates friction: obscure syntax errors, unexpected type coercions, poor diffs in version control, and steep learning curves for new team members. The three dominant text-based config formats each solve the problem differently.
+
+## JSON
+
+JSON (JavaScript Object Notation) was designed for data interchange, not human-authored config files. It was later adopted as a config format because of its ubiquity and strict parsing rules.
+
+\`\`\`json
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "timeout": 30
+  },
+  "database": {
+    "url": "postgres://localhost/myapp",
+    "pool_size": 10
+  }
+}
+\`\`\`
+
+**Strengths:**
+- Universal tooling support — every language has a JSON parser
+- Strict and unambiguous: no type guessing, no implicit conversions
+- Great for machine-generated config (Prettier, ESLint, package.json)
+- Excellent diff readability in version control
+
+**Weaknesses:**
+- No comments — a significant pain point for config files
+- Verbose syntax (quotes on every key, commas, brackets)
+- No multi-line strings without awkward escaping
+- Trailing commas are a syntax error (though JSONC fixes this)
+
+**Best for**: npm/package.json, VS Code settings, language tooling configs, APIs where the consumer is code rather than a person.
+
+## YAML
+
+YAML (YAML Ain't Markup Language) was purpose-built for human-readable config. It prioritizes minimal punctuation and natural expression.
+
+\`\`\`yaml
+server:
+  host: 0.0.0.0
+  port: 8080
+  timeout: 30
+
+database:
+  url: postgres://localhost/myapp
+  pool_size: 10
+
+# Comments work natively
+feature_flags:
+  new_dashboard: true
+  beta_api: false
+\`\`\`
+
+**Strengths:**
+- Comments supported natively
+- Minimal punctuation — no quotes required for most strings
+- Multi-line strings with \`|\` (literal) and \`>\` (folded)
+- Anchors and aliases for DRY configs
+- Widely used in DevOps (Docker Compose, Kubernetes, GitHub Actions, Ansible)
+
+**Weaknesses:**
+- Indentation-sensitive: a stray space breaks the file
+- Type inference can surprise you: \`port: 8080\` is an integer, but \`version: 1.10\` may be parsed as \`1.1\`
+- Norwegian developer problem: \`no\` is parsed as boolean \`false\` in YAML 1.1
+- Complex features (merge keys, multiple documents) add cognitive load
+
+**Best for**: Docker Compose, Kubernetes manifests, CI/CD pipelines (GitHub Actions, GitLab CI), Ansible playbooks, Hugo/Jekyll static sites.
+
+## TOML
+
+TOML (Tom's Obvious Minimal Language) was created in 2013 by Tom Preston-Werner (GitHub co-founder) specifically to be a config format that is unambiguous, readable, and predictable.
+
+\`\`\`toml
+[server]
+host = "0.0.0.0"
+port = 8080
+timeout = 30
+
+[database]
+url = "postgres://localhost/myapp"
+pool_size = 10
+
+# Comments work natively
+[feature_flags]
+new_dashboard = true
+beta_api = false
+\`\`\`
+
+**Strengths:**
+- Explicit types: strings require quotes, numbers don't, booleans are \`true\`/\`false\`
+- No indentation-sensitivity: structure is defined by \`[section]\` headers
+- Comments supported
+- First-class date/time types: \`2026-05-21\`, \`2026-05-21T09:00:00Z\`
+- Unambiguous: no surprise type coercions
+
+**Weaknesses:**
+- Less tooling support than JSON or YAML (improving rapidly)
+- Arrays of tables have unintuitive syntax
+- Not suitable for deeply nested structures
+- Less familiar to developers who haven't used Rust or Cargo
+
+**Best for**: Rust projects (Cargo.toml), Hugo configurations, Python tools (pyproject.toml, poetry), any project that prioritizes config file correctness over ecosystem convention.
+
+## Side-by-Side Comparison
+
+| Feature | JSON | YAML | TOML |
+|---------|------|------|------|
+| Comments | ❌ | ✅ | ✅ |
+| Indentation-sensitive | ❌ | ✅ | ❌ |
+| Multi-line strings | Awkward | ✅ | ✅ |
+| Strict types | ✅ | ❌ | ✅ |
+| Arrays | ✅ | ✅ | Verbose |
+| Dates/times | ❌ | ❌ | ✅ |
+| Universal tooling | ✅ | ✅ | Growing |
+| DevOps ecosystem | Low | High | Medium |
+
+## Which Should You Choose?
+
+**Choose JSON when:**
+- The file is written by tools, not humans (package.json, .eslintrc)
+- Strict schema validation is a priority
+- You need maximum language/tooling compatibility
+
+**Choose YAML when:**
+- You're working in the Kubernetes, Docker, or GitHub Actions ecosystem
+- Your team already uses YAML and consistency matters
+- You need inline comments for documentation
+
+**Choose TOML when:**
+- You're building a Rust project (Cargo.toml is standard)
+- You want predictable type parsing without surprises
+- Your config has many settings that benefit from section headers
+
+## Converting Between Formats
+
+If you inherited a project using one format and want to migrate to another:
+
+→ [TOML to JSON](/toml-to-json) — Convert TOML configuration to JSON
+→ [TOML to YAML](/toml-to-yaml) — Convert TOML to YAML
+→ [YAML to JSON converter](/yaml-to-json-converter) — Convert YAML to JSON
+→ [YAML to TOML](/yaml-to-toml) — Convert YAML to TOML
+→ [JSON to TOML](/json-to-toml) — Convert JSON to TOML`,
+  },
+  {
+    slug: 'color-palette-generator-guide',
+    toolPath: '/color-palette-generator',
+    title: 'Color Palette Generator: Build Harmonious Color Schemes for UI Design',
+    description: 'Learn how to generate color palettes, tints, shades, and color harmonies. Covers color theory basics, accessible contrast, and practical tips for applying palettes in CSS.',
+    keywords: ['color palette generator', 'color scheme generator', 'complementary colors', 'color harmonies', 'tints and shades', 'accessible color palette', 'ui color palette'],
+    category: 'Web',
+    publishedAt: '2026-05-21',
+    content: `## Why Color Palettes Matter in UI Design
+
+A well-chosen color palette does three things simultaneously: it establishes visual hierarchy (directing the eye to what matters), communicates personality and brand, and meets accessibility standards so the interface is usable for everyone, including people with color vision deficiencies.
+
+Choosing colors by feel — clicking around a color picker until something looks right — rarely produces a palette that works across all these dimensions. Color theory gives you a systematic approach: start with one anchor color and derive the rest using geometric relationships on the color wheel.
+
+## Color Theory Fundamentals
+
+### The Color Wheel
+The modern color wheel arranges hues in a circle based on their perceptual relationships. Adjacent colors feel harmonious; opposite colors create contrast. The wheel is the foundation of every color harmony system.
+
+### Hue, Saturation, and Lightness (HSL)
+HSL is more intuitive for design work than RGB:
+- **Hue**: Position on the color wheel, 0–360°
+- **Saturation**: Intensity, 0% (gray) to 100% (vivid)
+- **Lightness**: Brightness, 0% (black) to 100% (white)
+
+To create a tint (lighter version), increase lightness. To create a shade (darker version), decrease lightness. To desaturate for a background, reduce saturation. All while keeping the same hue.
+
+## Color Harmony Schemes
+
+### Monochromatic
+One hue across a range of lightness and saturation values. Creates cohesion and sophistication. Safe choice for minimalist designs.
+
+\`\`\`
+Base: hsl(220, 80%, 50%)
+Light tint: hsl(220, 80%, 90%)
+Mid shade: hsl(220, 80%, 35%)
+Dark shade: hsl(220, 80%, 20%)
+\`\`\`
+
+### Complementary
+Two colors directly opposite on the color wheel (180° apart). High contrast — good for call-to-action buttons against backgrounds. Use one color as dominant, the other as accent.
+
+\`\`\`
+Blue hsl(220, 80%, 50%) + Orange hsl(40, 80%, 50%)
+\`\`\`
+
+### Split Complementary
+One base color plus the two colors adjacent to its complement. More nuanced than complementary — high contrast but less visually aggressive.
+
+### Analogous
+Three or more colors adjacent on the color wheel (within ~30–60°). Creates harmony and a natural feel. Common in nature-inspired designs.
+
+### Triadic
+Three colors evenly spaced (120° apart). Vibrant and balanced. Requires careful management — usually one dominant, one secondary, one accent.
+
+### Tetradic (Square)
+Four colors at 90° intervals. Rich palette but challenging to balance. Limit saturated versions to accents only.
+
+## Tints, Shades, and Tones
+
+A single hue produces a full range of usable colors:
+
+- **Tint**: Add white (increase lightness). Use for backgrounds, hover states.
+- **Shade**: Add black (decrease lightness). Use for text, borders, shadows.
+- **Tone**: Add gray (reduce saturation). Use for muted UI elements.
+
+A practical scale for a UI palette:
+
+| Step | Lightness | Use case |
+|------|-----------|----------|
+| 50 | 95% | Page background |
+| 100 | 90% | Card background |
+| 200 | 80% | Subtle border |
+| 300 | 70% | Disabled state |
+| 400 | 60% | Placeholder text |
+| 500 | 50% | Primary color |
+| 600 | 40% | Hover state |
+| 700 | 30% | Active state |
+| 800 | 20% | Heading text |
+| 900 | 10% | Body text |
+
+This approach mirrors design systems like Tailwind CSS, Material Design, and Radix UI Colors.
+
+## Accessibility: Contrast Ratios
+
+WCAG 2.1 accessibility guidelines require minimum contrast between text and background:
+
+- **AA level**: 4.5:1 for normal text, 3:1 for large text (18pt+)
+- **AAA level**: 7:1 for normal text, 4.5:1 for large text
+
+Common failure patterns:
+- Light gray text on white background (often fails at #999 on white)
+- Colored text on colored backgrounds with similar lightness
+- Icon-only buttons without sufficient contrast
+
+A quick rule: if both text and background have similar lightness values (both light or both dark), contrast will be insufficient. Aim for a lightness difference of at least 40–50 percentage points.
+
+## Applying a Palette in CSS
+
+Once you have your palette, define it as CSS custom properties at the \`:root\` level:
+
+\`\`\`css
+:root {
+  --color-primary-50:  hsl(220, 80%, 95%);
+  --color-primary-100: hsl(220, 80%, 90%);
+  --color-primary-500: hsl(220, 80%, 50%);
+  --color-primary-600: hsl(220, 80%, 40%);
+  --color-primary-900: hsl(220, 80%, 10%);
+
+  --color-accent-500:  hsl(40, 80%, 50%);
+
+  --color-neutral-100: hsl(220, 10%, 95%);
+  --color-neutral-900: hsl(220, 10%, 10%);
+}
+\`\`\`
+
+Reference these variables throughout your stylesheets. When you adjust the palette, change one value and it updates everywhere.
+
+## Dark Mode Color Palettes
+
+Dark mode isn't simply inverting your light palette. Pure black (#000000) backgrounds create harsh contrast with white text. Instead:
+
+- Use dark grays (hsl(220, 10%, 8–12%)) for backgrounds
+- Keep primary accent colors at the same hue but adjust saturation (+10%) and lightness (+10%) to compensate for the Helmholtz–Kohlrausch effect (saturated colors appear brighter on dark backgrounds)
+- Background elevations use subtle lightness increments (10%, 12%, 15%) rather than shadows
+
+## Generate Your Palette
+
+→ Use the [Color Palette Generator](/color-palette-generator) to generate tints, shades, and complementary colors from any base color. Export values in HEX, RGB, or HSL.
+
+→ The [Color Converter](/color-converter) converts between HEX, RGB, and HSL so you can use your palette values in any format your codebase requires.`,
+  },
+  {
+    slug: 'json-diff-checker-guide',
+    toolPath: '/json-diff',
+    title: 'JSON Diff: How to Compare Two JSON Objects and Find What Changed',
+    description: 'Learn how to compare JSON objects online to find added, removed, and changed keys. Covers common use cases like API response comparison, config drift detection, and debugging.',
+    keywords: ['json diff', 'compare json', 'json diff checker', 'json comparison tool', 'json diff online', 'find differences json'],
+    category: 'Development',
+    publishedAt: '2026-05-21',
+    content: `## What Is a JSON Diff?
+
+A JSON diff is a comparison between two JSON objects that identifies every key that was added, removed, or had its value changed. Unlike a text diff (which compares raw lines), a JSON diff understands structure: it matches objects by key, arrays by position (or by a key field), and reports changes at the semantic level rather than the character level.
+
+This makes JSON diff far more useful for developers than piping two JSON files into \`diff\`. A text diff would show the entire object as changed if you simply reformatted the indentation. A JSON diff ignores formatting and focuses on the data.
+
+## Why Developers Need JSON Diff
+
+### Debugging API Changes
+You made a change to a backend endpoint and need to confirm the response structure is exactly what the frontend expects. Compare the before and after responses to see what changed.
+
+### Detecting Configuration Drift
+Two environments (staging and production) should have identical configs, but something went wrong. A JSON diff instantly reveals which keys diverged and by how much.
+
+### Code Review
+A pull request changes a JSON schema, a fixture file, or a package-lock.json. A semantic diff shows meaningful changes without noise from reformatting.
+
+### Regression Testing
+Store expected API responses as JSON fixtures. After a code change, diff the new response against the fixture to catch unintended changes.
+
+### Auditing State Changes
+In Redux or similar state management patterns, log state snapshots and diff them to understand exactly what actions changed.
+
+## Types of Differences
+
+A JSON diff typically reports three types of changes:
+
+### Added Keys
+A key exists in the second (new) object but not the first (old):
+\`\`\`json
+// Old
+{ "name": "Alice", "role": "admin" }
+
+// New
+{ "name": "Alice", "role": "admin", "email": "alice@example.com" }
+
+// Diff: + "email": "alice@example.com"
+\`\`\`
+
+### Removed Keys
+A key exists in the first (old) object but not the second (new):
+\`\`\`json
+// Old
+{ "name": "Alice", "legacy_id": 12345 }
+
+// New
+{ "name": "Alice" }
+
+// Diff: - "legacy_id": 12345
+\`\`\`
+
+### Changed Values
+A key exists in both objects but the value is different:
+\`\`\`json
+// Old
+{ "status": "pending", "retries": 0 }
+
+// New
+{ "status": "complete", "retries": 3 }
+
+// Diff: ~ "status": "pending" → "complete"
+//       ~ "retries": 0 → 3
+\`\`\`
+
+## Nested Object Diffing
+
+A good JSON diff recursively compares nested objects:
+
+\`\`\`json
+// Old
+{
+  "user": {
+    "name": "Alice",
+    "address": { "city": "Paris", "country": "FR" }
+  }
+}
+
+// New
+{
+  "user": {
+    "name": "Alice",
+    "address": { "city": "Lyon", "country": "FR" }
+  }
+}
+
+// Diff: ~ user.address.city: "Paris" → "Lyon"
+\`\`\`
+
+Reporting the full path (\`user.address.city\`) rather than just the key name (\`city\`) is essential for large, deeply nested objects.
+
+## Array Diffing Challenges
+
+Arrays are harder to diff than objects because elements don't have inherent identifiers. Two strategies:
+
+### Index-Based Diffing
+Compare elements at the same array index. Simple, but sensitive to reordering: if an element is inserted at the start, everything after it appears as "changed."
+
+### Key-Based Diffing
+If array elements are objects with a known identifier field (like \`id\` or \`slug\`), match elements by that key before comparing. This correctly handles reordering, insertion, and deletion.
+
+## Practical Examples
+
+### Comparing API Responses
+\`\`\`javascript
+// Fetch before and after your change
+const before = await fetch('/api/users/1').then(r => r.json());
+// ... make your change ...
+const after = await fetch('/api/users/1').then(r => r.json());
+
+// Paste both into the JSON Diff tool to see what changed
+\`\`\`
+
+### Comparing package.json Files
+When upgrading dependencies, diffing the old and new \`package.json\` confirms which packages changed versions and which new dependencies were added.
+
+### Comparing Config Files
+Environments often store config as JSON. Diffing \`config.staging.json\` against \`config.production.json\` surfaces any values that should match but don't.
+
+## JSON Diff vs Text Diff
+
+| Feature | JSON Diff | Text Diff |
+|---------|-----------|-----------|
+| Understands structure | ✅ | ❌ |
+| Ignores formatting | ✅ | ❌ |
+| Handles key reordering | ✅ | ❌ |
+| Works without JSON knowledge | ❌ | ✅ |
+| Works on non-JSON content | ❌ | ✅ |
+| Shows path to changed key | ✅ | ❌ |
+
+For JSON content, always use a semantic JSON diff. Reserve text diff for non-structured content.
+
+## How to Read a Diff Output
+
+Standard diff notation uses symbols:
+
+- \`+\` (green): Added in new version
+- \`-\` (red): Removed from old version
+- \`~\` or no symbol (yellow): Value changed
+- No change: Key exists in both with identical values (often hidden to reduce noise)
+
+When comparing large JSON objects, use the "hide unchanged keys" option to focus only on what's different.
+
+→ Use the [JSON Diff](/json-diff) tool to paste two JSON objects side-by-side and get an instant, structured comparison highlighting every change.`,
+  },
 ];
