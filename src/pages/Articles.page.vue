@@ -5,19 +5,21 @@ import { supabase } from '../lib/supabase'
 import type { DbArticle } from '../lib/supabase'
 import { articles as localArticles } from './articles/articles.data'
 
-useHead({
-  title: '博客 - 开发者工具使用指南 | MyUtl',
+const { t } = useI18n()
+
+useHead(computed(() => ({
+  title: t('blog.metaTitle'),
   meta: [
-    { name: 'description', content: 'MyUtl 工具使用指南：深度讲解加密、编码、正则、网络、格式转换等 100+ 开发者工具的原理与实践。' },
-    { name: 'keywords', content: '开发者工具指南, 编程教程, 在线工具博客, web开发技巧' },
-    { property: 'og:title', content: '博客 - 开发者工具使用指南 | MyUtl' },
-    { property: 'og:description', content: 'MyUtl 工具使用指南：100+ 开发者工具的深度讲解。' },
+    { name: 'description', content: t('blog.metaDesc') },
+    { name: 'keywords', content: t('blog.metaKeywords') },
+    { property: 'og:title', content: t('blog.metaTitle') },
+    { property: 'og:description', content: t('blog.metaDescShort') },
     { property: 'og:url', content: 'https://myutl.com/blog' },
   ],
   link: [
     { rel: 'canonical', href: 'https://myutl.com/blog' },
   ],
-})
+})))
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const articles = ref<DbArticle[]>([])

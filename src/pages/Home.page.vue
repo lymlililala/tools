@@ -9,19 +9,19 @@ import { useToolStore } from '@/tools/tools.store';
 import { config } from '@/config';
 
 const toolStore = useToolStore();
+const { t } = useI18n();
 
-useHead({
-  title: 'MyUtl - 免费在线工具箱 | 90+ 开发者在线工具',
+useHead(computed(() => ({
+  title: t('home.metaTitle'),
   meta: [
-    { name: 'description', content: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密、URL 编码、二维码生成、计算器等开发者与日常实用工具，全部在浏览器本地运行，安全无需注册。' },
-    { property: 'og:title', content: 'MyUtl - 免费在线工具箱 | 90+ 开发者在线工具' },
-    { property: 'og:description', content: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密等开发者工具。' },
+    { name: 'description', content: t('home.metaDesc') },
+    { property: 'og:title', content: t('home.metaTitle') },
+    { property: 'og:description', content: t('home.metaDescShort') },
   ],
   link: [
     { rel: 'canonical', href: 'https://myutl.com/' },
   ],
-});
-const { t } = useI18n();
+})));
 
 const favoriteTools = computed(() => toolStore.favoriteTools);
 
@@ -36,10 +36,10 @@ function onUpdateFavoriteTools() {
     <!-- SEO H1/H2 -->
     <div class="seo-hero">
       <h1 class="seo-h1">
-        MyUtl — 免费在线工具箱
+        {{ $t('home.heroTitle') }}
       </h1>
       <p class="seo-h2">
-        90+ 开发者工具，全部免费、安全、无需注册，直接在浏览器中运行
+        {{ $t('home.heroSubtitle') }}
       </p>
     </div>
 
