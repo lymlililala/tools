@@ -1,7 +1,7 @@
-# SPA 已知路由：返回 index.html（200）
+# 首页：使用预渲染版本（含唯一 SEO meta）
 [[redirects]]
   from = "/"
-  to = "/index.html"
+  to = "/prerender-home/index.html"
   status = 200
 
 [[redirects]]

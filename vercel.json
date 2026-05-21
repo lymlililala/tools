@@ -21,19 +21,19 @@
       "dest": "/assets/$1"
     },
     {
-      "src": "/(.*\\.(ico|png|svg|webp|jpg|jpeg|gif|webmanifest|json|txt|xml|css|js|woff|woff2|ttf|eot)$)",
+      "src": "/(.*\\.(ico|png|svg|webp|jpg|jpeg|gif|webmanifest|txt|xml|css|js|woff|woff2|ttf|eot)$)",
       "dest": "/$1"
     },
     {
       "src": "^/$",
-      "dest": "/index.html"
+      "dest": "/prerender-home/index.html"
     },
     {
-      "src": "^/(blog|about|articles)/?$",
-      "dest": "/index.html"
+      "src": "^/blog/?$",
+      "dest": "/blog/index.html"
     },
     {
-      "src": "^/(blog|articles)/([^/]+)/?$",
+      "src": "^/(blog|about)/([^/]+)/?$",
       "dest": "/index.html"
     },
     {

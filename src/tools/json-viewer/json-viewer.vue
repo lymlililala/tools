@@ -364,7 +364,7 @@ function downloadJson() {
   // 让编辑器高度自适应，最小 360px，桌面端占满剩余视口高度
   :deep(.editor-wrap) {
     min-height: 360px;
-    height: calc(100vh - 340px);
+    height: calc(100vh - 218px);
     max-height: 800px;
   }
 
