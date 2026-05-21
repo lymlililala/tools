@@ -43,7 +43,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 </script>
 
 <template>
-  <div class="b64-layout">
+  <div class="b64-layout tool-wide">
     <!-- ① 左侧：编码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" title="String → Base64">
       <!-- URL Safe 开关 -->

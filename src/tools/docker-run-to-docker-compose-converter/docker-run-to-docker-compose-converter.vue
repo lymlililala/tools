@@ -63,7 +63,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 </script>
 
 <template>
-  <div class="converter-root">
+  <div class="converter-root tool-wide">
     <!-- ── 双面板 ───────────────────────────────────────────── -->
     <div class="panes">
       <!-- 输入面板 -->
@@ -313,9 +313,9 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 
 .docker-textarea {
   width: 100%;
-  min-height: 130px;
-  height: calc(100vh - 420px);
-  max-height: 400px;
+  min-height: 300px;
+  height: calc(100vh - 320px);
+  max-height: 720px;
   padding: 14px;
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 13px;
@@ -346,9 +346,9 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 /* ── 输出编辑器高度 ───────────────────────────────────────────── */
 .code-editor {
   :deep(.editor-wrap) {
-    min-height: 130px;
-    height: calc(100vh - 420px);
-    max-height: 400px;
+    min-height: 300px;
+    height: calc(100vh - 320px);
+    max-height: 720px;
   }
 }
 

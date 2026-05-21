@@ -76,7 +76,7 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
 </script>
 
 <template>
-  <div class="atd-wrapper">
+  <div class="atd-wrapper tool-wide">
     <c-card class="atd-card">
       <!-- 输入区 -->
       <div class="field-block">

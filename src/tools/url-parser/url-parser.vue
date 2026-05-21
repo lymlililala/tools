@@ -114,7 +114,7 @@ async function copyField(key: string, value: string) {
 </script>
 
 <template>
-  <div class="url-parser" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="url-parser tool-wide" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ① 输入区 -->
     <c-card mb-4>
       <div class="input-header">

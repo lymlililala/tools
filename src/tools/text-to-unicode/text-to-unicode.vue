@@ -78,7 +78,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
 </script>
 
 <template>
-  <div class="ttu-wrap">
+  <div class="ttu-wrap tool-wide">
     <!-- 工具栏：格式选择 -->
     <div class="toolbar">
       <span class="toolbar-label">Output format:</span>

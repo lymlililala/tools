@@ -88,7 +88,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
 </script>
 
 <template>
-  <div class="url-encoder-wrap">
+  <div class="url-encoder-wrap tool-wide">
     <!-- 工具栏 -->
     <div class="toolbar">
       <div class="direction-hint">

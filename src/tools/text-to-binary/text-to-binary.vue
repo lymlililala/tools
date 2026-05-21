@@ -81,7 +81,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
 </script>
 
 <template>
-  <div class="ttb-wrap">
+  <div class="ttb-wrap tool-wide">
     <!-- 顶部工具栏：字节分隔符开关 -->
     <div class="toolbar">
       <label class="switch-label">
