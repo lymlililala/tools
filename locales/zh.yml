@@ -381,8 +381,8 @@ tools:
     faq1a: '格式化的 SQL 更易于阅读、调试和维护。统一的缩进和大写规范帮助更快发现错误。'
     faq2q: '支持哪些 SQL 方言？'
     faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
-title: SQL 格式化
-description: 在线格式化您的 SQL 查询，支持多种 SQL 方言。
+    title: SQL 格式化
+    description: 在线格式化您的 SQL 查询，支持多种 SQL 方言。
     dialect: 方言
     keywordCase: 关键字大小写
     preserve: 保持原样
@@ -579,8 +579,8 @@ description: 在线格式化您的 SQL 查询，支持多种 SQL 方言。
     faq1a: 'YAML 格式化以统一的缩进和间距重新排版 YAML，使其更易于阅读和比较。'
     faq2q: '格式化会改变 YAML 的值吗？'
     faq2a: '不会。格式化只改变空白和格式，数据值和结构保持完全不变。'
-title: YAML 格式化
-description: 将 YAML 字符串格式化为整洁易读的形式。
+    title: YAML 格式化
+    description: 将 YAML 字符串格式化为整洁易读的形式。
 
   eta-calculator:
     step1: '步骤 1：输入要处理的项目总数。'
@@ -826,8 +826,8 @@ description: 将 YAML 字符串格式化为整洁易读的形式。
     description: 转义或unescape html实体（将<、>、&、“和\'替换为其html版本）
 
   json-prettify:
-title: JSON 格式化
-description: 将 JSON 字符串格式化为整洁易读的形式。
+    title: JSON 格式化
+    description: 将 JSON 字符串格式化为整洁易读的形式。
     step1: 第一步：将原始 JSON 文本粘贴到左侧输入框。
     step2: 第二步：根据需要调整缩进大小和键排序选项。
     step3: 第三步：格式化结果显示在右侧，点击复制按钮即可复制。
@@ -971,8 +971,8 @@ description: 将 JSON 字符串格式化为整洁易读的形式。
     faq1a: 'XML（可扩展标记语言）是用于存储和传输结构化数据的灵活标记语言。与 HTML 不同，XML 标签由用户自定义。'
     faq2q: 'XML 和 JSON 有什么区别？'
     faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
-title: XML 格式化
-description: 将 XML 字符串格式化为整洁易读的形式。
+    title: XML 格式化
+    description: 将 XML 字符串格式化为整洁易读的形式。
     rawXml: 原始 XML
     formattedResult: 格式化结果
     collapseContent: 折叠内容
