@@ -233,6 +233,10 @@ const tools = computed<ToolCategory[]>(() => [
 .page-content {
   flex: 1;
   overflow-y: auto;
-  padding: 24px 26px;
+  padding: 0 20px 32px;
+
+  @media (max-width: 768px) {
+    padding: 0 12px 24px;
+  }
 }
 </style>

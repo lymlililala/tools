@@ -121,21 +121,16 @@ const howToSteps = computed(() => {
 
 <template>
   <BaseLayout>
-    <div class="tool-layout">
+    <!-- 工具标题区 -->
+    <div class="tool-header-wrap">
       <div class="tool-header">
-        <div flex flex-nowrap items-center justify-between>
-          <n-h1>
+        <div class="tool-header-top">
+          <h1 class="tool-title">
             {{ toolTitle }}
-          </n-h1>
-
-          <div>
-            <FavoriteButton :tool="{ name: route.meta.name, path: route.path } as Tool" />
-          </div>
+          </h1>
+          <FavoriteButton :tool="{ name: route.meta.name, path: route.path } as Tool" />
         </div>
-
-        <div class="separator" />
-
-        <div class="description">
+        <div class="tool-description">
           {{ toolDescription }}
         </div>
       </div>
@@ -183,23 +178,64 @@ const howToSteps = computed(() => {
 </template>
 
 <style lang="less" scoped>
+// ── 标题区 ────────────────────────────────────────────────────────────────
+.tool-header-wrap {
+  width: 100%;
+}
+
+.tool-header {
+  max-width: 720px;
+  padding: 24px 0 20px;
+
+  @media (max-width: 768px) {
+    padding: 16px 0 14px;
+  }
+}
+
+.tool-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tool-title {
+  font-size: 28px;
+  font-weight: 600;
+  opacity: 0.88;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.tool-description {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  opacity: 0.55;
+  line-height: 1.6;
+}
+
 // ── 工具内容区 ────────────────────────────────────────────────────────────
-// 默认：居中，子元素最宽 600px（适合表单类工具）
-// 全宽模式（子元素带 .tool-wide 时）：撑满可用宽度
+// 默认：子元素最宽 600px 居中（表单类工具）
+// 全宽：子元素带 .tool-wide 时撑满（双面板编辑器等）
 .tool-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 
-  // 默认子元素宽度：最宽 600px（窄工具）
+  // 默认子元素：最宽 600px
   ::v-deep(& > *:not(.tool-wide)) {
     width: 100%;
     max-width: 600px;
     box-sizing: border-box;
   }
 
-  // 全宽子元素：撑满可用宽度（双面板编辑器等）
+  // 全宽子元素
   ::v-deep(& > .tool-wide) {
     width: 100%;
     max-width: 100%;
@@ -207,59 +243,27 @@ const howToSteps = computed(() => {
   }
 }
 
-// ── 工具标题区 ────────────────────────────────────────────────────────────
-.tool-layout {
-  width: 100%;
-  box-sizing: border-box;
-
-  .tool-header {
-    max-width: 760px;
-    padding: 36px 0 28px;
-    width: 100%;
-
-    .n-h1 {
-      opacity: 0.9;
-      font-size: 38px;
-      font-weight: 400;
-      margin: 0;
-      line-height: 1;
-    }
-
-    .separator {
-      width: 200px;
-      height: 2px;
-      background: rgb(161, 161, 161);
-      opacity: 0.2;
-      margin: 10px 0;
-    }
-
-    .description {
-      margin: 0;
-      opacity: 0.7;
-    }
-  }
-}
-
+// ── SEO 区 ───────────────────────────────────────────────────────────────
 .seo-section {
-  max-width: 860px;
+  max-width: 800px;
   width: 100%;
-  margin: 48px auto 0;
-  padding: 0 4px;
+  margin: 40px 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
 }
 
 .seo-block {
   border-top: 1px solid var(--n-border-color, #e8e8e8);
-  padding-top: 24px;
+  padding-top: 20px;
 }
 
 .seo-heading {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  margin: 0 0 16px;
-  opacity: 0.85;
+  margin: 0 0 12px;
+  opacity: 0.8;
 }
 
 .how-to-list {
@@ -267,14 +271,14 @@ const howToSteps = computed(() => {
   margin: 0;
 
   li {
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
     line-height: 1.7;
-    opacity: 0.8;
+    opacity: 0.75;
   }
 }
 
 .faq-list {
-  font-size: 14px;
+  font-size: 13.5px;
 }
 </style>

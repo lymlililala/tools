@@ -319,7 +319,7 @@ function downloadSQL() {
 .code-editor {
   :deep(.editor-wrap) {
     min-height: 320px;
-    height: calc(100vh - 320px);
+    height: calc(100vh - 218px);
     max-height: 760px;
   }
 

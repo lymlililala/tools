@@ -314,8 +314,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 .docker-textarea {
   width: 100%;
   min-height: 300px;
-  height: calc(100vh - 320px);
-  max-height: 720px;
+  height: calc(100vh - 218px);
   padding: 14px;
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 13px;
@@ -347,8 +346,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 .code-editor {
   :deep(.editor-wrap) {
     min-height: 300px;
-    height: calc(100vh - 320px);
-    max-height: 720px;
+    height: calc(100vh - 218px);
   }
 }
 
