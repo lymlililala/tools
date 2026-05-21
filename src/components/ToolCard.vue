@@ -58,8 +58,8 @@ const styleStore = useStyleStore();
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 120px;
-  padding: 16px 18px;
+  min-height: 112px;
+  padding: 14px 16px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.07);
   background: #ffffff;
@@ -126,7 +126,7 @@ const styleStore = useStyleStore();
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .card-icon {
