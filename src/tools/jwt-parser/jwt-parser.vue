@@ -338,8 +338,7 @@ const COLORS = {
 
 <style lang="less" scoped>
 .jwt-container {
-  max-width: 860px;
-  margin: 0 auto;
+  max-width: 900px;
 }
 
 // ── 输入区 ────────────────────────────────────────────────────────────────

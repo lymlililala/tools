@@ -321,8 +321,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
   display: flex;
   align-items: flex-start;
   gap: 32px;
-  max-width: 960px;
-  margin: 0 auto;
 }
 
 /* ─── TOC ────────────────────────────────────────────────────── */

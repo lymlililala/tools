@@ -273,8 +273,7 @@ async function copyField(key: string, value: string) {
 
 <style lang="less" scoped>
 .url-parser {
-  max-width: 760px;
-  margin: 0 auto;
+  max-width: 900px;
 }
 
 // ── 输入区 ────────────────────────────────────────────────────────────────
