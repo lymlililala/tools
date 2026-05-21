@@ -3239,7 +3239,7 @@ Invest time in meta tags — they're the first thing both search engines and hum
   // ─── Development ──────────────────────────────────────────────
   {
     slug: 'json-prettify-and-validate',
-    toolPath: '/json-prettify',
+    toolPath: '/json-format',
     title: 'How to Format and Validate JSON: A Developer\'s Guide',
     description: 'Learn to format, validate, and debug JSON. Understand common JSON errors and best practices.',
     keywords: ['JSON formatter', 'JSON validator', 'format JSON online', 'JSON pretty print', 'JSON syntax error'],
@@ -3366,7 +3366,7 @@ For large JSON files (>100MB), streaming parsers avoid loading the entire file i
 
 Paste any JSON text to instantly validate it and detect errors with specific line/column numbers. The tool pretty-prints valid JSON with configurable indentation (2 spaces, 4 spaces, or tabs) and highlights any syntax errors.
 
--> Try the [JSON Formatter & Validator](/json-prettify)`,
+-> Try the [JSON Formatter & Validator](/json-format)`,
   },
   {
     slug: 'chmod-calculator-guide',
@@ -3673,7 +3673,7 @@ Paste a \`docker run\` command to instantly get the equivalent Docker Compose YA
   },
   {
     slug: 'sql-prettify-guide',
-    toolPath: '/sql-prettify',
+    toolPath: '/sql-format',
     title: 'How to Format SQL Queries for Better Readability',
     description: 'Learn SQL formatting best practices and use our formatter to clean up messy queries.',
     keywords: ['SQL formatter', 'SQL prettify', 'format SQL online', 'SQL beautifier'],
@@ -3806,7 +3806,7 @@ This tool formats SQL for standard SQL, PostgreSQL, MySQL, and SQL Server dialec
 
 Paste any SQL query to instantly format it with proper indentation, keyword casing, and spacing. Supports all major SQL dialects and handles complex queries including subqueries, CTEs, window functions, and stored procedures.
 
--> Try the [SQL Prettify Tool](/sql-prettify)`,
+-> Try the [SQL Prettify Tool](/sql-format)`,
   },
   {
     slug: 'git-memo-common-commands',
@@ -4101,7 +4101,7 @@ Paste two JSON documents in the side-by-side editor. The tool:
   },
   {
     slug: 'xml-formatter-guide',
-    toolPath: '/xml-formatter',
+    toolPath: '/xml-format',
     title: 'XML Formatter: How to Pretty-Print and Validate XML',
     description: 'Format and validate XML documents. Learn XML structure, namespaces, and common parsing errors.',
     keywords: ['XML formatter', 'XML validator', 'pretty print XML', 'XML online', 'XML beautifier'],
@@ -4220,11 +4220,11 @@ count(/library/book)                  # Count all books
 
 Paste any XML document to instantly format and prettify it with proper indentation and syntax highlighting. The tool also validates XML syntax and reports specific errors with line numbers.
 
--> Try the [XML Formatter](/xml-formatter)`,
+-> Try the [XML Formatter](/xml-format)`,
   },
   {
     slug: 'yaml-viewer-guide',
-    toolPath: '/yaml-prettify',
+    toolPath: '/yaml-format',
     title: 'YAML Viewer and Formatter: Validate and Pretty-Print YAML',
     description: 'Format and validate YAML files. Learn YAML syntax, common errors, and best practices.',
     keywords: ['YAML formatter', 'YAML validator', 'YAML viewer', 'pretty print YAML', 'YAML syntax'],
@@ -10442,7 +10442,7 @@ Use it for converting API responses from legacy SOAP or XML services, transformi
   // ─── DB-only articles (synced from Supabase) ──────────────────────────────
   {
     slug: 'sql-formatter-guide',
-    toolPath: '/sql-prettify',
+    toolPath: '/sql-format',
     title: 'How to Format SQL Queries for Better Readability',
     description: 'Learn SQL formatting best practices and use our formatter to clean up messy queries.',
     keywords: ["SQL formatter","SQL prettify","format SQL online","SQL beautifier"],
@@ -11555,7 +11555,7 @@ Use it when migrating from manual Docker commands to a managed Compose workflow,
   },
   {
     slug: 'json-formatter-guide',
-    toolPath: '/json-prettify',
+    toolPath: '/json-format',
     title: 'How to Format and Validate JSON: A Developer\'s Guide',
     description: 'Learn to format, validate, and debug JSON. Understand common JSON errors and best practices.',
     keywords: ["JSON formatter","JSON validator","format JSON online","JSON pretty print","JSON syntax error"],
@@ -12431,9 +12431,9 @@ Notice that YAML is 5 lines vs JSON's 7 vs XML's 8 for the same data. At scale, 
 |------|------|
 | Convert JSON to YAML | [JSON to YAML Converter](/json-to-yaml-converter) |
 | Convert XML to JSON | [XML to JSON Converter](/xml-to-json) |
-| Format and validate JSON | [JSON Formatter](/json-prettify) |
-| Format and validate XML | [XML Formatter](/xml-formatter) |
-| View and explore YAML | [YAML Viewer](/yaml-prettify) |
+| Format and validate JSON | [JSON Formatter](/json-format) |
+| Format and validate XML | [XML Formatter](/xml-format) |
+| View and explore YAML | [YAML Viewer](/yaml-format) |
 
 → Use the [JSON to YAML Converter](/json-to-yaml-converter) to switch between formats instantly without rewriting by hand.`,
   },
