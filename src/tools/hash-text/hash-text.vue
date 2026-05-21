@@ -61,7 +61,7 @@ async function copyHash(algo: AlgoNames) {
 </script>
 
 <template>
-  <div>
+  <div class="tool-wide hash-tool">
     <c-card>
       <!-- ① 输入框 + 清空按钮 -->
       <div class="input-wrapper-outer">

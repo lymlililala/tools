@@ -92,7 +92,7 @@ async function copyHtml() {
           v-model="inputMarkdown"
           language="markdown"
           placeholder="Paste or type your Markdown here…&#10;&#10;# Hello World&#10;**bold**, _italic_, `code`"
-          min-height="480px"
+          min-height="calc(100vh - 236px)"
         />
       </div>
 
@@ -159,12 +159,12 @@ async function copyHtml() {
           :model-value="outputHtml"
           language="xml"
           placeholder="Converted HTML will appear here…"
-          min-height="480px"
+          min-height="calc(100vh - 236px)"
           readonly
         />
 
         <!-- 渲染预览 -->
-        <div v-else class="preview-pane" style="min-height:480px">
+        <div v-else class="preview-pane" style="min-height:calc(100vh - 236px)">
           <div v-if="!hasOutput" class="preview-empty">
             <icon-mdi-eye-off-outline class="pe-icon" />
             <span>No content yet — start typing on the left</span>
@@ -358,7 +358,7 @@ async function copyHtml() {
 
 .preview-empty {
   height: 100%;
-  min-height: 440px;
+  min-height: calc(100vh - 236px);
   display: flex;
   flex-direction: column;
   align-items: center;

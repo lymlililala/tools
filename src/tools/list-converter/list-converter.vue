@@ -356,7 +356,7 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
 // ── 文本域 ────────────────────────────────────────────────────────────────
 .io-textarea {
   flex: 1;
-  min-height: 340px;
+  min-height: calc(100vh - 260px);
   width: 100%;
   padding: 12px 14px;
   font-family: 'SF Mono', 'Fira Code', monospace;

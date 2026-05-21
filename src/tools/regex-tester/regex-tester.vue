@@ -494,7 +494,7 @@ watchEffect(async () => {
 .editor-wrap {
   position: relative;
   flex: 1;
-  min-height: 220px;
+  min-height: calc(100vh - 340px);
 }
 
 .highlight-layer,

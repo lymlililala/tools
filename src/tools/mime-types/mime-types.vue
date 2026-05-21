@@ -52,7 +52,7 @@ watch(tableSearch, () => { currentPage.value = 1; });
 </script>
 
 <template>
-  <div class="mime-wrap">
+  <div class="tool-wide mime-wrap">
     <!-- ① 双卡片转换区 -->
     <div class="cards-grid">
       <!-- Mime → Extension -->

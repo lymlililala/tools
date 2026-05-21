@@ -143,7 +143,7 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
           language="json"
           placeholder="Paste your first JSON here…&#10;&#10;{&#10;  &quot;name&quot;: &quot;Tom&quot;,&#10;  &quot;age&quot;: 25&#10;}"
           :class="{ 'input-error-ring': !!leftError }"
-          min-height="380px"
+          min-height="calc(100vh - 218px)"
         />
         <transition name="err-slide">
           <div v-if="leftError" class="error-inline">
@@ -169,7 +169,7 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
           language="json"
           placeholder="Paste the JSON to compare here…&#10;&#10;{&#10;  &quot;name&quot;: &quot;Tom&quot;,&#10;  &quot;age&quot;: 26&#10;}"
           :class="{ 'input-error-ring': !!rightError }"
-          min-height="380px"
+          min-height="calc(100vh - 218px)"
         />
         <transition name="err-slide">
           <div v-if="rightError" class="error-inline">
