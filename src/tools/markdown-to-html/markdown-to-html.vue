@@ -53,7 +53,7 @@ async function copyHtml() {
 </script>
 
 <template>
-  <div class="md-html-wrap">
+  <div class="md-html-wrap tool-wide">
     <!-- 选项栏 -->
     <div class="settings-bar">
       <label class="setting-item">

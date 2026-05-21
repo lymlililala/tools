@@ -80,6 +80,7 @@ function downloadXml() {
 </script>
 
 <template>
+  <div class="tool-wide">
   <!-- ── 配置工具栏 ────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
@@ -192,6 +193,7 @@ function downloadXml() {
         readonly
       />
     </div>
+  </div>
   </div>
 </template>
 

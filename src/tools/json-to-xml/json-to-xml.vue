@@ -107,7 +107,7 @@ async function copyXml() {
 </script>
 
 <template>
-  <div class="json-xml-wrap">
+  <div class="json-xml-wrap tool-wide">
     <!-- 设置栏 -->
     <div class="settings-bar">
       <label class="setting-item">

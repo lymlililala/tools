@@ -59,7 +59,7 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
 </script>
 
 <template>
-  <div class="json-diff-wrap" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="json-diff-wrap tool-wide" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ── 中间操作工具栏 ───────────────────────────────────────────── -->
     <div class="toolbar">
       <div class="toolbar-left">

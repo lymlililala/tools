@@ -135,7 +135,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div class="rt-root">
+  <div class="rt-root tool-wide">
     <!-- ── 顶部：正则输入行 ──────────────────────────────── -->
     <div class="regex-row" :class="{ 'regex-row--error': !!regexError }">
       <span class="regex-slash">/</span>

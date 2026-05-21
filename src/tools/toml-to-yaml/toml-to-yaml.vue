@@ -35,7 +35,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="toml-yaml-wrap">
+  <div class="toml-yaml-wrap tool-wide">
     <div class="editor-grid">
       <!-- 左：TOML 输入 -->
       <div class="pane">

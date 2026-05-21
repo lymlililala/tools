@@ -96,6 +96,7 @@ function downloadSQL() {
 </script>
 
 <template>
+  <div class="tool-wide">
   <!-- ── 配置栏 ────────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
@@ -191,6 +192,7 @@ function downloadSQL() {
         readonly
       />
     </div>
+  </div>
   </div>
 </template>
 

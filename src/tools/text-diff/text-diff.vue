@@ -34,7 +34,7 @@ function swapTexts() {
 </script>
 
 <template>
-  <div class="td-wrapper">
+  <div class="td-wrapper tool-wide">
     <!-- 工具栏 -->
     <div class="td-toolbar">
       <div class="toolbar-left">

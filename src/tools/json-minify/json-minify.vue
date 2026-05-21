@@ -79,7 +79,7 @@ const compressionRatio = computed(() => {
 
 <template>
   <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="json-panes">
+  <div class="json-panes tool-wide">
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">

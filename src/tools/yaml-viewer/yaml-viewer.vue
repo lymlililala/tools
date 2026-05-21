@@ -72,6 +72,7 @@ function downloadYaml() {
 </script>
 
 <template>
+  <div class="tool-wide">
   <!-- ── 配置工具栏 ─────────────────────────────────────────── -->
   <div class="toolbar">
     <div class="toolbar-item">
@@ -180,6 +181,7 @@ function downloadYaml() {
         readonly
       />
     </div>
+  </div>
   </div>
 </template>
 
