@@ -139,6 +139,7 @@ async function copyCode(code: number, name: string) {
       :key="category"
       :id="categoryId(category)"
       class="category-section"
+      :class="{ 'category-section--grid': codes.length > 2 }"
     >
       <!-- 分类标题 -->
       <div
@@ -158,7 +159,8 @@ async function copyCode(code: number, name: string) {
         {{ category }}
       </div>
 
-      <!-- 状态码卡片 -->
+      <!-- 状态码卡片（双列网格） -->
+      <div class="cards-grid">
       <div
         v-for="{ code, description, name, type } of codes"
         :key="code"
@@ -194,6 +196,7 @@ async function copyCode(code: number, name: string) {
           <icon-mdi-content-copy v-else class="copy-icon" />
         </div>
       </div>
+      </div><!-- /cards-grid -->
     </div>
 
     <!-- ── 回到顶部悬浮按钮 ───────────────────────────────────────────── -->
@@ -207,8 +210,6 @@ async function copyCode(code: number, name: string) {
 
 <style lang="less" scoped>
 .http-wrap {
-  max-width: 760px;
-  margin: 0 auto;
   position: relative;
 }
 
@@ -332,8 +333,19 @@ async function copyCode(code: number, name: string) {
 
 // ── 分类区 ────────────────────────────────────────────────────────────────
 .category-section {
-  margin-bottom: 32px;
-  scroll-margin-top: 70px;  // 留出 sticky 搜索栏的高度
+  margin-bottom: 28px;
+  scroll-margin-top: 70px;
+}
+
+// 双列网格容器
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .category-heading {
@@ -367,7 +379,6 @@ async function copyCode(code: number, name: string) {
   padding: 12px 16px;
   border-radius: 10px;
   border: 1px solid;
-  margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
 

@@ -15,8 +15,10 @@ const styleStore = useStyleStore();
     <div class="tool-card" :class="{ 'tool-card--dark': styleStore.isDarkTheme }">
       <!-- 顶部：图标 + 标签区 -->
       <div class="card-top">
-        <div class="card-icon">
-          <n-icon size="26" :component="tool.icon" />
+        <div class="card-icon-wrap">
+          <div class="card-icon">
+            <n-icon size="20" :component="tool.icon" />
+          </div>
         </div>
 
         <div class="card-badges">
@@ -62,46 +64,46 @@ const styleStore = useStyleStore();
   padding: 14px 16px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.07);
-  background: #ffffff;
+  background: #fafafa;
   cursor: pointer;
   overflow: hidden;
   transition:
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    background: #fff;
     box-shadow:
-      0 8px 24px rgba(99, 102, 241, 0.12),
-      0 2px 8px rgba(0, 0, 0, 0.06);
-    border-color: rgba(99, 102, 241, 0.3);
+      0 6px 20px rgba(99, 102, 241, 0.1),
+      0 2px 6px rgba(0, 0, 0, 0.05);
+    border-color: rgba(99, 102, 241, 0.28);
 
-    .card-glow {
-      opacity: 1;
-    }
-
-    .card-icon {
-      color: v-bind('theme.primaryColor');
-    }
+    .card-glow { opacity: 1; }
+    .card-icon-wrap { background: rgba(99, 102, 241, 0.12); }
+    .card-icon { color: v-bind('theme.primaryColor'); }
   }
 
   // 深色模式
   &.tool-card--dark {
-    background: #1a1d27;
+    background: rgba(255, 255, 255, 0.03);
     border-color: rgba(255, 255, 255, 0.07);
 
     &:hover {
+      background: rgba(255, 255, 255, 0.06);
       box-shadow:
-        0 8px 32px rgba(129, 140, 248, 0.18),
-        0 0 0 1px rgba(129, 140, 248, 0.25);
-      border-color: rgba(129, 140, 248, 0.35);
+        0 6px 24px rgba(129, 140, 248, 0.14),
+        0 0 0 1px rgba(129, 140, 248, 0.2);
+      border-color: rgba(129, 140, 248, 0.3);
 
+      .card-icon-wrap { background: rgba(129, 140, 248, 0.14); }
       .card-glow {
         background: radial-gradient(
-          ellipse at 50% -20%,
-          rgba(129, 140, 248, 0.14) 0%,
-          transparent 70%
+          ellipse at 50% -10%,
+          rgba(129, 140, 248, 0.12) 0%,
+          transparent 65%
         );
       }
     }
@@ -114,11 +116,11 @@ const styleStore = useStyleStore();
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
   background: radial-gradient(
-    ellipse at 50% -20%,
-    rgba(99, 102, 241, 0.08) 0%,
-    transparent 70%
+    ellipse at 50% -10%,
+    rgba(99, 102, 241, 0.06) 0%,
+    transparent 65%
   );
 }
 
@@ -126,54 +128,71 @@ const styleStore = useStyleStore();
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
+}
+
+// Icon 背景包装器
+.card-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.18s ease;
+
+  .tool-card--dark & {
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
 .card-icon {
-  color: v-bind('theme.textColor3');
-  transition: color 0.2s ease;
-  flex-shrink: 0;
+  color: v-bind('theme.textColor2');
+  transition: color 0.18s ease;
+  display: flex;
+  align-items: center;
 }
 
 .card-badges {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  margin-top: 2px;
 }
 
 // 胶囊 "New" 标签
 .badge-new {
   display: inline-flex;
   align-items: center;
-  height: 20px;
-  padding: 0 8px;
+  height: 18px;
+  padding: 0 7px;
   border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   background: rgba(99, 102, 241, 0.1);
   color: v-bind('theme.primaryColor');
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.18);
   white-space: nowrap;
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: v-bind('theme.textColor1');
-  margin-bottom: 5px;
-  line-height: 1.4;
-  // 单行截断
+  margin-bottom: 4px;
+  line-height: 1.35;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .card-desc {
-  font-size: 12.5px;
+  font-size: 12px;
   color: v-bind('theme.textColor3');
   line-height: 1.5;
-  // 最多两行
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
