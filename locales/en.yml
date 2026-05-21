@@ -381,8 +381,8 @@ tools:
     faq1a: 'Formatted SQL is easier to read, debug, and maintain. Consistent indentation helps spot errors faster.'
     faq2q: 'What SQL dialects are supported?'
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
-    title: SQL prettify and format
-    description: Format and prettify your SQL queries online (it supports various SQL dialects).
+title: SQL formatter
+description: Format your SQL queries online with support for various SQL dialects.
     dialect: Dialect
     keywordCase: Keyword Case
     preserve: Preserve
@@ -565,8 +565,8 @@ tools:
     faq1a: 'YAML prettify re-formats YAML with consistent indentation and spacing making it easier to read.'
     faq2q: 'Will prettifying change my YAML values?'
     faq2a: 'No. Prettifying only changes whitespace and formatting. The data values and structure remain identical.'
-    title: YAML prettify and format
-    description: Prettify your YAML string into a friendly, human-readable format.
+title: YAML formatter
+description: Format your YAML string into a clean, human-readable layout.
 
   eta-calculator:
     step1: 'Step 1: Enter the total number of items to process.'
@@ -807,8 +807,8 @@ tools:
     description: Escape or unescape HTML entities (replace characters like <,>, &, " and \' with their HTML version)
 
   json-prettify:
-    title: JSON prettify and format
-    description: Prettify your JSON string into a friendly, human-readable format.
+title: JSON formatter
+description: Format your JSON string into a clean, human-readable layout.
     step1: 'Step 1: Paste your raw JSON text into the left input box.'
     step2: 'Step 2: Adjust indent size and sort keys options as needed.'
     step3: 'Step 3: The formatted result appears on the right. Click the copy button to copy it.'
@@ -952,8 +952,8 @@ tools:
     faq1a: 'XML (Extensible Markup Language) is a flexible markup language for storing and transporting structured data.'
     faq2q: 'What is the difference between XML and JSON?'
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
-    title: XML formatter
-    description: Prettify your XML string into a friendly, human-readable format.
+title: XML formatter
+description: Format your XML string into a clean, human-readable layout.
     rawXml: Raw XML
     formattedResult: Formatted Result
     collapseContent: Collapse Content

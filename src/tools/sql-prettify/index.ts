@@ -4,7 +4,7 @@ import { translate } from '@/plugins/i18n.plugin';
 
 export const tool = defineTool({
   name: translate('tools.sql-prettify.title'),
-  path: '/sql-prettify',
+  path: '/sql-format',
   description: translate('tools.sql-prettify.description'),
   keywords: [
     'sql',
@@ -24,4 +24,5 @@ export const tool = defineTool({
   ],
   component: () => import('./sql-prettify.vue'),
   icon: Database,
+  redirectFrom: ['/sql-prettify'],
 });
