@@ -32,85 +32,161 @@ function onUpdateFavoriteTools() {
 </script>
 
 <template>
-  <div class="pt-50px">
-    <!-- SEO H1/H2 - visually styled but semantically present -->
+  <div class="home-page">
+    <!-- SEO H1/H2 -->
     <div class="seo-hero">
       <h1 class="seo-h1">
         MyUtl — 免费在线工具箱
       </h1>
-      <h2 class="seo-h2">
+      <p class="seo-h2">
         90+ 开发者工具，全部免费、安全、无需注册，直接在浏览器中运行
-      </h2>
+      </p>
     </div>
-    <div class="grid-wrapper">
-      <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
-        <ColoredCard v-if="config.showBanner" :title="$t('home.follow.title')" :icon="IconHeart">
-          {{ $t('home.follow.p1') }}
-          <a
-            href="https://github.com/CorentinTh/it-tools"
-            rel="noopener"
-            target="_blank"
-            :aria-label="$t('home.follow.githubRepository')"
-          >GitHub</a>
-          {{ $t('home.follow.p2') }}
-          <a
-            href="https://x.com/ittoolsdottech"
-            rel="noopener"
-            target="_blank"
-            :aria-label="$t('home.follow.twitterXAccount')"
-          >X</a>.
-          {{ $t('home.follow.thankYou') }}
-          <n-icon :component="IconHeart" />
-        </ColoredCard>
-      </div>
 
-      <transition name="height">
-        <div v-if="toolStore.favoriteTools.length > 0">
-          <h3 class="mb-5px mt-25px text-neutral-400 font-500">
-            {{ $t('home.categories.favoriteTools') }}
-            <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
-              <n-icon :component="IconDragDrop" size="18" />
-            </c-tooltip>
-          </h3>
-          <Draggable
-            :list="favoriteTools"
-            class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4"
-            ghost-class="ghost-favorites-draggable"
-            item-key="name"
-            @end="onUpdateFavoriteTools"
-          >
-            <template #item="{ element: tool }">
-              <ToolCard :tool="tool" />
-            </template>
-          </Draggable>
-        </div>
-      </transition>
+    <div class="tools-grid">
+      <ColoredCard v-if="config.showBanner" :title="$t('home.follow.title')" :icon="IconHeart">
+        {{ $t('home.follow.p1') }}
+        <a
+          href="https://github.com/CorentinTh/it-tools"
+          rel="noopener"
+          target="_blank"
+          :aria-label="$t('home.follow.githubRepository')"
+        >GitHub</a>
+        {{ $t('home.follow.p2') }}
+        <a
+          href="https://x.com/ittoolsdottech"
+          rel="noopener"
+          target="_blank"
+          :aria-label="$t('home.follow.twitterXAccount')"
+        >X</a>.
+        {{ $t('home.follow.thankYou') }}
+        <n-icon :component="IconHeart" />
+      </ColoredCard>
+    </div>
 
-      <div v-if="toolStore.newTools.length > 0">
-        <h3 class="mb-5px mt-25px text-neutral-400 font-500">
-          {{ t('home.categories.newestTools') }}
+    <!-- 收藏工具 -->
+    <transition name="height">
+      <div v-if="toolStore.favoriteTools.length > 0" class="section">
+        <h3 class="section-title">
+          {{ $t('home.categories.favoriteTools') }}
+          <c-tooltip :tooltip="$t('home.categories.favoritesDndToolTip')">
+            <n-icon :component="IconDragDrop" size="16" />
+          </c-tooltip>
         </h3>
-        <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
-          <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
-        </div>
+        <Draggable
+          :list="favoriteTools"
+          class="tools-grid"
+          ghost-class="ghost-favorites-draggable"
+          item-key="name"
+          @end="onUpdateFavoriteTools"
+        >
+          <template #item="{ element: tool }">
+            <ToolCard :tool="tool" />
+          </template>
+        </Draggable>
       </div>
+    </transition>
 
-      <h3 class="mb-5px mt-25px text-neutral-400 font-500">
+    <!-- 最新工具 -->
+    <div v-if="toolStore.newTools.length > 0" class="section">
+      <h3 class="section-title">
+        {{ t('home.categories.newestTools') }}
+      </h3>
+      <div class="tools-grid">
+        <ToolCard v-for="tool in toolStore.newTools" :key="tool.name" :tool="tool" />
+      </div>
+    </div>
+
+    <!-- 全部工具 -->
+    <div class="section">
+      <h3 class="section-title">
         {{ $t('home.categories.allTools') }}
       </h3>
-      <div class="grid grid-cols-1 gap-12px lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div class="tools-grid">
         <ToolCard v-for="tool in toolStore.tools" :key="tool.name" :tool="tool" />
       </div>
+    </div>
 
-      <!-- 收藏提示 -->
-      <div class="bookmark-hint">
-        <span>💡 {{ $t('home.bookmarkHint') }}</span>
-      </div>
+    <!-- 收藏提示 -->
+    <div class="bookmark-hint">
+      <span>💡 {{ $t('home.bookmarkHint') }}</span>
     </div>
   </div>
 </template>
 
 <style scoped lang="less">
+// ── 页面容器 ─────────────────────────────────────────────────────────────────
+.home-page {
+  padding-top: 24px;
+}
+
+// ── SEO 标题 ──────────────────────────────────────────────────────────────────
+.seo-hero {
+  margin-bottom: 20px;
+}
+
+.seo-h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  opacity: 0.88;
+  line-height: 1.3;
+}
+
+.seo-h2 {
+  font-size: 13.5px;
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.5;
+  line-height: 1.6;
+}
+
+// ── 分区 ─────────────────────────────────────────────────────────────────────
+.section {
+  margin-top: 28px;
+}
+
+.section-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.4;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// ── 工具卡片网格 ──────────────────────────────────────────────────────────────
+// 使用 auto-fill + minmax，自动响应容器宽度
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+// ── 拖拽占位 ──────────────────────────────────────────────────────────────────
+.ghost-favorites-draggable {
+  opacity: 0.4;
+  background-color: #ccc;
+  border: 2px dashed #666;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+  animation: ghost-anim 0.2s ease-out;
+}
+
+@keyframes ghost-anim {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 0.4; transform: scale(1); }
+}
+
+// ── 高度过渡 ──────────────────────────────────────────────────────────────────
 .height-enter-active,
 .height-leave-active {
   transition: all 0.5s ease-in-out;
@@ -126,54 +202,15 @@ function onUpdateFavoriteTools() {
   margin-bottom: 0;
 }
 
-.ghost-favorites-draggable {
-  opacity: 0.4;
-  background-color: #ccc;
-  border: 2px dashed #666;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-  animation: ghost-favorites-draggable-animation 0.2s ease-out;
-}
-
-@keyframes ghost-favorites-draggable-animation {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scale(1.0);
-  }
-}
-
+// ── 底部提示 ──────────────────────────────────────────────────────────────────
 .bookmark-hint {
   margin-top: 40px;
-  padding: 12px 20px;
+  padding: 10px 18px;
   border-radius: 8px;
-  background: rgba(99, 102, 241, 0.06);
-  border: 1px dashed rgba(99, 102, 241, 0.25);
-  font-size: 13px;
-  opacity: 0.75;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px dashed rgba(99, 102, 241, 0.2);
+  font-size: 12.5px;
+  opacity: 0.65;
   text-align: center;
-}
-
-.seo-hero {
-  padding: 0 4px 8px;
-}
-
-.seo-h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0 0 8px;
-  opacity: 0.88;
-  line-height: 1.3;
-}
-
-.seo-h2 {
-  font-size: 15px;
-  font-weight: 400;
-  margin: 0 0 20px;
-  opacity: 0.55;
-  line-height: 1.6;
 }
 </style>
