@@ -365,7 +365,6 @@ function downloadJson() {
   :deep(.editor-wrap) {
     min-height: 360px;
     height: calc(100vh - 218px);
-    max-height: 800px;
   }
 
   // 错误边框

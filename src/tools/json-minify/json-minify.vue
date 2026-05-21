@@ -302,7 +302,6 @@ const compressionRatio = computed(() => {
   :deep(.editor-wrap) {
     min-height: 320px;
     height: calc(100vh - 218px);
-    max-height: 760px;
   }
 
   &.editor--error :deep(.editor-wrap) {
