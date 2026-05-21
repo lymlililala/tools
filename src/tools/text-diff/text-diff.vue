@@ -199,8 +199,8 @@ function swapTexts() {
 
 .td-editor {
   width: 100%;
-  height: 100%;
-  min-height: 500px;
+  height: calc(100vh - 218px);
+  min-height: 300px;
 }
 
 /* ── 移动端：上下堆叠（TC-07） ── */

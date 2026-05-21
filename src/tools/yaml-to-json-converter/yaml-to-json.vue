@@ -73,7 +73,7 @@ function clearInput() {
           v-model="yamlInput"
           language="yaml"
           placeholder="Paste your YAML here..."
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
         />
       </div>
 
@@ -96,7 +96,7 @@ function clearInput() {
           :model-value="jsonOutput"
           language="json"
           placeholder="Converted JSON will appear here…"
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
           readonly
         />
 

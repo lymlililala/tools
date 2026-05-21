@@ -60,7 +60,7 @@ function clearInput() {
           v-model="jsonInput"
           language="json"
           placeholder="Paste your JSON here..."
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
         />
       </div>
 
@@ -83,7 +83,7 @@ function clearInput() {
           :model-value="tomlOutput"
           language="toml"
           placeholder="Converted TOML will appear here…"
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
           readonly
         />
 

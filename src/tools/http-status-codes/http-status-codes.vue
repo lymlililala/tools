@@ -95,7 +95,7 @@ async function copyCode(code: number, name: string) {
 </script>
 
 <template>
-  <div class="http-wrap" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide http-wrap" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ── sticky 搜索栏 ─────────────────────────────────────────────── -->
     <div class="search-bar" :class="{ 'is-sticky': scrollY > 80 }">
       <div class="search-inner">

@@ -224,7 +224,7 @@ const highlightedHtml = computed(() => {
 
 // ── 右侧源码面板 ──────────────────────────────────────────────────────────
 .code-pane {
-  min-height: 300px;
+  min-height: calc(100vh - 260px);
 }
 
 .code-scroll {

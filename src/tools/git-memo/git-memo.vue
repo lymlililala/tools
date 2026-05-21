@@ -185,7 +185,7 @@ function scrollToTop() {
 </script>
 
 <template>
-  <div class="git-root" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide git-root" :class="{ dark: styleStore.isDarkTheme }">
     <div class="git-layout">
       <!-- ── 左侧 TOC (sticky) ─────────────────────────────── -->
       <nav class="toc-nav">

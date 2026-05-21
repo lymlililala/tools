@@ -182,7 +182,7 @@ async function copyJson() {
           v-model="xmlInput"
           language="xml"
           placeholder="Paste your XML here…  e.g. <root><name>John</name></root>"
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
           :class="{ 'input-error-ring': hasError }"
         />
 
@@ -228,7 +228,7 @@ async function copyJson() {
           :model-value="jsonOutput"
           language="json"
           placeholder="Converted JSON will appear here…"
-          min-height="420px"
+          min-height="calc(100vh - 218px)"
           readonly
         />
 

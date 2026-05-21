@@ -211,7 +211,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
 </script>
 
 <template>
-  <div class="rm-root">
+  <div class="tool-wide rm-root">
     <!-- ── 右侧固定 TOC ───────────────────────────────────── -->
     <nav class="rm-toc">
       <p class="toc-heading">{{ t('tools.regex-memo.toc') }}</p>
