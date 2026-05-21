@@ -124,7 +124,7 @@ const themeVars = useThemeVars();
       v-model:value="search"
       size="small"
       clearable
-      placeholder="搜索工具..."
+      :placeholder="$t('menu.searchPlaceholder')"
     >
       <template #prefix>
         <icon-mdi-magnify style="opacity:0.45" />
@@ -132,9 +132,9 @@ const themeVars = useThemeVars();
     </n-input>
 
     <div v-if="!search" class="expand-actions">
-      <span class="action-btn" @click="expandAll">展开全部</span>
+      <span class="action-btn" @click="expandAll">{{ $t('menu.expandAll') }}</span>
       <span class="sep">·</span>
-      <span class="action-btn" @click="collapseAll">折叠全部</span>
+      <span class="action-btn" @click="collapseAll">{{ $t('menu.collapseAll') }}</span>
     </div>
   </div>
 
@@ -173,7 +173,7 @@ const themeVars = useThemeVars();
   </div>
 
   <div v-if="search && menuOptions.length === 0" class="no-results">
-    没有找到 "{{ search }}"
+    {{ $t('menu.noResults', { query: search }) }}
   </div>
 </template>
 

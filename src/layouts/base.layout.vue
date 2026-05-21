@@ -36,7 +36,7 @@ const tools = computed<ToolCategory[]>(() => [
         </div>
         <div class="logo-text">
           <span class="logo-name">MyUtl</span>
-          <span class="logo-tagline">在线工具箱</span>
+          <span class="logo-tagline">{{ $t('layout.logoTagline') }}</span>
         </div>
       </RouterLink>
 
@@ -48,7 +48,7 @@ const tools = computed<ToolCategory[]>(() => [
       <!-- Blog 入口 -->
       <RouterLink to="/blog" class="sider-blog-link" @click="styleStore.isSmallScreen && (styleStore.isMenuCollapsed = true)">
         <icon-mdi-newspaper-variant-outline style="font-size:15px;margin-right:6px;opacity:0.6" />
-        Blog & Guides
+        {{ $t('menu.blogLink') }}
       </RouterLink>
 
       <!-- 底部版权 -->
@@ -81,14 +81,14 @@ const tools = computed<ToolCategory[]>(() => [
         </div>
 
         <div class="topbar-right">
-          <c-tooltip tooltip="Blog & Guides" position="bottom">
+          <c-tooltip :tooltip="$t('menu.blogLink')" position="bottom">
             <c-button to="/blog" variant="text" :aria-label="'Blog'" class="topbar-blog-btn">
               <icon-mdi-newspaper-variant-outline style="font-size:17px" />
             </c-button>
           </c-tooltip>
 
           <!-- 深色/浅色切换 -->
-          <c-tooltip :tooltip="styleStore.isDarkTheme ? '切换到浅色模式' : '切换到深色模式'" position="bottom">
+          <c-tooltip :tooltip="styleStore.isDarkTheme ? $t('home.nav.lightMode') : $t('home.nav.darkMode')" position="bottom">
             <c-button
               circle
               variant="text"

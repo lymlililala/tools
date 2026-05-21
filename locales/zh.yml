@@ -18,6 +18,11 @@ home:
     twitterXAccount: 'IT-Tools X 账号'
     thankYou: '感谢您的支持！'
   bookmarkHint: '小技巧：按 Ctrl+D（Mac 按 ⌘+D）收藏本站，下次直接使用！'
+  heroTitle: 'MyUtl — 免费在线工具箱'
+  heroSubtitle: '90+ 开发者工具，全部免费、安全、无需注册，直接在浏览器中运行'
+  metaTitle: 'MyUtl - 免费在线工具箱 | 90+ 开发者在线工具'
+  metaDesc: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密、URL 编码、二维码生成、计算器等开发者与日常实用工具，全部在浏览器本地运行，安全无需注册。'
+  metaDescShort: 'MyUtl 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密等开发者工具。'
   nav:
     github: 'GitHub 仓库'
     githubRepository: 'GitHub 仓库'
@@ -1959,3 +1964,28 @@ tools:
     faqFreeA: 完全免费。无需注册，无需登录，永久免费使用。
     faqMobile: 支持手机使用吗？
     faqMobileA: 支持。MyUtl 已针对移动端优化，在手机和平板上均可正常使用。
+
+menu:
+  searchPlaceholder: 搜索工具...
+  expandAll: 展开全部
+  collapseAll: 折叠全部
+  noResults: '没有找到"{query}"'
+  blogLink: 博客 & 指南
+
+layout:
+  logoTagline: 在线工具箱
+  siteTitle: MyUtl - 免费在线工具箱 | 90+ 开发者在线工具
+  toolPageTitle: '{tool} - MyUtl 在线工具箱'
+  keywords: '在线工具, 免费, 开发者'
+  seoHowTo: '如何使用 {tool}'
+  seoFaq: 常见问题
+
+blog:
+  metaTitle: '博客 - 开发者工具使用指南 | MyUtl'
+  metaDesc: 'MyUtl 工具使用指南：深度讲解加密、编码、正则、网络、格式转换等 100+ 开发者工具的原理与实践。'
+  metaKeywords: '开发者工具指南, 编程教程, 在线工具博客, web开发技巧'
+  metaDescShort: 'MyUtl 工具使用指南：100+ 开发者工具的深度讲解。'
+
+notFound:
+  metaTitle: '页面未找到 - MyUtl'
+  metaDesc: '抱歉，该页面不存在。请返回首页使用其他工具。'

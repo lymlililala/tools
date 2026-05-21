@@ -17,7 +17,7 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
 const canonicalUrl = computed(() => `https://myutl.com${route.path}`);
 
 const head = computed<HeadObject>(() => ({
-  title: `${toolTitle.value} - MyUtl 在线工具箱`,
+  title: t('layout.toolPageTitle', { tool: toolTitle.value }),
   meta: [
     {
       name: 'description',
@@ -27,7 +27,8 @@ const head = computed<HeadObject>(() => ({
       name: 'keywords',
       content: [
         ...((route.meta.keywords ?? []) as string[]),
-        '在线工具', '免费', 'myutl',
+        ...t('layout.keywords').split(',').map((k: string) => k.trim()),
+        'myutl',
       ].join(','),
     },
     // Open Graph
@@ -87,21 +88,12 @@ const faqs = computed(() => {
     return [];
   });
 
-  // 通用 FAQ
+  // 通用 FAQ（key 已在 i18n 中定义，无需 fallback）
   if (base.length === 0) {
     return [
-      {
-        q: t('tools.common.faqSafe', '该工具安全吗？会上传我的数据吗？'),
-        a: t('tools.common.faqSafeA', '完全安全。所有处理均在您的浏览器本地完成，不会上传任何数据到服务器。'),
-      },
-      {
-        q: t('tools.common.faqFree', '该工具免费吗？'),
-        a: t('tools.common.faqFreeA', '完全免费，无需注册，无需登录，永久免费使用。'),
-      },
-      {
-        q: t('tools.common.faqMobile', '支持手机使用吗？'),
-        a: t('tools.common.faqMobileA', '支持。MyUtl 已针对移动端优化，可在手机和平板上正常使用。'),
-      },
+      { q: t('tools.common.faqSafe'), a: t('tools.common.faqSafeA') },
+      { q: t('tools.common.faqFree'), a: t('tools.common.faqFreeA') },
+      { q: t('tools.common.faqMobile'), a: t('tools.common.faqMobileA') },
     ];
   }
   return base;
@@ -146,7 +138,7 @@ const howToSteps = computed(() => {
       <!-- 如何使用 -->
       <div v-if="howToSteps.length > 0" class="seo-block">
         <h2 class="seo-heading">
-          如何使用{{ toolTitle }}
+          {{ $t('layout.seoHowTo', { tool: toolTitle }) }}
         </h2>
         <ol class="how-to-list">
           <li v-for="(step, i) in howToSteps" :key="i">
@@ -158,7 +150,7 @@ const howToSteps = computed(() => {
       <!-- FAQ -->
       <div v-if="faqs.length > 0" class="seo-block">
         <h2 class="seo-heading">
-          常见问题
+          {{ $t('layout.seoFaq') }}
         </h2>
         <div class="faq-list">
           <n-collapse>

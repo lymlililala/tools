@@ -18,6 +18,11 @@ home:
     twitterXAccount: 'IT-Tools X account'
     thankYou: 'Thank you!'
   bookmarkHint: 'Tip: Press Ctrl+D (or ⌘+D on Mac) to bookmark MyUtl and come back anytime!'
+  heroTitle: 'MyUtl — Free Online Toolbox'
+  heroSubtitle: '90+ developer tools, all free, safe, no sign-up required. Runs entirely in your browser.'
+  metaTitle: 'MyUtl - Free Online Toolbox | 90+ Developer Tools'
+  metaDesc: 'MyUtl provides 90+ free online tools including JSON formatter, Base64, encryption, URL encoder, QR code generator and more. All run locally in your browser — safe, no registration needed.'
+  metaDescShort: 'MyUtl — 90+ free developer tools including JSON, Base64, encryption, URL tools and more.'
   nav:
     github: 'GitHub repository'
     githubRepository: 'IT-Tools GitHub repository'
@@ -1915,3 +1920,28 @@ tools:
     faqFreeA: Completely free. No registration, no login required. Always free to use.
     faqMobile: Does it work on mobile?
     faqMobileA: 'Yes. MyUtl is mobile-optimized and works on phones and tablets.'
+
+menu:
+  searchPlaceholder: Search tools...
+  expandAll: Expand all
+  collapseAll: Collapse all
+  noResults: 'No results for "{query}"'
+  blogLink: Blog & Guides
+
+layout:
+  logoTagline: Online Toolbox
+  siteTitle: MyUtl - Free Online Toolbox | 90+ Developer Tools
+  toolPageTitle: '{tool} - MyUtl Online Toolbox'
+  keywords: 'online tools, free, developer'
+  seoHowTo: 'How to use {tool}'
+  seoFaq: Frequently Asked Questions
+
+blog:
+  metaTitle: 'Blog - Developer Tools Guides | MyUtl'
+  metaDesc: 'MyUtl developer tool guides: in-depth explanations of encryption, encoding, regex, networking, format conversion and 100+ more developer tools.'
+  metaKeywords: 'developer tools guide, programming tutorials, online tools blog, web development tips'
+  metaDescShort: 'MyUtl — in-depth guides for 100+ developer tools.'
+
+notFound:
+  metaTitle: 'Page Not Found - MyUtl'
+  metaDesc: "Sorry, the page you're looking for doesn't exist. Return to the home page to explore tools."
