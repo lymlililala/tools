@@ -10,7 +10,9 @@
     { "source": "/base64-converter",    "destination": "/base64-string-converter", "permanent": true },
     { "source": "/color-picker-converter", "destination": "/color-converter",   "permanent": true },
     { "source": "/hash",                "destination": "/hash-text",            "permanent": true },
-    { "source": "/text-stats",          "destination": "/text-statistics",      "permanent": true }
+    { "source": "/text-stats",               "destination": "/text-statistics",             "permanent": true },
+    { "source": "/meta-tag-generator",        "destination": "/og-meta-generator",           "permanent": true },
+    { "source": "/otp-code-generator-and-validator", "destination": "/otp-generator",        "permanent": true }
   ],
   "routes": [
     {
