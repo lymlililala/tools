@@ -72,6 +72,38 @@ const slugToI18nKey = {
   'qrcode-generator': 'qr-code-generator',
 }
 
+// ── 工具分类映射（slug → 分类名）用于 SEO 内链推荐 ──────────────────────────────
+const toolCategories = {
+  Crypto: ['token-generator','hash-text','bcrypt','uuid-generator','ulid-generator','encryption','bip39-generator','hmac-generator','rsa-key-pair-generator','password-strength-analyser','pdf-signature-checker'],
+  Converter: ['date-converter','base-converter','roman-numeral-converter','base64-string-converter','base64-file-converter','color-converter','case-converter','text-to-nato-alphabet','text-to-binary','text-to-unicode','yaml-to-json-converter','yaml-to-toml','json-to-yaml-converter','json-to-toml','list-converter','toml-to-json','toml-to-yaml','xml-to-json','json-to-xml','markdown-to-html','css-unit-converter','unix-timestamp'],
+  Web: ['url-encoder','html-entities','url-parser','device-information','basic-auth-generator','og-meta-generator','otp-generator','mime-types','jwt-parser','keycode-info','slugify-string','html-wysiwyg-editor','user-agent-parser','http-status-codes','json-diff','safelink-decoder'],
+  'Images and videos': ['qrcode-generator','wifi-qrcode-generator','svg-placeholder-generator','camera-recorder','color-palette-generator'],
+  Development: ['git-memo','random-port-generator','crontab-generator','json-format','json-minify','json-to-csv','sql-format','chmod-calculator','docker-run-to-docker-compose-converter','xml-format','yaml-format','email-normalizer','regex-tester','regex-memo'],
+  Network: ['ipv4-subnet-calculator','ipv4-address-converter','ipv4-range-expander','mac-address-lookup','mac-address-generator','ipv6-ula-generator'],
+  Math: ['math-evaluator','eta-calculator','percentage-calculator','mortgage-calculator','income-tax-calculator','number-formatter'],
+  Measurement: ['chronometer','temperature-converter','benchmark-builder','bmi-calculator'],
+  Text: ['lorem-ipsum-generator','text-statistics','emoji-picker','string-obfuscator','text-diff','numeronym-generator','ascii-text-drawer','random-decision-picker'],
+  Data: ['phone-parser-and-formatter','iban-validator-and-parser'],
+}
+// 构建 slug → category 的反向映射
+const slugCategory = {}
+for (const [cat, slugs] of Object.entries(toolCategories)) {
+  for (const s of slugs) slugCategory[s] = cat
+}
+// 分类中文名
+const categoryNames = {
+  Crypto: '加密安全',
+  Converter: '格式转换',
+  Web: 'Web 工具',
+  'Images and videos': '图片视频',
+  Development: '开发工具',
+  Network: '网络工具',
+  Math: '数学计算',
+  Measurement: '测量工具',
+  Text: '文本处理',
+  Data: '数据工具',
+}
+
 // ── 从 sitemap.xml 提取所有工具路径 ────────────────────────────────────────────
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml')
 const sitemapXml = fs.readFileSync(sitemapPath, 'utf-8')
@@ -142,7 +174,7 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
 }
 
-function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld, seoContent = '' }) {
+function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld, seoContent = '', ogType, articleMeta }) {
   // 首页直接用完整 title（已含品牌），其余拼接品牌后缀
   const fullTitle = routePath === '/' ? title : `${title} | ${SITE_NAME}`
   const canonicalUrl = routePath === '/' ? SITE : `${SITE}${routePath}`
@@ -183,6 +215,23 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
   html = replaceMeta(html, 'name', 'twitter:description', escapedDesc)
   if (keywords) {
     html = replaceMeta(html, 'name', 'keywords', escapeAttr(keywords))
+  }
+  // 覆盖 og:type（博客文章用 article，工具页用 website）
+  if (ogType) {
+    html = replaceMeta(html, 'property', 'og:type', ogType)
+  }
+  // 注入博客文章专属 meta 标签（article:published_time / article:section）
+  if (ogType === 'article' && articleMeta) {
+    const extraMeta = []
+    if (articleMeta.publishedTime) {
+      extraMeta.push(`<meta property="article:published_time" content="${escapeAttr(articleMeta.publishedTime)}" />`)
+    }
+    if (articleMeta.section) {
+      extraMeta.push(`<meta property="article:section" content="${escapeAttr(articleMeta.section)}" />`)
+    }
+    if (extraMeta.length) {
+      html = html.replace('</head>', `    ${extraMeta.join('\n    ')}\n  </head>`)
+    }
   }
 
   // 替换 hreflang（统一更新所有 zh/zh-CN/en hreflang 指向当前页 canonical）
@@ -261,7 +310,7 @@ for (const route of staticRoutes) {
 }
 
 // ── 辅助：从 i18n 数据构建工具页 SEO 正文 HTML ─────────────────────────────────
-function buildToolSeoContent(i18n) {
+function buildToolSeoContent(i18n, slug) {
   const parts = []
 
   // 使用说明段落
@@ -304,6 +353,28 @@ function buildToolSeoContent(i18n) {
     parts.push(`      </section>`)
   }
 
+  // 同类工具推荐内链
+  if (slug) {
+    const cat = slugCategory[slug]
+    if (cat) {
+      const siblings = (toolCategories[cat] || []).filter(s => s !== slug).slice(0, 6)
+      if (siblings.length > 0) {
+        const catLabel = categoryNames[cat] || cat
+        parts.push(`      <nav aria-label="相关工具">`)
+        parts.push(`        <h2>${catLabel}相关工具</h2>`)
+        parts.push(`        <ul>`)
+        siblings.forEach((s) => {
+          const sKey = slugToI18nKey[s] ?? s
+          const sI18n = toolsI18n[sKey] ?? toolsI18n[s] ?? {}
+          const sTitle = sI18n.title || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+          parts.push(`          <li><a href="/${s}">${escapeHtml(sTitle)}</a></li>`)
+        })
+        parts.push(`        </ul>`)
+        parts.push(`      </nav>`)
+      }
+    }
+  }
+
   return parts.join('\n')
 }
 
@@ -317,7 +388,7 @@ for (const slug of toolSlugs) {
     = i18n.description
     || `${toolTitle} — 免费在线工具，在浏览器中运行，无需安装，安全无需注册。`
 
-  const seoContent = buildToolSeoContent(i18n)
+  const seoContent = buildToolSeoContent(i18n, slug)
 
   // 收集 FAQ 数据用于 FAQPage schema
   const faqItems = []
@@ -382,7 +453,7 @@ for (const slug of toolSlugs) {
 }
 
 // ── 辅助：从 Markdown 内容构建博客文章 SEO 正文 HTML ──────────────────────────
-function buildArticleSeoContent(content, description) {
+function buildArticleSeoContent(content, description, category) {
   const raw = content || ''
   const parts = []
 
@@ -413,6 +484,25 @@ function buildArticleSeoContent(content, description) {
     }
   })
 
+  // 同类工具推荐内链（根据文章分类）
+  if (category) {
+    const catTools = (toolCategories[category] || []).slice(0, 6)
+    if (catTools.length > 0) {
+      const catLabel = categoryNames[category] || category
+      parts.push(`      <nav aria-label="相关工具">`)
+      parts.push(`        <h2>推荐${catLabel}在线工具</h2>`)
+      parts.push(`        <ul>`)
+      catTools.forEach((s) => {
+        const sKey = slugToI18nKey[s] ?? s
+        const sI18n = toolsI18n[sKey] ?? toolsI18n[s] ?? {}
+        const sTitle = sI18n.title || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+        parts.push(`          <li><a href="/${s}">${escapeHtml(sTitle)}</a></li>`)
+      })
+      parts.push(`        </ul>`)
+      parts.push(`      </nav>`)
+    }
+  }
+
   return parts.join('\n')
 }
 
@@ -430,7 +520,7 @@ for (const article of blogArticles) {
     .trim()
     .slice(0, 300)
 
-  const articleSeoContent = buildArticleSeoContent(content, description)
+  const articleSeoContent = buildArticleSeoContent(content, description, category)
 
   const articleRoute = {
     path: `/blog/${slug}`,
@@ -438,6 +528,11 @@ for (const article of blogArticles) {
     description: description || plainText,
     h1: title,
     keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+    ogType: 'article',
+    articleMeta: {
+      publishedTime: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
+      section: category,
+    },
     seoContent: articleSeoContent,
     jsonld: {
       '@context': 'https://schema.org',
@@ -484,6 +579,73 @@ const path404 = path.join(distDir, '404.html')
 fs.writeFileSync(path404, html404, 'utf-8')
 console.log(`✅ Generated: dist/404.html`)
 count++
+
+// 5. 动态生成 dist/sitemap.xml（包含博客文章的真实 lastmod）
+const TOOL_LASTMOD = '2026-05-25'
+const toolUrlLines = []
+for (const [cat, slugs] of Object.entries(toolCategories)) {
+  toolUrlLines.push(`  <!-- ${cat} -->`)
+  for (const s of slugs) {
+    // 高优先级工具
+    const highPri = ['token-generator','hash-text','bcrypt','uuid-generator','ulid-generator','date-converter','base64-string-converter','color-converter','json-format','url-encoder','og-meta-generator','qrcode-generator','regex-tester','ipv4-subnet-calculator','math-evaluator','mortgage-calculator','bmi-calculator','lorem-ipsum-generator','percentage-calculator','password-strength-analyser','html-entities','http-status-codes','encryption','jwt-parser','unix-timestamp','text-diff','emoji-picker','base-converter']
+    const priority = highPri.includes(s) ? '0.9' : '0.7'
+    toolUrlLines.push(`  <url><loc>${SITE}/${s}</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>${priority}</priority></url>`)
+  }
+  toolUrlLines.push('')
+}
+
+const blogUrlLines = []
+// 建立 slug → publishedAt 映射
+const articlePubMap = {}
+for (const a of blogArticles) {
+  articlePubMap[a.slug] = a.publishedAt || TOOL_LASTMOD
+}
+// 读取 public/sitemap.xml 中已有的博客 URL（去重）
+const existingSitemapContent = fs.readFileSync(sitemapPath, 'utf-8')
+const seenBlogSlugs = new Set()
+const allBlogSlugsInOrder = []
+// 从 articles.data 中按顺序取
+for (const a of blogArticles) {
+  if (!seenBlogSlugs.has(a.slug)) {
+    seenBlogSlugs.add(a.slug)
+    allBlogSlugsInOrder.push(a.slug)
+  }
+}
+// 从 public/sitemap.xml 中补充缺少的博客 slug（保留旧 lastmod）
+const extraBlogSlugsFromStatic = [...existingSitemapContent.matchAll(/myutl\.com\/blog\/([^<]+)</g)]
+  .map(m => m[1])
+  .filter(s => !seenBlogSlugs.has(s))
+for (const s of extraBlogSlugsFromStatic) {
+  seenBlogSlugs.add(s)
+  allBlogSlugsInOrder.push(s)
+}
+for (const s of allBlogSlugsInOrder) {
+  const lastmod = articlePubMap[s] || TOOL_LASTMOD
+  blogUrlLines.push(`  <url><loc>${SITE}/blog/${s}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`)
+}
+
+const newSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE}/</loc>
+    <lastmod>${TOOL_LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${SITE}/blog</loc>
+    <lastmod>${TOOL_LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+${toolUrlLines.join('\n')}
+  <!-- Blog Articles -->
+${blogUrlLines.join('\n')}
+</urlset>`
+
+fs.writeFileSync(path.join(distDir, 'sitemap.xml'), newSitemapXml, 'utf-8')
+console.log(`✅ Generated: dist/sitemap.xml (${allBlogSlugsInOrder.length} 篇博客 + ${toolSlugs.length} 个工具)`)
 
 console.log(`\n🎉 预渲染完成：生成了 ${count} 个静态 HTML 文件`)
 console.log(`   - ${staticRoutes.length} 个静态页面（首页、博客列表）`)
