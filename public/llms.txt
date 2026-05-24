@@ -51,8 +51,8 @@ MyUtl provides 90+ handy utilities organized into categories. Every tool works o
 - [URL Parser](/url-parser) — Parse URLs into components
 - [Device Information](/device-information) — Display current device and browser details
 - [Basic Auth Generator](/basic-auth-generator) — Generate Base64 basic authentication headers
-- [Meta Tag Generator](/meta-tag-generator) — Generate HTML meta and Open Graph tags
-- [OTP Code Generator](/otp-code-generator-and-validator) — Generate and validate TOTP/HOTP codes
+- [Meta Tag Generator](/og-meta-generator) — Generate HTML meta and Open Graph tags
+- [OTP Code Generator](/otp-generator) — Generate and validate TOTP/HOTP codes
 - [MIME Types](/mime-types) — Look up MIME types by file extension
 - [JWT Parser](/jwt-parser) — Decode and inspect JSON Web Tokens
 - [Keycode Info](/keycode-info) — Show JavaScript key codes for any key press
@@ -74,14 +74,14 @@ MyUtl provides 90+ handy utilities organized into categories. Every tool works o
 - [Git Cheatsheet](/git-memo) — Quick reference for common Git commands
 - [Random Port Generator](/random-port-generator) — Generate random non-reserved port numbers
 - [Crontab Generator](/crontab-generator) — Build and validate cron expressions
-- [JSON Prettify & Format](/json-prettify) — Format and prettify JSON
+- [JSON 格式化 / JSON Format](/json-format) — Format, prettify and validate JSON
 - [JSON Minify](/json-minify) — Minify and compress JSON
 - [JSON to CSV](/json-to-csv) — Convert JSON arrays to CSV
-- [SQL Prettify](/sql-prettify) — Format SQL queries
+- [SQL 格式化 / SQL Format](/sql-format) — Format and prettify SQL queries
 - [Chmod Calculator](/chmod-calculator) — Calculate Unix file permissions
 - [Docker Run to Compose](/docker-run-to-docker-compose-converter) — Convert docker run commands to docker-compose YAML
-- [XML Formatter](/xml-formatter) — Format and prettify XML
-- [YAML Prettify](/yaml-prettify) — Format and prettify YAML
+- [XML 格式化 / XML Format](/xml-format) — Format and prettify XML
+- [YAML 格式化 / YAML Format](/yaml-format) — Format and prettify YAML
 - [Email Normalizer](/email-normalizer) — Normalize email addresses
 - [Regex Tester](/regex-tester) — Test and debug regular expressions
 - [Regex Cheatsheet](/regex-memo) — Quick reference for regex syntax
