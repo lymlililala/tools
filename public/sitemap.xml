@@ -254,4 +254,11 @@
   <url><loc>https://myutl.com/blog/toml-yaml-json-config-comparison</loc><lastmod>2026-05-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://myutl.com/blog/color-palette-generator-guide</loc><lastmod>2026-05-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://myutl.com/blog/json-diff-checker-guide</loc><lastmod>2026-05-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Blog Articles - New SEO/GEO Optimized (2026-05) -->
+  <url><loc>https://myutl.com/blog/cron-expression-cheat-sheet</loc><lastmod>2026-05-22</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/blog/how-to-generate-qr-code-complete-guide</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/blog/jwt-vs-session-tokens-authentication</loc><lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/blog/regex-cheat-sheet-patterns-examples</loc><lastmod>2026-05-25</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myutl.com/blog/password-hashing-bcrypt-sha256-guide</loc><lastmod>2026-05-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
 </urlset>

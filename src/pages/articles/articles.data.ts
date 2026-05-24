@@ -13309,4 +13309,998 @@ When comparing large JSON objects, use the "hide unchanged keys" option to focus
 
 → Use the [JSON Diff](/json-diff) tool to paste two JSON objects side-by-side and get an instant, structured comparison highlighting every change.`,
   },
+
+  // ─── New SEO/GEO Articles ─────────────────────────────────────────────────
+  {
+    slug: 'cron-expression-cheat-sheet',
+    toolPath: '/crontab-generator',
+    title: 'Cron Expression Cheat Sheet: Every Syntax Pattern with Examples',
+    description: 'A complete reference for cron expression syntax — from basic schedules to advanced patterns. Every field explained with real-world examples you can copy and use.',
+    keywords: ['cron expression', 'crontab examples', 'cron job syntax', 'cron every 5 minutes', 'cron schedule', 'crontab cheat sheet'],
+    category: 'Development',
+    publishedAt: '2026-05-22',
+    content: `## Understanding Cron Syntax
+
+A cron expression is a string of five (or six) fields that defines when a scheduled job runs. Each field represents a unit of time, and together they form a precise schedule that repeats automatically.
+
+The standard five-field format:
+
+\`\`\`
+┌───────────── minute (0–59)
+│ ┌───────────── hour (0–23)
+│ │ ┌───────────── day of month (1–31)
+│ │ │ ┌───────────── month (1–12)
+│ │ │ │ ┌───────────── day of week (0–7, where 0 and 7 are Sunday)
+│ │ │ │ │
+* * * * *
+\`\`\`
+
+Some systems (like AWS EventBridge, Quartz Scheduler) add a **seconds** field before the minute, making it six fields total.
+
+## Special Characters Explained
+
+| Character | Meaning | Example |
+|-----------|---------|---------|
+| \`*\` | Any value | \`* * * * *\` — every minute |
+| \`,\` | List of values | \`1,15,30\` in minute — at 1st, 15th, 30th minute |
+| \`-\` | Range | \`9-17\` in hour — from 9am to 5pm |
+| \`/\` | Step | \`*/5\` in minute — every 5 minutes |
+| \`L\` | Last | \`L\` in day-of-month — last day of the month |
+| \`#\` | Nth weekday | \`2#3\` — third Tuesday of the month |
+| \`?\` | No specific value | Used in day-of-month or day-of-week when the other is set |
+
+## The Most Common Cron Schedules
+
+These are the patterns developers reach for most often:
+
+### Every Minute
+\`\`\`
+* * * * *
+\`\`\`
+Rarely used in production. Avoid this for anything with meaningful I/O — it runs 1,440 times a day.
+
+### Every 5 Minutes
+\`\`\`
+*/5 * * * *
+\`\`\`
+The most common schedule for health checks, polling tasks, and lightweight background jobs.
+
+### Every 15 Minutes
+\`\`\`
+*/15 * * * *
+\`\`\`
+Good for syncing data or checking for updates without overwhelming a service.
+
+### Every Hour (at the top)
+\`\`\`
+0 * * * *
+\`\`\`
+Runs at minute 0 of every hour: 1:00, 2:00, 3:00...
+
+### Every Hour (at a specific minute)
+\`\`\`
+30 * * * *
+\`\`\`
+Runs at minute 30 of every hour: 1:30, 2:30, 3:30... Useful to offset from the top of the hour when servers are busy.
+
+### Once a Day at Midnight
+\`\`\`
+0 0 * * *
+\`\`\`
+Daily cleanup jobs, report generation, cache invalidation.
+
+### Once a Day at 2 AM
+\`\`\`
+0 2 * * *
+\`\`\`
+Database backups, log rotation — scheduled during off-peak hours.
+
+### Every Day at 8 AM and 6 PM
+\`\`\`
+0 8,18 * * *
+\`\`\`
+Twice-daily summaries or digest emails.
+
+### Every Weekday at 9 AM
+\`\`\`
+0 9 * * 1-5
+\`\`\`
+Business-hours-only jobs: send morning reports, sync calendars.
+
+### Every Monday at Midnight
+\`\`\`
+0 0 * * 1
+\`\`\`
+Weekly tasks: generate weekly summaries, clean up old sessions.
+
+### First Day of Every Month
+\`\`\`
+0 0 1 * *
+\`\`\`
+Monthly billing cycles, subscription renewals, report generation.
+
+### Last Day of Every Month
+\`\`\`
+0 0 L * *
+\`\`\`
+Note: \`L\` is supported in Quartz and some extended cron parsers, but not standard Unix crontab. For standard cron, use a script that checks the date.
+
+## Complete Reference Table
+
+| Schedule | Expression | Notes |
+|----------|------------|-------|
+| Every minute | \`* * * * *\` | 1,440 runs/day |
+| Every 5 min | \`*/5 * * * *\` | 288 runs/day |
+| Every 10 min | \`*/10 * * * *\` | 144 runs/day |
+| Every 15 min | \`*/15 * * * *\` | 96 runs/day |
+| Every 30 min | \`*/30 * * * *\` | 48 runs/day |
+| Every hour | \`0 * * * *\` | 24 runs/day |
+| Every 2 hours | \`0 */2 * * *\` | 12 runs/day |
+| Every 6 hours | \`0 */6 * * *\` | 4 runs/day |
+| Daily at midnight | \`0 0 * * *\` | 1 run/day |
+| Daily at noon | \`0 12 * * *\` | 1 run/day |
+| Every weekday | \`0 0 * * 1-5\` | 5 runs/week |
+| Every weekend | \`0 0 * * 6,0\` | 2 runs/week |
+| Weekly (Monday) | \`0 0 * * 1\` | 1 run/week |
+| Monthly (1st) | \`0 0 1 * *\` | 1 run/month |
+| Monthly (15th) | \`0 0 15 * *\` | 1 run/month |
+| Yearly (Jan 1) | \`0 0 1 1 *\` | 1 run/year |
+
+## Cron in Different Environments
+
+The base syntax is the same, but each platform has quirks.
+
+### Linux / Unix crontab
+\`\`\`bash
+# Edit your crontab
+crontab -e
+
+# View current crontab
+crontab -l
+
+# System-wide crontabs live in /etc/cron.d/
+# Each line: minute hour day month weekday user command
+*/5 * * * * deploy /usr/bin/python3 /opt/scripts/check.py
+\`\`\`
+
+### GitHub Actions
+\`\`\`yaml
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'  # Weekdays at 9 AM UTC
+\`\`\`
+GitHub Actions uses UTC. The minimum interval is every 5 minutes, and jobs may be delayed during heavy load.
+
+### AWS EventBridge (CloudWatch Events)
+AWS uses a six-field format with seconds first, and minutes second:
+\`\`\`
+cron(0 12 * * ? *)   # Every day at noon UTC
+cron(0/5 * * * ? *)  # Every 5 minutes
+\`\`\`
+Note: AWS uses \`?\` in place of \`*\` for day-of-month or day-of-week when the other is specified.
+
+### Node.js (node-cron)
+\`\`\`javascript
+const cron = require('node-cron');
+
+// Every 5 minutes
+cron.schedule('*/5 * * * *', () => {
+  console.log('Running task every 5 minutes');
+});
+
+// Every weekday at 9 AM
+cron.schedule('0 9 * * 1-5', () => {
+  sendMorningReport();
+});
+\`\`\`
+
+### Python (APScheduler)
+\`\`\`python
+from apscheduler.schedulers.blocking import BlockingScheduler
+
+scheduler = BlockingScheduler()
+
+@scheduler.scheduled_job('cron', hour=9, minute=0, day_of_week='mon-fri')
+def send_daily_report():
+    print('Sending report...')
+
+scheduler.start()
+\`\`\`
+
+## Common Mistakes
+
+**Not using UTC** — Most cron systems run in UTC. A job at "midnight" may fire at noon your time. Always check which timezone your scheduler uses and document it explicitly.
+
+**Using \`*\` in every field** — \`* * * * *\` fires every minute. If your job takes more than 60 seconds to run, overlapping executions will pile up. Add locking or use \`*/5\` at minimum.
+
+**Day-of-month and day-of-week interactions** — In standard cron, if both are set (not \`*\`), the job runs when *either* condition is true, not both. This is the source of many unexpected extra runs. Use \`?\` in systems that support it to explicitly say "I don't care about this field."
+
+**No error alerting** — A failed cron job often fails silently. Always redirect stderr to a log file and set up monitoring or alerting for failed runs.
+
+\`\`\`bash
+# Capture both stdout and stderr
+*/5 * * * * /opt/script.sh >> /var/log/script.log 2>&1
+\`\`\`
+
+## FAQ
+
+**How do I run a cron job every 2 hours starting at midnight?**
+\`0 */2 * * *\` — This runs at 0:00, 2:00, 4:00, ... 22:00.
+
+**How do I run a cron job at 9:30 AM and 3:30 PM?**
+\`30 9,15 * * *\`
+
+**Can a cron expression run on the last weekday of the month?**
+Not in standard cron. You need a script that calculates this, or use an extended scheduler like Quartz.
+
+**What's the smallest interval cron supports?**
+Standard cron supports down to every minute (\`* * * * *\`). For sub-minute intervals, use a process manager, a message queue, or a scheduler that supports seconds.
+
+→ Use the [Crontab Generator](/crontab-generator) to build and validate any cron expression visually — no syntax memorization needed.`,
+  },
+  {
+    slug: 'how-to-generate-qr-code-complete-guide',
+    toolPath: '/qrcode-generator',
+    title: 'How to Generate a QR Code: A Complete Guide for Every Use Case',
+    description: 'Learn how to generate QR codes for websites, Wi-Fi, business cards, payments, and more. Covers QR code structure, error correction, size requirements, and best practices.',
+    keywords: ['how to generate qr code', 'qr code generator', 'qr code for website', 'wifi qr code', 'qr code best practices', 'qr code size'],
+    category: 'Web',
+    publishedAt: '2026-05-23',
+    content: `## What Is a QR Code?
+
+A QR code (Quick Response code) is a two-dimensional barcode that encodes data as a pattern of black and white squares. Unlike a traditional barcode that stores data in one direction only, a QR code stores data both horizontally and vertically — which is why it can hold significantly more information in a smaller space.
+
+A typical QR code can store up to 3,000 alphanumeric characters or about 7,000 numeric digits. That's enough for a long URL, a Wi-Fi password, contact information, or a short paragraph of text.
+
+## How QR Codes Work
+
+Every QR code contains several functional regions:
+
+**Finder patterns** — The three square shapes in three corners that allow a camera to detect the code's orientation and boundaries from any angle.
+
+**Alignment patterns** — Small squares near the lower-right corner (present in larger codes) that help decode the code even when the image is distorted.
+
+**Timing patterns** — Alternating black and white squares running between the finder patterns that help the decoder determine the grid dimensions.
+
+**Data area** — The rest of the code, which stores the actual encoded content plus error correction bits.
+
+**Quiet zone** — A white border around the entire code (at least 4 modules wide) required for reliable scanning.
+
+## Error Correction Levels
+
+One of the most important choices when generating a QR code is the error correction level. QR codes can be scanned even when partially damaged, obscured, or printed poorly — but only if you've selected an appropriate error correction level.
+
+| Level | Name | Data recovery | Use case |
+|-------|------|---------------|----------|
+| L | Low | Up to 7% | Digital displays, clean environments |
+| M | Medium | Up to 15% | Most general uses |
+| Q | Quartile | Up to 25% | Labels, environments with some dirt or wear |
+| H | High | Up to 30% | Logos overlaid on QR code, outdoor signage |
+
+Higher error correction means more redundant data, which means the QR code must be larger (more squares) to hold the same content. For a simple URL, Level M is the standard choice. If you want to overlay your logo on the QR code, use Level H.
+
+## What You Can Encode in a QR Code
+
+### Website URL
+The most common use case. Just encode the full URL:
+\`\`\`
+https://example.com/landing-page?utm_source=qr
+\`\`\`
+Always include the protocol (\`https://\`). Without it, some scanners open the text in a notes app instead of a browser.
+
+### Wi-Fi Network
+Encoding Wi-Fi credentials lets anyone scan and connect without typing a password. The format:
+\`\`\`
+WIFI:T:WPA;S:NetworkName;P:password123;H:false;;
+\`\`\`
+
+Fields:
+- \`T:\` — Security type: \`WPA\`, \`WEP\`, or \`nopass\`
+- \`S:\` — SSID (network name)
+- \`P:\` — Password
+- \`H:\` — Hidden network: \`true\` or \`false\`
+
+### Contact Information (vCard)
+\`\`\`
+BEGIN:VCARD
+VERSION:3.0
+FN:Jane Smith
+ORG:Acme Corp
+TEL:+1-555-123-4567
+EMAIL:jane@acme.com
+URL:https://acme.com
+END:VCARD
+\`\`\`
+
+### Email
+\`\`\`
+mailto:contact@example.com?subject=Hello&body=I scanned your QR code
+\`\`\`
+
+### Phone Number
+\`\`\`
+tel:+15551234567
+\`\`\`
+
+### SMS
+\`\`\`
+sms:+15551234567?body=Hello%20there
+\`\`\`
+
+### Plain Text
+Any text string works. Useful for sharing codes, product IDs, or short instructions.
+
+## QR Code Size Guide
+
+The size you need depends on the scanning distance and the amount of data encoded.
+
+| Scanning distance | Minimum QR code size |
+|-------------------|----------------------|
+| 10 cm (phone in hand) | 1 cm × 1 cm |
+| 30 cm (desk distance) | 3 cm × 3 cm |
+| 1 meter (close-up poster) | 5 cm × 5 cm |
+| 3 meters (across the room) | 15 cm × 15 cm |
+| 5 meters (storefront) | 25 cm × 25 cm |
+| 10 meters (outdoor banner) | 50 cm × 50 cm |
+
+Rule of thumb: the QR code should be at least 1/10 of the scanning distance. If people will scan from 1 meter away, make it at least 10 cm × 10 cm.
+
+**Module size matters more than overall size.** Each small square (module) in the code needs to be at least 0.3 mm for reliable printing. A QR code with 33 × 33 modules at minimum quality needs at least 1 cm × 1 cm printed.
+
+## Choosing the Right Format for Export
+
+**PNG** — Best for digital use: websites, email, presentations. Lossless compression preserves sharp edges. Use at 2× or 3× the display size for retina screens.
+
+**SVG** — Best for print. Scales to any size without pixelation. If you're sending to a printer or putting on merchandise, always use SVG.
+
+**JPEG** — Avoid for QR codes. JPEG's lossy compression creates artifacts around the edges of squares, which can cause scan failures.
+
+**PDF** — Good for professional print production. Often includes the SVG data embedded at high resolution.
+
+## Dynamic vs Static QR Codes
+
+**Static QR codes** encode the destination directly. The URL is baked into the pattern — you cannot change it later without generating a new code.
+
+**Dynamic QR codes** encode a short redirect URL that points to a service that then forwards to your actual destination. This lets you:
+- Change the destination without reprinting
+- Track scan counts by location, date, and device
+- A/B test different landing pages
+- Expire or deactivate a code
+
+For print materials (flyers, packaging, business cards), dynamic QR codes are worth the trade-off of depending on a redirect service. For digital use where you control the destination, static codes are simpler and have no single point of failure.
+
+## Design and Branding
+
+You can customize QR codes while keeping them scannable:
+
+**Color** — The dark modules can be any dark color; the light modules can be any light color. The contrast ratio must remain high. Dark on light always, never light on dark.
+
+**Logo overlay** — Place a logo in the center of the QR code. Use error correction level H, and keep the logo under 30% of the total code area.
+
+**Rounded modules** — Some generators allow rounding the corners of individual modules. This works fine as long as the quiet zone and finder patterns remain clear.
+
+**Background** — The quiet zone (white border) must be maintained. Printing on colored paper or a texture requires testing — always verify scannability before mass printing.
+
+## Common Mistakes
+
+**No quiet zone** — The white border is not decorative. Scanners need it to find the code boundaries. Leave at least 4 module widths of white space on all sides.
+
+**Too much data for the size** — More content means a denser code. A dense code printed small becomes unreliable. Either reduce the data or increase the print size.
+
+**Low print quality** — QR codes for print need at least 300 DPI. At 72 DPI (screen resolution), they look fine on screen but become blurry when printed.
+
+**Linking to a non-mobile-friendly page** — QR codes are almost always scanned on phones. Test the landing page on mobile before publishing.
+
+**Missing UTM parameters** — For marketing QR codes, add UTM tracking (\`?utm_source=qr&utm_campaign=flyer\`) so you can measure results in Google Analytics.
+
+## Testing Before Publishing
+
+Always test your QR code with at least two different scanning apps before printing. Common options:
+- iPhone Camera app (built-in)
+- Google Lens
+- QR & Barcode Scanner (Android)
+- Scan it at various distances and angles
+- Print a test copy at the intended final size
+
+A code that scans reliably on screen may fail when printed at a small size or on textured paper.
+
+→ Use the [QR Code Generator](/qrcode-generator) to create QR codes for URLs, Wi-Fi, contacts, and more — with color options and instant download in PNG or SVG.
+
+For Wi-Fi-specific QR codes with the correct WIFI: format, try the [Wi-Fi QR Code Generator](/wifi-qrcode-generator).`,
+  },
+  {
+    slug: 'jwt-vs-session-tokens-authentication',
+    toolPath: '/jwt-parser',
+    title: 'JWT vs Session Tokens: Which Authentication Method Should You Use?',
+    description: 'A practical comparison of JWT and session-based authentication — covering how each works, their security trade-offs, scalability implications, and when to choose one over the other.',
+    keywords: ['jwt vs session', 'jwt authentication', 'session token vs jwt', 'stateless authentication', 'jwt security', 'session based auth'],
+    category: 'Crypto',
+    publishedAt: '2026-05-24',
+    content: `## Two Ways to Prove Who You Are
+
+After a user logs in with a username and password, the server needs a way to recognize that user on subsequent requests — because HTTP is stateless. Every request arrives without inherent memory of what came before.
+
+There are two dominant approaches to solving this:
+
+1. **Session tokens** — The server creates a record of the login, stores it, and gives the client a reference key (the session ID) to present on future requests.
+2. **JWTs (JSON Web Tokens)** — The server creates a self-contained token containing the user's identity and claims, signs it, and gives it to the client. No server-side storage required.
+
+Both approaches work. They make different trade-offs.
+
+## How Session-Based Authentication Works
+
+1. User sends credentials to \`POST /login\`
+2. Server verifies them and creates a session record in storage (database, Redis, memory)
+3. Server returns a session ID as a cookie (typically \`HttpOnly; Secure; SameSite=Strict\`)
+4. Browser attaches the cookie automatically to every subsequent request
+5. Server looks up the session ID in storage on each request to identify the user
+6. To log out, the server deletes the session record — the session ID immediately stops working
+
+The session ID itself is meaningless — it's a random opaque string like \`sess_a3f9d2c8b4\`. All the actual user data lives on the server.
+
+## How JWT Authentication Works
+
+1. User sends credentials to \`POST /login\`
+2. Server verifies them and creates a JWT containing claims (user ID, roles, expiry)
+3. Server signs the JWT with a secret key (HMAC) or private key (RSA/ECDSA)
+4. Server returns the JWT — client stores it in memory, localStorage, or a cookie
+5. Client sends the JWT in the \`Authorization: Bearer <token>\` header on each request
+6. Server validates the signature and reads the claims without any storage lookup
+7. To "log out," the client discards the token — but the token remains valid until its \`exp\` claim passes
+
+A decoded JWT payload looks like this:
+\`\`\`json
+{
+  "sub": "user_12345",
+  "email": "alice@example.com",
+  "roles": ["user", "editor"],
+  "iat": 1716800000,
+  "exp": 1716886400
+}
+\`\`\`
+
+The signature on the outside of the token ensures this payload hasn't been tampered with.
+
+## Side-by-Side Comparison
+
+| Property | Session Token | JWT |
+|----------|--------------|-----|
+| Server-side storage | Required (DB, Redis) | Not required |
+| Instant revocation | Yes — delete the session | No — must wait for expiry |
+| Scalability | Requires shared storage in multi-server setups | Works on any server without coordination |
+| Token size | Small (random ID, ~20–40 bytes) | Larger (encoded claims, ~200–600 bytes) |
+| Payload readable by client | No | Yes (base64-decoded, but not secretly) |
+| Best transport | HttpOnly cookie | Authorization header or HttpOnly cookie |
+| Logout effectiveness | Complete | Only removes client copy |
+| Complexity | Simple to implement and reason about | Requires understanding JWT spec |
+
+## The Revocation Problem with JWTs
+
+This is the most frequently misunderstood trade-off. JWTs are valid until they expire. If a user's account is compromised, or an admin needs to immediately invalidate a token, there's no server-side record to delete.
+
+Solutions exist, but each adds complexity:
+
+**Short expiry + refresh tokens** — Issue access tokens that expire in 15 minutes and refresh tokens that expire in days or weeks. Compromised access tokens become invalid quickly. This is the most widely recommended pattern.
+
+**Token blocklist** — Maintain a database of invalidated JWT IDs (\`jti\` claim). Check it on every request. This brings back server-side storage — but now you're only storing exceptions, not all sessions.
+
+**Version field in user record** — Include a \`token_version\` claim in the JWT. Store the current version in the user record. Increment it on logout or password change. Reject tokens with a lower version. Requires one DB read per request.
+
+For applications where instant revocation is critical (financial services, security-sensitive admin tools), session tokens are simpler and more predictable.
+
+## The Scalability Argument
+
+JWT's most-cited advantage is horizontal scalability. With sessions, every request needs to reach the session store. In a multi-server setup, that means either sticky sessions (route each user to the same server), or a shared external store like Redis.
+
+With JWTs, any server can validate any token without coordination — just check the signature. This genuinely simplifies distributed architectures.
+
+But the practical difference is smaller than often claimed. Redis handles millions of lookups per second. For most applications, the session store is not the bottleneck. The scalability argument matters most at very large scale or in serverless/edge computing contexts where global state is genuinely difficult to share.
+
+## Security Considerations
+
+### JWT Storage
+Where you store the JWT matters enormously.
+
+**localStorage** — Simple to implement but vulnerable to XSS. Any JavaScript on your page (including third-party scripts) can read localStorage. If your app has an XSS vulnerability, an attacker steals every user's token.
+
+**sessionStorage** — Same XSS risk as localStorage, but tokens are cleared when the tab closes.
+
+**HttpOnly cookie** — The browser handles the cookie automatically and JavaScript cannot read it. This is the most secure option for web apps. It's also resistant to CSRF when combined with \`SameSite=Strict\` or CSRF tokens.
+
+**Memory (JavaScript variable)** — XSS-resistant but tokens are lost on page reload. Pairs well with a refresh token in an HttpOnly cookie.
+
+Recommendation: Store JWTs in HttpOnly cookies for web apps. Store them in memory for single-page applications that need to read claims client-side, with a refresh token in a cookie.
+
+### Algorithm Selection
+Always specify the expected algorithm when validating JWTs. A historical vulnerability allowed attackers to change the algorithm to \`alg: none\`, bypassing signature verification entirely. Modern JWT libraries handle this if you configure them correctly:
+
+\`\`\`javascript
+// Node.js (jsonwebtoken)
+jwt.verify(token, secret, { algorithms: ['HS256'] }); // Always specify
+
+// Never do this — susceptible to algorithm confusion
+jwt.verify(token, secret);
+\`\`\`
+
+### Short Expiry Times
+Access tokens should expire in 15–60 minutes. Refresh tokens in 7–30 days with rotation. Long-lived access tokens are the most common JWT security mistake.
+
+## When to Use Sessions
+
+- Traditional server-rendered web applications (Django, Rails, Laravel)
+- Applications requiring instant logout or account termination
+- Applications where the user data in the token would be large or change frequently
+- When simplicity and debuggability matter more than stateless scalability
+
+## When to Use JWTs
+
+- APIs consumed by mobile apps (no automatic cookie handling)
+- Microservices where multiple services need to verify identity without hitting a central DB
+- Serverless and edge computing environments where global state is expensive
+- Single sign-on (SSO) scenarios where tokens cross domain boundaries
+
+## The Hybrid Approach
+
+Many production systems use both. A session cookie handles web browser login. JWTs are issued as short-lived access tokens for API calls, especially from mobile clients or third-party integrations. Refresh tokens — stored in secure HttpOnly cookies — allow transparent renewal without re-login.
+
+This combination gives you the security of server-side session management for the primary login, the stateless scalability of JWTs for API authorization, and instant revocation via the session/refresh token.
+
+→ Use the [JWT Parser](/jwt-parser) to decode and inspect any JWT token, read its claims, and check its expiry — no secret key required.`,
+  },
+  {
+    slug: 'regex-cheat-sheet-patterns-examples',
+    toolPath: '/regex-tester',
+    title: 'Regex Cheat Sheet: Every Pattern You\'ll Actually Use',
+    description: 'A practical regex reference with real-world patterns for emails, URLs, passwords, dates, IP addresses, and more. Includes syntax tables and working code examples in JavaScript, Python, and other languages.',
+    keywords: ['regex cheatsheet', 'regular expression examples', 'regex patterns', 'regex email match', 'regex syntax', 'regex reference'],
+    category: 'Development',
+    publishedAt: '2026-05-25',
+    content: `## Regex Syntax Quick Reference
+
+Regular expressions use a compact syntax where most characters match themselves, but certain characters have special meaning.
+
+### Character Classes
+
+| Pattern | Matches |
+|---------|---------|
+| \`.\` | Any character except newline |
+| \`\\w\` | Word character: \`[a-zA-Z0-9_]\` |
+| \`\\W\` | Non-word character |
+| \`\\d\` | Digit: \`[0-9]\` |
+| \`\\D\` | Non-digit |
+| \`\\s\` | Whitespace (space, tab, newline) |
+| \`\\S\` | Non-whitespace |
+| \`[abc]\` | Any of a, b, or c |
+| \`[^abc]\` | Anything except a, b, c |
+| \`[a-z]\` | Any lowercase letter |
+| \`[A-Z]\` | Any uppercase letter |
+| \`[0-9]\` | Any digit (same as \\d) |
+| \`[a-zA-Z]\` | Any letter |
+
+### Quantifiers
+
+| Pattern | Matches |
+|---------|---------|
+| \`*\` | 0 or more |
+| \`+\` | 1 or more |
+| \`?\` | 0 or 1 (optional) |
+| \`{n}\` | Exactly n times |
+| \`{n,}\` | n or more times |
+| \`{n,m}\` | Between n and m times |
+| \`*?\` | 0 or more (lazy) |
+| \`+?\` | 1 or more (lazy) |
+
+Greedy vs lazy matters when the pattern could match multiple ways. \`<.*>\` on \`<b>text</b>\` matches the entire string. \`<.*?>\` matches \`<b>\` only.
+
+### Anchors and Boundaries
+
+| Pattern | Matches |
+|---------|---------|
+| \`^\` | Start of string (or start of line in multiline mode) |
+| \`$\` | End of string (or end of line in multiline mode) |
+| \`\\b\` | Word boundary |
+| \`\\B\` | Not a word boundary |
+| \`\\A\` | Start of string (Python, ignores multiline) |
+| \`\\Z\` | End of string (Python, ignores multiline) |
+
+### Groups and Alternation
+
+| Pattern | Meaning |
+|---------|---------|
+| \`(abc)\` | Capturing group |
+| \`(?:abc)\` | Non-capturing group |
+| \`(?<name>abc)\` | Named capturing group |
+| \`a\|b\` | Alternation: match a or b |
+| \`(?=abc)\` | Positive lookahead: followed by abc |
+| \`(?!abc)\` | Negative lookahead: not followed by abc |
+| \`(?<=abc)\` | Positive lookbehind: preceded by abc |
+| \`(?<!abc)\` | Negative lookbehind: not preceded by abc |
+
+## Real-World Patterns
+
+### Email Address
+\`\`\`regex
+^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$
+\`\`\`
+This matches the vast majority of valid email formats. Full RFC 5322 compliance requires a much more complex regex — but this 95% solution handles all common cases.
+
+Matches: \`user@example.com\`, \`first.last+tag@sub.domain.co.uk\`
+Rejects: \`user@\`, \`@example.com\`, \`user @example.com\`
+
+### URL
+\`\`\`regex
+https?://[^\\s/$.?#].[^\\s]*
+\`\`\`
+Matches http and https URLs. For production validation, use the URL constructor instead of regex — it handles all edge cases correctly.
+
+### IPv4 Address
+\`\`\`regex
+^(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)(\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)){3}$
+\`\`\`
+Validates that each octet is 0–255. Matches: \`192.168.1.1\`, \`0.0.0.0\`, \`255.255.255.255\`. Rejects: \`256.0.0.1\`, \`192.168.1\`.
+
+### Phone Number (US)
+\`\`\`regex
+^(\\+1[\\s.-]?)?\\(?[2-9]\\d{2}\\)?[\\s.-]?[2-9]\\d{2}[\\s.-]?\\d{4}$
+\`\`\`
+Matches: \`555-867-5309\`, \`(555) 867-5309\`, \`+1 555 867 5309\`
+
+### Date (YYYY-MM-DD)
+\`\`\`regex
+^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$
+\`\`\`
+Validates format and range (months 01–12, days 01–31). Does not validate day/month combinations — use a date library for that.
+
+### Time (HH:MM:SS)
+\`\`\`regex
+^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$
+\`\`\`
+24-hour format. Hours 00–23, minutes and seconds 00–59.
+
+### Strong Password
+\`\`\`regex
+^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$
+\`\`\`
+Requires at least 8 characters, one uppercase, one lowercase, one digit, one special character. Uses lookaheads to check each requirement independently.
+
+### Hex Color Code
+\`\`\`regex
+^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$
+\`\`\`
+Matches \`#ff6600\` and shorthand \`#f60\`. Case insensitive.
+
+### Slug (URL-friendly string)
+\`\`\`regex
+^[a-z0-9]+(?:-[a-z0-9]+)*$
+\`\`\`
+Matches: \`my-blog-post\`, \`product-123\`. Rejects: \`-starts-with-dash\`, \`has spaces\`, \`UPPERCASE\`.
+
+### Credit Card Number
+\`\`\`regex
+^(4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12})$
+\`\`\`
+Matches Visa, MasterCard, Amex, Discover. Always strip spaces/dashes before matching.
+
+### JWT Token
+\`\`\`regex
+^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]*$
+\`\`\`
+Three Base64url-encoded segments separated by dots.
+
+### HTML Tag
+\`\`\`regex
+<([a-zA-Z][a-zA-Z0-9]*)\\b[^>]*>(.*?)<\\/\\1>
+\`\`\`
+Matches a tag and its content. Note: parsing HTML with regex is fragile for nested elements — use a proper HTML parser for anything complex.
+
+### Markdown Header
+\`\`\`regex
+^(#{1,6})\\s+(.+)$
+\`\`\`
+Captures heading level and text. Group 1: \`#\` to \`######\`. Group 2: heading text.
+
+## Code Examples
+
+### JavaScript
+\`\`\`javascript
+// Test if a string matches
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
+emailRegex.test('user@example.com'); // true
+
+// Extract matches
+const text = 'Call 555-867-5309 or 555-123-4567';
+const phoneRegex = /\\d{3}-\\d{3}-\\d{4}/g;
+text.match(phoneRegex); // ['555-867-5309', '555-123-4567']
+
+// Replace matches
+'hello_world_test'.replace(/_/g, '-'); // 'hello-world-test'
+
+// Named capture groups
+const dateRegex = /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/;
+const { year, month, day } = '2026-05-15'.match(dateRegex).groups;
+\`\`\`
+
+### Python
+\`\`\`python
+import re
+
+# Test match
+pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+bool(re.match(pattern, 'user@example.com'))  # True
+
+# Find all matches
+text = 'Dates: 2026-01-15 and 2026-03-20'
+dates = re.findall(r'\\d{4}-\\d{2}-\\d{2}', text)
+# ['2026-01-15', '2026-03-20']
+
+# Named groups
+m = re.search(r'(?P<year>\\d{4})-(?P<month>\\d{2})', '2026-05')
+m.group('year')  # '2026'
+
+# Replace with function
+result = re.sub(r'\\b(\\w)', lambda m: m.group().upper(), 'hello world')
+# 'Hello World'
+\`\`\`
+
+## Flags Reference
+
+| Flag | JavaScript | Python | Effect |
+|------|-----------|--------|--------|
+| Case insensitive | \`/regex/i\` | \`re.IGNORECASE\` | \`A\` matches \`a\` |
+| Multiline | \`/regex/m\` | \`re.MULTILINE\` | \`^\` and \`$\` match line boundaries |
+| Dotall | \`/regex/s\` | \`re.DOTALL\` | \`.\` matches newlines |
+| Global | \`/regex/g\` | (use \`findall\`) | Find all matches, not just first |
+| Verbose | N/A | \`re.VERBOSE\` | Allows whitespace and comments in pattern |
+
+## Performance Tips
+
+**Compile patterns you reuse** — In Python, \`re.compile(pattern)\` creates a reusable regex object. In JavaScript, a regex literal \`/pattern/\` is compiled once per load.
+
+**Avoid catastrophic backtracking** — Patterns like \`(a+)+\` on long strings can take exponential time. This is the source of ReDoS (Regular Expression Denial of Service) attacks. Keep quantifiers simple and avoid nested repetition on the same character class.
+
+**Use non-capturing groups when you don't need the match** — \`(?:abc)\` is faster than \`(abc)\` because the engine doesn't store the match.
+
+**Anchor when possible** — Adding \`^\` and \`$\` where appropriate stops the engine from searching the entire input when the match fails.
+
+## FAQ
+
+**What's the difference between \`match\` and \`search\` in Python?**
+\`re.match\` only matches at the beginning of the string. \`re.search\` scans through the string looking for any match. For most use cases, \`re.search\` is what you want.
+
+**Why does my regex work in one language but not another?**
+Different regex engines support different features. Lookaheads/lookbehinds, named groups, and Unicode properties vary by engine. JavaScript lacks lookbehind in older environments; Python's \`re\` module has full lookbehind support.
+
+**How do I match a literal dot, asterisk, or other special character?**
+Escape it with a backslash: \`\\.\` matches a literal dot; \`\\*\` matches a literal asterisk.
+
+→ Use the [Regex Tester](/regex-tester) to write, test, and debug regex patterns interactively — with real-time match highlighting and flag toggles.`,
+  },
+  {
+    slug: 'password-hashing-bcrypt-sha256-guide',
+    toolPath: '/bcrypt',
+    title: 'Password Hashing Explained: bcrypt, SHA-256, Argon2, and What to Actually Use',
+    description: 'Understand why password hashing is different from encryption, how bcrypt, SHA-256, PBKDF2, and Argon2 work, and which algorithm to choose for storing passwords securely in 2026.',
+    keywords: ['password hashing', 'bcrypt vs sha256', 'how to hash passwords', 'password security', 'argon2 bcrypt', 'secure password storage'],
+    category: 'Crypto',
+    publishedAt: '2026-05-26',
+    content: `## Hashing vs Encryption: A Critical Distinction
+
+Before choosing an algorithm, understand what you're actually doing.
+
+**Encryption** is reversible — you can decrypt ciphertext back to plaintext with the right key. You'd use encryption to protect data you need to read later: credit card numbers, medical records, private messages.
+
+**Hashing** is one-way — a hash function takes input and produces a fixed-size output (the hash or digest), and there's no algorithm to reverse it. You cannot go from the hash back to the original password.
+
+**Why is one-way better for passwords?** Because you don't need to know the user's password — you only need to verify it. When a user logs in, you hash what they typed and compare it to the stored hash. If they match, the passwords match. The actual password never needs to be stored or recovered.
+
+If someone steals your database, they get hashes — not passwords. They'd have to crack each hash individually.
+
+## Why Not Just Use SHA-256?
+
+SHA-256 is a cryptographic hash function designed for speed. It can compute billions of hashes per second on modern hardware, especially with GPU acceleration. That's great for verifying file integrity. It's catastrophic for password storage.
+
+An attacker with a leaked database of SHA-256 password hashes can run dictionary attacks and rainbow table attacks at staggering speed:
+- A modern GPU can compute ~10 billion SHA-256 hashes per second
+- An 8-character password with lowercase letters and digits has ~2.8 trillion combinations
+- At 10 billion/second, cracking all combinations takes about 4.6 minutes
+
+SHA-256 is explicitly not designed for password hashing. Using it for passwords is a well-known security mistake.
+
+The same applies to MD5 (even faster, also broken for other reasons) and raw SHA-1/SHA-512.
+
+## What Makes a Good Password Hashing Algorithm?
+
+Good password hashing algorithms are designed to be slow — deliberately, tunable, and in ways that help defenders more than attackers.
+
+**Key properties:**
+
+1. **Slow by design** — Each hash should take 100–300ms on your hardware. Fast for a legitimate user login; painfully slow when an attacker needs to try millions of guesses.
+
+2. **Work factor adjustable** — As hardware gets faster, you need to increase the cost. Good algorithms let you tune the cost parameter.
+
+3. **Salt included** — A random value mixed into each hash before computing, unique per password. This prevents rainbow table attacks (precomputed hash tables) and ensures two users with the same password get different hashes.
+
+4. **Memory-hard (ideal)** — Some algorithms require significant RAM per computation. GPUs have many cores but limited memory bandwidth per core, making memory-hard algorithms especially resistant to GPU cracking.
+
+## The Algorithms
+
+### bcrypt
+
+Designed specifically for password hashing in 1999. Still the most widely deployed password hashing algorithm in the world.
+
+**How it works:** Takes a password and a random 16-byte salt. Uses the Blowfish cipher key schedule (known to be expensive) iteratively. The cost parameter N means the algorithm runs 2^N iterations.
+
+\`\`\`
+$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/lfz3Fkxtu6RNWz9tK
+ ^^  ^^                              
+ |   cost factor (12 = 2^12 = 4096 rounds)
+ version identifier
+\`\`\`
+
+**Cost factor guide:**
+| Cost | Approx time on modern server | Use case |
+|------|------------------------------|----------|
+| 10 | ~100ms | Minimum for production |
+| 12 | ~300ms | Recommended default |
+| 14 | ~1 second | High-security accounts |
+| 16 | ~4 seconds | Admin accounts, financial |
+
+**Limitation:** bcrypt truncates passwords at 72 bytes. A password longer than 72 characters gets truncated silently. This rarely matters in practice but is worth knowing.
+
+\`\`\`javascript
+// Node.js
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
+
+// Hash
+const hash = await bcrypt.hash(plainTextPassword, saltRounds);
+
+// Verify
+const match = await bcrypt.compare(plainTextPassword, storedHash);
+\`\`\`
+
+\`\`\`python
+# Python
+import bcrypt
+
+# Hash
+password = b'mysecretpassword'
+hashed = bcrypt.hashpw(password, bcrypt.gensalt(rounds=12))
+
+# Verify
+bcrypt.checkpw(password, hashed)  # True or False
+\`\`\`
+
+### PBKDF2
+
+Password-Based Key Derivation Function 2. Defined in RFC 8018. Built into many standard libraries and compliance frameworks (NIST-approved, FIPS 140 compatible).
+
+**How it works:** Applies a pseudorandom function (typically HMAC-SHA256 or HMAC-SHA512) repeatedly, using the iteration count as the work factor.
+
+**Iteration count guide (2026):**
+- OWASP recommends: **600,000 iterations with HMAC-SHA256**
+- NIST SP 800-63B recommends: **at least 10,000** (older guidance, aim higher)
+
+\`\`\`python
+import hashlib
+import os
+
+# Hash
+salt = os.urandom(32)
+key = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 600000)
+
+# Store: salt + key (both as hex or bytes)
+\`\`\`
+
+PBKDF2's weakness: it's not memory-hard. GPUs can parallelize it efficiently. At equivalent speed settings, bcrypt and Argon2 are harder to crack with specialized hardware.
+
+### Argon2
+
+The winner of the Password Hashing Competition (2015). The current gold standard, recommended by OWASP for new systems.
+
+**Three variants:**
+- **Argon2d** — Maximizes resistance to GPU cracking, susceptible to side-channel attacks. For cryptocurrency.
+- **Argon2i** — Resistant to side-channel attacks. For password hashing in most apps.
+- **Argon2id** — Hybrid of both. Recommended default.
+
+**Configurable parameters:**
+- **Memory cost** (m) — RAM usage in kilobytes. Minimum 64 MB, recommend 128 MB+.
+- **Time cost** (t) — Number of iterations. Start at 3.
+- **Parallelism** (p) — Number of parallel threads. Match your server's CPU cores.
+
+\`\`\`python
+# Python (argon2-cffi)
+from argon2 import PasswordHasher
+
+ph = PasswordHasher(time_cost=3, memory_cost=131072, parallelism=4)  # 128 MB
+
+# Hash
+hash = ph.hash("mysecretpassword")
+
+# Verify
+try:
+    ph.verify(hash, "mysecretpassword")  # Returns True
+except Exception:
+    pass  # Wrong password
+\`\`\`
+
+\`\`\`javascript
+// Node.js (argon2)
+const argon2 = require('argon2');
+
+const hash = await argon2.hash('mysecretpassword', {
+  type: argon2.argon2id,
+  memoryCost: 131072,  // 128 MB
+  timeCost: 3,
+  parallelism: 4,
+});
+
+const valid = await argon2.verify(hash, 'mysecretpassword');
+\`\`\`
+
+### scrypt
+
+Designed by Colin Percival in 2009. Memory-hard before Argon2 existed. Still widely used and secure.
+
+Parameters: N (CPU/memory cost), r (block size), p (parallelism). OWASP recommends: N=65536, r=8, p=1 as a minimum.
+
+\`\`\`javascript
+const crypto = require('crypto');
+const salt = crypto.randomBytes(32);
+
+crypto.scrypt('password', salt, 64, { N: 65536, r: 8, p: 1 }, (err, derivedKey) => {
+  // derivedKey is the hash
+});
+\`\`\`
+
+## Which Algorithm Should You Use?
+
+| Scenario | Recommendation |
+|----------|---------------|
+| New application (2026) | **Argon2id** |
+| Platform with FIPS compliance required | **PBKDF2** with HMAC-SHA512, 600k iterations |
+| Adding password hashing to an existing system | **bcrypt** (widely supported, proven) |
+| Migrating from MD5/SHA1 | Any of the above — immediately |
+| Need to hash many passwords per second | Tune the cost down (not below safety thresholds) |
+
+**Never use:** MD5, SHA-1, SHA-256, SHA-512, plain or unsalted for password storage.
+
+## Migrating from Insecure Hashes
+
+If you have a database of MD5 or SHA-1 password hashes, migrate without requiring a mass password reset:
+
+1. Add a new column \`password_hash_v2\` (nullable)
+2. On successful login (when you have the plaintext password): compute bcrypt/Argon2 hash, store in v2
+3. Check v2 first on login; fall back to v1 if v2 is null
+4. After 90 days, force a password reset for accounts still on v1
+5. Drop the v1 column
+
+This lets you upgrade silently for active users and handle the rest with a forced reset.
+
+## Common Mistakes
+
+**Storing plaintext passwords** — The most catastrophic mistake. Used by ~30% of breached companies according to public breach reports.
+
+**Using fast hash functions** — MD5, SHA-1, SHA-256 for password storage. Fast is bad here.
+
+**Forgetting the salt** — Unsalted bcrypt is far weaker. All good libraries handle salting automatically — don't implement it manually.
+
+**Using the same salt for all passwords** — The salt must be unique per password, generated randomly each time.
+
+**Not re-hashing on login** — If you increase the cost factor over time, re-hash the password (using the new cost factor) when the user successfully logs in. Many libraries handle this with a "needs rehash" check.
+
+\`\`\`javascript
+// bcrypt: re-hash if cost factor changed
+const currentHash = getHashFromDB(userId);
+if (await bcrypt.compare(password, currentHash)) {
+  if (bcrypt.getRounds(currentHash) < TARGET_ROUNDS) {
+    const newHash = await bcrypt.hash(password, TARGET_ROUNDS);
+    updateHashInDB(userId, newHash);
+  }
+  // login success
+}
+\`\`\`
+
+→ Use the [Bcrypt Tool](/bcrypt) to hash and verify passwords in the browser — useful for testing cost factors and verifying existing hashes.`,
+  },
 ];
