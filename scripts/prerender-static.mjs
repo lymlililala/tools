@@ -13,6 +13,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { execSync } from 'child_process'
 import { parse as parseYaml } from 'yaml'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -186,6 +187,30 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
   return html
 }
 
+// ── 读取博客文章数据（通过 tsx 导出为临时 JSON） ─────────────────────────────────
+const articlesJsonPath = path.join(rootDir, 'dist', '.articles-cache.json')
+try {
+  // 用 esbuild 把 articles.data.ts 编译为临时 CJS，再 require 读取数据
+  const tmpJs = path.join(rootDir, 'dist', '.articles-tmp.cjs')
+  execSync(
+    `./node_modules/.bin/esbuild src/pages/articles/articles.data.ts --bundle --platform=node --format=cjs --outfile=${tmpJs}`,
+    { cwd: rootDir, stdio: 'pipe' },
+  )
+  const { createRequire } = await import('module')
+  const req = createRequire(import.meta.url)
+  const { articles } = req(tmpJs)
+  fs.writeFileSync(articlesJsonPath, JSON.stringify(articles), 'utf-8')
+  fs.unlinkSync(tmpJs)
+  console.log(`📝 已加载 ${articles.length} 篇博客文章`)
+}
+catch (e) {
+  console.warn('⚠️  无法加载博客文章数据，跳过博客预渲染：', e.message)
+}
+
+const blogArticles = fs.existsSync(articlesJsonPath)
+  ? JSON.parse(fs.readFileSync(articlesJsonPath, 'utf-8'))
+  : []
+
 // ── 生成静态页面 ─────────────────────────────────────────────────────────────────
 let count = 0
 
@@ -244,7 +269,55 @@ for (const slug of toolSlugs) {
   count++
 }
 
-// 3. 生成 404.html（Vercel/Netlify 兜底，返回 404 状态码）
+// 3. 博客文章路由（从 articles.data.ts 读取）
+for (const article of blogArticles) {
+  const { slug, title, description, keywords = [], category = 'Development', publishedAt, content } = article
+
+  // 从 markdown 内容提取纯文本摘要（取前 300 字符，去掉 markdown 语法）
+  const plainText = (content || '')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/`[^`]+`/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\n+/g, ' ')
+    .trim()
+    .slice(0, 300)
+
+  const articleRoute = {
+    path: `/blog/${slug}`,
+    title,
+    description: description || plainText,
+    h1: title,
+    keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description || plainText,
+      url: `${SITE}/blog/${slug}`,
+      datePublished: publishedAt,
+      dateModified: publishedAt,
+      author: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        url: SITE,
+        logo: { '@type': 'ImageObject', url: `${SITE}/favicon.png` },
+      },
+      articleSection: category,
+      keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/blog/${slug}` },
+    },
+  }
+
+  const outDir = path.join(distDir, 'blog', slug)
+  fs.mkdirSync(outDir, { recursive: true })
+  fs.writeFileSync(path.join(outDir, 'index.html'), buildHtml(articleRoute), 'utf-8')
+  count++
+}
+console.log(`✅ Blog: ${blogArticles.length} 篇文章页预渲染完成`)
+
+// 4. 生成 404.html（Vercel/Netlify 兜底，返回 404 状态码）
 let html404 = template
   .replace(/<title>[^<]*<\/title>/, `<title>页面未找到 — ${SITE_NAME}</title>`)
   .replace(/<link rel="canonical"[^>]*>/g, '') // 移除 canonical，404 不应有 canonical
@@ -262,6 +335,7 @@ console.log(`✅ Generated: dist/404.html`)
 count++
 
 console.log(`\n🎉 预渲染完成：生成了 ${count} 个静态 HTML 文件`)
-console.log(`   - ${staticRoutes.length} 个静态页面`)
+console.log(`   - ${staticRoutes.length} 个静态页面（首页、博客列表）`)
 console.log(`   - ${toolSlugs.length} 个工具页面`)
+console.log(`   - ${blogArticles.length} 个博客文章页面`)
 console.log(`   - 1 个 404 页面`)
