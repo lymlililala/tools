@@ -368,7 +368,7 @@ for (const slug of toolSlugs) {
     title: `${toolTitle} - 在线工具`,
     description: toolDesc,
     h1: toolTitle,
-    keywords: `${slug},在线工具,免费,${SITE_NAME}`,
+    keywords: [toolTitle, slug, '在线工具', '免费', '在线', SITE_NAME].filter(Boolean).join(','),
     seoContent,
     jsonld,
   }
@@ -379,6 +379,41 @@ for (const slug of toolSlugs) {
   fs.writeFileSync(outPath, buildHtml(route), 'utf-8')
   console.log(`✅ Tool: dist/tools/${slug}/index.html`)
   count++
+}
+
+// ── 辅助：从 Markdown 内容构建博客文章 SEO 正文 HTML ──────────────────────────
+function buildArticleSeoContent(content, description) {
+  const raw = content || ''
+  const parts = []
+
+  if (description) {
+    parts.push(`      <p>${escapeHtml(description)}</p>`)
+  }
+
+  // 提取 ## H2 段落及其内容（前 5 个段落）
+  const sections = raw.split(/^#{2}\s+/m).slice(1, 6)
+  sections.forEach((section) => {
+    const lines = section.split('\n')
+    const heading = lines[0].trim()
+    const bodyLines = lines.slice(1)
+      .join(' ')
+      .replace(/#{1,6}\s+\S+/g, '')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      .replace(/`[^`]+`/g, '')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 300)
+    if (heading && bodyLines.length > 20) {
+      parts.push(`      <section>`)
+      parts.push(`        <h2>${escapeHtml(heading)}</h2>`)
+      parts.push(`        <p>${escapeHtml(bodyLines)}</p>`)
+      parts.push(`      </section>`)
+    }
+  })
+
+  return parts.join('\n')
 }
 
 // 3. 博客文章路由（从 articles.data.ts 读取）
@@ -395,26 +430,30 @@ for (const article of blogArticles) {
     .trim()
     .slice(0, 300)
 
+  const articleSeoContent = buildArticleSeoContent(content, description)
+
   const articleRoute = {
     path: `/blog/${slug}`,
     title,
     description: description || plainText,
     h1: title,
     keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+    seoContent: articleSeoContent,
     jsonld: {
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: title,
       description: description || plainText,
       url: `${SITE}/blog/${slug}`,
-      datePublished: publishedAt,
-      dateModified: publishedAt,
+      datePublished: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
+      dateModified: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
+      image: OG_IMAGE,
       author: { '@type': 'Organization', name: SITE_NAME, url: SITE },
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
         url: SITE,
-        logo: { '@type': 'ImageObject', url: `${SITE}/favicon.png` },
+        logo: { '@type': 'ImageObject', url: `${SITE}/android-chrome-192x192.png` },
       },
       articleSection: category,
       keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
