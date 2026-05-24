@@ -97,7 +97,7 @@ tools:
     faq2q: '关闭标签页会停止计时吗？'
     faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
     title: 计时器
-    description: 简单易用的在线计时器，支持毫秒级精度与分段记录。
+    description: 简单易用的在线计时器，支持毫秒级精度、分段计时与圈速记录，适合跑步、会议计时等场景。
     idle: 就绪
     running: 计时中
     paused: 已暂停
@@ -178,7 +178,7 @@ tools:
     faq2q: '可以在生产环境使用吗？'
     faq2a: 'SVG 占位图主要用于开发，可在生产环境作为 fallback 或骨架屏使用。'
     title: SVG 占位符生成器
-    description: 生成 svg 图像以用作应用程序中的占位符。
+    description: 在线生成自定义尺寸、颜色和文字的 SVG 占位图，可直接用于原型设计和开发调试。
 
   json-to-csv:
     step1: '步骤 1：将 JSON 数组粘贴到输入框中。'
@@ -189,7 +189,7 @@ tools:
     faq2q: '如果 JSON 对象的键不一致怎么办？'
     faq2a: '工具会将所有对象中的唯一键合并为列标题。缺失字段在 CSV 输出中留空。'
     title: JSON 转 CSV
-    description: 使用自动标头检测将JSON转换为CSV。
+    description: 将 JSON 数组数据转换为 CSV 格式，自动检测表头，支持复制和下载，无需安装任何软件。
     rawJson: 原始 JSON
     valid: 有效
     invalid: 无效
@@ -216,7 +216,7 @@ tools:
     faq2q: '支持什么格式？'
     faq2a: '照片保存为 PNG 格式，视频保存为大多数现代浏览器支持的 WebM 格式。'
     title: 摄像机记录器
-    description: 从网络摄像头或照相机拍摄照片或录制视频。
+    description: 在浏览器中直接使用摄像头拍照或录制视频，支持选择摄像头和麦克风设备，可下载保存。
     notSupported: 浏览器不支持
     notSupportedDesc: 您的浏览器不支持从摄像头录制视频，请升级至最新版 Chrome、Firefox 或 Edge。
     videoPlaceholder: 摄像头画面将在此处显示
@@ -377,7 +377,7 @@ tools:
     faq2q: '401 和 403 有什么区别？'
     faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
     title: HTTP 状态码
-    description: 所有HTTP状态的列表对其名称和含义解释。
+    description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明。
     backToTop: 回到顶部
 
   sql-prettify:
@@ -416,7 +416,7 @@ tools:
     faq2q: '这个基准测试准确吗？'
     faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
     title: 基准生成器
-    description: 简单的在线基准构建器可以轻松比较任务的执行时间。
+    description: 在线 JavaScript 性能基准测试工具，轻松比较不同代码片段的执行时间，找出最优实现方案。
     valuePlaceholder: 输入测量值...
     deleteValue: 删除此值
     addValue: 添加测量值
@@ -588,7 +588,7 @@ tools:
     faq2q: '格式化会改变 YAML 的值吗？'
     faq2a: '不会。格式化只改变空白和格式，数据值和结构保持完全不变。'
     title: YAML 格式化
-    description: 将 YAML 字符串格式化为整洁易读的形式。
+    description: 在线 YAML 格式化工具，将压缩或混乱的 YAML 重新排版为整洁易读的标准格式，支持语法校验。
 
   eta-calculator:
     step1: '步骤 1：输入要处理的项目总数。'
@@ -611,7 +611,7 @@ tools:
     faq2q: '为什么 4 写作 IV 而不是 IIII？'
     faq2a: '罗马数字使用减法记法：较小的数字在较大的数字前表示相减。IV = 5 - 1 = 4。'
     title: 罗马数字转换器
-    description: 将罗马数字转换为数字，并将数字转换为罗马数字。
+    description: 在线罗马数字转换工具，支持阿拉伯数字与罗马数字双向转换，支持 I~MMMCMXCIX（即 1~3999）范围。
 
   hmac-generator:
     step1: '步骤 1：输入要认证的消息。'
@@ -727,7 +727,7 @@ tools:
     faq2q: 'JSON 是 YAML 的子集吗？'
     faq2a: '是的。YAML 1.2 是 JSON 的超集，所有有效的 JSON 也是有效的 YAML。'
     title: JSON到YAML转换器
-    description: 在线转换将JSON转换为YAML。
+    description: 将 JSON 数据在线转换为 YAML 格式，保留层级结构，适用于配置文件迁移和模板列变解析。
 
   url-parser:
     step1: '步骤 1：将 URL 粘贴到输入框中。'
@@ -820,7 +820,7 @@ tools:
     faq2q: 'camelCase 和 PascalCase 有什么区别？'
     faq2a: 'camelCase 以小写字母开头（如 myVariable），PascalCase 以大写字母开头（如 MyClass）。'
     title: 大小写转换
-    description: 更改字符串的大小写并在不同格式之间进行选择
+    description: 在线大小写转换工具，支持 camelCase、PascalCase、snake_case、kebab-case、UPPER_CASE 等多种命名法互转。
 
   html-entities:
     step1: '步骤 1：输入包含特殊字符的 HTML 文本，或输入实体进行解码。'
@@ -835,7 +835,7 @@ tools:
 
   json-prettify:
     title: JSON 格式化
-    description: 将 JSON 字符串格式化为整洁易读的形式。
+    description: 在线 JSON 格式化工具，将压缩或混乱的 JSON 重新排版为带缩进的标准格式，支持 JSON5 和语法校验。
     step1: 第一步：将原始 JSON 文本粘贴到左侧输入框。
     step2: 第二步：根据需要调整缩进大小和键排序选项。
     step3: 第三步：格式化结果显示在右侧，点击复制按钮即可复制。
@@ -892,7 +892,7 @@ tools:
     faq2q: 'MAC 地址的前 3 字节是什么？'
     faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
     title: MAC地址查找
-    description: 通过设备的MAC地址查找设备的供应商和制造商。
+    description: 通过设备的 MAC 地址查询网卡厂商和制造商信息，支持 OUI 数据库查询，适用于网络故障排查。
     macAddressLabel: MAC 地址
     placeholder: '例如：20:37:06:12:34:56'
     clear: 清空
@@ -914,7 +914,7 @@ tools:
     faq2q: 'MIME 类型对 Web 开发为什么重要？'
     faq2a: '服务器用 MIME 类型告知浏览器如何处理文件。错误的 MIME 类型会导致文件被下载而非显示。'
     title: mime类型
-    description: 将mime类型转换为扩展，反之亦然。
+    description: MIME 类型与文件扩展名互查工具，快速查找文件格式对应的 Content-Type，方便 API 开发和服务器配置。
 
   toml-to-json:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -925,7 +925,7 @@ tools:
     faq2q: '转换时 TOML 注释会怎样？'
     faq2a: 'JSON 不支持注释，因此所有 TOML 注释在转换为 JSON 时都会丢失。'
     title: TOML 到 JSON
-    description: 解析TOML并将其转换为JSON。
+    description: 将 TOML 数据在线转换为 JSON 格式，适用于将 Rust/Go 项目的 TOML 配置转为 API 数据或前端处理。
 
   lorem-ipsum-generator:
     step1: '步骤 1：选择输出类型：段落、句子或单词。'
@@ -969,7 +969,7 @@ tools:
     faq2q: '分享 WiFi 二维码安全吗？'
     faq2a: '只应与信任的人分享——二维码包含可恢复的 WiFi 密码，任何扫描它的人都可以加入您的网络。'
     title: WiFi 二维码生成器
-    description: 生成和下载QR码以快速连接到WiFi网络。
+    description: 在线生成 WiFi 二维码，手机扫码即可一键连接 WiFi，支持 WPA/WPA2/WEP 和企业级 EAP 认证，可下载 PNG。
 
   xml-formatter:
     step1: '步骤 1：将 XML 内容粘贴到输入编辑器。'
@@ -980,7 +980,7 @@ tools:
     faq2q: 'XML 和 JSON 有什么区别？'
     faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
     title: XML 格式化
-    description: 将 XML 字符串格式化为整洁易读的形式。
+    description: 在线 XML 格式化工具，将压缩或混乱的 XML 重新排版为带缩进的标准格式，支持语法高亮和校验。
     rawXml: 原始 XML
     formattedResult: 格式化结果
     collapseContent: 折叠内容
@@ -1039,7 +1039,7 @@ tools:
     faq2q: '应该使用多大的密钥？'
     faq2a: '2048 位是安全推荐的最低标准。4096 位提供更强的安全性。1024 位被认为不安全，不应使用。'
     title: RSA密钥对生成器
-    description: 生成新的随机RSA私钥和公钥pem证书。
+    description: 在线生成 RSA 公私钥对，支持 1024/2048/4096 位密钥尺寸，输出 PEM 格式，适用于 SSL 证书、JWT 签名等加密场景。
 
   html-wysiwyg-editor:
     step1: '步骤 1：在所见即所得编辑器中输入或粘贴内容。'
@@ -1093,7 +1093,7 @@ tools:
     faq2q: 'YAML 支持锚点和别名吗？'
     faq2a: '支持。YAML 支持锚点（&）和别名（*）用于复用内容。TOML 没有直接等效的功能。'
     title: YAML 到 TOML
-    description: 解析YAML并将其转换为TOML。
+    description: 将 YAML 数据在线转换为 TOML 格式，适用于 Rust、Go 等语言的配置文件迁移并保留层级结构。
 
   mac-address-generator:
     step1: '步骤 1：输入要生成的 MAC 地址数量。'
@@ -1130,7 +1130,7 @@ tools:
     faq2q: '支持嵌套 JSON 吗？'
     faq2a: '支持。对比查看器递归比较嵌套对象和数组，精确显示哪些深层嵌套键被添加、删除或修改。'
     title: JSON 差异比较
-    description: 比较两个JSON对象并获得它们之间的差异。
+    description: 在线 JSON Diff 对比工具，并排比较两个 JSON 对象的差异，高亮显示新增、删除和修改的字段。
   jwt-parser:
     step1: '步骤 1：将 JWT 令牌粘贴到输入框中。'
     step2: '步骤 2：Header、Payload 和 Signature 被解码并用颜色标记。'
@@ -1151,7 +1151,7 @@ tools:
     faq2q: '什么是 Unix 时间戳？'
     faq2a: 'Unix 时间戳（纪元时间）是自 1970 年 1 月 1 日 00:00:00 UTC 起经过的秒数，与时区无关，在编程中广泛使用。'
     title: 日期时间转换器
-    description: 将日期和时间转换为各种不同的格式
+    description: 在线日期时间转换工具，支持多种日期格式和时区转换，包括 Unix 时间戳、ISO 8601、UTC 互转。
 
   phone-parser-and-formatter:
     step1: '步骤 1：输入任意格式的电话号码。'
@@ -1237,7 +1237,7 @@ tools:
     faq2q: 'og:image 为什么重要？'
     faq2a: 'og:image 是页面在社交媒体分享时显示的缩略图。推荐尺寸为 1200×630px。'
     title: 开放式图形元生成器
-    description: 为您的网站生成开放式图形和社交html元标记。
+    description: 在线生成 Open Graph、Twitter Card 等社交媒体 meta 标签，提升网站在 Facebook、Twitter、微信等平台的分享效果。
 
   ipv6-ula-generator:
     step1: '步骤 1：点击「生成」创建随机的 IPv6 ULA 前缀。'
@@ -1279,7 +1279,7 @@ tools:
     faq2q: '为什么要将 JSON 转换为 TOML？'
     faq2a: 'TOML 对配置文件更具可读性。某些工具（如 Cargo、Hugo）只支持 TOML，需要从 JSON 转换。'
     title: JSON 转 TOML
-    description: 解析JSON并将其转换为TOML。
+    description: 将 JSON 数据在线转换为 TOML 格式，适用于应用配置迁移，保留层级结构，尤其适合 Rust 项目。
 
   device-information:
     step1: '步骤 1：打开工具——设备信息自动检测。'
@@ -1312,7 +1312,7 @@ tools:
     faq2q: '压缩会改变 JSON 数据吗？'
     faq2a: '不会。压缩只删除无关紧要的空白，数据值和结构保持完全不变。'
     title: JSON 压缩
-    description: 通过删除不必要的空白来缩小和压缩JSON。
+    description: 在线 JSON 压缩工具，删除所有多余空白和换行，将 JSON 压缩到最小体积，适用于 API 传输和存储优化。
     rawJson: 原始 JSON
     minifiedResult: 压缩结果
     valid: 合法
@@ -1338,7 +1338,7 @@ tools:
     faq2q: 'ULID 相比 UUID 有什么优势？'
     faq2a: 'ULID 可按创建时间排序（不同于 UUID v4），URL 安全，且字符串表示更紧凑（26 字符 vs UUID 的 36 字符）。'
     title: ULID 生成器
-    description: 生成随机的通用唯一词典可排序标识符（ULID）。
+    description: 在线生成 ULID（通用唯一词典可排序标识符），比 UUID 更易排序和调试，需要时间有序 ID 的分布式系统首选。
 
   string-obfuscator:
     step1: '步骤 1：输入要脱敏的字符串（如 API 密钥、IBAN、令牌）。'
@@ -1383,7 +1383,7 @@ tools:
     faq2q: 'YAML 注释在 JSON 中保留吗？'
     faq2a: '不保留。JSON 不支持注释，因此所有 YAML 注释在转换时都会被丢弃。'
     title: YAML到JSON转换器
-    description: 使用此在线转换器将YAML转换为JSON。
+    description: 将 YAML 数据在线转换为 JSON 格式，保留层级结构，适用于配置迁移、API 测试和数据格式转换。
 
   yaml-viewer:
     step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
@@ -1465,7 +1465,7 @@ tools:
     faq2q: '什么算作一个单词？'
     faq2a: '单词定义为由空白字符分隔的字符序列。附在单词上的标点符号算作单词的一部分。'
     title: 文本统计
-    description: 获取有关文本、字符数、字数、大小等的信息
+    description: 在线文本统计工具，实时显示字符数、单词数、行数、段落数、字节大小等详细统计信息。
     placeholder: 在此输入或粘贴文本…
     copyTooltip: 复制文本
     clearTooltip: 清空文本
@@ -1484,7 +1484,7 @@ tools:
     faq2q: '为什么不直接说字母？'
     faq2a: '许多字母在电话或无线电中听起来相似。使用音标单词可减少口头拼写时的错误。'
     title: 文本转北约字母表
-    description: 将文本转换为北约拼音字母以进行口头传播。
+    description: 将文本转换为北约音标字母（Alpha、Bravo、Charlie…），适用于当面拼写验证、无线零频通信等场景。
 
   basic-auth-generator:
     step1: '步骤 1：输入您的用户名和密码。'
@@ -1506,7 +1506,7 @@ tools:
     faq2q: 'Unicode 和 UTF-8 有什么区别？'
     faq2a: 'Unicode 是分配码点的标准（如 U+0041 代表字母 A），UTF-8 是将这些码点在内存或文件中表示为 1–4 字节的编码方式。'
     title: 文本转 Unicode
-    description: 解析文本并将其转换为 unicode，反之亦然
+    description: 将文本与 Unicode 码点双向转换，支持查看字符的 Unicode 编号、UTF-8/UTF-16 编码，适合国际化开发调试。
     textPlaceholder: '例如：Hello 你好 🚀'
 
   ipv4-range-expander:
@@ -1541,7 +1541,7 @@ tools:
     faq2q: '可以对比代码文件吗？'
     faq2a: '可以。工具适用于任何文本内容，包括代码、散文、JSON 和 YAML。'
     title: 文本比较
-    description: 比较两个文本并查看它们之间的差异。
+    description: 在线文本对比工具，并排显示两段文本的差异，高亮标注新增、删除的内容，适合代码审查和文档比对。
     originalText: 原始文本
     modifiedText: 修改后文本
     originalPlaceholder: 在此粘贴原始文本…
@@ -1976,7 +1976,7 @@ tools:
     faq2q: '如何测试正则表达式？'
     faq2a: '可以使用本站的 Regex Tester 工具实时测试和调试正则表达式。'
     title: 正则表达式速查表
-    description: 常用正则表达式速查参考。
+    description: 常用正则表达式速查手册，涵盖字符类、量词、锚点、分组、断言等常见模式，一键复制表达式。
     toc: 目录
     copied: 已复制到剪贴板
     copyExpr: 复制表达式
