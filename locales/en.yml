@@ -292,7 +292,15 @@ tools:
 
   ascii-text-drawer:
     title: ASCII Art Text Generator
-    description: Convert text into various ASCII art font styles.
+    description: Convert text into various ASCII art font styles. Supports 100+ fonts with customizable width.
+    step1: 'Step 1: Enter the text you want to convert (ASCII characters recommended).'
+    step2: 'Step 2: Select an ASCII art font from the dropdown list.'
+    step3: 'Step 3: Adjust the max width to fit your display needs.'
+    step4: 'Step 4: Click "Copy" to copy the generated ASCII art.'
+    faq1q: Does ASCII art support Chinese characters?
+    faq1a: Most ASCII art fonts only support standard ASCII characters (letters, digits, symbols). Chinese characters may not render correctly.
+    faq2q: Where can I use ASCII art?
+    faq2a: ASCII art is great for terminal output, README files, social media bios, CLI tool banners, and code comments.
     inputLabel: Input Text
     inputPlaceholder: Enter your text here...
     fontLabel: Font
@@ -1007,6 +1015,8 @@ tools:
     description: Generate a new random RSA private and public pem certificate key pair.
 
   html-wysiwyg-editor:
+    title: HTML WYSIWYG Editor
+    description: Online rich text editor with live HTML preview. Format content visually and export clean HTML code.
     step1: 'Step 1: Type or paste content into the WYSIWYG editor.'
     step2: 'Step 2: Use the toolbar to apply formatting (bold, italic, links, lists, etc.).'
     step3: 'Step 3: Switch to Source view to see the generated HTML code.'
@@ -1814,6 +1824,16 @@ tools:
     copyImage: Copy Image
     ssidRequired: Please enter a WiFi name (SSID) first
   qr-code-generator:
+    title: QR Code Generator
+    description: Free online QR code generator. Customize colors, error correction level and margin. Download as PNG.
+    step1: 'Step 1: Enter the content to encode (URL, text, etc.) in the left panel.'
+    step2: 'Step 2: Optionally adjust color, error correction level, and margin.'
+    step3: 'Step 3: Preview the QR code in real-time on the right.'
+    step4: 'Step 4: Click "Download PNG" to save, or copy the image to clipboard.'
+    faq1q: How much data can a QR code store?
+    faq1a: It depends on content type and error correction level. Numeric data can hold ~7,089 chars; alphanumeric ~4,296. Shorter content gives better scan reliability.
+    faq2q: What does the error correction level affect?
+    faq2a: Higher error correction makes the QR code more resilient to damage, but increases visual complexity. Medium is fine for most uses; High or Highest is recommended for printed materials.
     contentLabel: QR Code Content
     contentPlaceholder: Enter a URL, text, or any content…
     charUnit: chars
@@ -1912,6 +1932,50 @@ tools:
     copied: Copied to clipboard
     copyExpr: Copy expression
     regexTesterLink: Regex Tester (this tool)
+
+  xml-to-json:
+    title: XML to JSON Converter
+    description: Convert XML data to JSON format, preserving hierarchy. Perfect for frontend processing and API integration.
+    step1: 'Step 1: Paste your XML text into the left input box.'
+    step2: 'Step 2: The converted JSON result is shown in real-time on the right.'
+    step3: 'Step 3: Click the copy button to copy the JSON output.'
+    faq1q: What is the difference between XML and JSON?
+    faq1a: XML uses tag-based structure, suitable for documents and configs. JSON uses key-value pairs, is more lightweight, and is the standard format for modern Web APIs.
+    faq2q: Does conversion support XML attributes?
+    faq2a: Yes. XML element attributes are preserved as special keys (e.g. @attributes) in the JSON result.
+
+  json-to-xml:
+    title: JSON to XML Converter
+    description: Convert JSON data to standard XML format, ideal for legacy system integration and data exchange.
+    step1: 'Step 1: Paste your JSON text into the left input box.'
+    step2: 'Step 2: The converted XML result is shown in real-time on the right.'
+    step3: 'Step 3: Click copy or download to save the XML output.'
+    faq1q: When do I need to convert JSON to XML?
+    faq1a: Common scenarios include integrating with legacy XML-based systems (e.g. SOAP), generating config files, or exchanging data across platforms.
+    faq2q: How are JSON arrays converted to XML?
+    faq2a: Each element in a JSON array becomes a repeated XML tag with the same name, preserving order and hierarchy.
+
+  markdown-to-html:
+    title: Markdown to HTML Converter
+    description: Convert Markdown text to HTML in real-time with live preview and PDF export. Great for blog content creation.
+    step1: 'Step 1: Type or paste your Markdown content into the left editor.'
+    step2: 'Step 2: The right panel renders it as HTML in real-time.'
+    step3: 'Step 3: Copy the generated HTML code, or use the print function to export as PDF.'
+    faq1q: What Markdown syntax is supported?
+    faq1a: Standard Markdown syntax is supported, including headings, bold, italic, links, images, code blocks, blockquotes, and ordered/unordered lists.
+    faq2q: How do I export to PDF?
+    faq2a: Click the "Print" button and select "Save as PDF" in the browser print dialog.
+
+  safelink-decoder:
+    title: Outlook SafeLink Decoder
+    description: Decode Microsoft Outlook SafeLink protected URLs and restore the original destination link.
+    step1: 'Step 1: Copy the SafeLink URL from an Outlook email (starts with "safelinks.protection.outlook.com").'
+    step2: 'Step 2: Paste it into the input box.'
+    step3: 'Step 3: The decoded original URL is shown instantly. Click to visit or copy.'
+    faq1q: What is an Outlook SafeLink?
+    faq1a: SafeLink is a Microsoft Defender for Office 365 feature that rewrites email links to proxy URLs to protect against malicious websites.
+    faq2q: Is the decoded link safe to visit?
+    faq2a: This tool only decodes the URL and does not perform security validation. Always verify the destination before visiting.
 
   common:
     faqSafe: Is this tool safe? Will my data be uploaded?

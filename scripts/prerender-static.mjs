@@ -60,6 +60,18 @@ const zhRaw = fs.readFileSync(zhYmlPath, 'utf-8')
 const zh = parseYaml(zhRaw)
 const toolsI18n = zh.tools ?? {}
 
+// sitemap slug（新路径）→ zh.yml 中对应的 key（工具目录名/旧路径）
+// 当工具路由路径与 zh.yml key 不一致时需要在此配置映射
+const slugToI18nKey = {
+  'json-format': 'json-prettify',
+  'sql-format': 'sql-prettify',
+  'xml-format': 'xml-formatter',
+  'yaml-format': 'yaml-prettify',
+  'base-converter': 'integer-base-converter',
+  'date-converter': 'date-time-converter',
+  'qrcode-generator': 'qr-code-generator',
+}
+
 // ── 从 sitemap.xml 提取所有工具路径 ────────────────────────────────────────────
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml')
 const sitemapXml = fs.readFileSync(sitemapPath, 'utf-8')
@@ -130,7 +142,7 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
 }
 
-function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld }) {
+function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld, seoContent = '' }) {
   // 首页直接用完整 title（已含品牌），其余拼接品牌后缀
   const fullTitle = routePath === '/' ? title : `${title} | ${SITE_NAME}`
   const canonicalUrl = routePath === '/' ? SITE : `${SITE}${routePath}`
@@ -150,8 +162,15 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
   let html = template
     // 替换 <title>
     .replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(fullTitle)}</title>`)
-    // 替换默认 canonical
-    .replace(/<link rel="canonical"[^>]*>/g, `<link rel="canonical" href="${canonicalUrl}" />`)
+
+  // 替换或注入 canonical（模板可能没有 canonical 标签）
+  const canonicalTag = `<link rel="canonical" href="${canonicalUrl}" />`
+  if (/<link rel="canonical"[^>]*>/i.test(html)) {
+    html = html.replace(/<link rel="canonical"[^>]*>/g, canonicalTag)
+  } else {
+    // 模板中无 canonical，注入到 </head> 之前
+    html = html.replace('</head>', `  ${canonicalTag}\n  </head>`)
+  }
 
   // 替换各类 meta content（in-place，不追加）
   html = replaceMeta(html, 'name', 'description', escapedDesc)
@@ -172,17 +191,25 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, '')
     .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, `<link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />`)
 
-  // 替换原有 JSON-LD
+  // 替换原有 JSON-LD（如果没匹配到，就注入到 </head> 前）
+  const jsonLdTag = `<!-- JSON-LD: prerendered -->\n    <script type="application/ld+json">\n    ${JSON.stringify(jsonld, null, 2)}\n    </script>`
+  const htmlBeforeJsonLd = html
   html = html.replace(
     /<!-- JSON-LD[^>]*-->[\s\S]*?<script type="application\/ld\+json">[\s\S]*?<\/script>/,
-    `<!-- JSON-LD: prerendered -->\n    <script type="application/ld+json">\n    ${JSON.stringify(jsonld, null, 2)}\n    </script>`,
+    jsonLdTag,
   )
+  if (html === htmlBeforeJsonLd) {
+    // 没有匹配到原有 JSON-LD，直接注入到 </head> 前
+    html = html.replace('</head>', `  ${jsonLdTag}\n  </head>`)
+  }
 
-  // 在 <div id="app"> 后注入隐藏 H1（爬虫可见，用户不可见）
-  html = html.replace(
-    '<div id="app"></div>',
-    `<div id="app"></div>\n    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${escapeHtml(h1)}</h1>`,
-  )
+  // 在 <div id="app"> 后注入 SEO 内容块（爬虫可见，Vue 挂载后自动被 SPA 内容覆盖）
+  // 使用 aria-hidden 和样式让用户不感知，但 Google 爬虫在 JS 执行前可以读取
+  const seoBlock = seoContent
+    ? `<div id="app"></div>\n    <div id="seo-content" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">\n      <h1>${escapeHtml(h1)}</h1>\n${seoContent}\n    </div>`
+    : `<div id="app"></div>\n    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${escapeHtml(h1)}</h1>`
+
+  html = html.replace('<div id="app"></div>', seoBlock)
 
   return html
 }
@@ -233,13 +260,108 @@ for (const route of staticRoutes) {
   count++
 }
 
+// ── 辅助：从 i18n 数据构建工具页 SEO 正文 HTML ─────────────────────────────────
+function buildToolSeoContent(i18n) {
+  const parts = []
+
+  // 使用说明段落
+  if (i18n.description) {
+    parts.push(`      <p>${escapeHtml(i18n.description)}</p>`)
+  }
+
+  // 操作步骤
+  const steps = []
+  for (let n = 1; n <= 8; n++) {
+    if (i18n[`step${n}`]) steps.push(i18n[`step${n}`])
+    else break
+  }
+  if (steps.length > 0) {
+    parts.push(`      <section>`)
+    parts.push(`        <h2>使用方法</h2>`)
+    parts.push(`        <ol>`)
+    steps.forEach(s => parts.push(`          <li>${escapeHtml(s)}</li>`))
+    parts.push(`        </ol>`)
+    parts.push(`      </section>`)
+  }
+
+  // FAQ 部分
+  const faqs = []
+  for (let n = 1; n <= 6; n++) {
+    const q = i18n[`faq${n}q`]
+    const a = i18n[`faq${n}a`]
+    if (q && a) faqs.push({ q, a })
+    else break
+  }
+  if (faqs.length > 0) {
+    parts.push(`      <section>`)
+    parts.push(`        <h2>常见问题</h2>`)
+    faqs.forEach(({ q, a }) => {
+      parts.push(`        <div>`)
+      parts.push(`          <h3>${escapeHtml(q)}</h3>`)
+      parts.push(`          <p>${escapeHtml(a)}</p>`)
+      parts.push(`        </div>`)
+    })
+    parts.push(`      </section>`)
+  }
+
+  return parts.join('\n')
+}
+
 // 2. 工具路由（从 sitemap 中读取）
 for (const slug of toolSlugs) {
-  const i18n = toolsI18n[slug] ?? {}
+  // 先尝试直接匹配，再通过映射表查找对应 i18n key
+  const i18nKey = slugToI18nKey[slug] ?? slug
+  const i18n = toolsI18n[i18nKey] ?? toolsI18n[slug] ?? {}
   const toolTitle = i18n.title || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   const toolDesc
     = i18n.description
     || `${toolTitle} — 免费在线工具，在浏览器中运行，无需安装，安全无需注册。`
+
+  const seoContent = buildToolSeoContent(i18n)
+
+  // 收集 FAQ 数据用于 FAQPage schema
+  const faqItems = []
+  for (let n = 1; n <= 6; n++) {
+    const q = i18n[`faq${n}q`]
+    const a = i18n[`faq${n}a`]
+    if (q && a) faqItems.push({ q, a })
+    else break
+  }
+  // 同时添加通用 FAQ（安全性、免费、移动端）
+  const commonFaq = toolsI18n.common ?? {}
+  if (commonFaq.faqSafe && commonFaq.faqSafeA) {
+    faqItems.push({ q: commonFaq.faqSafe, a: commonFaq.faqSafeA })
+  }
+
+  const webAppSchema = {
+    '@type': 'WebApplication',
+    name: toolTitle,
+    description: toolDesc,
+    url: `${SITE}/${slug}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+  }
+
+  // 构建 JSON-LD：有 FAQ 时使用 @graph 复合模式
+  const jsonld = faqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          webAppSchema,
+          {
+            '@type': 'FAQPage',
+            mainEntity: faqItems.map(({ q, a }) => ({
+              '@type': 'Question',
+              name: q,
+              acceptedAnswer: { '@type': 'Answer', text: a },
+            })),
+          },
+        ],
+      }
+    : { '@context': 'https://schema.org', ...webAppSchema }
 
   const route = {
     path: `/${slug}`,
@@ -247,18 +369,8 @@ for (const slug of toolSlugs) {
     description: toolDesc,
     h1: toolTitle,
     keywords: `${slug},在线工具,免费,${SITE_NAME}`,
-    jsonld: {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: toolTitle,
-      description: toolDesc,
-      url: `${SITE}/${slug}`,
-      applicationCategory: 'UtilitiesApplication',
-      operatingSystem: 'Any',
-      browserRequirements: 'Requires JavaScript',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      provider: { '@type': 'Organization', name: SITE_NAME, url: SITE },
-    },
+    seoContent,
+    jsonld,
   }
 
   const outDir = path.join(distDir, 'tools', slug)
