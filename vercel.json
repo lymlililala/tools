@@ -33,7 +33,16 @@
       "dest": "/blog/index.html"
     },
     {
-      "src": "^/(blog|about)/([^/]+)/?$",
+      "src": "^/blog/([^/]+)/?$",
+      "dest": "/blog/$1/index.html",
+      "continue": true
+    },
+    {
+      "src": "^/blog/([^/]+)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/about/([^/]+)/?$",
       "dest": "/index.html"
     },
     {
