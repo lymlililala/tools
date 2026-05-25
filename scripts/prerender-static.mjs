@@ -314,6 +314,27 @@ const blogArticles = fs.existsSync(articlesJsonPath)
   ? JSON.parse(fs.readFileSync(articlesJsonPath, 'utf-8'))
   : []
 
+// 博客列表页 SEO 内容：注入所有博客文章链接（按发布时间降序）
+{
+  const sorted = [...blogArticles].sort((a, b) =>
+    new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0),
+  )
+  const parts = []
+  parts.push(`      <p>MyUtl 博客提供开发者工具深度使用指南，涵盖加密算法、编码格式、正则表达式、网络协议等主题。</p>`)
+  if (sorted.length) {
+    parts.push(`      <ul>`)
+    sorted.forEach((a) => {
+      const slug = a.slug || a.path?.replace(/^\//, '') || ''
+      const title = escapeHtml(a.title || slug)
+      const desc = a.description ? ` — ${escapeHtml(a.description.slice(0, 60))}` : ''
+      parts.push(`        <li><a href="/blog/${slug}">${title}</a>${desc}</li>`)
+    })
+    parts.push(`      </ul>`)
+  }
+  const blogRoute = staticRoutes.find((r) => r.path === '/blog')
+  if (blogRoute) blogRoute.seoContent = parts.join('\n')
+}
+
 // ── 生成静态页面 ─────────────────────────────────────────────────────────────────
 let count = 0
 
