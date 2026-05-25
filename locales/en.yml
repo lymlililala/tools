@@ -177,7 +177,7 @@ tools:
     faq2q: 'Can I use SVG placeholders in production?'
     faq2a: 'SVG placeholders are primarily for development but can be used in production for fallback or skeleton screens.'
     title: SVG placeholder generator
-    description: Generate svg images to use as a placeholder in your applications.
+    description: Generate customizable SVG placeholder images with custom dimensions, text, colors, and font sizes. Perfect for mockups, wireframes, and development prototypes. Download as SVG or copy the data URI directly.
 
   json-to-csv:
     step1: 'Step 1: Paste your JSON array into the input field.'
@@ -188,7 +188,7 @@ tools:
     faq2q: 'What if my JSON objects have different keys?'
     faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
     title: JSON to CSV Converter
-    description: Convert JSON to CSV with automatic header detection.
+    description: Convert JSON arrays to CSV format online with automatic column header detection. Paste your JSON data and download a ready-to-use CSV file for Excel, Google Sheets, or databases.
     rawJson: Raw JSON
     valid: Valid
     invalid: Invalid
@@ -215,7 +215,7 @@ tools:
     faq2q: 'What formats are supported?'
     faq2a: 'Photos are saved as PNG. Videos are saved in WebM format supported by most modern browsers.'
     title: Online Camera & Screen Recorder
-    description: Take a picture or record a video from your webcam or camera.
+    description: Use your webcam or camera to take photos or record videos directly in the browser. No installation needed — capture, preview, and download media files instantly without uploading to any server.
     notSupported: Browser Not Supported
     notSupportedDesc: Your browser does not support recording video from a camera. Please upgrade to the latest version of Chrome, Firefox, or Edge.
     videoPlaceholder: Camera feed will appear here
@@ -254,7 +254,7 @@ tools:
     faq2q: 'What is the difference between key and code?'
     faq2a: 'key represents the printed character. code represents the physical key position. Use key and code in modern JavaScript.'
     title: Keycode info
-    description: Find the javascript keycode, code, location and modifiers of any pressed key.
+    description: Identify JavaScript keyboard event properties for any key press. Shows keyCode, key, code, location, and modifier states (Shift, Ctrl, Alt, Meta). Essential for building keyboard shortcuts and accessibility features.
 
   emoji-picker:
     step1: 'Step 1: Browse or search for an emoji by name or keyword.'
@@ -265,7 +265,7 @@ tools:
     faq2q: 'Can I use emojis in code or URLs?'
     faq2a: 'Yes. Each emoji has a unicode code point usable in HTML entities or JSON. URLs require percent-encoding.'
     title: Emoji Picker & Copy Tool
-    description: Copy and paste emojis easily and get the unicode and code points value of each emoji.
+    description: Browse, search, and copy emojis with a single click. Displays the Unicode code point, HTML entity, and CSS content value for each emoji. Filter by category or search by name across 3,000+ emoji characters.
     searchPlaceholder: "Search emoji (e.g. 'smile')… or press ⌘K"
     clearSearch: Clear search
     noResults: No emoji found
@@ -288,7 +288,7 @@ tools:
     faq2q: 'What is WCAG contrast ratio?'
     faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
     title: Color Format Converter (HEX/RGB/HSL)
-    description: Convert color between the different formats (hex, rgb, hsl and css name)
+    description: Convert colors between HEX, RGB, HSL, HSV, CMYK, and CSS named color formats. Preview the color in real time and copy values for use in CSS, design tools, or any application that requires specific color formats.
 
   ascii-text-drawer:
     title: ASCII Art Text Generator
@@ -377,7 +377,7 @@ tools:
     faq2q: 'What is the difference between 401 and 403?'
     faq2a: '401 Unauthorized means authentication is required but not provided. 403 Forbidden means the server refuses to authorize the request.'
     title: HTTP Status Codes Reference
-    description: The list of all HTTP status codes, their name, and their meaning.
+    description: Complete reference for all HTTP status codes (1xx–5xx) with names, descriptions, and common use cases. Quickly look up 200 OK, 301 Redirect, 404 Not Found, 500 Internal Server Error, and every other status code.
     backToTop: Back to top
 
   sql-prettify:
@@ -390,7 +390,7 @@ tools:
     faq2q: 'What SQL dialects are supported?'
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
     title: SQL Formatter & Beautifier
-    description: Format your SQL queries online with support for various SQL dialects.
+    description: Format and beautify SQL queries online. Supports MySQL, PostgreSQL, SQL Server, SQLite, and more. Converts minified or unformatted SQL into properly indented, readable code with keyword capitalization.
     dialect: Dialect
     keywordCase: Keyword Case
     preserve: Preserve
@@ -411,7 +411,7 @@ tools:
     faq2q: 'Is this benchmark accurate?'
     faq2a: 'The benchmark runs in your browser JavaScript engine. Results vary by device. Use it for relative comparisons.'
     title: Front-end Performance Benchmark
-    description: Easily compare execution time of tasks with this very simple online benchmark builder.
+    description: Create and run micro-benchmarks in the browser to compare the execution speed of different JavaScript implementations. Add multiple test cases, run them thousands of times, and see operations per second results.
     valuePlaceholder: Enter measurement value...
     deleteValue: Delete this value
     addValue: Add measurement value
@@ -511,7 +511,7 @@ tools:
     faq2q: 'Does it support non-English characters?'
     faq2a: 'Yes. The tool converts accented and special characters to their ASCII equivalents.'
     title: Slugify string
-    description: Make a string url, filename and id safe.
+    description: Convert any string into a URL-safe slug, filename, or ID. Removes special characters, converts spaces to hyphens, and lowercases the result. Essential for SEO-friendly URLs.
     readonly: Read-only
 
   encryption:
@@ -551,7 +551,7 @@ tools:
     faq2q: 'Why do I need a random port?'
     faq2a: 'Random ports are used when starting local dev servers or containers to avoid conflicts with already-running processes.'
     title: Random port generator
-    description: Generate random port numbers outside of the range of "known" ports (0-1023).
+    description: Generate random available port numbers in the range 1024–65535. Useful for setting up development servers, microservices, and Docker containers without conflicting with well-known system ports.
     countLabel: Count
     includeWellKnown: Include well-known ports (0–1023)
     dynamicOnly: Dynamic ports only (49152–65535)
@@ -574,7 +574,7 @@ tools:
     faq2q: 'Will prettifying change my YAML values?'
     faq2a: 'No. Prettifying only changes whitespace and formatting. The data values and structure remain identical.'
     title: YAML Formatter & Beautifier
-    description: Format your YAML string into a clean, human-readable layout.
+    description: Format and validate YAML code online with proper indentation and syntax highlighting. Instantly checks YAML syntax errors and produces clean, readable output for configuration files.
 
   eta-calculator:
     step1: 'Step 1: Enter the total number of items to process.'
@@ -597,7 +597,7 @@ tools:
     faq2q: 'Why is 4 written as IV and not IIII?'
     faq2a: 'Roman numerals use subtractive notation. A smaller numeral before a larger one means subtraction. IV = 5 - 1 = 4.'
     title: Roman numeral converter
-    description: Convert Roman numerals to numbers and convert numbers to Roman numerals.
+    description: Convert between Roman numerals and Arabic numbers instantly. Supports numbers from 1 to 3,999. Useful for clock faces, book chapters, movie sequels, copyright years, and historical dates.
 
   hmac-generator:
     step1: 'Step 1: Enter the message you want to authenticate.'
@@ -644,7 +644,7 @@ tools:
     faq2q: 'What is the size overhead of Base64?'
     faq2a: 'Base64 increases the file size by approximately 33%.'
     title: Base64 file converter
-    description: Convert a string, file, or image into its base64 representation.
+    description: Convert files, images, and binary data to Base64 encoding online. Upload any file and instantly get its Base64 string for embedding in HTML, CSS, JSON APIs, or email attachments.
 
   list-converter:
     step1: 'Step 1: Paste your list data into the input box.'
@@ -660,7 +660,7 @@ tools:
 
   base64-string-converter:
     title: Base64 string encoder/decoder
-    description: Simply encode and decode strings into their base64 representation.
+    description: Encode and decode strings to and from Base64 format online. Supports UTF-8 text, handles padding automatically, and is commonly used for HTTP headers, data URIs, JWT tokens, and API authentication.
     step1: 'Step 1: Select "Encode" or "Decode" mode.'
     step2: 'Step 2: Paste your input text into the input box.'
     step3: 'Step 3: The result appears instantly. Click to copy.'
@@ -678,7 +678,7 @@ tools:
     faq2q: 'What is YAML?'
     faq2a: 'YAML is a human-readable data serialization format widely used for Docker Compose, Kubernetes, and GitHub Actions.'
     title: TOML to YAML
-    description: Parse and convert TOML to YAML.
+    description: Convert TOML to YAML format online. Paste your TOML configuration and instantly get clean, valid YAML output. Ideal for migrating between config file formats.
 
   math-evaluator:
     step1: 'Step 1: Type a mathematical expression in the input field.'
@@ -714,7 +714,7 @@ tools:
     faq2q: 'Is JSON a subset of YAML?'
     faq2a: 'Yes. YAML 1.2 is a superset of JSON meaning all valid JSON is valid YAML.'
     title: JSON to YAML converter
-    description: Simply convert JSON to YAML with this online live converter.
+    description: Convert JSON to YAML format online instantly. Paste your JSON object and get clean, valid YAML output. Supports nested objects, arrays, and all JSON data types with proper YAML formatting.
 
   url-parser:
     step1: 'Step 1: Paste a URL into the input field.'
@@ -801,7 +801,7 @@ tools:
     faq2q: 'What is the difference between camelCase and PascalCase?'
     faq2a: 'camelCase starts with a lowercase letter (e.g. myVariable). PascalCase starts with an uppercase letter (e.g. MyClass).'
     title: String Case Converter
-    description: Transform the case of a string and choose between different formats
+    description: 'Convert strings between different case formats: camelCase, PascalCase, snake_case, kebab-case, SCREAMING_SNAKE_CASE, dot.case, and more. Instantly transform variable names for different programming languages.'
 
   html-entities:
     step1: 'Step 1: Enter HTML text with special characters or enter entities to decode.'
@@ -816,7 +816,7 @@ tools:
 
   json-prettify:
     title: JSON Formatter & Validator
-    description: Format your JSON string into a clean, human-readable layout.
+    description: Format, validate, and beautify JSON online. Paste minified or messy JSON and get properly indented, color-highlighted output. Supports sorting keys, minifying, and error detection.
     step1: 'Step 1: Paste your raw JSON text into the left input box.'
     step2: 'Step 2: Adjust indent size and sort keys options as needed.'
     step3: 'Step 3: The formatted result appears on the right. Click the copy button to copy it.'
@@ -849,7 +849,7 @@ tools:
     faq2q: 'Does it support all docker run flags?'
     faq2a: 'The tool supports common flags like -p (ports), -v (volumes), -e (env vars), --name, and --network.'
     title: Docker run to Docker compose converter
-    description: Transforms "docker run" commands into docker-compose files!
+    description: Convert docker run CLI commands into docker-compose.yml files automatically. Paste your docker run command and get a ready-to-use Compose file with all ports, volumes, and environment variables.
     inputTitle: Docker Run Command
     clearInput: Clear input
     inputPlaceholder: 'Paste docker run command, e.g.: docker run -p 80:80 nginx'
@@ -873,7 +873,7 @@ tools:
     faq2q: 'What are the first 3 bytes of a MAC address?'
     faq2a: 'The first 3 bytes (OUI) are assigned by the IEEE to manufacturers. The last 3 bytes are assigned by the manufacturer.'
     title: MAC Address Vendor Lookup
-    description: Find the vendor and manufacturer of a device by its MAC address.
+    description: Look up the manufacturer and vendor of any network device by its MAC address. Supports the full IEEE OUI database with 40,000+ registered vendors. Useful for network troubleshooting and security audits.
     macAddressLabel: MAC Address
     placeholder: 'e.g. 20:37:06:12:34:56'
     clear: Clear
@@ -895,7 +895,7 @@ tools:
     faq2q: 'Why are MIME types important for web development?'
     faq2a: 'Servers use MIME types to tell browsers how to handle files. An incorrect MIME type can cause files to be downloaded instead of displayed.'
     title: MIME Types Reference & Lookup
-    description: Convert MIME types to file extensions and vice-versa.
+    description: Look up MIME types by file extension or convert extensions to MIME types. Covers 1000+ file types including images, video, audio, documents, and programming languages.
 
   toml-to-json:
     step1: 'Step 1: Paste your TOML content into the left editor.'
@@ -906,7 +906,7 @@ tools:
     faq2q: 'What happens to TOML comments during conversion?'
     faq2a: 'JSON does not support comments so all TOML comments are lost during conversion.'
     title: TOML to JSON
-    description: Parse and convert TOML to JSON.
+    description: Convert TOML configuration files to JSON format online. Paste your TOML and get a valid, formatted JSON output instantly. Useful for config migrations and API integrations.
 
   lorem-ipsum-generator:
     step1: 'Step 1: Select the output type: paragraphs, sentences, or words.'
@@ -950,7 +950,7 @@ tools:
     faq2q: 'Is it safe to share a WiFi QR code?'
     faq2a: 'Only share with trusted people. The QR code contains your WiFi password and anyone who scans it can join your network.'
     title: WiFi QR Code generator
-    description: Generate and download QR codes for quick connections to WiFi networks.
+    description: Create WiFi QR codes that let guests join your network instantly by scanning. Supports WPA2, WPA3, WEP, and open networks. Customize colors and download as PNG for printing or sharing.
 
   xml-formatter:
     step1: 'Step 1: Paste your XML content into the input editor.'
@@ -961,7 +961,7 @@ tools:
     faq2q: 'What is the difference between XML and JSON?'
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
     title: XML Formatter & Beautifier
-    description: Format your XML string into a clean, human-readable layout.
+    description: Format and beautify XML code online with proper indentation and syntax highlighting. Validates XML structure, fixes whitespace, and makes complex XML documents easy to read and debug.
     rawXml: Raw XML
     formattedResult: Formatted Result
     collapseContent: Collapse Content
@@ -992,7 +992,7 @@ tools:
     faq2q: 'What does chmod 755 mean?'
     faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
     title: Linux chmod Permissions Calculator
-    description: Compute your chmod permissions and commands with this online chmod calculator.
+    description: Calculate Linux/Unix file permissions visually. Select read, write, and execute permissions for owner, group, and others to instantly generate the chmod numeric value (e.g. 755, 644) and the corresponding shell command.
     preset755: Recommended for dirs
     preset644: Recommended for files
     preset700: Owner only
@@ -1012,7 +1012,7 @@ tools:
     faq2q: 'What key size should I use?'
     faq2a: '2048-bit is the minimum recommended. 4096-bit provides stronger security. 1024-bit is considered insecure.'
     title: RSA key pair generator
-    description: Generate a new random RSA private and public pem certificate key pair.
+    description: Generate RSA public/private key pairs online for encryption, digital signatures, and SSL certificates. Supports 1024, 2048, and 4096-bit key sizes. Download PEM-formatted keys instantly for use in SSH, TLS, and JWT signing.
 
   html-wysiwyg-editor:
     title: HTML WYSIWYG Editor
@@ -1063,7 +1063,7 @@ tools:
     faq2q: 'Does YAML support anchors and aliases?'
     faq2a: 'Yes. YAML supports anchors (&) and aliases (*) for reusing content. TOML does not have a direct equivalent.'
     title: YAML to TOML
-    description: Parse and convert YAML to TOML.
+    description: Convert YAML to TOML format online. Paste your YAML and get a valid TOML configuration file instantly. Supports all YAML features including nested keys and arrays.
 
   mac-address-generator:
     step1: 'Step 1: Enter the quantity of MAC addresses to generate.'
@@ -1100,7 +1100,7 @@ tools:
     faq2q: 'Does it support nested JSON?'
     faq2a: 'Yes. The diff viewer recursively compares nested objects and arrays.'
     title: JSON diff
-    description: Compare two JSON objects and get the differences between them.
+    description: Compare two JSON objects and highlight their differences visually. Identifies added, removed, and changed keys with color coding. Essential for debugging API responses and config changes.
 
   jwt-parser:
     step1: 'Step 1: Paste your JWT token into the input field.'
@@ -1111,7 +1111,7 @@ tools:
     faq2q: 'Is a JWT token encrypted?'
     faq2a: 'A standard JWT (JWS) is signed but NOT encrypted. The payload can be decoded by anyone. Use JWE for confidentiality.'
     title: JWT Token Decoder & Parser
-    description: Parse and decode your JSON Web Token (jwt) and display its content.
+    description: Decode and inspect JWT tokens instantly. Extracts and displays the Header, Payload (claims), and Signature sections. Shows expiration time, issued-at, subject, and all custom claims — no secret key required for decoding.
 
   date-converter:
     step1: 'Step 1: Enter a date and time in the input field.'
@@ -1122,7 +1122,7 @@ tools:
     faq2q: 'What is a Unix timestamp?'
     faq2a: 'A Unix timestamp is the number of seconds elapsed since January 1 1970 00:00:00 UTC. It is timezone-independent.'
     title: Date-time converter
-    description: Convert date and time into the various different formats
+    description: Convert dates and times between different formats and timezones. Supports ISO 8601, Unix timestamp, RFC 2822, and local date formats. Instantly shows equivalent representations for any date.
 
   phone-parser-and-formatter:
     step1: 'Step 1: Enter a phone number in any format.'
@@ -1177,7 +1177,7 @@ tools:
     faq2q: 'How many hosts does /24 support?'
     faq2a: 'A /24 subnet has 256 addresses. Subtract 2 for network and broadcast addresses leaving 254 usable hosts.'
     title: IPv4 subnet calculator
-    description: Parse your IPv4 CIDR blocks and get all the info you need about your subnet.
+    description: Calculate IPv4 subnet information from CIDR notation. Enter an IP address and prefix length to instantly get the network address, broadcast address, usable host range, subnet mask, wildcard mask, and total host count.
     inputLabel: Enter IPv4 address (with or without mask)
     inputPlaceholder: 'e.g. 192.168.1.0/24'
     parseError: 'Unable to parse this address, please check the format (e.g. 192.168.1.0/24)'
@@ -1208,7 +1208,7 @@ tools:
     faq2q: 'Why is the og:image important?'
     faq2a: 'The og:image is the thumbnail shown when your page is shared on social media. Recommended size is 1200x630px.'
     title: Open Graph / OG Meta Tag Generator
-    description: Generate open-graph and socials HTML meta tags for your website.
+    description: Generate Open Graph and Twitter Card meta tags for your website. Preview how your page will appear when shared on Facebook, Twitter, LinkedIn, and other social platforms. Includes og:title, og:image, og:description, and more.
 
   ipv6-ula-generator:
     step1: 'Step 1: Click Generate to create a random IPv6 ULA prefix.'
@@ -1250,7 +1250,7 @@ tools:
     faq2q: 'Why convert JSON to TOML?'
     faq2a: 'TOML is more human-readable for configuration files. Some tools like Cargo and Hugo use TOML exclusively.'
     title: JSON to TOML Converter
-    description: Parse and convert JSON to TOML.
+    description: Convert JSON to TOML format online. Paste your JSON and instantly get a valid TOML configuration file. Supports nested objects, arrays, and all TOML data types.
 
   device-information:
     step1: 'Step 1: Open the tool - your device information is detected automatically.'
@@ -1261,7 +1261,7 @@ tools:
     faq2q: 'Is this information sent to a server?'
     faq2a: 'No. All information is read from your browser JavaScript APIs locally. Nothing is transmitted.'
     title: Device Information & Browser Detector
-    description: Get information about your current device (screen size, pixel-ratio, user agent, ...)
+    description: 'Detect detailed information about your current device and browser: screen resolution, device pixel ratio, viewport size, operating system, browser name and version, user agent string, touch support, and network connection type.'
 
   pdf-signature-checker:
     step1: 'Step 1: Drop or select a PDF file.'
@@ -1283,7 +1283,7 @@ tools:
     faq2q: 'Does minifying change the JSON data?'
     faq2a: 'No. Minifying only removes insignificant whitespace. The data values and structure remain identical.'
     title: JSON Minify & Compress
-    description: Minify and compress your JSON by removing unnecessary whitespace.
+    description: Minify and compress JSON data by removing all whitespace, indentation, and line breaks. Reduces JSON payload size for APIs, configuration files, and storage. Instantly copy the compressed result.
     rawJson: Raw JSON
     minifiedResult: Minified result
     valid: Valid
@@ -1309,7 +1309,7 @@ tools:
     faq2q: 'What is the advantage of ULID over UUID?'
     faq2a: 'ULIDs are sortable by creation time unlike UUID v4, URL-safe, and more compact (26 chars vs 36 for UUID).'
     title: ULID Unique ID Generator
-    description: Generate random Universally Unique Lexicographically Sortable Identifier (ULID).
+    description: Generate ULIDs (Universally Unique Lexicographically Sortable Identifiers) online. ULIDs are 128-bit identifiers that are URL-safe, sortable by time, and compatible with UUID. Ideal as database primary keys.
 
   string-obfuscator:
     step1: 'Step 1: Enter the string you want to obfuscate (e.g. API key, IBAN, token).'
@@ -1347,7 +1347,7 @@ tools:
     faq2q: 'Are YAML comments preserved in JSON?'
     faq2a: 'No. JSON does not support comments so all YAML comments are discarded during conversion.'
     title: YAML to JSON converter
-    description: Simply convert YAML to JSON with this online live converter.
+    description: Convert YAML to JSON format online instantly. Paste your YAML configuration and get valid, formatted JSON output. Supports all YAML features including anchors, aliases, and multi-line strings.
 
   uuid-generator:
     title: UUIDs generator
@@ -1422,7 +1422,7 @@ tools:
     faq2q: 'Why not just say the letter?'
     faq2a: 'Many letters sound similar over phone or radio (B/D/E/G/P/T, M/N, etc.). Using phonetic words reduces errors.'
     title: Text to NATO alphabet
-    description: Transform text into the NATO phonetic alphabet for oral transmission.
+    description: Convert any text into the NATO phonetic alphabet (Alpha, Bravo, Charlie...). Useful for spelling out words over phone calls, radio communications, and anywhere precise verbal communication is needed.
 
   basic-auth-generator:
     step1: 'Step 1: Enter your username and password.'
@@ -1433,7 +1433,7 @@ tools:
     faq2q: 'Is Basic Auth secure?'
     faq2a: 'Basic Auth alone is NOT secure because credentials are only Base64-encoded. Always use it over HTTPS.'
     title: Basic auth generator
-    description: Generate a base64 basic auth header from a username and password.
+    description: Generate HTTP Basic Authentication headers instantly. Enter a username and password to produce the Base64-encoded Authorization header required for API testing, curl commands, and HTTP clients.
 
   text-to-unicode:
     step1: 'Step 1: Enter text to convert to Unicode code points or enter code points to decode.'
@@ -1444,7 +1444,7 @@ tools:
     faq2q: 'What is the difference between Unicode and UTF-8?'
     faq2a: 'Unicode assigns code points (e.g. U+0041 for A). UTF-8 is an encoding that represents those code points as 1-4 bytes.'
     title: Text to Unicode
-    description: Parse and convert text to unicode and vice-versa
+    description: Convert text to Unicode code points and back. Enter any string to get its Unicode escape sequences, or paste Unicode codes to decode them back to readable text.
     textPlaceholder: 'e.g. Hello 你好 🚀'
 
   ipv4-range-expander:
@@ -1479,7 +1479,7 @@ tools:
     faq2q: 'Can I diff code files?'
     faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
     title: Text Diff & Compare Tool
-    description: Compare two texts and see the differences between them.
+    description: Compare two text blocks side-by-side and highlight the differences. Supports character, word, and line-level diff. Perfect for code review, document comparison, and change tracking.
     originalText: Original Text
     modifiedText: Modified Text
     originalPlaceholder: Paste original text here…
@@ -1518,7 +1518,7 @@ tools:
     faq2q: 'What encoding is used?'
     faq2a: 'The tool uses UTF-8 encoding which is the standard for the web.'
     title: Text to ASCII binary
-    description: Convert text to its ASCII binary representation and vice-versa.
+    description: Convert text to ASCII binary representation (0s and 1s) and decode binary strings back to text. Supports custom separators and shows hex/decimal equivalents. Great for learning and data encoding.
 
   mortgage-calculator:
     title: Mortgage Monthly Payment Calculator
@@ -1901,7 +1901,7 @@ tools:
     faq2q: 'What are the indentation rules for YAML?'
     faq2a: 'YAML uses spaces (not tabs) for indentation. Sibling nodes must use the same indentation level.'
     title: YAML Viewer & Formatter
-    description: Validate and format a YAML string with correct syntax highlighting.
+    description: Validate, format, and view YAML files online with syntax highlighting and error detection. Instantly checks for syntax errors in Kubernetes configs, Docker Compose, GitHub Actions, and other YAML configuration files.
     rawYaml: Raw YAML
     formattedResult: Formatted Result
     sortKeys: Sort Keys
@@ -1927,7 +1927,7 @@ tools:
     faq2q: 'How do I test a regex?'
     faq2a: 'Use the Regex Tester tool on this site to test and debug regular expressions in real-time.'
     title: Regex cheat sheet
-    description: Common regular expressions quick reference.
+    description: A comprehensive regex cheat sheet with common patterns for email, URL, phone, date, IP address, and more. Copy-ready examples with explanations for JavaScript, Python, and PCRE.
     toc: Contents
     copied: Copied to clipboard
     copyExpr: Copy expression
