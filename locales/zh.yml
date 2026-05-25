@@ -86,7 +86,7 @@ tools:
     faq2q: '我的密码会上传到服务器吗？'
     faq2a: '不会。所有分析均在浏览器本地完成，您的密码不会离开您的设备。'
     title: 密码强度分析仪
-    description: 使用此密码强度分析器和破解时间估计工具来发现密码的强度。
+    description: 在线密码强度检测工具，实时评估密码的安全强度，估算暴力破解所需时间，并给出改进建议，帮助你设置更安全的密码。
 
   chronometer:
     step1: '步骤 1：点击「开始」启动计时器。'
@@ -146,7 +146,7 @@ tools:
     faq2q: '如何计算 Y 的 X%？'
     faq2a: 'Y 的 X% = Y × (X / 100)。例如，150 的 20% = 150 × 0.20 = 30。'
     title: 百分比计算器
-    description: 轻松计算从一个值到另一个值的百分比，或从百分比到值的百分比。
+    description: 在线百分比计算器，支持计算某值占总数的百分比、百分比对应的具体数值、两个数之间的增减幅度，结果即时显示，适合财务、学习和日常计算。
     card1Title: X 的 Y% 是多少？
     card2Title: X 是 Y 的百分之多少？
     card3Title: 从 X 到 Y 的百分比变化是多少？
@@ -289,7 +289,7 @@ tools:
     faq2q: '什么是 WCAG 对比度？'
     faq2a: 'WCAG 对比度衡量文本在背景上的可读性。4.5:1 达到 AA 标准；7:1 达到 AAA 标准。'
     title: 颜色格式转换器（HEX/RGB/HSL）
-    description: 在不同格式（十六进制、rgb、hsl和css名称）之间转换颜色
+    description: 在线颜色格式转换器，支持 HEX、RGB、HSL、HSV、CMYK 和 CSS 命名颜色之间的相互转换，提供颜色预览，适合前端开发和设计师使用。
   ascii-text-drawer:
     title: ASCII 艺术字生成器
     description: 将文字转换为各种 ASCII 艺术字体风格，支持 100+ 字体，可自定义宽度。
@@ -359,7 +359,7 @@ tools:
     faq2q: '*/5 * * * * 是什么意思？'
     faq2a: '表示每 5 分钟执行一次。分钟字段中的 */5 表示在每小时的 0、5、10、15 分运行。'
     title: Crontab 表达式生成
-    description: 验证并生成crontab，并获取cron调度的可读描述。
+    description: 在线 Crontab 表达式生成器，可视化配置定时任务的分钟、小时、日期、月份、星期，自动生成 cron 表达式并提供中文可读描述，支持快速验证。
     copiedTooltip: 已复制！
     copyTooltip: 复制表达式
     copied: 已复制
@@ -390,7 +390,7 @@ tools:
     faq2q: '支持哪些 SQL 方言？'
     faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
     title: SQL 格式化 / 美化
-    description: 在线格式化您的 SQL 查询，支持多种 SQL 方言。
+    description: 在线 SQL 格式化美化工具，支持 MySQL、PostgreSQL、SQL Server、SQLite 等多种方言，将压缩混乱的 SQL 重新排版缩进，提升可读性。
     dialect: 方言
     keywordCase: 关键字大小写
     preserve: 保持原样
@@ -565,7 +565,7 @@ tools:
     faq2q: '为什么需要随机端口？'
     faq2a: '启动本地开发服务器、容器或服务时，随机端口可避免与已运行进程冲突。'
     title: 随机端口生成
-    description: 生成"已知"端口范围（0-1023）之外的随机端口号。
+    description: 快速生成随机可用端口号（1024–65535），可批量生成多个端口，避免与已知系统端口冲突，适合本地开发和测试环境配置。
     countLabel: 生成数量
     includeWellKnown: 包含知名端口（0–1023）
     dynamicOnly: 仅动态端口（49152–65535）
@@ -658,7 +658,7 @@ tools:
     faq2q: 'Base64 的体积开销是多少？'
     faq2a: 'Base64 将文件大小增加约 33%。'
     title: Base64 文件转换器
-    description: 将字符串、文件或图像转换为其 Base64 表示形式。
+    description: 在线将文件（图片、PDF、二进制文件）转换为 Base64 字符串，或将 Base64 解码还原为文件，支持拖拽上传，结果可直接复制。
   list-converter:
     step1: '步骤 1：将列表数据粘贴到输入框中。'
     step2: '步骤 2：选择输入分隔符（换行、逗号、分号等）。'
@@ -673,7 +673,7 @@ tools:
 
   base64-string-converter:
     title: Base64 字符串编码/解码
-    description: 将字符串编码和解码为其 Base64 格式表示形式即可。
+    description: 在线 Base64 编码 / 解码工具，支持将任意字符串编码为 Base64 格式，或将 Base64 解码为原始文本，常用于 API 认证、数据传输和邮件编码。
     step1: 第一步：选择"编码"或"解码"模式。
     step2: 第二步：将输入文本粘贴到输入框中。
     step3: 第三步：结果即时显示，点击即可复制。
@@ -950,7 +950,7 @@ tools:
 
   qrcode-generator:
     title: 二维码生成器
-    description: 生成并下载url或文本的QR代码，并自定义背景和前景颜色。
+    description: 在线二维码生成器，将 URL、文本、联系方式等内容转换为可扫描的 QR 码，支持自定义前景色、背景色，可下载 PNG 图片，免费无需注册。
     step1: 第一步：输入要编码到二维码中的网址或文本。
     step2: 第二步：可根据需要自定义前景色和背景色。
     step3: 第三步：下载二维码图片（PNG 格式）。
@@ -1019,7 +1019,7 @@ tools:
     faq2q: 'chmod 755 是什么意思？'
     faq2a: '755 表示所有者有读+写+执行权限（7），组和其他用户有读+执行权限（5）。常用于 Web 服务器目录。'
     title: Linux chmod 权限计算器
-    description: 使用此在线的chmod计算器计算chmod权限和命令。
+    description: 在线 Linux chmod 权限计算器，可视化选择文件/目录的读、写、执行权限，自动生成对应的 chmod 八进制数字命令，适合运维和开发使用。
     preset755: 目录推荐
     preset644: 文件推荐
     preset700: 仅所有者
@@ -1140,7 +1140,7 @@ tools:
     faq2q: 'JWT 令牌是加密的吗？'
     faq2a: '标准 JWT（JWS）是签名的但未加密，任何人都可以解码 Payload。如需保密性，请使用 JWE。'
     title: JWT Token 解析器
-    description: 解析和解码JSON Web Token（jwt）并显示其内容。
+    description: 在线 JWT Token 解析工具，将 JSON Web Token 解码为 Header、Payload、Signature 三部分，显示声明内容和过期时间，支持 HS256/RS256 等算法。
 
   date-converter:
     step1: '步骤 1：在输入框中输入日期和时间。'
@@ -1206,7 +1206,7 @@ tools:
     faq2q: '/24 支持多少台主机？'
     faq2a: '/24 子网有 256 个地址（2 的 8 次方）。减去网络地址和广播地址，剩余 254 个可用主机地址。'
     title: IPv4子网计算器
-    description: 解析IPv4 CIDR块，并获取有关子网络的所有所需信息。
+    description: IPv4 子网计算器，输入 CIDR 地址段（如 192.168.1.0/24），自动计算网络地址、广播地址、可用 IP 范围、子网掩码和主机数量。
     inputLabel: 输入 IPv4 地址（可带或不带掩码）
     inputPlaceholder: '例如：192.168.1.0/24'
     parseError: '无法解析此地址，请检查格式（例如：192.168.1.0/24）'
@@ -1248,7 +1248,7 @@ tools:
     faq2q: 'ULA 全局 ID 是如何生成的？'
     faq2a: '根据 RFC 4193，40 位全局 ID 应使用当前时间和 EUI-64 伪随机生成，以最小化不同组织间的碰撞概率。'
     title: IPv6 ULA生成器
-    description: 根据RFC4193在网络上生成您自己的本地不可路由IP地址。
+    description: 按照 RFC 4193 规范生成 IPv6 ULA（唯一本地地址）前缀，用于局域网内部使用，无需申请公网地址即可构建私有 IPv6 网络。
     infoText: ULA 地址用于私有网络内部，不会在互联网上路由
     macAddressLabel: MAC 地址（可选）
     placeholder: 例如：00:1A:2B:3C:4D:5E
@@ -1290,7 +1290,7 @@ tools:
     faq2q: '这些信息会发送到服务器吗？'
     faq2a: '不会。所有信息均从浏览器 JavaScript API 本地读取，不传输任何数据。'
     title: 设备信息检测
-    description: 获取有关当前设备的信息（屏幕大小、像素比率、用户代理…）
+    description: 检测当前设备的详细信息，包括屏幕分辨率、像素比、浏览器版本、操作系统、用户代理字符串、网络连接类型等，帮助开发者进行设备适配调试。
 
   pdf-signature-checker:
     step1: '步骤 1：拖放或选择 PDF 文件。'
@@ -1394,7 +1394,7 @@ tools:
     faq2q: 'YAML 缩进有何规则？'
     faq2a: 'YAML 使用空格缩进表示层级，不允许使用 Tab 键。缩进量不固定，但同级节点必须保持一致。'
     title: YAML 查看 / 格式化
-    description: 验证并格式化 YAML 字符串，使其具有正确的语法高亮。
+    description: 在线 YAML 查看 / 格式化工具，验证 YAML 语法正确性，提供语法高亮和结构化展示，帮助开发者快速检查配置文件是否合法。
     rawYaml: 原始 YAML
     formattedResult: 格式化结果
     sortKeys: 排序键
@@ -1444,7 +1444,7 @@ tools:
     faq2q: '什么是 IPv4 映射的 IPv6 地址？'
     faq2a: 'IPv4 映射的 IPv6 地址以 ::ffff:x.x.x.x 格式表示 IPv4 地址，用于同时支持 IPv4 和 IPv6 的双栈系统。'
     title: Ipv4地址转换器
-    description: 在ipv6中，将ip地址转换为十进制、二进制、十六进制或事件
+    description: IPv4 地址格式转换工具，将 IP 地址在点分十进制、二进制、十六进制、整数之间互相转换，适合网络工程师和安全研究人员使用。
     inputLabel: IPv4 地址
     inputPlaceholder: '例如：192.168.1.1'
     errorMsg: 请输入有效的 IPv4 地址（每段范围 0–255，共四段，如 192.168.1.1）
@@ -1495,7 +1495,7 @@ tools:
     faq2q: 'Basic Auth 安全吗？'
     faq2a: 'Basic Auth 本身不安全，因为凭据只是 Base64 编码而非加密。必须在 HTTPS 上使用。'
     title: 基本身份验证生成器
-    description: 从用户名和密码生成 base64 基本身份验证标头。
+    description: 在线生成 HTTP Basic Auth 认证头，输入用户名和密码即可生成 Base64 编码的 Authorization 标头，供 API 测试和开发调试使用。
 
   text-to-unicode:
     step1: '步骤 1：输入文本转换为 Unicode 码点，或输入码点进行解码。'
@@ -1564,11 +1564,11 @@ tools:
     faq2q: '使用什么标准算法？'
     faq2a: 'TOTP 由 RFC 6238 定义，使用 HMAC-SHA1。被 Google Authenticator 和 Authy 等应用使用。'
     title: OTP代码生成器
-    description: 为多因素身份验证生成和验证基于时间的OTP（一次性密码）。
+    description: 在线 TOTP/OTP 动态口令生成器，支持基于时间的一次性密码（RFC 6238），可生成和验证 Google Authenticator 等双因素认证 App 使用的 6 位验证码。
 
   url-encoder:
     title: 编码/解码url格式的字符串
-    description: 编码为url编码格式（也称为“百分比编码”）或从中解码。
+    description: 在线 URL 编码 / 解码工具，将 URL 中的特殊字符转换为百分比编码格式，或将编码后的 URL 还原为可读形式，适合 API 开发和 Web 调试。
     step1: 第一步：选择"编码"或"解码"模式。
     step2: 第二步：将 URL 或文本粘贴到输入框中。
     step3: 第三步：编码/解码结果即时显示。
@@ -1586,7 +1586,7 @@ tools:
     faq2q: '使用什么编码？'
     faq2a: '工具使用 UTF-8 编码，这是 Web 的标准编码。ASCII 字符使用单字节，非 ASCII 字符可能使用 2–4 字节。'
     title: 文本到 ASCII 二进制
-    description: 将文本转换为其 ASCII 二进制表示形式，反之亦然。
+    description: 在线文本与 ASCII 二进制互转工具，支持将任意文本转换为 0/1 二进制字符串，或将二进制串解码还原为原始文本，适合编程学习和数据处理。
 
   mortgage-calculator:
     title: 房贷月供计算器
