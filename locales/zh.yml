@@ -98,6 +98,8 @@ tools:
     faq1a: '计时器是用于精确测量经过时间的工具，支持毫秒级精度与分段记录，常用于运动计时、性能测试和事件计时等场景。'
     faq2q: '关闭标签页会停止计时吗？'
     faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
+    faq3q: 计时器和秒表有什么区别？
+    faq3a: 秒表（stopwatch）从零开始正向计时，用于记录事件持续时长；计时器（countdown timer）从设定时间倒数到零，常用于提醒和限时任务。本工具是秒表功能，支持分段（Lap）记录，可以记录每一轮或每一段的时间，适合运动训练和会议计时。
     title: 在线计时器 / 秒表
     description: 在线秒表计时器，支持毫秒级精度计时、分段（Lap）记录和圈速统计，操作简单直观，适合运动训练计时、演讲排练、会议控时等各类计时场景。
     idle: 就绪
@@ -149,6 +151,8 @@ tools:
     faq1a: '百分比变化 = ((新值 - 旧值) / 旧值) × 100。正数表示增长，负数表示减少。'
     faq2q: '如何计算 Y 的 X%？'
     faq2a: 'Y 的 X% = Y × (X / 100)。例如，150 的 20% = 150 × 0.20 = 30。'
+    faq3q: 如何快速心算百分比？
+    faq3a: 常用技巧：求 10% 直接将小数点左移一位（200 的 10% = 20）；求 5% 就是 10% 的一半；求 20% 就是 10% × 2；求 25% 就是除以 4；求 50% 就是除以 2。组合这些技巧可以快速心算大多数百分比，例如求 15% = 10% + 5%。
     title: 百分比计算器
     description: 在线百分比计算器，支持计算某值占总数的百分比、百分比对应的具体数值、两个数之间的增减幅度，结果即时显示，适合财务、学习和日常计算。
     card1Title: X 的 Y% 是多少？
@@ -181,6 +185,8 @@ tools:
     faq1a: 'SVG 占位图是一种轻量向量图像，用于开发阶段在实际图像加载前预留空间。'
     faq2q: '可以在生产环境使用吗？'
     faq2a: 'SVG 占位图主要用于开发，可在生产环境作为 fallback 或骨架屏使用。'
+    faq3q: SVG 占位图和 CSS 骨架屏有什么区别？
+    faq3a: SVG 占位图是一个实际的图片元素，使用 SVG 格式显示指定尺寸的带文字的色块，通常用作图片加载失败时的替代（fallback）。CSS 骨架屏使用动画效果（如灰色渐变波纹）模拟内容加载中的状态，是一种更现代的 UX 占位方式，但需要额外的 HTML/CSS 代码。
     title: SVG 占位符生成器
     description: 在线 SVG 占位图生成器，支持自定义宽高、背景色、文字内容和字体大小，生成轻量级 SVG 占位图，可直接用于原型设计、UI 布局调试和开发阶段的图片占位。
 
@@ -221,6 +227,8 @@ tools:
     faq1a: '不会。所有处理均在浏览器本地完成，不会上传任何数据。'
     faq2q: '支持什么格式？'
     faq2a: '照片保存为 PNG 格式，视频保存为大多数现代浏览器支持的 WebM 格式。'
+    faq3q: 录制时如何切换不同的摄像头？
+    faq3a: 本工具列出浏览器检测到的所有摄像头设备（如前置、后置、外接 USB 摄像头），可在下拉菜单中切换。切换后工具会重新请求摄像头权限并开始预览。注意：浏览器需要 HTTPS 环境或 localhost 才能访问摄像头权限。
     title: 在线摄像头录制工具
     description: 在线摄像头录制工具，直接在浏览器中使用摄像头拍照或录制视频，支持切换摄像头和麦克风设备，录制完成后可一键下载保存到本地，无需安装任何软件。
     notSupported: 浏览器不支持
@@ -313,6 +321,8 @@ tools:
     faq1a: 大多数 ASCII 艺术字体仅支持标准 ASCII 字符（英文字母、数字和符号）。中文字符可能无法正确渲染。
     faq2q: 生成的 ASCII 艺术字可以在哪里使用？
     faq2a: 可用于终端输出、README 文件、社交媒体个性化签名、CLI 工具标题横幅等场景。
+    faq3q: ASCII 艺术字如何在代码中使用？
+    faq3a: 在代码中可将 ASCII 艺术字用于 CLI 程序的欢迎 Banner（通常放在程序入口处）、README 文件的标题装饰（GitHub 上显示效果好）、注释分隔符，以及 Node.js/Python 等脚本的启动信息。使用时需确保字体等宽（monospace），否则对齐会错乱。
     inputLabel: 输入文字
     inputPlaceholder: 在此输入文字...
     fontLabel: 字体
@@ -392,6 +402,8 @@ tools:
     faq1a: 'HTTP 状态码是服务器对客户端请求响应中返回的 3 位数字，指示请求是成功、重定向还是发生错误。'
     faq2q: '401 和 403 有什么区别？'
     faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
+    faq3q: 2xx、3xx、4xx、5xx 状态码各代表什么类别？
+    faq3a: HTTP 状态码按首位数字分类：1xx（信息性）表示请求已收到，继续处理；2xx（成功）表示请求已成功处理，如 200 OK；3xx（重定向）表示需要进一步操作，如 301 永久重定向；4xx（客户端错误）表示请求有问题，如 404 未找到；5xx（服务器错误）表示服务器处理失败，如 500 内部错误。
     title: HTTP 状态码速查表
     description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明。
     backToTop: 回到顶部
@@ -433,6 +445,8 @@ tools:
     faq1a: 'ops/sec（每秒操作数）衡量一段代码在一秒内能执行多少次。数值越高越快。'
     faq2q: '这个基准测试准确吗？'
     faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
+    faq3q: 进行基准测试时需要注意哪些影响因素？
+    faq3a: 影响基准测试结果的因素包括：JIT 编译器优化（引擎可能优化掉未使用的代码）、垃圾回收暂停、浏览器后台任务、CPU 频率调节（电源模式）、缓存预热效应。建议：多次运行取平均值、关闭其他标签页、在一致的设备和浏览器条件下对比，并确保测试代码具有实际意义。
     title: 前端性能基准测试
     description: 在线 JavaScript 代码性能基准测试工具，轻松编写多个代码片段并进行性能对比，直观显示每个方案的执行时间（ops/sec），帮助开发者找出最优实现方案。
     valuePlaceholder: 输入测量值...
@@ -461,6 +475,8 @@ tools:
     faq1a: 'Git 是一个分布式版本控制系统，用于追踪源代码的变更，允许多名开发者协作、分支、合并并维护项目历史。'
     faq2q: 'git pull 和 git fetch 有什么区别？'
     faq2a: 'git fetch 下载远程变更但不合并。git pull = git fetch + git merge，将远程变更应用到当前分支。'
+    faq3q: git merge 和 git rebase 有什么区别？
+    faq3a: git merge 将两个分支的历史合并，保留完整的提交记录，产生一个合并提交（merge commit）。git rebase 将当前分支的提交重新应用到目标分支上，历史线性整洁但改写了提交哈希。团队协作时推荐 merge，个人分支清理时可用 rebase，但不要对已推送的公共分支使用 rebase。
     title: Git 命令速查手册
     description: Git 命令速查手册，涵盖初始化、提交、分支、合并、远程操作、撤销更改等最常用 Git 命令的语法和说明，帮助开发者快速查阅和学习 Git 版本控制。
     toc: 目录
@@ -586,6 +602,8 @@ tools:
     faq1a: '0–1023 是知名系统端口，1024–49151 是注册端口，49152–65535 是动态/临时端口。'
     faq2q: '为什么需要随机端口？'
     faq2a: '启动本地开发服务器、容器或服务时，随机端口可避免与已运行进程冲突。'
+    faq3q: 哪些端口号有特殊含义或应该避免使用？
+    faq3a: 0-1023 是「知名端口」（Well-Known Ports），需要管理员权限，如 80（HTTP）、443（HTTPS）、22（SSH）、3306（MySQL）。1024-49151 是「注册端口」，许多应用有约定，如 8080（HTTP 备用）、5432（PostgreSQL）。49152-65535 是动态端口，可安全用于开发服务器和临时服务。
     title: 随机端口生成
     description: 快速生成随机可用端口号（1024–65535），可批量生成多个端口，避免与已知系统端口冲突，适合本地开发和测试环境配置。
     countLabel: 生成数量
@@ -623,6 +641,8 @@ tools:
     faq1a: 'ETA 代表预计到达（或完成）时间，根据当前进度速率预测任务何时完成。'
     faq2q: 'ETA 如何计算？'
     faq2a: 'ETA = (总数 - 已完成) / (已完成 / 已用时间)，假设处理速率恒定。'
+    faq3q: ETA 估算不准确时怎么办？
+    faq3a: ETA 计算假设处理速率恒定，但实际任务速率往往会变化（如下载速度随网络波动、任务前期快后期慢）。提高 ETA 准确性的方法：使用滑动窗口计算近期速率而非全程平均速率、增加采样频率，以及根据历史数据对特定类型任务进行校正。
     title: ETA 到达时间计算器
     description: 在线 ETA 预计完成时间计算器，根据任务总量、已完成量和当前速率，计算任务的预计剩余时间和完成时刻，适用于下载进度、工程进度等场景估算。
 
@@ -739,6 +759,8 @@ tools:
     faq1a: '支持三角函数（sin、cos、tan）、对数（log、log2、log10）、幂函数（sqrt、pow、exp）和常数（pi、e）。'
     faq2q: '支持复杂表达式吗？'
     faq2a: '支持。支持嵌套函数、单位、矩阵和复数。'
+    faq3q: 数学表达式计算器支持哪些常用函数？
+    faq3a: 本工具支持的常用函数包括：三角函数（sin、cos、tan、asin、acos、atan）、对数（log、log2、log10、ln）、指数（exp、pow、sqrt、cbrt）、舍入（floor、ceil、round、abs）、统计（max、min、sum、mean）以及常数 pi（π）和 e。
     title: 在线数学表达式计算器
     description: 在线数学表达式计算器，支持四则运算、括号、科学函数（sqrt、sin、cos、tan、abs、log 等）、单位换算、矩阵运算和复数计算，适合工程和科学计算。
     placeholder: '输入表达式，例如 sqrt(2) * pi'
@@ -777,6 +799,8 @@ tools:
     faq1a: '工具提取：协议、用户名、密码、主机名、端口、路径、查询字符串、各查询参数和哈希片段。'
     faq2q: '如果 URL 没有查询参数怎么办？'
     faq2a: '没有查询参数时，查询参数区域会自动隐藏。'
+    faq3q: URL 的各个组成部分是什么？
+    faq3a: 一个完整的 URL 由以下部分组成：scheme（协议，如 https）、userinfo（用户名:密码，可选）、host（域名或 IP）、port（端口，可选）、path（路径）、query（查询参数，?key=value&…）、fragment（页面锚点，# 开头）。例如 https://user:pass@example.com:8080/path?q=1#top。
     title: URL 解析器
     description: 在线 URL 解析工具，解析 URL 字符串并拆分为协议（protocol）、主机（host）、路径（path）、查询参数（query string）、端口、用户名密码等各个组成部分。
 
@@ -788,6 +812,8 @@ tools:
     faq1a: 'IBAN（国际银行账号）是国际通用的银行账户标识标准，包含国家代码、校验位和账号。'
     faq2q: 'IBAN 有多长？'
     faq2a: 'IBAN 长度因国而异，从 15 位（挪威）到 34 位不等。始终以 2 字母国家代码和 2 位校验位开头。'
+    faq3q: IBAN 是如何验证的？
+    faq3a: IBAN 验证使用 MOD-97 算法：将字母转换为数字（A=10, B=11…），重新排列字符串（末4位移到头部），计算对大数除以 97 的余数，余数为 1 则有效。本工具还会解析出国家代码、银行代码和账户号码，并与已知的国家 IBAN 格式进行匹配验证。
     title: IBAN验证器和解析器
     description: 验证和分析IBAN编号。检查IBAN是否有效，并获取国家BBAN，如果它是QR-IBAN和IBAN友好格式。
     placeholder: 请输入 IBAN 进行验证...
@@ -841,6 +867,8 @@ tools:
     faq1a: '数字缩略词用数字表示省略的字母数量。i18n 代表 internationalization。常见例子：a11y（accessibility）、k8s（Kubernetes）。'
     faq2q: '谁发明了数字缩略词？'
     faq2a: 'i18n 这个术语归功于 20 世纪 70 年代的 DEC，后来在软件开发中广泛流行。'
+    faq3q: 数字名称（numeronym）在哪些场景中使用？
+    faq3a: 数字名称常见于软件开发：i18n（internationalization，国际化）、l10n（localization，本地化）、a11y（accessibility，无障碍）、k8s（Kubernetes）、g11n（globalization）。它们将长单词缩短为首字母 + 中间字符数 + 尾字母的形式，方便快速输入和讨论。
     title: 数字名称生成器
     description: 数字名是一个用数字构成缩写的词。例如，"i18n"是"国际化"的名词，其中18表示单词中第一个i和最后一个n之间的字母数。
     inputLabel: 输入单词或短语
@@ -913,6 +941,8 @@ tools:
     faq1a: 'Docker Compose 更易于管理多容器应用、对配置进行版本控制，并通过单个 YAML 文件与团队共享设置。'
     faq2q: '支持所有 docker run 参数吗？'
     faq2a: '支持常用参数如 -p（端口）、-v（卷）、-e（环境变量）、--name、--network 等。'
+    faq3q: 为什么要从 docker run 转换为 docker-compose？
+    faq3a: docker-compose 的优势在于：可将多个容器的配置用一个文件管理，支持一键启动/停止整个应用栈（docker-compose up/down），配置文件可以纳入版本控制（Git），便于团队协作和重现环境。同时 docker-compose.yml 比长串的 docker run 命令更易读、更易维护。
     title: Docker Run 到 docker-compose 转换器
     description: 在线 docker run 转 Docker Compose 工具，将 docker run 命令自动转换为标准的 docker-compose.yml 格式，支持端口、卷、环境变量、网络等配置项解析。
     inputTitle: Docker Run 命令
@@ -937,6 +967,8 @@ tools:
     faq1a: 'MAC（媒体访问控制）地址是分配给网卡的唯一硬件标识符，长 48 位（6 字节），通常写成六对十六进制数字。'
     faq2q: 'MAC 地址的前 3 字节是什么？'
     faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
+    faq3q: MAC 地址可以修改吗？如何修改？
+    faq3a: MAC 地址可以通过软件方式修改（MAC 欺骗/spoofing）。在 Linux 上可用 ip link set dev eth0 address XX:XX:XX:XX:XX:XX；在 macOS 上用 ifconfig en0 ether；在 Windows 上通过设备管理器的网络适配器属性设置。修改重启后通常恢复为硬件烧录的原始地址，主要用于网络测试和隐私保护。
     title: MAC 地址厂商查询
     description: 在线 MAC 地址厂商查询工具，通过网卡 MAC 地址查询设备制造商和厂商信息，基于 IEEE OUI 数据库，支持批量查询，适用于网络设备识别、安全审计和故障排查。
     macAddressLabel: MAC 地址
@@ -959,6 +991,8 @@ tools:
     faq1a: 'MIME 类型是文件或数据格式的标准标识符，由类型和子类型组成（如 text/html、application/json、image/png）。'
     faq2q: 'MIME 类型对 Web 开发为什么重要？'
     faq2a: '服务器用 MIME 类型告知浏览器如何处理文件。错误的 MIME 类型会导致文件被下载而非显示。'
+    faq3q: 常见的 MIME 类型有哪些？
+    faq3a: 常见 MIME 类型：text/html（HTML 文档）、application/json（JSON 数据）、application/javascript（JS 脚本）、image/png 和 image/jpeg（图片）、video/mp4（视频）、application/pdf（PDF）、multipart/form-data（表单上传）。在 HTTP API 开发中，Content-Type 和 Accept 请求头使用 MIME 类型协商数据格式。
     title: MIME 类型速查表
     description: MIME 类型与文件扩展名互查工具，快速查找文件格式对应的 Content-Type，方便 API 开发和服务器配置。
 
@@ -1008,6 +1042,8 @@ tools:
     faq1a: 二维码可包含网址、纯文本、联系人名片（vCard）、WiFi 凭据、电话号码、电子邮件地址等。
     faq2q: 二维码最多能存储多少数据？
     faq2a: 标准二维码最多可存储约 4,296 个字母数字字符或约 7,089 个数字字符。内容越短，二维码越简单，扫描成功率越高。
+    faq3q: 生成的二维码可以添加 Logo 吗？
+    faq3a: 可以，但需要在图片编辑工具中将 Logo 叠加到二维码中心。为确保 Logo 覆盖后仍可扫描，需将二维码的容错率设置为 H（最高，30% 损坏容忍）。Logo 建议不超过二维码面积的 30%，且使用高对比度颜色。本工具生成的 PNG 图片可在 Photoshop 或 Figma 中进行后期处理。
 
   wifi-qrcode-generator:
     step1: '步骤 1：输入 WiFi 网络名称（SSID）。'
@@ -1018,6 +1054,8 @@ tools:
     faq1a: '二维码以标准 WIFI: 格式编码了 SSID、密码和安全类型。扫描后，兼容设备可自动连接到该网络。'
     faq2q: '分享 WiFi 二维码安全吗？'
     faq2a: '只应与信任的人分享——二维码包含可恢复的 WiFi 密码，任何扫描它的人都可以加入您的网络。'
+    faq3q: WiFi 二维码支持哪些安全类型？
+    faq3a: 'WiFi 二维码（WIFI: 格式）支持 WPA/WPA2/WPA3 个人版（最常见）、WEP（已过时，不安全）和无密码开放网络。本工具支持所有主流安全类型的配置。注意：WEP 存在严重安全漏洞，强烈建议升级到 WPA2 或 WPA3。'
     title: WiFi 二维码生成器
     description: 在线生成 WiFi 二维码，手机扫码即可一键连接 WiFi，支持 WPA/WPA2/WEP 和企业级 EAP 认证，可下载 PNG。
 
@@ -1108,6 +1146,8 @@ tools:
     faq1a: 'WYSIWYG 代表所见即所得。编辑器以浏览器中将呈现的样式显示内容，无需了解 HTML。'
     faq2q: '生成的 HTML 是否干净？'
     faq2a: '编辑器生成语义化 HTML5，尽量避免内联样式。'
+    faq3q: WYSIWYG 编辑器生成的 HTML 代码质量如何？
+    faq3a: WYSIWYG 编辑器通常生成基本可用的 HTML，但可能包含冗余标签和行内样式。本工具尽量输出语义化 HTML5（h1-h6、strong、em 等），而非 <font>、<b> 等旧式标签。建议将生成的 HTML 结合自定义 CSS 使用，以获得更一致的样式效果，避免依赖编辑器内联样式。
     title: HTML所见即所得编辑器
     description: 在线所见即所得 HTML 富文本编辑器（WYSIWYG），支持格式、列表、链接、图片等富文本功能，实时预览 HTML 源代码，适合快速生成页面内容。
     editorLabel: 编辑器
@@ -1127,6 +1167,8 @@ tools:
     faq1a: '邮箱规范化会移除别名（如 Gmail 的 + 标签）、统一大小写，并去除某些邮件提供商忽略的点号，以获取"真实"地址。'
     faq2q: '支持哪些邮件服务商？'
     faq2a: '支持 Gmail、Outlook、Yahoo 等主流服务商。不同提供商的规范化规则可能不同。'
+    faq3q: 邮箱规范化对什么场景最有用？
+    faq3a: 邮箱规范化对以下场景非常有用：用户注册时去除重复账号（防止同一人用 user+1@gmail.com 和 user@gmail.com 注册两次）、邮件营销时去重减少费用、CRM 数据清洗时合并同一用户的多条记录，以及用户登录时宽松匹配（不区分 Gmail 的点号）。
     inputLabel: 输入邮箱列表
     uploadTooltip: 从文件导入（.txt 或 .csv）
     clearInput: 清空输入
@@ -1150,6 +1192,8 @@ tools:
     faq1a: 'TOML 适合需要高度清晰性的简单配置文件。它的语法比 YAML 更严格，减少了缩进错误的可能性。'
     faq2q: 'YAML 支持锚点和别名吗？'
     faq2a: '支持。YAML 支持锚点（&）和别名（*）用于复用内容。TOML 没有直接等效的功能。'
+    faq3q: YAML 转换为 TOML 时需要注意什么？
+    faq3a: YAML 转 TOML 时需注意：TOML 不支持 null 值（YAML 的 null 在 TOML 中无直接等价）；TOML 要求整数类型明确区分（不像 YAML 会自动推断）；YAML 的多文档格式（--- 分隔）在 TOML 中不支持；YAML 的复杂嵌套如果层级较深，TOML 的表格嵌套语法会比较繁琐。
     title: YAML 到 TOML
     description: 将 YAML 数据在线转换为 TOML 格式，适用于 Rust、Go 等语言的配置文件迁移并保留层级结构。
 
@@ -1162,6 +1206,8 @@ tools:
     faq1a: 'MAC 地址用于在局域网数据链路层（第 2 层）唯一标识设备。路由器和交换机使用 MAC 地址进行本地流量转发。'
     faq2q: '可以生成组播 MAC 地址吗？'
     faq2a: '生成器默认创建单播地址。如果第一字节的最低有效位为 1，则该地址为组播地址。'
+    faq3q: 本地管理 MAC 地址（LA）和全局管理地址有什么区别？
+    faq3a: 全局管理地址（UAA）是由 IEEE 分配给硬件制造商的唯一 OUI 生成的，保证全球唯一。本地管理地址（LAA）将第一字节的第二低位设为 1，表示该地址由网络管理员手动配置，不由 IEEE 保证全局唯一。LAA 常用于虚拟机、容器和网络测试环境中。
     title: MAC 地址生成器
     description: 在线 MAC 地址生成器，支持自定义数量和前缀，可选大写或小写格式，支持批量生成随机 MAC 地址，适合网络测试和模拟场景。
     amount: 数量
@@ -1225,6 +1271,8 @@ tools:
     faq1a: 'E.164 是国际电话号码标准。号码以 + 开头，后跟国家代码和用户号码。'
     faq2q: '从电话号码可以获取哪些信息？'
     faq2a: '从电话号码可以确定国家、地区、运营商（有时）和类型（移动、座机、免费电话等）。'
+    faq3q: E.164 格式是什么？为什么在系统中应该统一使用它？
+    faq3a: E.164 是国际电话号码的标准格式：+ 号开头，后跟国家代码和号码，无空格和连字符，最多 15 位数字（如 +861381234xxxx）。在数据库和 API 中统一使用 E.164 格式可避免解析歧义，方便国际化，与 Twilio、AWS SNS 等通信服务直接兼容。
     title: 电话分析器和格式化程序
     description: 在线电话号码解析和格式化工具，支持解析、验证国际电话号码（E.164 格式），获取国家/地区代码、运营商类型，并转换为标准国际格式，适合表单验证和数据清洗。
     defaultCountryCode: 默认国家/地区代码
@@ -1302,6 +1350,8 @@ tools:
     faq1a: 'Open Graph 标签是控制您的页面在社交媒体（Facebook、Twitter、LinkedIn 等）分享时显示效果的 HTML meta 标签。'
     faq2q: 'og:image 为什么重要？'
     faq2a: 'og:image 是页面在社交媒体分享时显示的缩略图。推荐尺寸为 1200×630px。'
+    faq3q: 必须设置哪些基本的 Open Graph 标签？
+    faq3a: 最基本的 OG 标签包括：og:title（页面标题）、og:type（内容类型，如 website 或 article）、og:image（缩略图 URL，建议 1200×630px）、og:url（页面规范 URL）。可选但重要的标签：og:description（简短描述）、og:site_name（网站名称）。缺少这些标签会导致社交媒体分享时显示异常。
     title: Open Graph / OG Meta 标签生成器
     description: 在线生成 Open Graph、Twitter Card 等社交媒体 meta 标签，提升网站在 Facebook、Twitter、微信等平台的分享效果。
 
@@ -1313,6 +1363,8 @@ tools:
     faq1a: 'ULA（唯一本地地址）是 fc00::/7 范围内的 IPv6 地址，类似于私有 IPv4 地址段，不在公网路由。'
     faq2q: 'ULA 全局 ID 是如何生成的？'
     faq2a: '根据 RFC 4193，40 位全局 ID 应使用当前时间和 EUI-64 伪随机生成，以最小化不同组织间的碰撞概率。'
+    faq3q: IPv6 ULA 和公网 IPv6 地址有什么区别？
+    faq3a: ULA（Unique Local Address，fc00::/7 前缀）类似于 IPv4 的私有地址（192.168.x.x），只在本地网络内路由，不在公网上传播。公网 IPv6（GUA，Global Unicast Address）全球唯一可路由。ULA 适合内部网络通信，不依赖 ISP 分配，即使没有互联网连接也能使用。
     title: IPv6 ULA生成器
     description: 按照 RFC 4193 规范生成 IPv6 ULA（唯一本地地址）前缀，用于局域网内部使用，无需申请公网地址即可构建私有 IPv6 网络。
     infoText: ULA 地址用于私有网络内部，不会在互联网上路由
@@ -1359,6 +1411,8 @@ tools:
     faq1a: '工具显示屏幕分辨率、视口大小、像素比、色深、浏览器名称和版本、操作系统、语言以及在线/离线状态。'
     faq2q: '这些信息会发送到服务器吗？'
     faq2a: '不会。所有信息均从浏览器 JavaScript API 本地读取，不传输任何数据。'
+    faq3q: 为什么不同网站检测到的设备信息有时不一样？
+    faq3a: 不同网站使用不同的检测方法和库。有些信息（如屏幕分辨率、User-Agent）是准确的，而设备型号等信息通常是从 User-Agent 字符串推断的，准确性有限。现代浏览器为保护用户隐私，对某些 API 加入了随机噪声（如 canvas 指纹保护），导致不同站点可能获取到略有不同的值。
     title: 设备信息检测
     description: 检测当前设备的详细信息，包括屏幕分辨率、像素比、浏览器版本、操作系统、用户代理字符串、网络连接类型等，帮助开发者进行设备适配调试。
 
@@ -1370,6 +1424,8 @@ tools:
     faq1a: 'PDF 数字签名使用公钥密码学验证签名者身份，并确认文档自签名后未被篡改。'
     faq2q: '我的 PDF 会上传到服务器吗？'
     faq2a: '不会。PDF 完全在浏览器中使用 JavaScript 处理，您的文件不会离开您的设备。'
+    faq3q: PDF 数字签名和电子签名有什么区别？
+    faq3a: 数字签名（Digital Signature）使用公钥密码学（PKI）技术，通过证书颁发机构（CA）验证签署者身份，具有法律效力，可检测文档是否被篡改。电子签名（e-Signature）是更广泛的概念，包括扫描手写签名、在线签名平台等，技术要求较低。PDF 数字签名属于前者，本工具专门检测 PKI 数字签名。
     title: PDF签名检查器
     description: '验证PDF文件的签名。签名的PDF文件包含一个或多个签名，可用于确定文件的内容在签名后是否已被更改。'
 
@@ -1447,6 +1503,8 @@ tools:
     faq1a: '进制转换将数字从一种数制翻译到另一种数制。二进制（2 进制）、八进制（8 进制）、十进制（10 进制）和十六进制（16 进制）是最常见的。'
     faq2q: '如何将十六进制转换为二进制？'
     faq2a: '每个十六进制数字对应恰好 4 位二进制数。例如 F(hex) = 1111(binary)，所以 0xFF = 11111111。'
+    faq3q: 在程序开发中各种进制分别有什么用途？
+    faq3a: 二进制（bin）：计算机底层运算和位操作；八进制（oct）：Unix 文件权限（chmod）；十进制（dec）：日常数字；十六进制（hex）：内存地址、颜色值（#RRGGBB）、字节数据表示；Base64：二进制数据的文本编码。了解进制转换是理解计算机底层原理的基础。
     title: 进制转换器（2/8/10/16）
     description: 在线进制转换器，支持数字在二进制（bin）、八进制（oct）、十进制（dec）、十六进制（hex）、Base64 之间互相转换，适合前端开发、汇编学习和颜色值转换。
 
@@ -1525,6 +1583,8 @@ tools:
     faq1a: 'IPv4 地址是 32 位数字，通常写成四个十进制八位组（如 192.168.1.1），在网络上唯一标识一台设备。'
     faq2q: '什么是 IPv4 映射的 IPv6 地址？'
     faq2a: 'IPv4 映射的 IPv6 地址以 ::ffff:x.x.x.x 格式表示 IPv4 地址，用于同时支持 IPv4 和 IPv6 的双栈系统。'
+    faq3q: 为什么 IPv4 要转换为不同格式？
+    faq3a: IPv4 地址格式转换有多种用途：二进制格式用于理解子网掩码和路由计算；十六进制格式在网络协议头部（如 TCP/IP 报文）和内存中使用；整数格式在数据库中高效存储 IP 地址（相比字符串节省空间，便于范围查询）；点分十进制是人类可读的标准格式。
     title: Ipv4地址转换器
     description: IPv4 地址格式转换工具，将 IP 地址在点分十进制、二进制、十六进制、整数之间互相转换，适合网络工程师和安全研究人员使用。
     inputLabel: IPv4 地址
@@ -1567,6 +1627,8 @@ tools:
     faq1a: '北约音标字母为每个字母指定一个单词（Alpha、Bravo、Charlie……），以避免语音通信中的混淆。'
     faq2q: '为什么不直接说字母？'
     faq2a: '许多字母在电话或无线电中听起来相似。使用音标单词可减少口头拼写时的错误。'
+    faq3q: NATO 音标字母表中各字母代表什么单词？
+    faq3a: NATO 音标字母表（ITU/ICAO 标准）：Alpha、Bravo、Charlie、Delta、Echo、Foxtrot、Golf、Hotel、India、Juliet、Kilo、Lima、Mike、November、Oscar、Papa、Quebec、Romeo、Sierra、Tango、Uniform、Victor、Whiskey、X-ray、Yankee、Zulu。数字：Zero 到 Niner。
     title: 文本转北约字母表
     description: 将文本转换为北约音标字母（Alpha、Bravo、Charlie…），适用于当面拼写验证、无线零频通信等场景。
 
@@ -1578,6 +1640,8 @@ tools:
     faq1a: 'HTTP Basic Auth 是 HTTP 协议内置的简单认证方案。客户端随每个请求发送 Authorization: Basic base64(user:password)。'
     faq2q: 'Basic Auth 安全吗？'
     faq2a: 'Basic Auth 本身不安全，因为凭据只是 Base64 编码而非加密。必须在 HTTPS 上使用。'
+    faq3q: Basic Auth 和 Bearer Token 认证有什么区别？
+    faq3a: Basic Auth 在每个请求的 Authorization 头中以 Base64 编码发送用户名和密码，简单但存在安全风险，必须配合 HTTPS。Bearer Token 在 Authorization 头中发送一个短期令牌（如 JWT），不直接暴露密码，可以设置过期时间和权限范围，更适合现代 API 设计和单点登录场景。
     title: 基本身份验证生成器
     description: 在线生成 HTTP Basic Auth 认证头，输入用户名和密码即可生成 Base64 编码的 Authorization 标头，供 API 测试和开发调试使用。
 
@@ -1589,6 +1653,8 @@ tools:
     faq1a: 'Unicode 是通用字符编码标准，为每种语言的每个字符分配唯一码点，涵盖 150 多种文字的 14 万多个字符。'
     faq2q: 'Unicode 和 UTF-8 有什么区别？'
     faq2a: 'Unicode 是分配码点的标准（如 U+0041 代表字母 A），UTF-8 是将这些码点在内存或文件中表示为 1–4 字节的编码方式。'
+    faq3q: 为什么同一字符在不同系统上显示效果不同？
+    faq3a: 不同的字体、操作系统和渲染引擎对相同 Unicode 字符的视觉呈现可能不同，特别是表情符号（Emoji）——同一 Unicode 码点在苹果、谷歌和微软平台上有完全不同的设计风格。字符集问题（如 GB2312 vs UTF-8）可能导致中文字符显示为乱码，统一使用 UTF-8 可解决大多数跨平台编码问题。
     title: 文本转 Unicode
     description: 将文本与 Unicode 码点双向转换，支持查看字符的 Unicode 编号、UTF-8/UTF-16 编码，适合国际化开发调试。
     textPlaceholder: '例如：Hello 你好 🚀'
@@ -1601,6 +1667,8 @@ tools:
     faq1a: 'CIDR 聚合找到精确覆盖给定 IP 范围的最小网络前缀集，用于减少路由表条目数量。'
     faq2q: '为什么一个 IP 范围可能需要多个 CIDR 块？'
     faq2a: '不对齐 2 的幂次方边界的 IP 范围需要多个 CIDR 块来精确表示。'
+    faq3q: 为什么用多个 CIDR 来表示一个 IP 范围，而不是一个？
+    faq3a: CIDR 块的大小必须是 2 的幂次方（/24 = 256 个，/25 = 128 个等），且必须对齐到相应的边界。任意起止范围的 IP 段（如 10.0.0.5 到 10.0.0.20）通常无法用单个 CIDR 精确表示，需要分解为多个不重叠的 CIDR 块。本工具自动完成这个分解计算，适合防火墙规则配置。
     title: IPv4范围扩展器
     description: 在线 IPv4 地址范围扩展工具，输入起始和结束 IP 地址，自动计算覆盖该范围的 CIDR 网段列表，适合防火墙规则配置和网络规划场景。
     startAddress: 起始地址
@@ -1675,6 +1743,8 @@ tools:
     faq1a: '每个字符转换为其 ASCII/Unicode 码点，然后表示为 8 位二进制。例如 A = 65 = 01000001。'
     faq2q: '使用什么编码？'
     faq2a: '工具使用 UTF-8 编码，这是 Web 的标准编码。ASCII 字符使用单字节，非 ASCII 字符可能使用 2–4 字节。'
+    faq3q: 二进制文本编码有什么实际用途？
+    faq3a: 文本的二进制表示主要用于：理解计算机底层数据存储原理、调试网络协议和文件格式、学习编码系统（ASCII/UTF-8）、密码学和信息安全教学，以及部分隐写术应用（在文本中隐藏信息）。虽然日常开发中直接操作二进制文本较少，但理解其原理是计算机基础教育的重要组成部分。
     title: 文本到 ASCII 二进制
     description: 在线文本与 ASCII 二进制互转工具，支持将任意文本转换为 0/1 二进制字符串，或将二进制串解码还原为原始文本，适合编程学习和数据处理。
 
@@ -1776,6 +1846,8 @@ tools:
     faq1a: '工具使用浏览器 Math.random() 函数，这是伪随机的，对日常决策已足够。'
     faq2q: '可以给某些选项加权吗？'
     faq2a: '目前工具对所有选项给予相同权重。如要加权某个选项，可在列表中多次添加它。'
+    faq3q: 如何为随机选择添加权重？
+    faq3a: 本工具每个选项权重相同，如需加权（例如某个选项出现概率更高），可在列表中多次输入该选项。例如想让「选项A」有 2 倍概率，就在列表中输入两次「选项A」。这种方式简单直接，无需额外设置，适合大多数非专业权重需求。
     title: 随机决策选择器
     description: 在线随机决策工具，无法做决定时输入你的多个选项，点击旋转按钮让转盘随机帮你做出选择，支持自定义选项列表和多种预设方案，让决策变得轻松有趣。
     spin: 旋转！
@@ -1816,6 +1888,8 @@ tools:
     faq1a: '中国使用 7 档累进税率（3%–45%）。应纳税额 = (税前工资 - 社保 - 5000 元基本扣除 - 专项附加扣除) × 税率 - 速算扣除数。'
     faq2q: '社保（五险一金）包含哪些内容？'
     faq2a: '五险：养老保险、医疗保险、失业保险、工伤保险、生育保险。一金：住房公积金。费率因城市而异。'
+    faq3q: 个人所得税专项附加扣除有哪些？
+    faq3a: 2024 年个人所得税专项附加扣除包括：子女教育（每孩每月 2000 元）、继续教育（400~800 元/月）、大病医疗（上限 8 万元/年）、住房贷款利息（每月 1000 元）、住房租金（每月 800~1500 元，按城市）、赡养老人（每月最高 2000 元）、3 岁以下婴幼儿照护（每孩每月 2000 元）。
     title: 个人所得税计算器
     description: 根据中国现行个税政策（起征点5000元，7档税率），快速计算月薪应缴个税、五险一金和实发工资，支持专项附加扣除。
     income: 收入信息
@@ -1895,6 +1969,8 @@ tools:
     faq1a: 'Unix 时间戳是自 1970 年 1 月 1 日 00:00:00 UTC（Unix 纪元）以来经过的秒数（或毫秒数）。它与时区无关，在编程中被广泛使用。'
     faq2q: 如何判断时间戳是秒还是毫秒？
     faq2a: 10 位数字为秒（如 1704067200），13 位数字为毫秒（如 1704067200000）。当前 Unix 时间约为 17 亿秒。
+    faq3q: 如何在各编程语言中获取当前 Unix 时间戳？
+    faq3a: '各语言获取时间戳：JavaScript: Date.now()（毫秒）或 Math.floor(Date.now()/1000)（秒）；Python: import time; int(time.time())；Java: System.currentTimeMillis()/1000；Go: time.Now().Unix()；Shell: date +%s。大多数语言默认返回秒级时间戳，JavaScript 例外返回毫秒。'
 
   number-formatter:
     title: 数字格式化工具
@@ -1953,6 +2029,8 @@ tools:
     faq1a: 配色方案是基于色轮上颜色位置关系得出的视觉和谐的色彩组合。常见类型包括互补色（对侧）、类比色（相邻）和三角配色（等距分布）。
     faq2q: 色阶（Tints）和暗色阶（Shades）有什么区别？
     faq2a: 色阶是在基础色中加入白色（使颜色变浅），暗色阶是在基础色中加入黑色（使颜色变深）。本工具同时生成两者，提供完整的色彩范围。
+    faq3q: UI 设计中如何使用调色板生成器？
+    faq3a: 工作流程：1）确定品牌主色（可用色轮或参考竞品）；2）使用本工具生成完整色阶（50~900），用于背景、边框、文字等不同层级；3）生成互补色或类比色作为辅助色；4）生成灰色系用于文字和中性元素；5）在设计系统中定义语义化颜色（primary、success、warning、error）并映射到色阶值。
     clickToChange: 点击更改颜色
     openPicker: 打开取色器
     hexError: 无效的十六进制颜色值
@@ -2073,6 +2151,8 @@ tools:
     faq1a: '正则表达式（Regex）是用于匹配字符串中字符组合的模式，被广泛用于搜索、替换、验证等文本处理场景。'
     faq2q: '如何测试正则表达式？'
     faq2a: '可以使用本站的 Regex Tester 工具实时测试和调试正则表达式。'
+    faq3q: 正则表达式贪婪匹配和懒惰匹配有什么区别？
+    faq3a: 贪婪匹配（默认）尽可能多地匹配字符：.* 会匹配到字符串末尾。懒惰匹配在量词后加 ?（如 .*?）尽可能少地匹配：遇到第一个满足条件的位置就停止。例如匹配 HTML 标签内容时，/<.*>/ 会匹配整行（贪婪），而 /<.*?>/ 只匹配第一个完整标签（懒惰）。
     title: 正则表达式速查表
     description: 正则表达式速查手册，涵盖字符类（\d \w \s）、量词（* + ? {}）、锚点（^ $）、分组、命名捕获、零宽断言等常见正则语法，附带实用示例，一键复制表达式。
     toc: 目录
@@ -2129,6 +2209,8 @@ tools:
     faq1a: SafeLink 是 Microsoft Defender for Office 365 的功能，会将邮件中的链接替换为经过安全检查的代理 URL，以防范恶意网站。
     faq2q: 解码后的链接安全吗？
     faq2a: 本工具仅做 URL 解码，不做安全验证。访问解码后的链接前，请自行判断目标网站是否可信。
+    faq3q: Outlook 安全链接是什么？为什么要解码它？
+    faq3a: Microsoft Defender for Office 365 会将电子邮件中的 URL 替换为经过封装的「安全链接」（Safe Links），形如 https://urldefense.com/... 或 https://nam.safelinks.protection.outlook.com/...，用于扫描链接是否指向恶意网站。当你需要获取原始 URL 时（如分享或调试），可以用本工具将其解码还原。
 
   common:
     faqSafe: 这个工具安全吗？我的数据会被上传吗？
