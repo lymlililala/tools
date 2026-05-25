@@ -96,7 +96,7 @@ tools:
     faq1a: '计时器是用于精确测量经过时间的工具，支持毫秒级精度与分段记录，常用于运动计时、性能测试和事件计时等场景。'
     faq2q: '关闭标签页会停止计时吗？'
     faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
-    title: 计时器
+    title: 在线计时器 / 秒表
     description: 简单易用的在线计时器，支持毫秒级精度、分段计时与圈速记录，适合跑步、会议计时等场景。
     idle: 就绪
     running: 计时中
@@ -188,7 +188,7 @@ tools:
     faq1a: '工具支持对象数组格式。'
     faq2q: '如果 JSON 对象的键不一致怎么办？'
     faq2a: '工具会将所有对象中的唯一键合并为列标题。缺失字段在 CSV 输出中留空。'
-    title: JSON 转 CSV
+    title: JSON 转 CSV 转换器
     description: 将 JSON 数组数据转换为 CSV 格式，自动检测表头，支持复制和下载，无需安装任何软件。
     rawJson: 原始 JSON
     valid: 有效
@@ -215,7 +215,7 @@ tools:
     faq1a: '不会。所有处理均在浏览器本地完成，不会上传任何数据。'
     faq2q: '支持什么格式？'
     faq2a: '照片保存为 PNG 格式，视频保存为大多数现代浏览器支持的 WebM 格式。'
-    title: 摄像机记录器
+    title: 在线摄像头录制工具
     description: 在浏览器中直接使用摄像头拍照或录制视频，支持选择摄像头和麦克风设备，可下载保存。
     notSupported: 浏览器不支持
     notSupportedDesc: 您的浏览器不支持从摄像头录制视频，请升级至最新版 Chrome、Firefox 或 Edge。
@@ -265,7 +265,7 @@ tools:
     faq1a: '使用搜索框输入关键词，列表将实时过滤。'
     faq2q: '可以在代码或 URL 中使用 Emoji 吗？'
     faq2a: '可以。每个 Emoji 都有 Unicode 码点，可用于 HTML 实体或 JSON。URL 中需要进行百分比编码。'
-    title: Emoji 选择器
+    title: Emoji 表情选择 / 复制
     description: 轻松复制和粘贴Emoji表情符号，并获得每个表情符号的unicode和code points值.
     searchPlaceholder: "搜索 Emoji（如 'smile'）… 或按 ⌘K"
     clearSearch: 清空搜索
@@ -288,7 +288,7 @@ tools:
     faq1a: 'HEX 是 6 位十六进制颜色码。RGB 通过红、绿、蓝三通道（0–255）定义颜色。HSL 通过色相（0–360°）、饱和度和亮度定义颜色。'
     faq2q: '什么是 WCAG 对比度？'
     faq2a: 'WCAG 对比度衡量文本在背景上的可读性。4.5:1 达到 AA 标准；7:1 达到 AAA 标准。'
-    title: Color 选择器
+    title: 颜色格式转换器（HEX/RGB/HSL）
     description: 在不同格式（十六进制、rgb、hsl和css名称）之间转换颜色
   ascii-text-drawer:
     title: ASCII 艺术字生成器
@@ -376,7 +376,7 @@ tools:
     faq1a: 'HTTP 状态码是服务器对客户端请求响应中返回的 3 位数字，指示请求是成功、重定向还是发生错误。'
     faq2q: '401 和 403 有什么区别？'
     faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
-    title: HTTP 状态码
+    title: HTTP 状态码速查表
     description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明。
     backToTop: 回到顶部
 
@@ -389,7 +389,7 @@ tools:
     faq1a: '格式化的 SQL 更易于阅读、调试和维护。统一的缩进和大写规范帮助更快发现错误。'
     faq2q: '支持哪些 SQL 方言？'
     faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
-    title: SQL 格式化
+    title: SQL 格式化 / 美化
     description: 在线格式化您的 SQL 查询，支持多种 SQL 方言。
     dialect: 方言
     keywordCase: 关键字大小写
@@ -415,7 +415,7 @@ tools:
     faq1a: 'ops/sec（每秒操作数）衡量一段代码在一秒内能执行多少次。数值越高越快。'
     faq2q: '这个基准测试准确吗？'
     faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
-    title: 基准生成器
+    title: 前端性能基准测试
     description: 在线 JavaScript 性能基准测试工具，轻松比较不同代码片段的执行时间，找出最优实现方案。
     valuePlaceholder: 输入测量值...
     deleteValue: 删除此值
@@ -443,7 +443,7 @@ tools:
     faq1a: 'Git 是一个分布式版本控制系统，用于追踪源代码的变更，允许多名开发者协作、分支、合并并维护项目历史。'
     faq2q: 'git pull 和 git fetch 有什么区别？'
     faq2a: 'git fetch 下载远程变更但不合并。git pull = git fetch + git merge，将远程变更应用到当前分支。'
-    title: Git 备忘录
+    title: Git 命令速查手册
     description: Git是一种去中心化的版本管理软件。使用此备忘单，您可以快速访问最常见的git命令.
     toc: 目录
     copiedTooltip: 已复制！
@@ -587,7 +587,7 @@ tools:
     faq1a: 'YAML 格式化以统一的缩进和间距重新排版 YAML，使其更易于阅读和比较。'
     faq2q: '格式化会改变 YAML 的值吗？'
     faq2a: '不会。格式化只改变空白和格式，数据值和结构保持完全不变。'
-    title: YAML 格式化
+    title: YAML 格式化 / 美化
     description: 在线 YAML 格式化工具，将压缩或混乱的 YAML 重新排版为整洁易读的标准格式，支持语法校验。
 
   eta-calculator:
@@ -599,7 +599,7 @@ tools:
     faq1a: 'ETA 代表预计到达（或完成）时间，根据当前进度速率预测任务何时完成。'
     faq2q: 'ETA 如何计算？'
     faq2a: 'ETA = (总数 - 已完成) / (已完成 / 已用时间)，假设处理速率恒定。'
-    title: ETA 计算器
+    title: ETA 到达时间计算器
     description: ETA（估计到达时间）计算器，用于知道任务的近似结束时间，例如下载的结束时刻。
 
   roman-numeral-converter:
@@ -622,7 +622,7 @@ tools:
     faq1a: 'HMAC（哈希消息认证码）将密码哈希函数与密钥结合，同时验证数据完整性和真实性。'
     faq2q: 'HMAC 和普通哈希有什么区别？'
     faq2a: '普通哈希只验证数据完整性。HMAC 还需要共享密钥，只有拥有密钥的一方才能验证真实性。'
-    title: Hmac 生成器
+    title: HMAC 签名生成器
     description: 使用密钥和您喜欢的哈希函数计算基于哈希的消息身份验证代码（HMAC）。
 
   bip39-generator:
@@ -668,7 +668,7 @@ tools:
     faq1a: '输入支持换行分隔、逗号分隔、管道分隔或制表符分隔。输出支持 JSON 数组、CSV 等格式。'
     faq2q: '可以去除重复项吗？'
     faq2a: '可以。工具支持去重、排序、去除首尾空格和反转列表。'
-    title: List 转换器
+    title: 列表格式转换器
     description: 该工具可以处理基于数组的数据，并将各种更改（转置、添加前缀和后缀、反向列表、排序列表、小写值、截断值）应用于每一行。
 
   base64-string-converter:
@@ -701,7 +701,7 @@ tools:
     faq1a: '支持三角函数（sin、cos、tan）、对数（log、log2、log10）、幂函数（sqrt、pow、exp）和常数（pi、e）。'
     faq2q: '支持复杂表达式吗？'
     faq2a: '支持。支持嵌套函数、单位、矩阵和复数。'
-    title: 数学计算器
+    title: 在线数学表达式计算器
     description: 计算数学表达式的计算器。您可以使用sqrt、cos、sin、abs等函数。
     placeholder: '输入表达式，例如 sqrt(2) * pi'
     clear: 清空
@@ -737,7 +737,7 @@ tools:
     faq1a: '工具提取：协议、用户名、密码、主机名、端口、路径、查询字符串、各查询参数和哈希片段。'
     faq2q: '如果 URL 没有查询参数怎么办？'
     faq2a: '没有查询参数时，查询参数区域会自动隐藏。'
-    title: Url分析器
+    title: URL 解析器
     description: 解析url字符串以获取所有不同的部分（协议、来源、参数、端口、用户名密码…）
 
   iban-validator-and-parser:
@@ -819,7 +819,7 @@ tools:
     faq1a: '支持 camelCase、PascalCase、snake_case、SCREAMING_SNAKE_CASE、kebab-case、标题首字母大写、全大写、全小写和 dot.case。'
     faq2q: 'camelCase 和 PascalCase 有什么区别？'
     faq2a: 'camelCase 以小写字母开头（如 myVariable），PascalCase 以大写字母开头（如 MyClass）。'
-    title: 大小写转换
+    title: 字符串大小写转换器
     description: 在线大小写转换工具，支持 camelCase、PascalCase、snake_case、kebab-case、UPPER_CASE 等多种命名法互转。
 
   html-entities:
@@ -830,11 +830,11 @@ tools:
     faq1a: 'HTML 实体是用于在 HTML 中显示保留字符或特殊字符的代码。例如 &lt; 显示为 <，&amp; 显示为 &。'
     faq2q: '为什么需要转义 HTML？'
     faq2a: '转义 HTML 可防止显示用户生成内容时的 XSS 攻击。'
-    title: 转义html实体
+    title: HTML 实体编码 / 解码
     description: 转义或unescape html实体（将<、>、&、“和\'替换为其html版本）
 
   json-prettify:
-    title: JSON 格式化
+    title: JSON 格式化 / 校验
     description: 在线 JSON 格式化工具，将压缩或混乱的 JSON 重新排版为带缩进的标准格式，支持 JSON5 和语法校验。
     step1: 第一步：将原始 JSON 文本粘贴到左侧输入框。
     step2: 第二步：根据需要调整缩进大小和键排序选项。
@@ -891,7 +891,7 @@ tools:
     faq1a: 'MAC（媒体访问控制）地址是分配给网卡的唯一硬件标识符，长 48 位（6 字节），通常写成六对十六进制数字。'
     faq2q: 'MAC 地址的前 3 字节是什么？'
     faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
-    title: MAC地址查找
+    title: MAC 地址厂商查询
     description: 通过设备的 MAC 地址查询网卡厂商和制造商信息，支持 OUI 数据库查询，适用于网络故障排查。
     macAddressLabel: MAC 地址
     placeholder: '例如：20:37:06:12:34:56'
@@ -913,7 +913,7 @@ tools:
     faq1a: 'MIME 类型是文件或数据格式的标准标识符，由类型和子类型组成（如 text/html、application/json、image/png）。'
     faq2q: 'MIME 类型对 Web 开发为什么重要？'
     faq2a: '服务器用 MIME 类型告知浏览器如何处理文件。错误的 MIME 类型会导致文件被下载而非显示。'
-    title: mime类型
+    title: MIME 类型速查表
     description: MIME 类型与文件扩展名互查工具，快速查找文件格式对应的 Content-Type，方便 API 开发和服务器配置。
 
   toml-to-json:
@@ -979,7 +979,7 @@ tools:
     faq1a: 'XML（可扩展标记语言）是用于存储和传输结构化数据的灵活标记语言。与 HTML 不同，XML 标签由用户自定义。'
     faq2q: 'XML 和 JSON 有什么区别？'
     faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
-    title: XML 格式化
+    title: XML 格式化 / 美化
     description: 在线 XML 格式化工具，将压缩或混乱的 XML 重新排版为带缩进的标准格式，支持语法高亮和校验。
     rawXml: 原始 XML
     formattedResult: 格式化结果
@@ -998,7 +998,7 @@ tools:
     downloadFile: 下载 XML 文件
 
   temperature-converter:
-    title: 温度转换器
+    title: 温度单位换算器
     description: 开尔文、摄氏度、华氏度、兰金、德莱尔、牛顿、雷奥穆尔和罗默温度度数转换。
     step1: 第一步：在任意单位输入框中输入温度值。
     step2: 第二步：其他所有单位的换算结果即时显示。
@@ -1018,7 +1018,7 @@ tools:
     faq1a: 'chmod（更改模式）是 Unix/Linux 命令，用于修改文件和目录的权限，控制谁可以读取、写入或执行文件。'
     faq2q: 'chmod 755 是什么意思？'
     faq2a: '755 表示所有者有读+写+执行权限（7），组和其他用户有读+执行权限（5）。常用于 Web 服务器目录。'
-    title: Chmod 计算器
+    title: Linux chmod 权限计算器
     description: 使用此在线的chmod计算器计算chmod权限和命令。
     preset755: 目录推荐
     preset644: 文件推荐
@@ -1139,7 +1139,7 @@ tools:
     faq1a: 'JWT（JSON Web Token）是安全传输 JSON 对象信息的开放标准（RFC 7519），常用于身份认证和信息交换。'
     faq2q: 'JWT 令牌是加密的吗？'
     faq2a: '标准 JWT（JWS）是签名的但未加密，任何人都可以解码 Payload。如需保密性，请使用 JWE。'
-    title: JWT 解析器
+    title: JWT Token 解析器
     description: 解析和解码JSON Web Token（jwt）并显示其内容。
 
   date-converter:
@@ -1236,7 +1236,7 @@ tools:
     faq1a: 'Open Graph 标签是控制您的页面在社交媒体（Facebook、Twitter、LinkedIn 等）分享时显示效果的 HTML meta 标签。'
     faq2q: 'og:image 为什么重要？'
     faq2a: 'og:image 是页面在社交媒体分享时显示的缩略图。推荐尺寸为 1200×630px。'
-    title: 开放式图形元生成器
+    title: Open Graph / OG Meta 标签生成器
     description: 在线生成 Open Graph、Twitter Card 等社交媒体 meta 标签，提升网站在 Facebook、Twitter、微信等平台的分享效果。
 
   ipv6-ula-generator:
@@ -1260,7 +1260,7 @@ tools:
     lastRoutable: 末个可路由地址
 
   hash-text:
-    title: Hash 文本
+    title: Hash 文本生成器
     description: '使用所需的函数哈希文本字符串：MD5、SHA1、SHA256、SHA224、SHA512、SHA384、SHA3或RIPEMD160'
     step1: 第一步：在输入框中输入或粘贴文本。
     step2: 第二步：选择哈希算法（MD5、SHA-256 等）。
@@ -1278,7 +1278,7 @@ tools:
     faq1a: 'TOML 不支持 null 值或混合类型数组。含有这些特性的 JSON 可能无法干净地转换为 TOML。'
     faq2q: '为什么要将 JSON 转换为 TOML？'
     faq2a: 'TOML 对配置文件更具可读性。某些工具（如 Cargo、Hugo）只支持 TOML，需要从 JSON 转换。'
-    title: JSON 转 TOML
+    title: JSON 转 TOML 转换器
     description: 将 JSON 数据在线转换为 TOML 格式，适用于应用配置迁移，保留层级结构，尤其适合 Rust 项目。
 
   device-information:
@@ -1289,7 +1289,7 @@ tools:
     faq1a: '工具显示屏幕分辨率、视口大小、像素比、色深、浏览器名称和版本、操作系统、语言以及在线/离线状态。'
     faq2q: '这些信息会发送到服务器吗？'
     faq2a: '不会。所有信息均从浏览器 JavaScript API 本地读取，不传输任何数据。'
-    title: 设备信息
+    title: 设备信息检测
     description: 获取有关当前设备的信息（屏幕大小、像素比率、用户代理…）
 
   pdf-signature-checker:
@@ -1311,7 +1311,7 @@ tools:
     faq1a: '压缩 JSON 去除所有空白和换行，减小文件体积，适用于 API 载荷和生产环境配置文件。'
     faq2q: '压缩会改变 JSON 数据吗？'
     faq2a: '不会。压缩只删除无关紧要的空白，数据值和结构保持完全不变。'
-    title: JSON 压缩
+    title: JSON 压缩 / 最小化
     description: 在线 JSON 压缩工具，删除所有多余空白和换行，将 JSON 压缩到最小体积，适用于 API 传输和存储优化。
     rawJson: 原始 JSON
     minifiedResult: 压缩结果
@@ -1337,7 +1337,7 @@ tools:
     faq1a: 'ULID（通用唯一词典可排序标识符）是 128 位标识符，编码了时间戳和随机分量，既唯一又可按时间排序。'
     faq2q: 'ULID 相比 UUID 有什么优势？'
     faq2a: 'ULID 可按创建时间排序（不同于 UUID v4），URL 安全，且字符串表示更紧凑（26 字符 vs UUID 的 36 字符）。'
-    title: ULID 生成器
+    title: ULID 唯一ID生成器
     description: 在线生成 ULID（通用唯一词典可排序标识符），比 UUID 更易排序和调试，需要时间有序 ID 的分布式系统首选。
 
   string-obfuscator:
@@ -1371,7 +1371,7 @@ tools:
     faq1a: '进制转换将数字从一种数制翻译到另一种数制。二进制（2 进制）、八进制（8 进制）、十进制（10 进制）和十六进制（16 进制）是最常见的。'
     faq2q: '如何将十六进制转换为二进制？'
     faq2a: '每个十六进制数字对应恰好 4 位二进制数。例如 F(hex) = 1111(binary)，所以 0xFF = 11111111。'
-    title: 整数基转换器
+    title: 进制转换器（2/8/10/16）
     description: 在不同的基数（十进制、十六进制、二进制、八进制、base64…）之间转换数字
 
   yaml-to-json-converter:
@@ -1393,7 +1393,7 @@ tools:
     faq1a: 'YAML（YAML Ain''t Markup Language）是一种人类友好的数据序列化语言，常用于配置文件，如 Docker Compose、Kubernetes 等。'
     faq2q: 'YAML 缩进有何规则？'
     faq2a: 'YAML 使用空格缩进表示层级，不允许使用 Tab 键。缩进量不固定，但同级节点必须保持一致。'
-    title: YAML 查看器
+    title: YAML 查看 / 格式化
     description: 验证并格式化 YAML 字符串，使其具有正确的语法高亮。
     rawYaml: 原始 YAML
     formattedResult: 格式化结果
@@ -1464,7 +1464,7 @@ tools:
     faq1a: '阅读时间按每分钟 200–250 个单词（成人平均阅读速度）估算，会因内容复杂度而变化。'
     faq2q: '什么算作一个单词？'
     faq2a: '单词定义为由空白字符分隔的字符序列。附在单词上的标点符号算作单词的一部分。'
-    title: 文本统计
+    title: 文本统计分析工具
     description: 在线文本统计工具，实时显示字符数、单词数、行数、段落数、字节大小等详细统计信息。
     placeholder: 在此输入或粘贴文本…
     copyTooltip: 复制文本
@@ -1540,7 +1540,7 @@ tools:
     faq1a: '工具使用标准 diff 算法，逐行和逐字符比较文本，找出最小变更集。'
     faq2q: '可以对比代码文件吗？'
     faq2a: '可以。工具适用于任何文本内容，包括代码、散文、JSON 和 YAML。'
-    title: 文本比较
+    title: 文本差异对比工具
     description: 在线文本对比工具，并排显示两段文本的差异，高亮标注新增、删除的内容，适合代码审查和文档比对。
     originalText: 原始文本
     modifiedText: 修改后文本
@@ -1589,7 +1589,7 @@ tools:
     description: 将文本转换为其 ASCII 二进制表示形式，反之亦然。
 
   mortgage-calculator:
-    title: 房贷计算器
+    title: 房贷月供计算器
     description: 在线计算房贷月供、总利息和还款计划，支持等额还款和等额本金两种方式，以及商业贷款与公积金组合贷款。
     params: 贷款参数
     summary: 还款摘要
@@ -1686,7 +1686,7 @@ tools:
     faq1a: '工具使用浏览器 Math.random() 函数，这是伪随机的，对日常决策已足够。'
     faq2q: '可以给某些选项加权吗？'
     faq2a: '目前工具对所有选项给予相同权重。如要加权某个选项，可在列表中多次添加它。'
-    title: 随机决定器
+    title: 随机决策选择器
     description: 无法做决定？输入你的选项，旋转转盘让命运替你选择！支持自定义选项和多种预设方案。
     spin: 旋转！
     spinning: 旋转中...
@@ -1840,7 +1840,7 @@ tools:
     comparisonEmpty: 输入数字后显示多语言对比
 
   color-palette-generator:
-    title: 调色板生成器
+    title: 在线颜色调色板生成器
     description: 从一个基础颜色生成色阶、配色方案（互补色、类比色、三角配色等）和灰色系，适合 UI 设计。
     baseColor: 基础颜色
     shades: 明暗色阶
@@ -1983,7 +1983,7 @@ tools:
     regexTesterLink: Regex Tester（本工具）
 
   xml-to-json:
-    title: XML 转 JSON
+    title: XML 转 JSON 转换器
     description: 将 XML 数据转换为 JSON 格式，保留层级结构，便于前端处理和 API 调用。
     step1: 步骤 1：将 XML 文本粘贴到左侧输入框。
     step2: 步骤 2：右侧实时显示转换后的 JSON 结果。
@@ -1994,7 +1994,7 @@ tools:
     faq2a: 支持。XML 元素的属性会作为特殊键（如 @attributes）保留在 JSON 结果中。
 
   json-to-xml:
-    title: JSON 转 XML
+    title: JSON 转 XML 转换器
     description: 将 JSON 数据转换为标准 XML 格式，适用于与旧系统集成和数据交换场景。
     step1: 步骤 1：将 JSON 文本粘贴到左侧输入框。
     step2: 步骤 2：右侧实时显示转换后的 XML 结果。

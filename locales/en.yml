@@ -96,7 +96,7 @@ tools:
     faq1a: 'A chronometer is a precise timekeeping device used to measure elapsed time commonly used for sports benchmarks and timing events.'
     faq2q: 'Does closing the tab stop the timer?'
     faq2a: 'Yes, closing or refreshing the tab will reset the timer since it runs in the browser JavaScript context.'
-    title: Chronometer
+    title: Online Stopwatch & Timer
     description: Monitor the duration of a thing. Basically a chronometer with simple chronometer features.
     idle: Ready
     running: Running
@@ -187,7 +187,7 @@ tools:
     faq1a: 'The tool supports a JSON array of objects.'
     faq2q: 'What if my JSON objects have different keys?'
     faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
-    title: JSON to CSV
+    title: JSON to CSV Converter
     description: Convert JSON to CSV with automatic header detection.
     rawJson: Raw JSON
     valid: Valid
@@ -214,7 +214,7 @@ tools:
     faq1a: 'No. Everything is processed locally in your browser. No data is uploaded.'
     faq2q: 'What formats are supported?'
     faq2a: 'Photos are saved as PNG. Videos are saved in WebM format supported by most modern browsers.'
-    title: Camera recorder
+    title: Online Camera & Screen Recorder
     description: Take a picture or record a video from your webcam or camera.
     notSupported: Browser Not Supported
     notSupportedDesc: Your browser does not support recording video from a camera. Please upgrade to the latest version of Chrome, Firefox, or Edge.
@@ -264,7 +264,7 @@ tools:
     faq1a: 'Use the search box and type keywords like heart, fire, or smile. The list filters in real-time.'
     faq2q: 'Can I use emojis in code or URLs?'
     faq2a: 'Yes. Each emoji has a unicode code point usable in HTML entities or JSON. URLs require percent-encoding.'
-    title: Emoji picker
+    title: Emoji Picker & Copy Tool
     description: Copy and paste emojis easily and get the unicode and code points value of each emoji.
     searchPlaceholder: "Search emoji (e.g. 'smile')… or press ⌘K"
     clearSearch: Clear search
@@ -287,7 +287,7 @@ tools:
     faq1a: 'HEX is a 6-digit hexadecimal color code. RGB defines color by Red Green Blue channels (0-255). HSL defines Hue Saturation and Lightness as percentages.'
     faq2q: 'What is WCAG contrast ratio?'
     faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
-    title: Color converter
+    title: Color Format Converter (HEX/RGB/HSL)
     description: Convert color between the different formats (hex, rgb, hsl and css name)
 
   ascii-text-drawer:
@@ -376,7 +376,7 @@ tools:
     faq1a: 'HTTP status codes are 3-digit numbers returned by a server indicating whether the request was successful, redirected, or resulted in an error.'
     faq2q: 'What is the difference between 401 and 403?'
     faq2a: '401 Unauthorized means authentication is required but not provided. 403 Forbidden means the server refuses to authorize the request.'
-    title: HTTP status codes
+    title: HTTP Status Codes Reference
     description: The list of all HTTP status codes, their name, and their meaning.
     backToTop: Back to top
 
@@ -389,7 +389,7 @@ tools:
     faq1a: 'Formatted SQL is easier to read, debug, and maintain. Consistent indentation helps spot errors faster.'
     faq2q: 'What SQL dialects are supported?'
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
-    title: SQL formatter
+    title: SQL Formatter & Beautifier
     description: Format your SQL queries online with support for various SQL dialects.
     dialect: Dialect
     keywordCase: Keyword Case
@@ -410,7 +410,7 @@ tools:
     faq1a: 'Ops/sec (operations per second) measures how many times a code block can execute in one second. Higher is faster.'
     faq2q: 'Is this benchmark accurate?'
     faq2a: 'The benchmark runs in your browser JavaScript engine. Results vary by device. Use it for relative comparisons.'
-    title: Benchmark builder
+    title: Front-end Performance Benchmark
     description: Easily compare execution time of tasks with this very simple online benchmark builder.
     valuePlaceholder: Enter measurement value...
     deleteValue: Delete this value
@@ -438,7 +438,7 @@ tools:
     faq1a: 'Git is a distributed version control system for tracking changes in source code allowing developers to collaborate and maintain project history.'
     faq2q: 'What is the difference between git pull and git fetch?'
     faq2a: 'git fetch downloads remote changes but does not merge them. git pull equals git fetch plus git merge.'
-    title: Git cheatsheet
+    title: Git Commands Cheat Sheet
     description: Git is a decentralized version management software. With this cheatsheet, you will have quick access to the most common git commands.
     toc: Contents
     copiedTooltip: Copied!
@@ -573,7 +573,7 @@ tools:
     faq1a: 'YAML prettify re-formats YAML with consistent indentation and spacing making it easier to read.'
     faq2q: 'Will prettifying change my YAML values?'
     faq2a: 'No. Prettifying only changes whitespace and formatting. The data values and structure remain identical.'
-    title: YAML formatter
+    title: YAML Formatter & Beautifier
     description: Format your YAML string into a clean, human-readable layout.
 
   eta-calculator:
@@ -585,7 +585,7 @@ tools:
     faq1a: 'ETA stands for Estimated Time of Arrival or Completion. It predicts when a task will finish based on current progress rate.'
     faq2q: 'How is the ETA calculated?'
     faq2a: 'ETA = (Total Items - Completed) divided by (Completed / Time Elapsed). Assumes a constant processing rate.'
-    title: ETA calculator
+    title: ETA Arrival Time Calculator
     description: An ETA (Estimated Time of Arrival) calculator to determine the approximate end time of a task, for example, the end time and duration of a file download.
 
   roman-numeral-converter:
@@ -608,7 +608,7 @@ tools:
     faq1a: 'HMAC (Hash-based Message Authentication Code) combines a cryptographic hash function with a secret key to verify data integrity and authenticity.'
     faq2q: 'What is the difference between HMAC and a regular hash?'
     faq2a: 'A regular hash only verifies data integrity. HMAC additionally requires a shared secret key.'
-    title: Hmac generator
+    title: HMAC Signature Generator
     description: Computes a hash-based message authentication code (HMAC) using a secret key and your favorite hashing function.
 
   bip39-generator:
@@ -655,7 +655,7 @@ tools:
     faq1a: 'Input can be newline, comma, pipe, or tab separated. Output supports JSON array, CSV, and other formats.'
     faq2q: 'Can I remove duplicates?'
     faq2a: 'Yes. The tool includes options to deduplicate, sort, trim whitespace, and reverse the list.'
-    title: List converter
+    title: List Format Converter
     description: This tool can process column-based data and apply various changes (transpose, add prefix and suffix, reverse list, sort list, lowercase values, truncate values) to each row.
 
   base64-string-converter:
@@ -688,7 +688,7 @@ tools:
     faq1a: 'Supported functions include trigonometry (sin, cos, tan), logarithms (log, log2, log10), powers (sqrt, pow, exp), and constants (pi, e).'
     faq2q: 'Does it support complex expressions?'
     faq2a: 'Yes. The evaluator supports nested functions, units, matrices, and complex numbers.'
-    title: Math evaluator
+    title: Online Math Expression Evaluator
     description: A calculator for evaluating mathematical expressions. You can use functions like sqrt, cos, sin, abs, etc.
     placeholder: 'Enter an expression, e.g. sqrt(2) * pi'
     clear: Clear
@@ -724,7 +724,7 @@ tools:
     faq1a: 'The tool extracts: protocol, username, password, hostname, port, pathname, search query string, individual query parameters, and hash fragment.'
     faq2q: 'What if a URL has no query parameters?'
     faq2a: 'The query parameters section is hidden automatically when no params are present.'
-    title: URL parser
+    title: URL Parser & Inspector
     description: Parse a URL into its separate constituent parts (protocol, origin, params, port, username-password, ...)
 
   iban-validator-and-parser:
@@ -800,7 +800,7 @@ tools:
     faq1a: 'Supported formats include camelCase, PascalCase, snake_case, SCREAMING_SNAKE_CASE, kebab-case, Title Case, UPPER CASE, lower case, and dot.case.'
     faq2q: 'What is the difference between camelCase and PascalCase?'
     faq2a: 'camelCase starts with a lowercase letter (e.g. myVariable). PascalCase starts with an uppercase letter (e.g. MyClass).'
-    title: Case converter
+    title: String Case Converter
     description: Transform the case of a string and choose between different formats
 
   html-entities:
@@ -811,11 +811,11 @@ tools:
     faq1a: 'HTML entities are special codes to display reserved characters in HTML. For example &lt; renders as < and &amp; renders as &.'
     faq2q: 'Why do I need to escape HTML?'
     faq2a: 'Escaping HTML prevents XSS attacks when displaying user-generated content.'
-    title: Escape HTML entities
+    title: HTML Entity Encoder & Decoder
     description: Escape or unescape HTML entities (replace characters like <,>, &, " and \' with their HTML version)
 
   json-prettify:
-    title: JSON formatter
+    title: JSON Formatter & Validator
     description: Format your JSON string into a clean, human-readable layout.
     step1: 'Step 1: Paste your raw JSON text into the left input box.'
     step2: 'Step 2: Adjust indent size and sort keys options as needed.'
@@ -872,7 +872,7 @@ tools:
     faq1a: 'A MAC address is a unique 48-bit hardware identifier assigned to a network interface card, written as six pairs of hex digits.'
     faq2q: 'What are the first 3 bytes of a MAC address?'
     faq2a: 'The first 3 bytes (OUI) are assigned by the IEEE to manufacturers. The last 3 bytes are assigned by the manufacturer.'
-    title: MAC address lookup
+    title: MAC Address Vendor Lookup
     description: Find the vendor and manufacturer of a device by its MAC address.
     macAddressLabel: MAC Address
     placeholder: 'e.g. 20:37:06:12:34:56'
@@ -894,7 +894,7 @@ tools:
     faq1a: 'MIME type is a standard identifier for the format of a file consisting of a type and subtype such as text/html, application/json, or image/png.'
     faq2q: 'Why are MIME types important for web development?'
     faq2a: 'Servers use MIME types to tell browsers how to handle files. An incorrect MIME type can cause files to be downloaded instead of displayed.'
-    title: MIME types
+    title: MIME Types Reference & Lookup
     description: Convert MIME types to file extensions and vice-versa.
 
   toml-to-json:
@@ -960,7 +960,7 @@ tools:
     faq1a: 'XML (Extensible Markup Language) is a flexible markup language for storing and transporting structured data.'
     faq2q: 'What is the difference between XML and JSON?'
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
-    title: XML formatter
+    title: XML Formatter & Beautifier
     description: Format your XML string into a clean, human-readable layout.
     rawXml: Raw XML
     formattedResult: Formatted Result
@@ -971,7 +971,7 @@ tools:
     xmlCopied: XML copied!
 
   temperature-converter:
-    title: Temperature converter
+    title: Temperature Unit Converter
     description: Degrees temperature conversions for Kelvin, Celsius, Fahrenheit, Rankine, Delisle, Newton, Réaumur, and Rømer.
     step1: 'Step 1: Enter a temperature value in any unit.'
     step2: 'Step 2: Converted values for all other units appear instantly.'
@@ -991,7 +991,7 @@ tools:
     faq1a: 'chmod (change mode) is a Unix/Linux command that modifies file and directory permissions.'
     faq2q: 'What does chmod 755 mean?'
     faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
-    title: Chmod calculator
+    title: Linux chmod Permissions Calculator
     description: Compute your chmod permissions and commands with this online chmod calculator.
     preset755: Recommended for dirs
     preset644: Recommended for files
@@ -1110,7 +1110,7 @@ tools:
     faq1a: 'JWT (JSON Web Token) is an open standard (RFC 7519) for securely transmitting information as a JSON object. Commonly used for authentication.'
     faq2q: 'Is a JWT token encrypted?'
     faq2a: 'A standard JWT (JWS) is signed but NOT encrypted. The payload can be decoded by anyone. Use JWE for confidentiality.'
-    title: JWT parser
+    title: JWT Token Decoder & Parser
     description: Parse and decode your JSON Web Token (jwt) and display its content.
 
   date-converter:
@@ -1207,7 +1207,7 @@ tools:
     faq1a: 'Open Graph tags are HTML meta tags that control how your page appears when shared on social media - title, description, image, and more.'
     faq2q: 'Why is the og:image important?'
     faq2a: 'The og:image is the thumbnail shown when your page is shared on social media. Recommended size is 1200x630px.'
-    title: Open graph meta generator
+    title: Open Graph / OG Meta Tag Generator
     description: Generate open-graph and socials HTML meta tags for your website.
 
   ipv6-ula-generator:
@@ -1231,7 +1231,7 @@ tools:
     lastRoutable: Last Routable Address
 
   hash-text:
-    title: Hash text
+    title: Hash Text Generator (MD5/SHA)
     description: 'Hash a text string using the function you need : MD5, SHA1, SHA256, SHA224, SHA512, SHA384, SHA3 or RIPEMD160'
     step1: 'Step 1: Type or paste your text into the input field.'
     step2: 'Step 2: Select the hash algorithm (MD5, SHA-256, etc.).'
@@ -1249,7 +1249,7 @@ tools:
     faq1a: 'TOML does not support null values or arrays of mixed types.'
     faq2q: 'Why convert JSON to TOML?'
     faq2a: 'TOML is more human-readable for configuration files. Some tools like Cargo and Hugo use TOML exclusively.'
-    title: JSON to TOML
+    title: JSON to TOML Converter
     description: Parse and convert JSON to TOML.
 
   device-information:
@@ -1260,7 +1260,7 @@ tools:
     faq1a: 'The tool shows screen resolution, viewport size, pixel ratio, color depth, browser name and version, operating system, language, and online/offline status.'
     faq2q: 'Is this information sent to a server?'
     faq2a: 'No. All information is read from your browser JavaScript APIs locally. Nothing is transmitted.'
-    title: Device information
+    title: Device Information & Browser Detector
     description: Get information about your current device (screen size, pixel-ratio, user agent, ...)
 
   pdf-signature-checker:
@@ -1282,7 +1282,7 @@ tools:
     faq1a: 'Minified JSON removes all whitespace reducing file size. Useful for API payloads and production config files.'
     faq2q: 'Does minifying change the JSON data?'
     faq2a: 'No. Minifying only removes insignificant whitespace. The data values and structure remain identical.'
-    title: JSON minify
+    title: JSON Minify & Compress
     description: Minify and compress your JSON by removing unnecessary whitespace.
     rawJson: Raw JSON
     minifiedResult: Minified result
@@ -1308,7 +1308,7 @@ tools:
     faq1a: 'A ULID (Universally Unique Lexicographically Sortable Identifier) is a 128-bit identifier that encodes a timestamp and random component.'
     faq2q: 'What is the advantage of ULID over UUID?'
     faq2a: 'ULIDs are sortable by creation time unlike UUID v4, URL-safe, and more compact (26 chars vs 36 for UUID).'
-    title: ULID generator
+    title: ULID Unique ID Generator
     description: Generate random Universally Unique Lexicographically Sortable Identifier (ULID).
 
   string-obfuscator:
@@ -1335,7 +1335,7 @@ tools:
     faq1a: 'Base conversion translates a number from one numeral system to another. Binary (2), octal (8), decimal (10), and hexadecimal (16) are common.'
     faq2q: 'How do I convert hex to binary?'
     faq2a: 'Each hex digit corresponds to exactly 4 binary digits. For example F(hex) = 1111(binary).'
-    title: Integer base converter
+    title: Number Base Converter (2/8/10/16)
     description: Convert a number between different bases (decimal, hexadecimal, binary, octal, base64, ...)
 
   yaml-to-json-converter:
@@ -1402,7 +1402,7 @@ tools:
     faq1a: 'Reading time is estimated at 200-250 words per minute (average adult reading speed).'
     faq2q: 'What counts as a word?'
     faq2a: 'Words are sequences of characters separated by whitespace. Punctuation attached to a word is counted as part of the word.'
-    title: Text statistics
+    title: Text Statistics & Word Counter
     description: Get information about a text, the number of characters, the number of words, its size in bytes, ...
     placeholder: Type or paste your text here…
     copyTooltip: Copy text
@@ -1478,7 +1478,7 @@ tools:
     faq1a: 'The tool uses a standard diff algorithm comparing texts line-by-line and character-by-character.'
     faq2q: 'Can I diff code files?'
     faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
-    title: Text diff
+    title: Text Diff & Compare Tool
     description: Compare two texts and see the differences between them.
     originalText: Original Text
     modifiedText: Modified Text
@@ -1521,7 +1521,7 @@ tools:
     description: Convert text to its ASCII binary representation and vice-versa.
 
   mortgage-calculator:
-    title: Mortgage Calculator
+    title: Mortgage Monthly Payment Calculator
     description: Calculate mortgage monthly payments, total interest, and repayment plans online. Supports equal payment and equal principal methods, as well as combined commercial and provident fund loans.
     params: Loan Parameters
     summary: Repayment Summary
@@ -1616,7 +1616,7 @@ tools:
     faq1a: 'The tool uses Math.random() which is pseudo-random and sufficient for everyday decisions.'
     faq2q: 'Can I weight certain options?'
     faq2a: 'Currently the tool gives equal weight to all options. To weight an option add it multiple times in the list.'
-    title: Random Decision Picker
+    title: Random Decision Maker
     description: Can't decide? Enter your options and spin the wheel to let fate choose for you! Supports custom options and quick presets.
     spin: Spin!
     spinning: Spinning...
@@ -1765,7 +1765,7 @@ tools:
     comparisonEmpty: Enter a number to see multi-locale comparison
 
   color-palette-generator:
-    title: Color Palette Generator
+    title: Online Color Palette Generator
     description: Generate color palettes, tints, shades, and color harmonies from a base color. Perfect for UI design.
     baseColor: Base Color
     shades: Tints & Shades
@@ -1900,7 +1900,7 @@ tools:
     faq1a: "YAML (YAML Ain't Markup Language) is a human-friendly data serialization language, commonly used in config files like Docker Compose and Kubernetes."
     faq2q: 'What are the indentation rules for YAML?'
     faq2a: 'YAML uses spaces (not tabs) for indentation. Sibling nodes must use the same indentation level.'
-    title: YAML viewer
+    title: YAML Viewer & Formatter
     description: Validate and format a YAML string with correct syntax highlighting.
     rawYaml: Raw YAML
     formattedResult: Formatted Result
@@ -1934,7 +1934,7 @@ tools:
     regexTesterLink: Regex Tester (this tool)
 
   xml-to-json:
-    title: XML to JSON Converter
+    title: XML to JSON Converter Converter
     description: Convert XML data to JSON format, preserving hierarchy. Perfect for frontend processing and API integration.
     step1: 'Step 1: Paste your XML text into the left input box.'
     step2: 'Step 2: The converted JSON result is shown in real-time on the right.'
@@ -1945,7 +1945,7 @@ tools:
     faq2a: Yes. XML element attributes are preserved as special keys (e.g. @attributes) in the JSON result.
 
   json-to-xml:
-    title: JSON to XML Converter
+    title: JSON to XML Converter Converter
     description: Convert JSON data to standard XML format, ideal for legacy system integration and data exchange.
     step1: 'Step 1: Paste your JSON text into the left input box.'
     step2: 'Step 2: The converted XML result is shown in real-time on the right.'
