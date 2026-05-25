@@ -2239,7 +2239,7 @@ Use it for renaming variables across codebases, converting database column names
     toolPath: '/roman-numeral-converter',
     title: 'Roman Numeral Converter: How to Read and Write Roman Numerals',
     description: 'Convert between decimal numbers and Roman numerals. Learn the rules, symbols, and history.',
-    keywords: ['roman numeral converter', 'roman numerals', 'convert roman numerals', 'roman number calculator'],
+    keywords: ['roman numeral converter', 'roman numerals', 'convert roman numerals', 'roman number calculator', 'roman numeral chart', 'roman numerals 1-100'],
     category: 'Converter',
     publishedAt: '2025-06-24',
     content: `## What Are Roman Numerals?
@@ -3506,7 +3506,7 @@ Result for directories:      755 (777 - 022)
     toolPath: '/docker-run-to-docker-compose-converter',
     title: 'Convert docker run to docker-compose: A Practical Guide',
     description: 'Convert docker run commands to docker-compose.yml. Understand volumes, ports, environment variables.',
-    keywords: ['docker run to compose', 'docker-compose converter', 'docker compose yml', 'docker migration'],
+    keywords: ['docker run to compose', 'docker-compose converter', 'docker compose yml', 'docker migration', 'convert docker run', 'docker-compose generator'],
     category: 'Development',
     publishedAt: '2025-07-10',
     content: `## From docker run to Docker Compose
@@ -3676,7 +3676,7 @@ Paste a \`docker run\` command to instantly get the equivalent Docker Compose YA
     toolPath: '/sql-format',
     title: 'How to Format SQL Queries for Better Readability',
     description: 'Learn SQL formatting best practices, indentation rules, and keyword casing. Use our online formatter to clean up messy queries instantly — supports MySQL, PostgreSQL, SQLite, and more.',
-    keywords: ['SQL formatter', 'SQL prettify', 'format SQL online', 'SQL beautifier'],
+    keywords: ['SQL formatter', 'SQL prettify', 'format SQL online', 'SQL beautifier', 'SQL code formatter', 'SQL indentation'],
     category: 'Development',
     publishedAt: '2025-07-11',
     content: `## What Is SQL Formatting?
@@ -4638,7 +4638,7 @@ Enter any MAC address to look up:
     toolPath: '/percentage-calculator',
     title: 'Percentage Calculations: Formulas, Examples, and a Free Calculator',
     description: 'Learn all types of percentage calculations: X% of Y, percentage change, what percent X is of Y.',
-    keywords: ['percentage calculator', 'how to calculate percentage', 'percentage change', 'percent of number'],
+    keywords: ['percentage calculator', 'how to calculate percentage', 'percentage change', 'percent of number', 'percentage formula', 'percentage difference'],
     category: 'Math',
     publishedAt: '2025-07-25',
     content: `## Understanding Percentage Calculations
@@ -4864,7 +4864,7 @@ Enter your height and weight to instantly calculate your BMI and see where it fa
     toolPath: '/mortgage-calculator',
     title: 'Mortgage Calculator: Monthly Payments and Amortization Explained',
     description: 'Calculate mortgage payments and see your full amortization schedule. Understand how mortgage math works.',
-    keywords: ['mortgage calculator', 'monthly payment calculator', 'amortization schedule', 'home loan calculator'],
+    keywords: ['mortgage calculator', 'monthly payment calculator', 'amortization schedule', 'home loan calculator', 'mortgage payment formula', 'loan amortization table'],
     category: 'Math',
     publishedAt: '2025-07-27',
     content: `## Understanding Mortgage Calculations
@@ -7785,7 +7785,7 @@ Use it for verifying email links, cleaning URLs for sharing, analyzing bulk emai
     toolPath: '/wifi-qrcode-generator',
     title: 'WiFi QR Code Generator: Share Network Credentials Instantly',
     description: 'Generate a QR code for your WiFi network in seconds. Guests scan it to connect without typing the password. Supports WPA2, WPA3, and open networks. Download as PNG for printing or display.',
-    keywords: ['wifi QR code', 'WiFi QR generator', 'share WiFi password', 'WiFi QR code generator'],
+    keywords: ['wifi QR code', 'WiFi QR generator', 'share WiFi password', 'WiFi QR code generator', 'print WiFi QR code', 'WPA2 QR code'],
     category: 'Images and videos',
     publishedAt: '2025-08-27',
     content: `## What Is a WiFi QR Code?
@@ -7913,7 +7913,7 @@ The generated QR code works with both iOS and Android devices, allowing instant 
     toolPath: '/camera-recorder',
     title: 'Browser Camera Recorder: Record Video Directly from Your Browser',
     description: 'Record video and take photos from your webcam directly in the browser. No software installation required. Supports multiple cameras, microphone selection, and WebM video download.',
-    keywords: ['browser camera recorder', 'webcam recorder online', 'record video browser', 'MediaRecorder API'],
+    keywords: ['browser camera recorder', 'webcam recorder online', 'record video browser', 'MediaRecorder API', 'webcam screenshot', 'record webcam without software'],
     category: 'Images and videos',
     publishedAt: '2025-08-28',
     content: `## Browser-Based Video Recording
@@ -10445,7 +10445,7 @@ Use it for converting API responses from legacy SOAP or XML services, transformi
     toolPath: '/sql-format',
     title: 'How to Format SQL Queries for Better Readability',
     description: 'Learn SQL formatting best practices, indentation rules, and keyword casing. Use our online formatter to clean up messy queries instantly — supports MySQL, PostgreSQL, SQLite, and more.',
-    keywords: ["SQL formatter","SQL prettify","format SQL online","SQL beautifier"],
+    keywords: ["SQL formatter","SQL prettify","format SQL online","SQL beautifier","SQL code formatter","SQL indentation"],
     category: 'Development',
     publishedAt: '2025-07-11',
     content: `## What Is SQL Formatting?
@@ -11418,7 +11418,7 @@ Keep it handy as a reference when designing APIs, debugging HTTP responses, and 
     toolPath: '/docker-run-to-docker-compose-converter',
     title: 'Convert docker run to docker-compose: A Practical Guide',
     description: 'Convert docker run commands to docker-compose.yml. Understand volumes, ports, environment variables.',
-    keywords: ["docker run to compose","docker-compose converter","docker compose yml","docker migration"],
+    keywords: ["docker run to compose","docker-compose converter","docker compose yml","docker migration","convert docker run","docker-compose generator"],
     category: 'Development',
     publishedAt: '2025-07-10',
     content: `## What Is Docker Compose?
