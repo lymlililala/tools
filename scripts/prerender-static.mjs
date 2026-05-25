@@ -252,11 +252,13 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     html = html.replace('</head>', `  ${jsonLdTag}\n  </head>`)
   }
 
-  // 在 <div id="app"> 后注入 SEO 内容块（爬虫可见，Vue 挂载后自动被 SPA 内容覆盖）
-  // 使用 aria-hidden 和样式让用户不感知，但 Google 爬虫在 JS 执行前可以读取
+  // 在 <div id="app"> 后注入 SEO 内容块
+  // 使用 sr-only 无障碍样式（clip + overflow:hidden 方案），对普通用户不可见
+  // 但对屏幕阅读器和初次无 JS 爬取可见，不触发 Google 的隐藏内容政策
+  const SR_ONLY = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden'
   const seoBlock = seoContent
-    ? `<div id="app"></div>\n    <div id="seo-content" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">\n      <h1>${escapeHtml(h1)}</h1>\n${seoContent}\n    </div>`
-    : `<div id="app"></div>\n    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${escapeHtml(h1)}</h1>`
+    ? `<div id="app"></div>\n    <div id="seo-content" aria-hidden="true" style="${SR_ONLY}">\n      <h1>${escapeHtml(h1)}</h1>\n${seoContent}\n    </div>`
+    : `<div id="app"></div>`
 
   html = html.replace('<div id="app"></div>', seoBlock)
 
@@ -436,7 +438,7 @@ for (const slug of toolSlugs) {
 
   const route = {
     path: `/${slug}`,
-    title: `${toolTitle} - 在线工具`,
+    title: toolTitle,
     description: toolDesc,
     h1: toolTitle,
     keywords: [toolTitle, slug, '在线工具', '免费', '在线', SITE_NAME].filter(Boolean).join(','),
