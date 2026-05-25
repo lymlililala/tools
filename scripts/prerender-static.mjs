@@ -121,6 +121,30 @@ while ((m = urlRegex.exec(sitemapXml)) !== null) {
 // ── 已知需要预渲染的静态页面（非工具） ──────────────────────────────────────────
 // 注意：'/' 首页会输出到 dist/prerender-home/index.html，
 //       由 vercel.json / netlify.toml 路由到此文件（避免覆盖 dist/index.html 模板）
+// 首页 SEO 内容：列出热门工具分类和内链
+const homeSeoContent = (() => {
+  const parts = []
+  parts.push(`      <p>MyUtl 提供 90+ 免费在线工具，全部在浏览器本地运行，无需注册，数据不上传服务器，安全可靠。</p>`)
+  // 每个分类取前 5 个工具
+  for (const [cat, slugs] of Object.entries(toolCategories)) {
+    const catLabel = categoryNames[cat] || cat
+    const topSlugs = slugs.slice(0, 5)
+    parts.push(`      <section>`)
+    parts.push(`        <h2>${catLabel}</h2>`)
+    parts.push(`        <ul>`)
+    topSlugs.forEach((s) => {
+      const sKey = slugToI18nKey[s] ?? s
+      const sI18n = toolsI18n[sKey] ?? toolsI18n[s] ?? {}
+      const sTitle = sI18n.title || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      const sDesc = sI18n.description ? ` — ${sI18n.description.slice(0, 50)}` : ''
+      parts.push(`          <li><a href="/${s}">${escapeHtml(sTitle)}</a>${escapeHtml(sDesc)}</li>`)
+    })
+    parts.push(`        </ul>`)
+    parts.push(`      </section>`)
+  }
+  return parts.join('\n')
+})()
+
 const staticRoutes = [
   {
     path: '/',
@@ -129,6 +153,7 @@ const staticRoutes = [
     description: `${SITE_NAME} 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密、URL 编码、二维码生成、计算器等开发者与日常实用工具，全部在浏览器本地运行，安全无需注册。`,
     h1: `${SITE_NAME} — 免费在线工具箱`,
     keywords: '在线工具,开发者工具,JSON格式化,Base64,URL编码,二维码生成,加密解密,免费工具',
+    seoContent: homeSeoContent,
     jsonld: {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
