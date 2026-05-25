@@ -16,6 +16,34 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
 
 const canonicalUrl = computed(() => `https://myutl.com${route.path}`);
 
+// 判断 i18n key 是否存在（兼容 vue-i18n v9 编译模式）
+function hasKey(key: string): boolean {
+  return te(key, locale.value);
+}
+
+// FAQ 数据（通用 + 工具特定）—— 需先于 head 定义，以便注入 FAQPage JSON-LD
+const faqs = computed(() => {
+  const toolKey = i18nKey.value;
+  const base = [1, 2, 3, 4].flatMap((n) => {
+    const qKey = `tools.${toolKey}.faq${n}q`;
+    const aKey = `tools.${toolKey}.faq${n}a`;
+    if (hasKey(qKey) && hasKey(aKey)) {
+      return [{ q: t(qKey), a: t(aKey) }];
+    }
+    return [];
+  });
+
+  // 通用 FAQ（key 已在 i18n 中定义，无需 fallback）
+  if (base.length === 0) {
+    return [
+      { q: t('tools.common.faqSafe'), a: t('tools.common.faqSafeA') },
+      { q: t('tools.common.faqFree'), a: t('tools.common.faqFreeA') },
+      { q: t('tools.common.faqMobile'), a: t('tools.common.faqMobileA') },
+    ];
+  }
+  return base;
+});
+
 const head = computed<HeadObject>(() => ({
   title: t('layout.toolPageTitle', { tool: toolTitle.value }),
   meta: [
@@ -67,37 +95,25 @@ const head = computed<HeadObject>(() => ({
         },
       }),
     },
+    // FAQPage 结构化数据（Rich Snippets）
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': faqs.value.map(faq => ({
+          '@type': 'Question',
+          'name': faq.q,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': faq.a,
+          },
+        })),
+      }),
+    },
   ],
 }));
 useHead(head);
-
-// 判断 i18n key 是否存在（兼容 vue-i18n v9 编译模式）
-function hasKey(key: string): boolean {
-  return te(key, locale.value);
-}
-
-// FAQ 数据（通用 + 工具特定）
-const faqs = computed(() => {
-  const toolKey = i18nKey.value;
-  const base = [1, 2, 3].flatMap((n) => {
-    const qKey = `tools.${toolKey}.faq${n}q`;
-    const aKey = `tools.${toolKey}.faq${n}a`;
-    if (hasKey(qKey) && hasKey(aKey)) {
-      return [{ q: t(qKey), a: t(aKey) }];
-    }
-    return [];
-  });
-
-  // 通用 FAQ（key 已在 i18n 中定义，无需 fallback）
-  if (base.length === 0) {
-    return [
-      { q: t('tools.common.faqSafe'), a: t('tools.common.faqSafeA') },
-      { q: t('tools.common.faqFree'), a: t('tools.common.faqFreeA') },
-      { q: t('tools.common.faqMobile'), a: t('tools.common.faqMobileA') },
-    ];
-  }
-  return base;
-});
 
 // 使用步骤（工具特定，有则显示）
 const howToSteps = computed(() => {

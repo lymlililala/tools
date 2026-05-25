@@ -87,6 +87,8 @@ tools:
     faq2a: 'No. All analysis is done entirely in your browser. Your password never leaves your device.'
     faq3q: What makes a password truly secure?
     faq3a: 'A secure password should be at least 12 characters long, combine uppercase and lowercase letters, numbers, and symbols, and avoid dictionary words or personal information. Even better: use a password manager to generate 20+ character random passwords and use a unique password for every site, combined with two-factor authentication (2FA).'
+    faq4q: What makes a password truly secure?
+    faq4a: "Characteristics of a truly secure password: at least 16 characters (longer is better); high randomness (not a word or predictable pattern); a mix of uppercase, lowercase, digits, and special characters. The safest approach is using a password manager (Bitwarden, 1Password) to generate and store completely random, high-strength passwords — using a different password for every site. A passphrase (4-5 random words) is also a good balance of security and memorability."
     title: Password strength analyser
     description: Discover the strength of your password with this client-side-only password strength analyser and crack time estimation tool.
 
@@ -100,8 +102,10 @@ tools:
     faq2a: 'Yes, closing or refreshing the tab will reset the timer since it runs in the browser JavaScript context.'
     faq3q: What is the difference between a stopwatch and a countdown timer?
     faq3a: A stopwatch counts up from zero recording elapsed time. A countdown timer counts down to zero. This tool is a stopwatch with lap recording, useful for sports training, presentations, and meeting timing.
+    faq4q: How does a timer achieve precise timing in JavaScript?
+    faq4a: "JavaScript's performance.now() provides sub-millisecond precision and is unaffected by system clock adjustments, making it more accurate than Date.now(). Timers typically use setInterval or requestAnimationFrame to update the display. For long-running timers, requestAnimationFrame is more energy-efficient, syncs with the screen refresh rate, and avoids excessive computation in background tabs."
     title: Online Stopwatch & Timer
-    description: Monitor the duration of a thing. Basically a chronometer with simple chronometer features.
+    description: Online stopwatch with millisecond precision, lap/split recording, and fastest/slowest lap stats. Ideal for training, presentations, and any timing scenario.
     idle: Ready
     running: Running
     paused: Paused
@@ -130,6 +134,8 @@ tools:
     faq2a: 'The token uses the browser built-in cryptographic random number generator making it cryptographically secure.'
     faq3q: Can I use the generated tokens in production?
     faq3a: Yes. This tool uses crypto.getRandomValues() to generate cryptographically secure random strings with sufficient entropy, suitable for production use as API keys, session tokens, and CSRF tokens. All generation happens locally in your browser and is never sent to a server.
+    faq4q: What security considerations apply when generating API tokens?
+    faq4a: "Secure token generation requirements: use a cryptographically secure random number generator (crypto.getRandomValues or os.urandom) — never Math.random(); sufficient length (at least 128 bits) to prevent brute-force enumeration; store only the hash (e.g., SHA-256) of the token, never the plaintext — so a leaked database still keeps tokens safe; set expiration times; show the token only once after generation (like GitHub PATs); implement rate limiting and anomaly detection."
     title: Token generator
     description: Generate random string with the chars you want, uppercase or lowercase letters, numbers and/or symbols.
 
@@ -154,8 +160,10 @@ tools:
     faq2a: 'Multiply Y by (X / 100). For example 20% of 150 = 150 x 0.20 = 30.'
     faq3q: How can I calculate percentages mentally?
     faq3a: 'Quick tips: 10% = move decimal one left; 5% = half of 10%; 20% = double 10%; 25% = divide by 4; 50% = divide by 2. Combine them: 15% = 10% + 5%. Percentage change: (new-old)/old x 100.'
+    faq4q: What are common misuses of percentage calculations in data analysis?
+    faq4a: "Common misuses: confusing percentage points with percentages — a rate rising from 2% to 3% is a 1 percentage point increase but a 50% relative increase (both correct, very different meanings); comparing percentages with different bases (e.g., 100% growth in a small sample); stacking percentages (up 20% then down 20% does not equal 0%); misreading year-over-year vs. period-over-period when the denominator changes."
     title: Percentage calculator
-    description: Easily calculate percentages from a value to another value, or from a percentage to a value.
+    description: "Easily calculate percentages: value-to-percentage, percentage-to-value, and percentage change between two numbers. Instant results for finance and everyday use."
     card1Title: What is Y% of X?
     card2Title: X is what percent of Y?
     card3Title: Percentage change from X to Y?
@@ -186,6 +194,8 @@ tools:
     faq2a: 'SVG placeholders are primarily for development but can be used in production for fallback or skeleton screens.'
     faq3q: What is the difference between SVG placeholders and CSS skeleton screens?
     faq3a: An SVG placeholder is a real image element showing a colored box with optional text, used as fallback when images fail to load. A CSS skeleton screen uses animated gray gradients to simulate loading content — a more modern UX pattern.
+    faq4q: What advantages do SVG placeholders have over PNG/JPEG placeholders?
+    faq4a: "SVG placeholder advantages: extremely small size (typically under 1 KB vs. dozens of KB for PNG); vector format displays crisp at any size without multiple resolution variants; can be embedded directly as a data URI in HTML/CSS, reducing HTTP requests; colors, text, and dimensions are customizable without regenerating the file; combined with img width/height attributes, prevents layout shift (CLS), improving Core Web Vitals."
     title: SVG placeholder generator
     description: Generate customizable SVG placeholder images with custom dimensions, text, colors, and font sizes. Perfect for mockups, wireframes, and development prototypes. Download as SVG or copy the data URI directly.
 
@@ -199,6 +209,8 @@ tools:
     faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
     faq3q: How does the tool handle nested objects when converting JSON to CSV?
     faq3a: The tool automatically flattens nested objects using dot notation as column headers — for example, address.city becomes its own column. Nested arrays are serialized as strings within their cell. This approach preserves all data, though complex deeply nested structures may require manual post-processing for specific use cases.
+    faq4q: How do I handle nested objects and arrays when converting JSON to CSV?
+    faq4a: "CSV is a flat 2D structure with no native support for nesting. Common strategies: flattening (expand user.address.city into a column named user_address_city); serialization (convert nested objects to JSON strings in a cell — poor readability); normalization (split into multiple CSVs linked by IDs). Choose based on downstream use: flattening for data analysis, normalization for database import."
     title: JSON to CSV Converter
     description: Convert JSON arrays to CSV format online with automatic column header detection. Paste your JSON data and download a ready-to-use CSV file for Excel, Google Sheets, or databases.
     rawJson: Raw JSON
@@ -228,6 +240,8 @@ tools:
     faq2a: 'Photos are saved as PNG. Videos are saved in WebM format supported by most modern browsers.'
     faq3q: How do I switch between cameras on my device?
     faq3a: The tool lists all cameras detected by your browser in a dropdown. Select a different camera to request new permissions and start a new preview stream. Camera access requires HTTPS or localhost.
+    faq4q: What video format is recorded? Which browsers are supported?
+    faq4a: "The format depends on browser support: Chrome and Edge typically record as WebM (VP8/VP9), Firefox also supports WebM, and Safari may record as MP4 (H.264). WebM is an open format with small file sizes but limited iOS compatibility. If broad compatibility is needed, use FFmpeg to convert the recording to MP4 after downloading."
     title: Online Camera & Screen Recorder
     description: Use your webcam or camera to take photos or record videos directly in the browser. No installation needed — capture, preview, and download media files instantly without uploading to any server.
     notSupported: Browser Not Supported
@@ -269,6 +283,8 @@ tools:
     faq2a: 'key represents the printed character. code represents the physical key position. Use key and code in modern JavaScript.'
     faq3q: How should I listen for keyboard events in JavaScript?
     faq3a: Use event.key to get the logical value of the key pressed (e.g. 'a', 'Enter', 'ArrowUp'), and event.code for the physical key position (e.g. 'KeyA', 'ShiftLeft'). Avoid the deprecated keyCode property. For cross-platform shortcuts use event.code; for text input handling use event.key.
+    faq4q: What is the difference between keyCode, which, and key in KeyboardEvent?
+    faq4a: "keyCode and which are deprecated — they return numbers (e.g., Enter=13) and are inconsistent for non-letter keys across keyboard layouts. key is the modern standard, returning meaningful strings (e.g., 'Enter', 'ArrowUp', 'a') independent of keyboard layout — use this. The code property returns the physical key position (e.g., 'KeyA') regardless of input language. New code should use event.key or event.code."
     title: Keycode info
     description: Identify JavaScript keyboard event properties for any key press. Shows keyCode, key, code, location, and modifier states (Shift, Ctrl, Alt, Meta). Essential for building keyboard shortcuts and accessibility features.
 
@@ -282,6 +298,8 @@ tools:
     faq2a: 'Yes. Each emoji has a unicode code point usable in HTML entities or JSON. URLs require percent-encoding.'
     faq3q: Do emojis look the same on all devices?
     faq3a: No. Emoji appearance depends on the OS and font. The same Unicode code point looks completely different on Apple, Google, Microsoft, and Samsung platforms — in fact, some emojis convey different emotional meanings across platforms. Consider this when using emojis in cross-platform communication.
+    faq4q: Why do emojis look different across devices and systems?
+    faq4a: Each OS (iOS, Android, Windows, macOS) has its own emoji font (Apple Color Emoji, Noto Color Emoji, etc.), so the same Unicode code point looks visually different on each platform. New emojis may show as empty boxes (tofu) on older systems. When creating cross-platform content, be aware of visual differences and potential differences in perceived meaning.
     title: Emoji Picker & Copy Tool
     description: Browse, search, and copy emojis with a single click. Displays the Unicode code point, HTML entity, and CSS content value for each emoji. Filter by category or search by name across 3,000+ emoji characters.
     searchPlaceholder: "Search emoji (e.g. 'smile')… or press ⌘K"
@@ -307,12 +325,14 @@ tools:
     faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
     faq3q: What are the differences between HEX, RGB, and HSL color formats?
     faq3a: HEX (e.g. #FF5733) is the most common format for web design — compact and easy to copy. RGB is useful for dynamic color calculations in JavaScript. HSL describes colors by hue, saturation, and lightness, making it more intuitive for creating color palettes and adjusting brightness or saturation programmatically.
+    faq4q: What advantages does HSL have over RGB?
+    faq4a: HSL (Hue, Saturation, Lightness) is more intuitive for humans. Adjusting brightness only changes the L value without affecting the hue, making it easy to generate color themes (e.g., different lightness variants of the same hue). In CSS, hsl() makes color adjustments easier to understand and maintain, especially for dynamic gradients, theme switching, and responsive color schemes.
     title: Color Format Converter (HEX/RGB/HSL)
     description: Convert colors between HEX, RGB, HSL, HSV, CMYK, and CSS named color formats. Preview the color in real time and copy values for use in CSS, design tools, or any application that requires specific color formats.
 
   ascii-text-drawer:
     title: ASCII Art Text Generator
-    description: Convert text into various ASCII art font styles. Supports 100+ fonts with customizable width.
+    description: Convert text into various ASCII art font styles. Supports 100+ fonts with customizable width and character set for terminal banners and social media.
     step1: 'Step 1: Enter the text you want to convert (ASCII characters recommended).'
     step2: 'Step 2: Select an ASCII art font from the dropdown list.'
     step3: 'Step 3: Adjust the max width to fit your display needs.'
@@ -323,6 +343,8 @@ tools:
     faq2a: ASCII art is great for terminal output, README files, social media bios, CLI tool banners, and code comments.
     faq3q: How do I use ASCII art text in code projects?
     faq3a: Use ASCII art for CLI application banners, README headers on GitHub, code section separators in comments, and startup messages in scripts. Always use a monospace font for correct display.
+    faq4q: Does ASCII art support non-Latin characters?
+    faq4a: Most ASCII art fonts only support English letters, digits, and basic symbols. They do not support Chinese, Japanese, Arabic, or other non-Latin characters. For non-Latin text art, consider using dedicated Unicode art generators, or romanize the text first (e.g., Pinyin for Chinese).
     inputLabel: Input Text
     inputPlaceholder: Enter your text here...
     fontLabel: Font
@@ -351,6 +373,8 @@ tools:
     faq2a: 'The cost factor controls how many hashing rounds are performed. Increasing it by 1 doubles the computation time.'
     faq3q: What cost factor should I use for bcrypt?
     faq3a: A cost factor of 10–12 is recommended. Higher values increase security but slow down hashing. The 2024 recommendation is at least 10 for production, and 12 for high-security scenarios. This tool defaults to 10. Test your target server to ensure hashing completes within an acceptable time (ideally under 300ms).
+    faq4q: Can a bcrypt hash be cracked?
+    faq4a: Bcrypt is designed to be extremely resistant to brute-force attacks. A high cost factor means each attempt takes a long time, even with GPU clusters. As long as the cost factor is high enough (>=10) and the password is sufficiently complex, bcrypt is practically uncrackable in real-world scenarios.
     title: Bcrypt
     description: Hash and compare text string using bcrypt. Bcrypt is a password-hashing function based on the Blowfish cipher.
     hashTitle: Hash
@@ -384,8 +408,10 @@ tools:
     faq2a: 'It means every 5 units. In the minute field it runs at 0, 5, 10, 15... minutes past each hour.'
     faq3q: What do the 5 crontab fields represent?
     faq3a: 'The 5 crontab fields are: minute (0–59), hour (0–23), day of month (1–31), month (1–12), and day of week (0–7, where 0 and 7 both mean Sunday). For example, 0 9 * * 1-5 runs at 9:00 AM Monday through Friday. Use * for any value, */n for step intervals, and comma-separated values for multiple choices.'
+    faq4q: How do I debug a cron job that is not running?
+    faq4a: "Common causes: path issues (cron has fewer environment variables — use absolute paths), insufficient permissions, script syntax errors, and missing error logging. Debugging steps: append >> /tmp/cron.log 2>&1 to capture output; verify the rule with crontab -l; check /var/log/syslog or journalctl -u cron; confirm the cron service is running (systemctl status cron)."
     title: Crontab generator
-    description: Validate and generate crontab and get the human-readable description of the cron schedule.
+    description: Visually build crontab expressions with a point-and-click interface. Auto-generates cron syntax and provides a human-readable description of the schedule.
     copiedTooltip: Copied!
     copyTooltip: Copy expression
     copied: Copied
@@ -404,6 +430,8 @@ tools:
     faq2a: '401 Unauthorized means authentication is required but not provided. 403 Forbidden means the server refuses to authorize the request.'
     faq3q: What do the HTTP status code categories mean?
     faq3a: '1xx: informational; 2xx: success (200 OK, 201 Created, 204 No Content); 3xx: redirection (301 Permanent, 302 Temporary, 304 Not Modified); 4xx: client error (400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found); 5xx: server error (500 Internal, 502 Bad Gateway, 503 Unavailable).'
+    faq4q: How should 3xx redirects and 4xx client errors be used correctly?
+    faq4a: 301 Permanent Redirect (transfers SEO weight, e.g., domain migration); 302 Temporary Redirect (e.g., login redirect); 304 Not Modified (cache unchanged, saves bandwidth); 400 Bad Request (malformed syntax); 401 Unauthorized (authentication required); 403 Forbidden (authenticated but no permission); 404 Not Found; 422 Unprocessable Entity (validation failed, common in REST APIs); 429 Too Many Requests; 500 Internal Server Error.
     title: HTTP Status Codes Reference
     description: Complete reference for all HTTP status codes (1xx–5xx) with names, descriptions, and common use cases. Quickly look up 200 OK, 301 Redirect, 404 Not Found, 500 Internal Server Error, and every other status code.
     backToTop: Back to top
@@ -419,6 +447,8 @@ tools:
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
     faq3q: Does SQL formatting change the query's semantics or execution result?
     faq3a: No. SQL formatting only adjusts whitespace (newlines, indentation, alignment) and does not change the query's meaning or execution result. The formatted SQL is semantically identical to the original. Formatting makes queries easier to review, understand, and spot potential logical errors like missing WHERE clauses.
+    faq4q: What are the collaboration benefits of consistently formatting SQL?
+    faq4a: "Benefits of uniformly formatted SQL: code reviews are easier because logic issues are visible rather than format noise; Git diffs only show real logical changes, not whitespace; new team members understand complex queries faster; fewer low-level mistakes caused by inconsistent formatting. Recommend integrating a tool like sqlfluff into the CI/CD pipeline to automatically check and format SQL, keeping the codebase consistent."
     title: SQL Formatter & Beautifier
     description: Format and beautify SQL queries online. Supports MySQL, PostgreSQL, SQL Server, SQLite, and more. Converts minified or unformatted SQL into properly indented, readable code with keyword capitalization.
     dialect: Dialect
@@ -442,6 +472,8 @@ tools:
     faq2a: 'The benchmark runs in your browser JavaScript engine. Results vary by device. Use it for relative comparisons.'
     faq3q: What factors affect JavaScript benchmark accuracy?
     faq3a: 'Key factors: JIT may optimize away test code, GC pauses, background browser tasks, CPU throttling, and cache warm-up effects. For reliable results: run multiple times, close other tabs, ensure test code has observable side effects to prevent engine optimization.'
+    faq4q: How can I avoid inaccurate benchmark results?
+    faq4a: "Common pitfalls include: not warming up the JIT compiler, too few iterations, environment mismatch with production, and GC interference. Best practices: run multiple iterations and average results, test hot and cold paths separately, run in an isolated environment, and use dedicated tools (wrk, JMH, Benchmark.js) rather than simple timers."
     title: Front-end Performance Benchmark
     description: Create and run micro-benchmarks in the browser to compare the execution speed of different JavaScript implementations. Add multiple test cases, run them thousands of times, and see operations per second results.
     valuePlaceholder: Enter measurement value...
@@ -472,6 +504,8 @@ tools:
     faq2a: 'git fetch downloads remote changes but does not merge them. git pull equals git fetch plus git merge.'
     faq3q: What is the difference between git merge and git rebase?
     faq3a: git merge creates a merge commit preserving full history. git rebase replays commits for a linear history but rewrites hashes. Use merge for team collaboration; use rebase to clean local feature branches. Never rebase already-pushed shared commits.
+    faq4q: What are the most common mistakes in a Git workflow?
+    faq4a: "Common mistakes: committing directly to main/master (use branches instead); unclear commit messages (e.g., 'fix' or 'update'); committing passwords or API keys to the repo; pushing force to shared branches, destroying others' history; not resolving conflicts properly before merging. Recommendations: follow Conventional Commits, use .gitignore and pre-commit hooks for automated checks, and enable branch protection rules."
     title: Git Commands Cheat Sheet
     description: Git is a decentralized version management software. With this cheatsheet, you will have quick access to the most common git commands.
     toc: Contents
@@ -546,6 +580,8 @@ tools:
     faq2a: 'Yes. The tool converts accented and special characters to their ASCII equivalents.'
     faq3q: What are best practices for URL slugs?
     faq3a: 'Good slugs: all lowercase, hyphen-separated (not underscores), no special characters, concise and keyword-rich (under 60 characters). Remove stop words. Example: /blog/seo-best-practices is better than /blog/SEO_Best_Practices_2024.'
+    faq4q: What best practices should I follow when generating URL slugs?
+    faq4a: "URL slug best practices: all lowercase; use hyphens (-) to separate words, not underscores (Google treats underscores as word-joiners, less SEO-friendly); remove special characters and punctuation; romanize or drop non-ASCII characters (e.g., Chinese); keep it short (3-5 keywords) and meaningful; omit stop words (a, the, is). CMS systems like WordPress and Ghost follow this convention by default."
     title: Slugify string
     description: Convert any string into a URL-safe slug, filename, or ID. Removes special characters, converts spaces to hyphens, and lowercases the result. Essential for SEO-friendly URLs.
     readonly: Read-only
@@ -561,6 +597,8 @@ tools:
     faq2a: 'All encryption and decryption is performed locally in your browser. Your data and keys never leave your device.'
     faq3q: Which algorithm should I choose — AES, TripleDES, or RC4?
     faq3a: Choose AES — it is the current industry standard for symmetric encryption, used by governments and financial institutions. TripleDES is slower and being phased out. RC4 has serious security vulnerabilities and should not be used in any modern application. For production use, prefer AES-256-GCM mode and pair it with a proper key management solution.
+    faq4q: Is key management the biggest challenge in AES-256 encryption?
+    faq4a: "Yes. Key management is the most critical security challenge in symmetric encryption. AES-256 is extremely secure algorithmically, but a leaked key exposes all data. Best practices: never hardcode keys in source code; use a KMS (Key Management Service, e.g., AWS KMS, HashiCorp Vault); rotate keys regularly; use different keys for different data sets; securely destroy keys that are no longer needed."
     title: Encrypt / decrypt text
     description: Encrypt clear text and decrypt ciphertext using crypto algorithms like AES, TripleDES, Rabbit or RC4.
     encryptTitle: Encrypt
@@ -590,6 +628,8 @@ tools:
     faq2a: 'Random ports are used when starting local dev servers or containers to avoid conflicts with already-running processes.'
     faq3q: Which port numbers should I avoid?
     faq3a: Ports 0-1023 require admin privileges (80 HTTP, 443 HTTPS, 22 SSH, 3306 MySQL). Ports 1024-49151 have conventions (8080, 5432 PostgreSQL, 6379 Redis). Ports 49152-65535 are safe for development services. Check for conflicts with lsof -i :PORT on macOS/Linux.
+    faq4q: How are port numbers categorized? Which range should I use for development?
+    faq4a: "Ports are divided into three categories: Well-Known Ports (0-1023) — assigned by IANA to system services (HTTP:80, HTTPS:443, SSH:22), requires root/admin to bind; Registered Ports (1024-49151) — registered but usable at user level (MySQL:3306, PostgreSQL:5432); Dynamic/Private Ports (49152-65535) — completely free to use, ideal for development and testing. For development, ports 3000-9999 are popular, easy to remember, and rarely conflict."
     title: Random port generator
     description: Generate random available port numbers in the range 1024–65535. Useful for setting up development servers, microservices, and Docker containers without conflicting with well-known system ports.
     countLabel: Count
@@ -615,6 +655,8 @@ tools:
     faq2a: 'No. Prettifying only changes whitespace and formatting. The data values and structure remain identical.'
     faq3q: Why does YAML fail to parse after formatting?
     faq3a: YAML requires spaces (not tabs) and consistent sibling indentation. This tool uses 2-space indentation. If formatting produces errors, check the original for tab characters, inconsistent indentation, or unquoted values containing colons followed by a space.
+    faq4q: What common pitfalls should I watch for when formatting YAML?
+    faq4a: "Common YAML pitfalls: indentation must be consistent (mixing tabs and spaces causes errors); special values yes/no/true/false/null undergo automatic type coercion (e.g., the Norwegian country abbreviation NO is parsed as false — quote it to prevent this); a colon must be followed by a space; use | for literal multi-line strings or > for folded; date format strings (2023-01-01) are automatically parsed as date objects. Always validate YAML syntax before formatting."
     title: YAML Formatter & Beautifier
     description: Format and validate YAML code online with proper indentation and syntax highlighting. Instantly checks YAML syntax errors and produces clean, readable output for configuration files.
 
@@ -629,6 +671,8 @@ tools:
     faq2a: 'ETA = (Total Items - Completed) divided by (Completed / Time Elapsed). Assumes a constant processing rate.'
     faq3q: Why is ETA often inaccurate in practice?
     faq3a: ETA assumes a constant rate, but real tasks vary — downloads fluctuate with bandwidth, builds may slow near the end. For better accuracy use a sliding window for recent throughput instead of overall average, and add buffer time for uncertainty.
+    faq4q: How can I make task completion time estimates more accurate?
+    faq4a: "Techniques for better ETA accuracy: base estimates on historical rates, not optimistic guesses; break large tasks into milestones and refine estimates iteratively; track actual vs. predicted times to correct systematic biases; use three-point estimation (optimistic, most likely, pessimistic) and take a weighted average; account for task dependencies and resource contention. Software teams often use planning poker for collective estimation."
     title: ETA Arrival Time Calculator
     description: An ETA (Estimated Time of Arrival) calculator to determine the approximate end time of a task, for example, the end time and duration of a file download.
 
@@ -642,6 +686,8 @@ tools:
     faq2a: 'Roman numerals use subtractive notation. A smaller numeral before a larger one means subtraction. IV = 5 - 1 = 4.'
     faq3q: Can Roman numerals represent zero or negative numbers?
     faq3a: No. The Roman system has no zero or negatives. Zero was introduced by Indian mathematicians and spread through Arabic mathematics. Roman numerals are now used decoratively on clock faces, book chapters, movie sequels, and Super Bowl editions.
+    faq4q: What are the modern practical uses of Roman numerals?
+    faq4a: "Modern uses of Roman numerals: clock faces (classic design); movie copyright years; ordinal numbers for sports events like the Super Bowl (Super Bowl LVIII); monarch and pope ordinals (Queen Elizabeth II); book preface page numbers (i, ii, iii); building inscriptions and monuments; outline and legal document section numbering (I, II, III)."
     title: Roman numeral converter
     description: Convert between Roman numerals and Arabic numbers instantly. Supports numbers from 1 to 3,999. Useful for clock faces, book chapters, movie sequels, copyright years, and historical dates.
 
@@ -656,6 +702,8 @@ tools:
     faq2a: 'A regular hash only verifies data integrity. HMAC additionally requires a shared secret key.'
     faq3q: How is HMAC used in API authentication?
     faq3a: In API request signing, the client computes an HMAC of the request parameters plus a timestamp using a shared secret key, then includes it in the request header. The server recomputes the HMAC to verify the request has not been tampered with and originated from a legitimate client. This pattern is used by AWS Signature V4 and many webhook security implementations.
+    faq4q: How does HMAC work for API request signing?
+    faq4a: "API signing flow: the server and client share a secret key; the client signs the request content (URL + timestamp + body) with HMAC and includes the signature in the request header; the server recomputes HMAC with the same key and compares it to the header — a match means authentication passes. The timestamp prevents replay attacks (usually with a 5-minute window). AWS, Stripe, and GitHub Webhooks all use this approach."
     title: HMAC Signature Generator
     description: Computes a hash-based message authentication code (HMAC) using a secret key and your favorite hashing function.
 
@@ -670,6 +718,8 @@ tools:
     faq2a: 'There are 2048 to the power of 12 possible phrases making brute-force attacks computationally infeasible.'
     faq3q: What should I do if I lose my BIP39 mnemonic phrase?
     faq3a: Losing your mnemonic means permanent, irreversible loss of wallet access. Store it offline in multiple secure physical locations (paper, metal plates), never digitally. Any service claiming to recover lost mnemonics is a scam.
+    faq4q: How should I safely store a BIP39 mnemonic phrase?
+    faq4a: "Your mnemonic phrase is the sole backup for recovering your cryptocurrency wallet. Store it offline: write it on paper and keep it in a fireproof, waterproof safe. Avoid screenshots or cloud storage. Consider a metal backup plate for fire resistance. Never enter your phrase on untrusted websites or share it with anyone. Keep copies in multiple physical locations."
     title: BIP39 passphrase generator
     description: Generate a BIP39 passphrase from an existing or random mnemonic, or get the mnemonic from the passphrase.
     warningLabel: Security Warning
@@ -695,6 +745,8 @@ tools:
     faq2a: 'Base64 increases the file size by approximately 33%.'
     faq3q: What are common use cases for Base64 file encoding?
     faq3a: 'Common uses: embedding small images in HTML/CSS as data URIs, transmitting files in JSON APIs and email (MIME), embedding certificates in PEM config files, encoding binary assets in environment variables or database fields.'
+    faq4q: How much does Base64 encoding increase file size?
+    faq4a: "Base64 encoding increases the original data size by approximately 33% (3 bytes become 4 characters). For example, a 1 MB image becomes about 1.37 MB after encoding. When embedding in CSS or HTML, weigh the trade-off: fewer HTTP requests but larger page size. It is best to use Base64 only for small files (under 10 KB)."
     title: Base64 file converter
     description: Convert files, images, and binary data to Base64 encoding online. Upload any file and instantly get its Base64 string for embedding in HTML, CSS, JSON APIs, or email attachments.
 
@@ -709,6 +761,8 @@ tools:
     faq2a: 'Yes. The tool includes options to deduplicate, sort, trim whitespace, and reverse the list.'
     faq3q: What input formats does the list converter support?
     faq3a: The tool accepts newline, comma (CSV), semicolon, pipe, and space-separated lists. It exports to JSON arrays, SQL IN clauses, Markdown lists, or custom delimiters. Useful for reformatting data exports and preparing batch queries.
+    faq4q: What are the practical uses of list conversion in data processing pipelines?
+    faq4a: "Real-world list conversion scenarios: converting a newline-separated list to a comma-separated SQL IN clause (WHERE id IN (1,2,3)); converting a CSV column to a JSON array; converting a Markdown list to plain text for email; extracting HTML list items as structured data; bulk format conversion between Excel, SQL, and code. Saves significant repetitive copy-paste work."
     title: List Format Converter
     description: This tool can process column-based data and apply various changes (transpose, add prefix and suffix, reverse list, sort list, lowercase values, truncate values) to each row.
 
@@ -724,6 +778,8 @@ tools:
     faq2a: No. Base64 is encoding, not encryption. It is easily reversible and provides no security. Anyone can decode a Base64 string without a key.
     faq3q: What are common use cases for Base64 encoding?
     faq3a: Base64 is commonly used to embed images in HTML/CSS as data URIs, encode binary data in JSON APIs and email attachments (MIME), encode the header and payload in JWT tokens (Base64url variant), and include certificate files (PEM format) in text-based configuration files.
+    faq4q: Is Base64 encoding the same as encryption?
+    faq4a: No. Base64 is encoding, not encryption. It simply converts binary data to printable ASCII characters, and anyone can easily decode it without a key. Do not use Base64 to protect sensitive data — it provides no security. For real protection, use encryption algorithms like AES or RSA.
 
   toml-to-yaml:
     step1: 'Step 1: Paste your TOML content into the left editor.'
@@ -735,6 +791,8 @@ tools:
     faq2a: 'YAML is a human-readable data serialization format widely used for Docker Compose, Kubernetes, and GitHub Actions.'
     faq3q: When would you convert TOML to YAML?
     faq3a: 'Convert when your target tool only accepts YAML: Kubernetes configs, GitHub Actions, Ansible, GitLab CI, and Helm all use YAML. TOML dominates in the Rust ecosystem (Cargo.toml); YAML dominates in cloud-native DevOps.'
+    faq4q: When should I choose TOML over YAML as a configuration format?
+    faq4a: "Choose TOML when: the config is relatively flat and simple (e.g., Cargo.toml, pyproject.toml); the team is not comfortable with YAML's indentation pitfalls; you need native date-time support; you prefer strict, unambiguous syntax. Choose YAML when: in the Kubernetes/Helm/Ansible ecosystem (de facto standard); config has deep nesting; you need anchors and aliases (&anchor, *alias) to reduce repetition; broader toolchain support is needed. Overall, YAML is more universal; TOML is better for package manager configs."
     title: TOML to YAML
     description: Convert TOML to YAML format online. Paste your TOML configuration and instantly get clean, valid YAML output. Ideal for migrating between config file formats.
 
@@ -748,6 +806,8 @@ tools:
     faq2a: 'Yes. The evaluator supports nested functions, units, matrices, and complex numbers.'
     faq3q: What math functions does the calculator support?
     faq3a: 'Supported: sin, cos, tan, asin, acos, atan, log, log2, log10, ln, exp, sqrt, cbrt, pow, abs, floor, ceil, round, max, min, sum, mean, std, and constants pi and e. Matrix and complex number operations are also supported.'
+    faq4q: How does an online math calculator safely evaluate user input?
+    faq4a: "Safe mathematical expression evaluation cannot use eval() directly (code injection risk). Use a dedicated math parser: math.js (JavaScript, runs in a safe sandbox); asteval (Python, AST-based whitelist evaluation); or build your own lexer and expression tree. This tool safely parses expressions client-side, allowing only math functions and operators without executing arbitrary code."
     title: Online Math Expression Evaluator
     description: A calculator for evaluating mathematical expressions. You can use functions like sqrt, cos, sin, abs, etc.
     placeholder: 'Enter an expression, e.g. sqrt(2) * pi'
@@ -775,6 +835,8 @@ tools:
     faq2a: 'Yes. YAML 1.2 is a superset of JSON meaning all valid JSON is valid YAML.'
     faq3q: When should I choose YAML over JSON?
     faq3a: Choose YAML for config files humans edit regularly — supports comments, multiline strings, and anchors. Choose JSON for APIs and data serialization — faster to parse, strictly defined, natively supported in JavaScript.
+    faq4q: What human-readability improvements does JSON-to-YAML conversion offer?
+    faq4a: "YAML readability advantages over JSON: supports comments (# comment); no quotes needed for most strings; no commas between items; uses indentation instead of braces for clearer visual hierarchy; supports multi-line strings (| for literal block, > for folded); more natural boolean values (true/false or yes/no). Especially suited for Kubernetes manifests, Ansible playbooks, and CI/CD config files."
     title: JSON to YAML converter
     description: Convert JSON to YAML format online instantly. Paste your JSON object and get clean, valid YAML output. Supports nested objects, arrays, and all JSON data types with proper YAML formatting.
 
@@ -787,7 +849,9 @@ tools:
     faq2q: 'What if a URL has no query parameters?'
     faq2a: 'The query parameters section is hidden automatically when no params are present.'
     faq3q: What are the components of a URL?
-    faq3a: 'A URL consists of: scheme (https), optional userinfo (user:pass), host (domain/IP), optional port, path, query string (?key=value), and fragment (#anchor). Example: https://user:pass@example.com:8080/path?q=1#top'
+    faq3a: "A URL consists of: scheme (https), optional userinfo (user:pass), host (domain/IP), optional port, path, query string (?key=value), and fragment (#anchor). Example: https://user:pass{'@'}example.com:8080/path?q=1#top"
+    faq4q: "Should I use the browser's built-in URL API or a regex to parse URLs?"
+    faq4a: "Strongly prefer the built-in API: the browser's new URL(urlString) and Node.js's new URL(urlString) correctly handle all edge cases (IPv6 addresses, Unicode domain names, relative paths). A hand-written regex is unlikely to cover all valid URL formats defined in RFC 3986. URL parsing looks simple but has many edge cases — using the standard library is the most reliable approach."
     title: URL Parser & Inspector
     description: Parse a URL into its separate constituent parts (protocol, origin, params, port, username-password, ...)
 
@@ -801,6 +865,8 @@ tools:
     faq2a: 'IBAN length varies by country from 15 (Norway) to 34 characters. It always starts with a 2-letter country code and 2 check digits.'
     faq3q: How does IBAN validation work?
     faq3a: 'IBAN uses MOD-97: move the first 4 chars to the end, replace letters with numbers (A=10...Z=35), compute modulo 97. If remainder equals 1, the IBAN is valid. The tool also checks country-specific format and length per ISO 13616.'
+    faq4q: What is the difference between IBAN validation and a SWIFT/BIC code?
+    faq4a: An IBAN (International Bank Account Number) identifies a specific bank account and is used to designate the recipient account in international transfers. A SWIFT/BIC code (8-11 characters) identifies the bank institution itself and routes the transfer to the correct bank. International wire transfers typically require both an IBAN (account) and a BIC (bank). Within the Eurozone, SEPA transfers only require an IBAN.
     title: IBAN validator and parser
     description: Validate and parse IBAN numbers. Check if an IBAN is valid and get the country, BBAN, if it is a QR-IBAN and the IBAN friendly format.
     placeholder: Enter an IBAN to check for validity...
@@ -838,8 +904,10 @@ tools:
     faq2a: 'For historical compatibility reasons modern browsers include multiple older browser identifiers.'
     faq3q: How do I get the current User-Agent in JavaScript?
     faq3a: Use navigator.userAgent. Avoid UA-based feature detection — use feature detection instead (e.g. if serviceWorker in navigator). Browsers are progressively freezing UA strings (User-Agent Reduction) to protect privacy, making UA parsing less reliable.
+    faq4q: Is User-Agent string parsing still useful in modern web development?
+    faq4a: "UA string limitations: modern browsers have complex, intentionally obfuscated UA strings (for historical compatibility); the new User-Agent Client Hints API is more structured and reliable; Chrome is progressively freezing UA strings. Still useful for: traffic analytics (distinguishing real users from bots); legacy system compatibility detection; anti-scraping; CDN and WAF bot detection. New projects should prefer the Client Hints API."
     title: User-agent parser
-    description: Detect and parse Browser, Engine, OS, CPU, and Device type/model from an user-agent string.
+    description: Detect and parse Browser, Engine, OS, CPU, and Device type/model from a user-agent string. Useful for analytics and device-specific debugging.
     resultsLabel: Parse result
     copyJsonBtn: Copy JSON
     copiedBtn: Copied!
@@ -856,6 +924,8 @@ tools:
     faq2a: 'The term i18n is attributed to DEC in the 1970s and has been popularized in software development.'
     faq3q: What are common numeronyms in software development?
     faq3a: 'Common tech numeronyms: i18n (internationalization), l10n (localization), a11y (accessibility), k8s (Kubernetes), g11n (globalization), p13n (personalization), o11y (observability). Format: first-letter + character-count + last-letter.'
+    faq4q: What are some famous technical examples of numeronyms?
+    faq4a: "Famous technical numeronyms: i18n (internationalization, 18 letters between i and n); l10n (localization); a11y (accessibility); k8s (Kubernetes, 8 letters between k and s); o11y (observability). These abbreviations are extremely common on GitHub, in technical documentation, and on Twitter — saving characters while remaining recognizable to those in the know."
     title: Numeronym generator
     description: A numeronym is a word where a number is used to form an abbreviation. For example, "i18n" is a numeronym of "internationalization" where 18 stands for the number of letters between the first i and the last n in the word.
     realtime: Real-time
@@ -872,6 +942,8 @@ tools:
     faq2a: 'camelCase starts with a lowercase letter (e.g. myVariable). PascalCase starts with an uppercase letter (e.g. MyClass).'
     faq3q: Which naming convention does each language use?
     faq3a: 'JavaScript/TypeScript: camelCase for vars/functions, PascalCase for classes; Python: snake_case for functions, PascalCase for classes; CSS: kebab-case; Go: camelCase/PascalCase for unexported/exported; Constants: SCREAMING_SNAKE_CASE across most languages.'
+    faq4q: Which naming convention should I use for different contexts?
+    faq4a: camelCase (e.g., myVariable) is used for JavaScript variables and functions; PascalCase for class names and React components; snake_case for Python variables, database column names, and URLs; kebab-case for CSS class names, HTML attributes, and URL paths; SCREAMING_SNAKE_CASE for constants and environment variables; Title Case for headings and book titles.
     title: String Case Converter
     description: 'Convert strings between different case formats: camelCase, PascalCase, snake_case, kebab-case, SCREAMING_SNAKE_CASE, dot.case, and more. Instantly transform variable names for different programming languages.'
 
@@ -885,8 +957,10 @@ tools:
     faq2a: 'Escaping HTML prevents XSS attacks when displaying user-generated content.'
     faq3q: Which characters must always be escaped in HTML?
     faq3a: 'In content: < becomes &lt;, > becomes &gt;, & becomes &amp;. In attribute values: double quote becomes &quot;, single quote becomes &#39;. Proper escaping is the foundation of XSS prevention.'
+    faq4q: When is HTML entity encoding required in HTML?
+    faq4a: "Characters that must be encoded: < and > to avoid being parsed as tags (&lt; &gt;); & to avoid being parsed as an entity start (&amp;); quotes inside attribute values (&quot;). Always HTML-entity-escape user-generated content before rendering it on the page to prevent XSS (Cross-Site Scripting) attacks. Modern frameworks (React, Vue) handle this escaping automatically."
     title: HTML Entity Encoder & Decoder
-    description: Escape or unescape HTML entities (replace characters like <,>, &, " and \' with their HTML version)
+    description: Escape or unescape HTML entities — replace characters like <, >, &, " and ' with their HTML entity names or numeric codes. Supports named and decimal entities.
 
   json-prettify:
     title: JSON Formatter & Validator
@@ -900,6 +974,8 @@ tools:
     faq2a: JSON Prettify adds whitespace and indentation to make JSON human-readable. JSON Minify removes all unnecessary whitespace to reduce file size — useful for APIs and storage.
     faq3q: Does it support JSON5 (comments, trailing commas)?
     faq3a: 'Yes. This tool uses JSON5 for parsing, so it accepts comments and trailing commas in addition to standard JSON.'
+    faq4q: How should I efficiently view and process large JSON files?
+    faq4a: "For JSON files over 1 MB, online tools are not ideal. Recommended alternatives: command-line jq (cat data.json | jq '.') for maximum efficiency; VS Code built-in JSON formatting (Alt+Shift+F); Python built-in (python3 -m json.tool data.json) requires no installation; the fx interactive JSON viewer. For very large JSON files (100 MB+), use a streaming JSON parser to avoid running out of memory."
 
   json-viewer:
     sortKeys: Sort keys
@@ -924,6 +1000,8 @@ tools:
     faq2a: 'The tool supports common flags like -p (ports), -v (volumes), -e (env vars), --name, and --network.'
     faq3q: Why use Docker Compose instead of docker run?
     faq3a: Docker Compose lets you manage multiple containers in one file, one-command up/down, version-controlled configs, easy environment reproduction, built-in service networking. Long docker run commands are hard to maintain.
+    faq4q: What advantages does Docker Compose have over docker run?
+    faq4a: "Docker Compose advantages: all services defined in a single version-controlled file; one command (docker compose up) starts the entire environment; automatic service networking and startup order; variables managed in .env files; easy service scaling; easier team collaboration. It eliminates the problem of long, hard-to-remember docker run commands that are difficult to maintain over time."
     title: Docker run to Docker compose converter
     description: Convert docker run CLI commands into docker-compose.yml files automatically. Paste your docker run command and get a ready-to-use Compose file with all ports, volumes, and environment variables.
     inputTitle: Docker Run Command
@@ -950,6 +1028,8 @@ tools:
     faq2a: 'The first 3 bytes (OUI) are assigned by the IEEE to manufacturers. The last 3 bytes are assigned by the manufacturer.'
     faq3q: Can MAC addresses be changed?
     faq3a: 'Yes. Linux: ip link set dev eth0 address XX:XX:XX:XX:XX:XX; macOS: sudo ifconfig en0 ether XX:XX:XX:XX:XX:XX; Windows: Device Manager > Network Adapter > Advanced. Changes typically revert after reboot.'
+    faq4q: How are the first three bytes (OUI) of a MAC address assigned?
+    faq4a: "The OUI (Organizationally Unique Identifier) is assigned by the IEEE to hardware manufacturers to identify device brands. For example, DC:A6:32 belongs to the Raspberry Pi Foundation. After purchasing an OUI, a company assigns the last three bytes (device-unique portion) freely. Identifying OUIs in a network is useful for asset management and security auditing (detecting unauthorized device brands)."
     title: MAC Address Vendor Lookup
     description: Look up the manufacturer and vendor of any network device by its MAC address. Supports the full IEEE OUI database with 40,000+ registered vendors. Useful for network troubleshooting and security audits.
     macAddressLabel: MAC Address
@@ -974,6 +1054,8 @@ tools:
     faq2a: 'Servers use MIME types to tell browsers how to handle files. An incorrect MIME type can cause files to be downloaded instead of displayed.'
     faq3q: What are the most important MIME types to know?
     faq3a: 'Essential types: text/html, text/css, application/javascript, application/json, image/png, image/jpeg, image/svg+xml, image/webp, video/mp4, application/pdf, application/zip, multipart/form-data. Content-Type header declares format sent; Accept requests preferred format.'
+    faq4q: What are the critical roles of MIME types in web development?
+    faq4a: "Key roles of MIME types: browsers use Content-Type to decide how to handle a response (display, download, or render); an incorrect MIME type may cause files to download instead of display (e.g., PDFs); API responses must set application/json; validating MIME types on file upload helps prevent malicious files (but must be combined with magic-byte inspection of file content)."
     title: MIME Types Reference & Lookup
     description: Look up MIME types by file extension or convert extensions to MIME types. Covers 1000+ file types including images, video, audio, documents, and programming languages.
 
@@ -987,6 +1069,8 @@ tools:
     faq2a: 'JSON does not support comments so all TOML comments are lost during conversion.'
     faq3q: What are the advantages of TOML over JSON?
     faq3a: 'TOML is designed specifically for configuration files: it supports comments (#), has native date and time types, and uses a syntax that many find more readable than JSON for structured config. JSON is better for data interchange. TOML is widely used in the Rust ecosystem (Cargo.toml) and static site generators like Hugo.'
+    faq4q: How do I handle date-time types after converting TOML to JSON?
+    faq4a: "TOML has native date-time support (RFC 3339 format), while JSON has no date type — only strings and numbers. When converting, TOML date-times are typically serialized to JSON strings (preserving ISO 8601 format). When consuming the result, manually parse the strings into Date objects in your code (e.g., new Date('2006-01-02T15:04:05Z')). Document date field formats in your API spec to prevent downstream misinterpretation."
     title: TOML to JSON
     description: Convert TOML configuration files to JSON format online. Paste your TOML and get a valid, formatted JSON output instantly. Useful for config migrations and API integrations.
 
@@ -1000,6 +1084,8 @@ tools:
     faq2a: 'Lorem Ipsum avoids distraction from layout design. Readable text causes viewers to focus on content rather than visual design.'
     faq3q: Where does Lorem Ipsum text come from?
     faq3a: Lorem Ipsum derives from Cicero's philosophical work written in 45 BC. The standard passage has been scrambled into meaningless Latin. It became the standard placeholder text in the 1500s with the rise of printing and remains the industry standard today.
+    faq4q: What is the origin of Lorem Ipsum text?
+    faq4a: "Lorem Ipsum comes from Cicero's De Finibus Bonorum et Malorum written in 45 BC — it is a scrambled Latin passage. The famous opening 'Lorem ipsum dolor sit amet...' is taken from section 1.10.32. Typesetting software began using it as placeholder text in the 1960s and the practice has continued since. Modern designers sometimes use realistic content instead, to avoid 'lorem ipsum blindness' that hides real layout problems."
     title: Lorem ipsum generator
     description: Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content
     paragraphs: Paragraphs
@@ -1025,6 +1111,8 @@ tools:
     faq2a: A standard QR code can store up to ~4,296 alphanumeric characters or ~7,089 numeric characters. Shorter content produces a simpler, more scannable code.
     faq3q: Can I add a logo to the QR code?
     faq3a: To add a logo, overlay it on the center using an image editor. Use error correction level H (30% damage tolerance) to ensure scannability. Keep the logo under 30% of the QR area. This tool generates PNG images that can be post-processed in Photoshop or Figma.
+    faq4q: What types of data can a QR code store?
+    faq4a: "QR codes can encode many formats: URLs (most common, links to a web page); vCard (contact information); Wi-Fi configuration (SSID + password, phone connects directly); plain text; phone numbers (tel:); email addresses (mailto:); geographic coordinates (geo:); calendar events (VEVENT); payment information (Alipay/WeChat Pay specific formats). Maximum capacity is approximately 4,296 alphanumeric characters; CJK characters significantly reduce capacity."
 
   wifi-qrcode-generator:
     step1: 'Step 1: Enter your WiFi network name (SSID).'
@@ -1037,6 +1125,8 @@ tools:
     faq2a: 'Only share with trusted people. The QR code contains your WiFi password and anyone who scans it can join your network.'
     faq3q: What WiFi security types does the WiFi QR code support?
     faq3a: 'The WIFI: format supports WPA/WPA2/WPA3 Personal (most common), WEP (obsolete and insecure), and open networks. WEP has serious security flaws — upgrade to WPA2 or WPA3. WPA3 provides the strongest protection for new setups.'
+    faq4q: How does a phone work when scanning a Wi-Fi QR code?
+    faq4a: "Wi-Fi QR codes use the standard format: WIFI:T:WPA;S:NetworkName;P:Password;; iOS 11+ and Android 9+ natively recognize this format in their camera apps and display a connection prompt. The password is transmitted in plaintext in the QR code (only the scanner can see it), so avoid displaying a Wi-Fi QR code with a password in public. Enterprise networks can use passwordless 802.1X configuration, but the QR code format does not support it."
     title: WiFi QR Code generator
     description: Create WiFi QR codes that let guests join your network instantly by scanning. Supports WPA2, WPA3, WEP, and open networks. Customize colors and download as PNG for printing or sharing.
 
@@ -1050,6 +1140,8 @@ tools:
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
     faq3q: Does XML formatting change the data content?
     faq3a: No. The XML formatter only adjusts whitespace (newlines and indentation) and does not modify tag names, attribute values, or text node content. Formatted and original XML parse to exactly the same data structure. It is safe to format production configuration files as long as you verify the output afterward.
+    faq4q: How do I preserve meaningful whitespace when formatting XML?
+    faq4a: "The xml:space='preserve' attribute tells the parser to preserve all whitespace (including newlines and indentation) within that element and its children. Formatting tools typically ignore this attribute and re-indent the entire document. Be careful when handling XML that includes this attribute (e.g., XSLT, Word document formats) — incorrect formatting may change the data semantics. Always back up the original file before formatting."
     title: XML Formatter & Beautifier
     description: Format and beautify XML code online with proper indentation and syntax highlighting. Validates XML structure, fixes whitespace, and makes complex XML documents easy to read and debug.
     rawXml: Raw XML
@@ -1071,6 +1163,8 @@ tools:
     faq2a: 'Absolute zero is the lowest possible temperature: 0 Kelvin = −273.15°C = −459.67°F. At this temperature, particles have minimum thermal motion.'
     faq3q: What are common reference temperatures?
     faq3a: 'Key values: water freezes at 0C/32F, boils at 100C/212F, body temperature ~37C/98.6F, room temperature ~20-25C/68-77F. Formula: F = C x 9/5 + 32; C = (F - 32) x 5/9.'
+    faq4q: What are the practical applications of Kelvin and Celsius in different fields?
+    faq4a: Celsius (C) is used for everyday temperature, cooking, and weather; Fahrenheit (F) is mainly used in US daily life; Kelvin (K) is the SI standard unit used in scientific calculations (thermodynamics and physics formulas require non-negative temperatures — Kelvin starts at absolute zero); color temperature in photography uses K (5500K for daylight, 3200K for tungsten); in medicine, Fahrenheit is common in the US while other countries use Celsius.
     belowAbsoluteZero: 'Temperature is below absolute zero (0 K / −273.15 °C), which is physically impossible.'
     minus1: minus 1
     plus1: plus 1
@@ -1085,6 +1179,8 @@ tools:
     faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
     faq3q: What is the difference between numeric and symbolic chmod notation?
     faq3a: Numeric chmod (e.g. 755) adds read (4), write (2), and execute (1) together for each of owner, group, and others. Symbolic chmod (e.g. chmod u+x) is more readable and lets you add or remove specific permissions without affecting others. Both are equivalent; numeric notation is more common in scripts and documentation.
+    faq4q: How can I safely change file permissions without breaking a system?
+    faq4a: Follow the principle of least privilege — grant only necessary permissions. Avoid chmod 777 (read/write/execute for everyone), which is a serious security risk. For web servers, use 644 for files and 755 for directories. Confirm current permissions with ls -la before changing. Be especially careful with system files; incorrect permissions can prevent services from starting or create security vulnerabilities.
     title: Linux chmod Permissions Calculator
     description: Calculate Linux/Unix file permissions visually. Select read, write, and execute permissions for owner, group, and others to instantly generate the chmod numeric value (e.g. 755, 644) and the corresponding shell command.
     preset755: Recommended for dirs
@@ -1107,12 +1203,14 @@ tools:
     faq2a: '2048-bit is the minimum recommended. 4096-bit provides stronger security. 1024-bit is considered insecure.'
     faq3q: What are RSA public and private keys used for?
     faq3a: The public key is used to encrypt data (only the private key can decrypt it) and to verify digital signatures. The private key is used to decrypt data and to create signatures. The public key can be freely shared; the private key must be kept secret. In SSH, the public key is placed on the server while the private key stays on your machine.
+    faq4q: Should I choose RSA-2048 or RSA-4096?
+    faq4a: "RSA-2048 is still considered secure — NIST projects it will not be broken before 2030 — and has better performance (signing/encryption is 4-8x faster than 4096). RSA-4096 offers a longer security margin, suitable for protecting highly sensitive data for 10+ years. Practical recommendation: 2048 is sufficient for TLS certificates and SSH keys (or switch to Ed25519, which is shorter, faster, and more secure); consider 4096 for code signing certificates or long-term document encryption."
     title: RSA key pair generator
     description: Generate RSA public/private key pairs online for encryption, digital signatures, and SSL certificates. Supports 1024, 2048, and 4096-bit key sizes. Download PEM-formatted keys instantly for use in SSH, TLS, and JWT signing.
 
   html-wysiwyg-editor:
     title: HTML WYSIWYG Editor
-    description: Online rich text editor with live HTML preview. Format content visually and export clean HTML code.
+    description: Online rich text editor with live HTML preview. Format content visually using toolbar buttons and export clean, minified HTML code for emails and CMS.
     step1: 'Step 1: Type or paste content into the WYSIWYG editor.'
     step2: 'Step 2: Use the toolbar to apply formatting (bold, italic, links, lists, etc.).'
     step3: 'Step 3: Switch to Source view to see the generated HTML code.'
@@ -1123,13 +1221,15 @@ tools:
     faq2a: 'The editor generates semantic HTML5 and avoids inline styles where possible.'
     faq3q: Why does the generated HTML look unstyled on my website?
     faq3a: The editor outputs standard semantic tags with no embedded CSS. Include a stylesheet targeting h1-h6, p, strong, em, ul, ol elements — use GitHub Markdown CSS or your existing typography. Never rely on editor inline styles for production.
+    faq4q: What are common problems with HTML generated by WYSIWYG editors?
+    faq4a: "Common issues: redundant nested tags and inline styles (hard to maintain); garbage styles when pasting from Word; inconsistent editing behavior across browsers; output HTML may contain XSS risks (requires server-side sanitization); poor semantics (lots of span style= instead of semantic elements like h2, strong). Always sanitize output server-side using DOMPurify or similar libraries."
     editorLabel: Editor
     htmlSource: HTML Source
     clearContent: Clear Content
     copyHtml: Copy HTML
   email-normalizer:
     title: Email Address Normalizer
-    description: Batch normalize and deduplicate email addresses with support for Gmail and major provider aliases.
+    description: Batch normalize and deduplicate email addresses with support for Gmail + aliases, dot-ignoring rules, and major provider-specific formats for clean mailing lists.
     step1: 'Step 1: Paste or upload your email list (one per line).'
     step2: 'Step 2: The tool normalizes addresses, removing aliases and extra dots.'
     step3: 'Step 3: Copy or download the normalized email list.'
@@ -1138,7 +1238,9 @@ tools:
     faq2q: Which email providers are supported?
     faq2a: Gmail, Outlook, Yahoo, and other major providers are supported. Normalization rules vary by provider.
     faq3q: What is email normalization useful for?
-    faq3a: Prevents duplicate accounts (user+1@gmail.com and user@gmail.com are the same inbox), deduplicates marketing lists, merges CRM records, and enables lenient login matching — especially important with Google Sign-In where users may register with Gmail alias variants.
+    faq3a: "Prevents duplicate accounts (user+1{'@'}gmail.com and user{'@'}gmail.com are the same inbox), deduplicates marketing lists, merges CRM records, and enables lenient login matching — especially important with Google Sign-In where users may register with Gmail alias variants."
+    faq4q: Why is email address normalization important for systems?
+    faq4a: "Without normalization, the same user may create multiple accounts (e.g., User{'@'}Gmail.com and user+tag{'@'}gmail.com reach the same inbox), causing duplicate data and poor user experience. Normalization steps: convert to lowercase, strip Gmail dots and plus-address suffixes, and trim whitespace. Normalizing during registration and login prevents duplicate accounts and unifies user data."
     inputLabel: Input Email List
     uploadTooltip: Import from file (.txt or .csv)
     clearInput: Clear input
@@ -1164,6 +1266,8 @@ tools:
     faq2a: 'Yes. YAML supports anchors (&) and aliases (*) for reusing content. TOML does not have a direct equivalent.'
     faq3q: What should I watch out for when converting YAML to TOML?
     faq3a: TOML does not support null values, requires same-type arrays, and lacks YAML's multi-document format. Deep nesting becomes verbose in TOML's table syntax. Review output carefully for type mismatches and null value handling.
+    faq4q: Which YAML features are not supported in TOML?
+    faq4a: "YAML-to-TOML incompatibilities: YAML anchors and aliases (&anchor, *alias) do not exist in TOML and are expanded on conversion; YAML allows null values, TOML does not (they are dropped); YAML has special types (binary, timestamped) handled differently; YAML supports multi-document streams (--- separator), TOML does not. Carefully review the output after conversion to ensure correctness."
     title: YAML to TOML
     description: Convert YAML to TOML format online. Paste your YAML and get a valid TOML configuration file instantly. Supports all YAML features including nested keys and arrays.
 
@@ -1178,6 +1282,8 @@ tools:
     faq2a: 'The generator creates unicast addresses by default. A MAC address is multicast if the LSB of the first byte is 1.'
     faq3q: What is the difference between locally and globally administered MAC addresses?
     faq3a: 'Globally administered (UAA): unique OUI from IEEE, guarantees global uniqueness. Locally administered (LAA): second-least-significant bit of first byte set to 1, manually configured. LAA are used in VMs, containers, and network testing where global uniqueness is not required.'
+    faq4q: What are the uses of random MAC addresses in network testing?
+    faq4a: "Uses of random MAC addresses: network simulation (testing a DHCP server's ability to allocate a large number of addresses); switch MAC table stress testing; network isolation and virtualization environments (VMs need unique MACs); privacy protection (modern phones use randomized MACs when scanning for Wi-Fi); testing the security of MAC-based access controls. When generating, pay attention to the U/L bit to avoid conflicts with real devices."
     title: MAC address generator
     description: Enter the quantity and prefix. MAC addresses will be generated in your chosen case (uppercase or lowercase)
     amount: Amount
@@ -1205,6 +1311,8 @@ tools:
     faq2a: 'Yes. The diff viewer recursively compares nested objects and arrays.'
     faq3q: How does JSON diff handle array element ordering?
     faq3a: Arrays are treated as ordered sequences compared index by index. Reordered elements appear as deleted-then-added. If your arrays are unordered sets (e.g. list of tags), sort both before comparing to avoid false positives in the diff.
+    faq4q: How is a JSON diff tool used in a CI/CD pipeline?
+    faq4a: "Uses of JSON comparison in CI/CD: API compatibility testing (comparing new vs. old API response structures); configuration file review (highlighting config changes in PRs); snapshot testing (storing expected output and automatically detecting unexpected changes); database schema change review. Command-line tools like jq or jsondiff (Python) are recommended for automated JSON comparison in pipelines."
     title: JSON diff
     description: Compare two JSON objects and highlight their differences visually. Identifies added, removed, and changed keys with color coding. Essential for debugging API responses and config changes.
 
@@ -1218,6 +1326,8 @@ tools:
     faq2a: 'A standard JWT (JWS) is signed but NOT encrypted. The payload can be decoded by anyone. Use JWE for confidentiality.'
     faq3q: What do the JWT Header, Payload, and Signature represent?
     faq3a: 'A JWT has three parts: the Header specifies the algorithm (e.g. HS256); the Payload contains claims such as user ID, expiration time (exp), and issuer (iss); the Signature is computed by signing the header and payload with a secret key to verify that the token has not been tampered with. Decoding a JWT requires no key, but verifying the signature does.'
+    faq4q: "How do I verify a JWT token's signature?"
+    faq4a: "Verifying a JWT signature requires a key: HMAC (HS256) uses a shared secret; RSA/ECDSA uses a public key. This tool only decodes the token content — it does not verify the signature (no key available). In application code, use official libraries (jsonwebtoken for Node.js, PyJWT for Python) for full verification, including signature validation, exp expiry check, and iss/aud claim validation. Never trust JWT content without verifying the signature."
     title: JWT Token Decoder & Parser
     description: Decode and inspect JWT tokens instantly. Extracts and displays the Header, Payload (claims), and Signature sections. Shows expiration time, issued-at, subject, and all custom claims — no secret key required for decoding.
 
@@ -1231,6 +1341,8 @@ tools:
     faq2a: 'A Unix timestamp is the number of seconds elapsed since January 1 1970 00:00:00 UTC. It is timezone-independent.'
     faq3q: What is the Year 2038 problem?
     faq3a: The Year 2038 problem occurs because 32-bit signed integers can only store timestamps up to 2038-01-19 03:14:07 UTC (value 2,147,483,647). After that, 32-bit systems overflow to negative values. Modern systems use 64-bit integers for timestamps, which can represent dates billions of years into the future without this issue.
+    faq4q: How do I handle date-time conversions across time zones?
+    faq4a: "The key rule: always store time in UTC and only convert to local time for display. In JavaScript, use Intl.DateTimeFormat or the date-fns-tz library. Daylight Saving Time (DST) causes the same time zone to have different offsets at different times of year — handle this carefully. For databases, use TIMESTAMP WITH TIME ZONE (PostgreSQL) or UTC DATETIME (MySQL)."
     title: Date-time converter
     description: Convert dates and times between different formats and timezones. Supports ISO 8601, Unix timestamp, RFC 2822, and local date formats. Instantly shows equivalent representations for any date.
 
@@ -1244,6 +1356,8 @@ tools:
     faq2a: 'You can determine the country, region, carrier (sometimes), and type (mobile, landline, toll-free, etc.).'
     faq3q: What is E.164 format and why should systems use it?
     faq3a: 'E.164: starts with +, followed by country code and number, no spaces or hyphens, max 15 digits (e.g. +14155551234). Storing in E.164 avoids parsing ambiguity, enables international compatibility, and is directly compatible with APIs like Twilio and AWS SNS.'
+    faq4q: How should international phone numbers be stored and handled in a system?
+    faq4a: "Best practices: always store in E.164 format (+1234567890) including the country code, no spaces or dashes — this enables consistent global processing; format for display using libphonenumber according to the user's country; validate using libphonenumber (Google's open-source library with implementations in every major language) rather than writing your own regex; store as VARCHAR(20) in databases, not INT (leading zeros may be lost)."
     title: Phone parser and formatter
     description: Parse, validate and format phone numbers. Get information about the phone number, like the country code, type, etc.
     defaultCountryCode: Default country code
@@ -1290,6 +1404,8 @@ tools:
     faq2a: 'A /24 subnet has 256 addresses. Subtract 2 for network and broadcast addresses leaving 254 usable hosts.'
     faq3q: What does CIDR notation like /24 mean?
     faq3a: CIDR notation specifies the number of bits in the subnet mask. /24 means 24 bits are the network portion (mask 255.255.255.0), leaving 8 bits for hosts — 256 total addresses, 254 usable. /16 gives 65,536 addresses, /32 is a single host. CIDR allows more flexible address allocation than the old Class A/B/C system.
+    faq4q: What is the difference between VLSM and fixed-length subnet masking?
+    faq4a: "Traditional fixed-length subnet masking requires all subnets to be the same size, wasting IP addresses. VLSM (Variable Length Subnet Masking) allows different subnets to have different sizes, allocating addresses as needed. For example: headquarters with 100 hosts uses /25 (126 usable), a branch with 20 hosts uses /27 (30 usable), a WAN link with 2 hosts uses /30 (2 usable). Modern network design universally uses VLSM."
     title: IPv4 subnet calculator
     description: Calculate IPv4 subnet information from CIDR notation. Enter an IP address and prefix length to instantly get the network address, broadcast address, usable host range, subnet mask, wildcard mask, and total host count.
     inputLabel: Enter IPv4 address (with or without mask)
@@ -1323,6 +1439,8 @@ tools:
     faq2a: 'The og:image is the thumbnail shown when your page is shared on social media. Recommended size is 1200x630px.'
     faq3q: Which Open Graph tags are required?
     faq3a: 'Required: og:title, og:type (website or article), og:image (1200x630px recommended), og:url. Important optional: og:description, og:site_name. For articles add article:published_time and article:section. Missing these causes broken previews on social media.'
+    faq4q: How do Open Graph tags affect social media sharing performance?
+    faq4a: "Well-crafted OG tags can significantly boost share click-through rates: og:title (40-60 chars recommended); og:description (100-200 chars); og:image (1200x630px recommended — large images attract more attention); og:url (canonical URL). Twitter has its own Twitter Card tags (twitter:card=summary_large_image for large image display). Without these tags, shares show only the URL or a default thumbnail, drastically reducing click intent."
     title: Open Graph / OG Meta Tag Generator
     description: Generate Open Graph and Twitter Card meta tags for your website. Preview how your page will appear when shared on Facebook, Twitter, LinkedIn, and other social platforms. Includes og:title, og:image, og:description, and more.
 
@@ -1336,8 +1454,10 @@ tools:
     faq2a: 'Per RFC 4193 the 40-bit global ID is generated pseudo-randomly to minimize collision probability.'
     faq3q: What is the difference between IPv6 ULA and public IPv6?
     faq3a: ULA (fc00::/7 prefix) is like IPv4 private addresses — only routable within your local network. GUA (Global Unicast Address) is publicly routable. ULA provides stable internal addressing independent of ISP assignment, useful even without internet connectivity.
+    faq4q: What is the difference between IPv6 ULA and Global Unicast Addresses (GUA)?
+    faq4a: "ULA (Unique Local Addresses, fc00::/7) are similar to IPv4 private addresses — routed only within the local network and not advertised on the internet. GUA (Global Unicast Addresses, 2000::/3) are globally routable internet addresses. IPv6's abundance of addresses means internal networks can also use GUAs, but ULA is safer for purely internal devices (no internet reachability needed) and is well-suited for labs and development."
     title: IPv6 ULA generator
-    description: Generate your own local, non-routable IP addresses for your network according to RFC4193.
+    description: Generate IPv6 Unique Local Addresses (ULA) per RFC 4193 for private networks. No public registration needed — perfect for home labs and enterprise internal networks.
     infoText: ULA addresses are used within private networks and are not routed on the internet
     macAddressLabel: MAC Address (optional)
     placeholder: 'e.g. 00:1A:2B:3C:4D:5E'
@@ -1360,6 +1480,8 @@ tools:
     faq2a: For security-sensitive use cases, use SHA-256 or SHA-512. MD5 and SHA-1 are considered cryptographically broken and should only be used for non-security purposes like checksums.
     faq3q: What is the difference between MD5 and SHA256?
     faq3a: MD5 has known collision vulnerabilities and should not be used for security purposes — it is only suitable for non-security tasks like checksums. SHA256 is the current secure choice for digital signatures and certificates. For password storage, use bcrypt, scrypt, or Argon2 instead of any SHA algorithm.
+    faq4q: Why should MD5 or SHA not be used to store passwords?
+    faq4a: "MD5 and SHA algorithms are designed to be fast, which is exactly the wrong property for password storage. GPUs can compute billions of hashes per second, and combined with precomputed rainbow tables, simple passwords can be cracked in seconds. For password storage, use purpose-built slow hash algorithms: bcrypt (most widely used), scrypt (memory-hard), or Argon2id (recommended — winner of the Password Hashing Competition)."
 
   json-to-toml:
     step1: 'Step 1: Paste your JSON content into the left editor.'
@@ -1371,6 +1493,8 @@ tools:
     faq2a: 'TOML is more human-readable for configuration files. Some tools like Cargo and Hugo use TOML exclusively.'
     faq3q: What should I know when converting JSON to TOML?
     faq3a: TOML does not support null values, mixed-type arrays are invalid, and TOML has native date/time types. Integer keys need special handling. Review output for type mismatches before using in production.
+    faq4q: How can I use JSON-to-TOML conversion to migrate config in a Rust project?
+    faq4a: "The Rust ecosystem (Cargo.toml, Tauri, Bevy) uses TOML extensively. Migration steps: use this tool to convert existing JSON config to TOML; review the output, paying attention to TOML-native date-time format (RFC 3339) and multi-line strings (triple quotes); deserialize in Rust using the serde + toml crate. TOML is better than JSON for hand-written config and supports comments natively."
     title: JSON to TOML Converter
     description: Convert JSON to TOML format online. Paste your JSON and instantly get a valid TOML configuration file. Supports nested objects, arrays, and all TOML data types.
 
@@ -1384,6 +1508,8 @@ tools:
     faq2a: 'No. All information is read from your browser JavaScript APIs locally. Nothing is transmitted.'
     faq3q: Why do different websites detect different device info?
     faq3a: Sites use different detection methods. Screen resolution and UA are accurate, but device model is usually inferred from UA strings. Modern browsers add noise to fingerprinting APIs (like canvas) for privacy, causing minor variations between sites.
+    faq4q: How do websites use device information to provide adaptive experiences?
+    faq4a: Responsive design adjusts layouts based on viewport width; device pixel ratio (DPR) enables 1x/2x/3x images via srcset; UA detection can distinguish mobile vs. desktop features (e.g., touch support); connection speed info can be used to serve lower-quality images to save bandwidth. Modern best practice is feature detection rather than UA sniffing — more reliable and future-proof.
     title: Device Information & Browser Detector
     description: 'Detect detailed information about your current device and browser: screen resolution, device pixel ratio, viewport size, operating system, browser name and version, user agent string, touch support, and network connection type.'
 
@@ -1397,6 +1523,8 @@ tools:
     faq2a: 'No. The PDF is processed entirely in your browser. Your file never leaves your device.'
     faq3q: What is the difference between a digital signature and an electronic signature?
     faq3a: A digital signature uses PKI cryptography with a CA to verify signer identity — legally binding and tamper-detectable. An electronic signature is broader (scanned handwriting, online platforms). This tool checks PKI-based PDF digital signatures.
+    faq4q: What is the difference between a digital signature and an electronic signature on a PDF?
+    faq4a: "A digital signature uses a PKI certificate (e.g., X.509) to cryptographically sign the PDF, enabling verification of the signer's identity and document integrity — it has strong legal standing. An electronic signature is a broad term covering signature images, click-to-agree, etc., with no cryptographic guarantee. Many jurisdictions legally recognize digital signatures that meet specific criteria. PDF digital signature verification requires trusting the issuing CA's root certificate."
     title: PDF signature checker
     description: Verify the signatures of a PDF file. A signed PDF file contains one or more signatures that may be used to determine whether the contents of the file have been altered since the file was signed.
 
@@ -1410,6 +1538,8 @@ tools:
     faq2a: 'No. Minifying only removes insignificant whitespace. The data values and structure remain identical.'
     faq3q: How much space does JSON minification save?
     faq3a: Typically 20-50% reduction depending on original formatting. Deeply nested JSON saves more. Minified JSON is ideal for API responses and network transfer; formatted JSON is better for development and debugging.
+    faq4q: How much performance improvement does JSON minification provide in production?
+    faq4a: "The actual benefit depends on JSON size and whether the server enables Gzip/Brotli compression. Without server compression, removing whitespace reduces size by 20-30%. But if the server already uses Brotli compression, manual JSON minification makes negligible difference (compression algorithms are extremely efficient with repetitive content). Recommendation: always enable Brotli/Gzip on HTTP responses rather than manually minifying JSON."
     title: JSON Minify & Compress
     description: Minify and compress JSON data by removing all whitespace, indentation, and line breaks. Reduces JSON payload size for APIs, configuration files, and storage. Instantly copy the compressed result.
     rawJson: Raw JSON
@@ -1438,6 +1568,8 @@ tools:
     faq2a: 'ULIDs are sortable by creation time unlike UUID v4, URL-safe, and more compact (26 chars vs 36 for UUID).'
     faq3q: What are the advantages of ULID over UUID?
     faq3a: 'ULID advantages include: 1) Lexicographically sortable by creation time; 2) URL-safe Base32 encoding with no need for escaping; 3) More compact at 26 characters vs 36 for UUID with hyphens; 4) More readable. The trade-off is time dependency — two ULIDs generated within the same millisecond retain random ordering among themselves.'
+    faq4q: What are the trade-offs between ULID and UUID v4?
+    faq4a: "ULID advantages: timestamp prefix makes it naturally time-ordered (more B-tree index friendly, fewer page splits); shorter string form (26 chars vs. 36 for UUID); URL-safe (uppercase letters and digits only). UUID v4 advantages: more widely supported with mature library ecosystems; fully random with no time information leakage concerns. Usage: prefer ULID for database primary keys and IDs that need ordering; use UUID v4 for fully random IDs where ordering does not matter."
     title: ULID Unique ID Generator
     description: Generate ULIDs (Universally Unique Lexicographically Sortable Identifiers) online. ULIDs are 128-bit identifiers that are URL-safe, sortable by time, and compatible with UUID. Ideal as database primary keys.
 
@@ -1451,6 +1583,8 @@ tools:
     faq2a: 'No. Obfuscation is a visual technique - the original string is not recoverable. Encryption produces a reversible ciphertext.'
     faq3q: When is string obfuscation useful?
     faq3a: 'Common uses: logging (hiding API keys and passwords), screenshots and demos (masking sensitive tokens), UI display (showing partial card numbers like **** 1234), error reports (protecting user privacy), and technical documentation (showing example configs without exposing real credentials).'
+    faq4q: Does string obfuscation truly protect sensitive information in source code?
+    faq4a: "String obfuscation only increases the difficulty of reverse engineering — it does not truly protect sensitive data. Obfuscated code can still be decompiled and statically analyzed, just taking more time. Real protection: store sensitive config (API keys, DB passwords) in environment variables or a KMS, never in the codebase; use .gitignore and secret scanning tools (e.g., GitHub Secret Scanning) to prevent accidental commits; rotate keys regularly so leaks expire quickly."
     title: String obfuscator
     description: Obfuscate a string (like a secret, an IBAN, or a token) to make it shareable and identifiable without revealing its content.
     keepFirst: Keep first chars
@@ -1469,8 +1603,10 @@ tools:
     faq2a: 'Each hex digit corresponds to exactly 4 binary digits. For example F(hex) = 1111(binary).'
     faq3q: When do developers use different number bases?
     faq3a: 'Binary (bin): bit operations and low-level programming; Octal (oct): Unix file permissions (chmod); Decimal (dec): everyday numbers; Hexadecimal (hex): memory addresses, color values (#RRGGBB), byte data; Base64: binary data text encoding. Understanding base conversion is fundamental to computer science.'
+    faq4q: What are the practical uses of base conversion in computing?
+    faq4a: "Base conversion is widely used in computer science: hexadecimal represents color values (#FF5733), memory addresses, and raw byte data; binary is used for bitwise operations and permission masks; octal was historically used for Unix file permissions; Base64 is used for URL-safe data encoding. Understanding base conversion is fundamental to low-level programming."
     title: Number Base Converter (2/8/10/16)
-    description: Convert a number between different bases (decimal, hexadecimal, binary, octal, base64, ...)
+    description: Convert numbers between different bases — decimal, hexadecimal, binary, octal, and base64. Supports fractional parts and custom radix, ideal for low-level programming.
 
   yaml-to-json-converter:
     step1: 'Step 1: Paste your YAML content into the left editor.'
@@ -1482,6 +1618,8 @@ tools:
     faq2a: 'No. JSON does not support comments so all YAML comments are discarded during conversion.'
     faq3q: What are the main differences between YAML and JSON?
     faq3a: YAML uses indentation for nesting, supports comments (#), multiline strings, and anchors/aliases. JSON uses braces and brackets, has a stricter syntax, and is faster to parse. YAML 1.2 is a superset of JSON. YAML is preferred for human-maintained config files; JSON is preferred for API data exchange.
+    faq4q: How are YAML anchors and aliases handled in JSON?
+    faq4a: "YAML supports anchors (&anchor) and aliases (*alias) for reusing configuration fragments — a feature JSON lacks. When converting to JSON, aliases are expanded (inlined), generating fully repeated data. This means the resulting JSON is more verbose than the YAML and loses the original maintainability advantage. If JSON also needs to support reuse, handle it at the application layer (e.g., JSON Schema's $ref)."
     title: YAML to JSON converter
     description: Convert YAML to JSON format online instantly. Paste your YAML configuration and get valid, formatted JSON output. Supports all YAML features including anchors, aliases, and multi-line strings.
 
@@ -1497,6 +1635,8 @@ tools:
     faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
     faq3q: What is the difference between UUID v4 and UUID v7?
     faq3a: UUID v4 is completely random with no ordering, making it ideal for most use cases. UUID v7 (newer RFC 9562) is time-ordered, embedding a millisecond timestamp prefix for database-friendly sorting. If you need sortable unique IDs with time ordering for database primary keys, consider UUID v7 or ULID as modern alternatives to v4.
+    faq4q: What is the difference between UUID v4 and v7? Which should I choose?
+    faq4a: UUID v4 is completely random and widely supported, suitable for most global unique ID use cases. UUID v7 (standardized in 2023) includes a timestamp prefix, making it naturally time-ordered — more B-tree index friendly (fewer page splits, better insert performance) while retaining sufficient randomness to prevent collisions. New projects should consider UUID v7 or ULID for database primary keys. Existing systems using v4 do not need to migrate.
     versionLabel: UUID version
     quantity: Quantity
     quantityPlaceholder: UUID quantity
@@ -1521,8 +1661,10 @@ tools:
     faq2a: 'An IPv4-mapped IPv6 address represents an IPv4 in IPv6 format: ::ffff:x.x.x.x. Used in dual-stack systems.'
     faq3q: Why convert IPv4 to different formats?
     faq3a: 'Binary: understanding subnet masks and routing; Hex: used in network protocol headers and memory; Integer: efficient database storage with range queries (WHERE ip_int BETWEEN x AND y is faster than string operations); Dotted decimal: human-readable standard format.'
+    faq4q: In what scenarios are different IPv4 address formats used?
+    faq4a: Dotted-decimal (192.168.1.1) is the everyday human-readable format; hexadecimal is common in assembly, C code, and network protocol analysis; the 32-bit integer format is used for database storage (INT type is more space-efficient and faster to index than VARCHAR); binary representation is used to understand subnet mask and CIDR bit-level logic.
     title: IPv4 address converter
-    description: Convert an IP address into decimal, binary, hexadecimal, or even an IPv6 representation of it.
+    description: Convert an IPv4 address into decimal, binary, hexadecimal, or IPv6-mapped representation. Useful for network engineering and security analysis.
     inputLabel: IPv4 address
     inputPlaceholder: 'e.g. 192.168.1.1'
     errorMsg: Please enter a valid IPv4 address (each octet 0–255, four octets, e.g. 192.168.1.1)
@@ -1544,8 +1686,10 @@ tools:
     faq2a: 'Words are sequences of characters separated by whitespace. Punctuation attached to a word is counted as part of the word.'
     faq3q: How is reading time estimated?
     faq3a: 'Reading time is calculated using average adult reading speed: approximately 200-250 words per minute for English and 400-500 characters per minute for Chinese. This tool uses 200 words/minute as the baseline, suitable for general content. Technical documentation and academic papers are typically read more slowly.'
+    faq4q: How important is word count in SEO content optimization?
+    faq4a: "The effect of content length on SEO: research shows top-ranking Google pages average 1,500-2,500 words; long-form content tends to earn more backlinks; but quality matters more than quantity — padding with low-quality text is harmful. Recommended practice: set word count targets based on competitors' average, keep paragraphs to 50-100 words, use headings and lists to improve readability. Long-form works for tutorials and comparisons; news and updates do not need to be long."
     title: Text Statistics & Word Counter
-    description: Get information about a text, the number of characters, the number of words, its size in bytes, ...
+    description: "Analyze text in real time: character count (with/without spaces), word count, sentence count, line count, byte size, and estimated reading time for content optimization."
     placeholder: Type or paste your text here…
     copyTooltip: Copy text
     clearTooltip: Clear text
@@ -1565,6 +1709,8 @@ tools:
     faq2a: 'Many letters sound similar over phone or radio (B/D/E/G/P/T, M/N, etc.). Using phonetic words reduces errors.'
     faq3q: What words represent each letter in the NATO phonetic alphabet?
     faq3a: 'Alpha, Bravo, Charlie, Delta, Echo, Foxtrot, Golf, Hotel, India, Juliet, Kilo, Lima, Mike, November, Oscar, Papa, Quebec, Romeo, Sierra, Tango, Uniform, Victor, Whiskey, X-ray, Yankee, Zulu. Digits: Zero through Niner.'
+    faq4q: In which professional fields is the NATO phonetic alphabet widely used?
+    faq4a: "The NATO phonetic alphabet (Alpha Bravo Charlie...) is used in: aviation communications (pilots and air traffic control); military and police radio; customer service calls to confirm customer details; medical emergency communications (drug names, patient IDs); weather reports; amateur radio (HAM Radio). Standardized by ICAO (International Civil Aviation Organization), it provides a single globally consistent pronunciation for all 26 letters, eliminating misunderstandings from accents and background noise."
     title: Text to NATO alphabet
     description: Convert any text into the NATO phonetic alphabet (Alpha, Bravo, Charlie...). Useful for spelling out words over phone calls, radio communications, and anywhere precise verbal communication is needed.
 
@@ -1578,6 +1724,8 @@ tools:
     faq2a: 'Basic Auth alone is NOT secure because credentials are only Base64-encoded. Always use it over HTTPS.'
     faq3q: What is the difference between Basic Auth and Bearer Token authentication?
     faq3a: Basic Auth sends username:password as Base64 in every request — requires HTTPS, simple but exposes credentials. Bearer Token sends a short-lived JWT or opaque token — does not expose passwords, supports expiration and scopes, better suited for modern API design and single sign-on scenarios.
+    faq4q: Is Basic Auth secure? When should it be used?
+    faq4a: Basic Auth encodes credentials in Base64 and sends them in the request header — it provides no encryption on its own. It must be combined with HTTPS to be reasonably secure. It is suitable for internal APIs, development environments, or low-security scenarios. For production user-facing services, prefer OAuth2, JWT, or API keys.
     title: Basic auth generator
     description: Generate HTTP Basic Authentication headers instantly. Enter a username and password to produce the Base64-encoded Authorization header required for API testing, curl commands, and HTTP clients.
 
@@ -1591,6 +1739,8 @@ tools:
     faq2a: 'Unicode assigns code points (e.g. U+0041 for A). UTF-8 is an encoding that represents those code points as 1-4 bytes.'
     faq3q: Why does the same character look different on different devices?
     faq3a: Emoji and special characters are rendered by the OS font and rendering engine. The same Unicode code point looks completely different on Apple, Google, and Microsoft platforms. Using UTF-8 encoding resolves most cross-platform text encoding issues — always specify UTF-8 as your document and database encoding.
+    faq4q: What is the difference between Unicode, UTF-8, and UTF-16?
+    faq4a: "Unicode is a character set standard that defines code points for over 1 million characters (U+0000 to U+10FFFF). UTF-8 and UTF-16 are different encoding schemes that implement Unicode. UTF-8: variable-length, 1 byte for ASCII, 3 bytes for CJK, backward compatible with ASCII — the web standard. UTF-16: variable-length, 2 bytes for the basic plane, used internally by JavaScript and Java. UTF-32: fixed 4 bytes per character, simple but space-wasteful."
     title: Text to Unicode
     description: Convert text to Unicode code points and back. Enter any string to get its Unicode escape sequences, or paste Unicode codes to decode them back to readable text.
     textPlaceholder: 'e.g. Hello 你好 🚀'
@@ -1605,6 +1755,8 @@ tools:
     faq2a: 'IP ranges that do not align on power-of-2 boundaries require multiple CIDR blocks to represent exactly.'
     faq3q: Why do multiple CIDRs sometimes represent one IP range?
     faq3a: CIDR blocks must be power-of-2 in size and aligned to corresponding boundaries. An arbitrary start-to-end IP range (e.g. 10.0.0.5 to 10.0.0.20) cannot be expressed as a single CIDR — it decomposes into multiple non-overlapping blocks. This tool performs that decomposition automatically for firewall rules.
+    faq4q: What are the practical uses of IP range expansion in network configuration?
+    faq4a: "Practical uses of IP range expansion: firewall rules (allow only specific IP ranges); VPN routing tables (specify which traffic goes through the VPN tunnel); Nginx/Apache allow/deny directives; cloud security group rules (AWS Security Groups, Alibaba Cloud); CDN whitelists; database access control. CIDR is the most concise notation — a single IP range may map to multiple CIDR blocks."
     title: IPv4 range expander
     description: Given a start and an end IPv4 address, this tool calculates a valid IPv4 subnet along with its CIDR notation.
     startAddress: Start Address
@@ -1630,6 +1782,8 @@ tools:
     faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
     faq3q: Can the text diff tool handle large files?
     faq3a: The tool runs entirely in your browser, so performance depends on your device. It handles files with thousands of lines well, but very large files (tens of MB) may cause the browser to slow down. All data is processed locally and never sent to a server, making it safe for comparing files with sensitive content.
+    faq4q: What algorithm does a text diff tool use? Is it the same as git diff?
+    faq4a: "Most text diff tools use the Myers diff algorithm (O(ND) algorithm), which is also Git's default — it finds the shortest edit path (minimum number of changes). Git also supports patience (better for code refactoring, recognizes moved code blocks) and histogram (an improvement on patience). Online diff tools typically use diff_match_patch (Google) or jsdiff, both based on the same Myers algorithm and producing results consistent with git diff."
     title: Text Diff & Compare Tool
     description: Compare two text blocks side-by-side and highlight the differences. Supports character, word, and line-level diff. Perfect for code review, document comparison, and change tracking.
     originalText: Original Text
@@ -1649,12 +1803,14 @@ tools:
     faq2a: 'TOTP is defined in RFC 6238 and uses HMAC-SHA1. Used by Google Authenticator and Authy.'
     faq3q: What is the difference between TOTP and HOTP?
     faq3a: TOTP (Time-based OTP) generates a code based on the current time, refreshing every 30 seconds — used by Google Authenticator. HOTP (HMAC-based OTP) uses an incrementing counter instead of time, suitable for hardware tokens and offline scenarios where clock sync is not guaranteed.
+    faq4q: What is the difference between TOTP and HOTP? Which should I use?
+    faq4a: TOTP (time-based) is an extension of HOTP (counter-based), using the current timestamp instead of a counter. TOTP refreshes every 30 seconds — even if an OTP is intercepted it expires quickly — and is the standard used by Google Authenticator, Authy, and other apps. HOTP is based on an incrementing counter and does not require time synchronization, making it suitable for offline hardware tokens. Modern 2FA almost universally uses TOTP (RFC 6238).
     title: OTP code generator
-    description: Generate and validate time-based OTP (one time password) for multi-factor authentication.
+    description: Generate and validate time-based OTP (TOTP) and HMAC-based OTP (HOTP) for multi-factor authentication. Supports custom secrets and step intervals.
 
   url-encoder:
     title: Encode/decode URL-formatted strings
-    description: Encode text to URL-encoded format (also known as "percent-encoded"), or decode from it.
+    description: Encode text to URL-encoded format (percent-encoding) or decode it back. Supports full URL and URI component modes, ideal for API development and web debugging.
     step1: 'Step 1: Select "Encode" or "Decode" mode.'
     step2: 'Step 2: Paste your URL or text into the input box.'
     step3: 'Step 3: The encoded/decoded result appears instantly.'
@@ -1664,6 +1820,8 @@ tools:
     faq2a: When passing user input as query parameters, constructing URLs programmatically, or handling form data submissions.
     faq3q: What is the difference between URL encoding and Base64?
     faq3a: URL encoding (percent-encoding) converts special characters to %XX format for safe transmission in URLs. Base64 encodes binary data as ASCII text for transmission in text-based protocols. Use URL encoding for query parameters and form data; use Base64 for encoding binary content like files or images.
+    faq4q: What is the difference between URL percent-encoding and Base64?
+    faq4a: URL encoding (%XX) is specifically for escaping unsafe characters in URLs, converting bytes to % followed by hex digits to keep the URL syntactically valid (e.g., space -> %20, Chinese characters -> %E4%B8%AD). Base64 encodes arbitrary binary data to 64 printable characters for transport over text protocols, increasing size by ~33%. URL encoding is for URL parameters; Base64 is used for data URIs, API authentication, and email attachments.
 
   text-to-binary:
     step1: 'Step 1: Enter text to convert to binary or enter binary to decode back to text.'
@@ -1675,6 +1833,8 @@ tools:
     faq2a: 'The tool uses UTF-8 encoding which is the standard for the web.'
     faq3q: What are practical uses for text-to-binary conversion?
     faq3a: 'Text binary representation is used for: understanding computer data storage fundamentals, debugging network protocols and file formats, learning encoding systems (ASCII/UTF-8), cryptography and information security education, and steganography applications. Essential for computer science fundamentals.'
+    faq4q: How does text-to-binary conversion work at the computer level?
+    faq4a: "The underlying process: character to character encoding (Unicode code point, e.g., 'A' = U+0041 = 65) to byte sequence (UTF-8/UTF-16/ASCII, e.g., 'A' in ASCII = 01000001) to high/low voltage levels in memory. English characters are 1 byte (8 bits) in ASCII and UTF-8; Chinese characters are 3 bytes (24 bits) in UTF-8. Understanding this process is essential for diagnosing encoding issues (garbled text)."
     title: Text to ASCII binary
     description: Convert text to ASCII binary representation (0s and 1s) and decode binary strings back to text. Supports custom separators and shows hex/decimal equivalents. Great for learning and data encoding.
 
@@ -1720,6 +1880,8 @@ tools:
     faq2a: For first-time homebuyers in most Chinese cities, the minimum down payment is 20%. Some cities and loan types may require 30% or more.
     faq3q: How is the monthly payment calculated?
     faq3a: 'For Equal Payment: M = P × r × (1+r)^n / ((1+r)^n - 1), where P is loan principal, r is monthly interest rate (annual rate / 12), and n is total months.'
+    faq4q: What is the difference between equal-payment and equal-principal repayment?
+    faq4a: "Equal-payment (annuity): fixed monthly payment, high interest and low principal repayment early on, stable and easy to budget, slightly higher total interest paid. Equal-principal: fixed monthly principal, decreasing interest, higher early payments that decrease over time, lower total interest — better for higher-income borrowers who plan to prepay. In most countries, lenders default to equal-payment; both options are usually available for commercial loans."
     year: yr
     downPaymentLabel: Down Payment
     maxLoan: Max Loan
@@ -1761,6 +1923,8 @@ tools:
     faq2a: 'WHO standard: 18.5–24.9 is normal. Chinese national standard (NHC): 18.5–23.9 is normal weight; 24–27.9 is overweight; ≥28 is obese.'
     faq3q: Does this calculator send my data anywhere?
     faq3a: No. All calculations run entirely in your browser. No health data is collected or transmitted.
+    faq4q: What are the limitations of BMI?
+    faq4a: BMI does not distinguish between fat and muscle — muscular athletes may be incorrectly classified as overweight. It also ignores fat distribution (waist circumference is a better cardiovascular predictor), age, sex, and ethnicity. BMI is a population-level statistical tool, not a precise personal health measure. Consult a doctor and use additional metrics like waist circumference and body fat percentage for a complete picture.
     decreaseHeight: Decrease height
     increaseHeight: Increase height
     decreaseWeight: Decrease weight
@@ -1776,6 +1940,8 @@ tools:
     faq2a: 'Currently the tool gives equal weight to all options. To weight an option add it multiple times in the list.'
     faq3q: How can I add weighted probabilities to choices?
     faq3a: This tool assigns equal weight to each option. For weighted choices, add an option multiple times — for example to give Option A twice the probability, enter it twice in the list. This simple approach works for most informal decision-making without requiring additional settings.
+    faq4q: Does the random decision tool use true randomness or pseudo-randomness?
+    faq4a: "This tool uses JavaScript's Math.random(), which is a pseudo-random number generator (PRNG) based on a deterministic algorithm (modern browsers typically use xorshift128+) — not true randomness. For everyday decisions, PRNG is completely adequate and statistically uniform. For cryptographically secure randomness, use window.crypto.getRandomValues(). True randomness comes from physical processes (quantum noise, atmospheric noise) — Random.org provides a true-random service."
     title: Random Decision Maker
     description: Can't decide? Enter your options and spin the wheel to let fate choose for you! Supports custom options and quick presets.
     spin: Spin!
@@ -1818,6 +1984,8 @@ tools:
     faq2a: 'Five insurances: pension, medical, unemployment, work injury, maternity. One fund: housing provident fund. Rates vary by city.'
     faq3q: What are the special additional deductions for individual income tax?
     faq3a: '2024 special deductions: children education (2000 per child/month), continuing education (400-800/month), major medical expenses (up to 80000/year), housing loan interest (1000/month), housing rent (800-1500/month by city), supporting elderly parents (up to 2000/month), and infants under 3 (2000 per child/month).'
+    faq4q: What is the difference between marginal and effective tax rates?
+    faq4a: The marginal tax rate is the rate applied to the last dollar of income (e.g., 30%), while the effective tax rate is total tax divided by total income — usually much lower than the marginal rate. For example, a taxpayer in the 30% bracket may have an effective rate of only 15-20%. Focus on the effective rate for tax planning; use the marginal rate to evaluate the after-tax value of additional income.
     title: China Income Tax Calculator
     description: Calculate monthly income tax, social insurance contributions, and net salary based on China's current individual income tax policy (¥5,000 threshold, 7 tax brackets), with support for special additional deductions.
     income: Income Details
@@ -1879,6 +2047,8 @@ tools:
     faq2a: Use rem for font sizes and spacing so your layout scales with user's browser font settings (better accessibility). Use px for fine-grained control, borders, or fixed elements.
     faq3q: When should I use px vs rem vs em?
     faq3a: 'px: fixed-size elements (borders, shadows, icons); rem: font sizes and spacing — scales with root font size for better accessibility; em: sizes relative to parent element; vw/vh: full-screen layouts and responsive design. Using rem for text ensures your layout respects user browser font size preferences.'
+    faq4q: When should I use rem instead of px?
+    faq4a: "rem is relative to the root font size, enabling responsive typography — when a user adjusts font size in browser settings, rem-based elements scale proportionally, improving accessibility. px is best for fixed dimensions (e.g., 1px borders). Best practices: use rem for font sizes, spacing, and container widths; use px for borders and shadows; use em in media queries."
 
   unix-timestamp:
     title: Unix Timestamp Converter
@@ -1899,6 +2069,8 @@ tools:
     faq2a: 'A 10-digit number is seconds (e.g. 1704067200). A 13-digit number is milliseconds (e.g. 1704067200000). Current Unix time is ~1.7 billion seconds.'
     faq3q: How do I get the current Unix timestamp in different languages?
     faq3a: 'JavaScript: Date.now() (ms) or Math.floor(Date.now()/1000) (seconds); Python: import time; int(time.time()); Java: System.currentTimeMillis()/1000; Go: time.Now().Unix(); Shell: date +%s. Most languages return seconds; JavaScript returns milliseconds.'
+    faq4q: What is the Year 2038 problem with Unix timestamps?
+    faq4a: "The Y2K38 problem: a signed 32-bit integer's maximum value is 2,147,483,647, corresponding to 2038-01-19 03:14:07 UTC. Beyond that moment, the 32-bit integer overflows to a negative value, causing systems to interpret the time as 1901. Solutions: use 64-bit integers to store timestamps (Linux kernel 5.6+ supports 64-bit time_t on 32-bit systems); upgrade legacy systems and embedded devices using 32-bit timestamps; check database TIMESTAMP field types."
 
   number-formatter:
     title: Number Formatter
@@ -1927,6 +2099,8 @@ tools:
     faq2a: Scientific notation always shows a coefficient and exponent (e.g. 1.23E3). Compact notation uses locale-aware abbreviations (e.g. "1.2K", "1.2万") which are more readable for large numbers.
     faq3q: Why do number formats differ between countries?
     faq3a: "Different countries use different decimal and thousands separators: US/UK use comma for thousands (1,000.00); Germany/France use period for thousands (1.000,00); India uses different grouping (1,00,000.00). International software must use locale-aware number formatting based on the user's region."
+    faq4q: What international number format differences should I be aware of?
+    faq4a: "Number formats vary significantly by country: thousands separator — US/China use a comma (1,000), Europe uses a period (1.000) or space (1 000); decimal point — US/China use a period (3.14), Europe uses a comma (3,14); currency symbol position varies. When developing internationalized applications, use the Intl.NumberFormat API rather than hardcoding formats."
     withGrouping: With thousands separator
     noGrouping: No thousands separator
     invalidNumber: Please enter a valid number
@@ -1954,6 +2128,8 @@ tools:
     faq2a: Tints are created by adding white to a color (making it lighter), while shades are created by adding black (making it darker). This tool generates both to give you a full range.
     faq3q: How do designers use a color palette generator?
     faq3a: 'Workflow: 1) Choose a brand primary color; 2) Generate a full tint/shade scale (50-900) for backgrounds, borders, and text; 3) Generate complementary or analogous colors for accents; 4) Generate grays for neutral elements; 5) Define semantic colors (primary, success, warning, error) mapped to specific scale values in your design system.'
+    faq4q: How do I choose a harmonious color palette for a project?
+    faq4a: "Common color theory approaches: complementary colors (opposite on the color wheel, high contrast), analogous colors (adjacent, harmonious), and triadic colors (equally spaced, vibrant balance). Practical advice: choose one primary (brand) color, one accent color, neutral grays, and a highlight color. Ensure contrast ratios meet WCAG AA standard (4.5:1) for accessibility, and account for color-blind users."
     clickToChange: Click to change color
     openPicker: Open color picker
     hexError: Invalid hex color value
@@ -2006,6 +2182,8 @@ tools:
     faq2a: Higher error correction makes the QR code more resilient to damage, but increases visual complexity. Medium is fine for most uses; High or Highest is recommended for printed materials.
     faq3q: How much data can a QR code hold?
     faq3a: The capacity depends on content type and error correction level. At level L (low), a QR code can hold up to 7,089 numeric characters, 4,296 alphanumeric characters, or 2,953 bytes of binary data. For URLs, keep the content short — shorter URLs generate simpler, more scannable QR codes that work better when printed small.
+    faq4q: How should I choose the QR code error correction level?
+    faq4a: "QR codes have 4 error correction levels: L (7%), M (15%), Q (25%), H (30%) — the percentage indicates how much damage the code can recover from. Guidance: use L or M for plain URLs or text for the smallest size; use M or Q for print materials that may wear; use H when overlaying a logo on the QR code (the logo covers part of the code, requiring high error correction); higher levels produce denser codes that require scanning at a closer distance."
     contentLabel: QR Code Content
     contentPlaceholder: Enter a URL, text, or any content…
     charUnit: chars
@@ -2040,8 +2218,10 @@ tools:
     faq2a: 'Use parentheses () for numbered groups, (?<name>...) for named groups. Both are shown in the match results.'
     faq3q: How do I make a regex match the entire string, not just part of it?
     faq3a: 'Use anchors: ^ matches the start of the string, and $ matches the end. For example, /^[0-9]{4}$/ matches exactly 4 digits. In multiline mode (m flag), ^ and $ match the start and end of each line rather than the whole string. Without anchors, the pattern can match anywhere inside the string.'
+    faq4q: How do I optimize a regex that causes catastrophic backtracking (ReDoS)?
+    faq4a: "Catastrophic backtracking is the root of ReDoS (Regular Expression Denial of Service) attacks and is common with nested quantifiers like (a+)+. Optimization strategies: avoid nested quantifiers; use atomic groups or possessive quantifiers to prevent backtracking; move fixed parts outside of groups; use anchors (^ $) to limit the match scope; test boundary cases (strings of repeated characters). A regex tool that shows step count can help — over 1 million steps indicates ReDoS risk."
     title: Regex tester
-    description: Test regular expressions with real-time match highlighting, capture groups, and named groups.
+    description: Test regular expressions with real-time match highlighting, capture groups, and named groups. Includes a cheat sheet and pattern explanation for quick reference.
     regexPlaceholder: Enter regular expression…
     testText: Test Text
     textPlaceholder: Enter text to match against…
@@ -2076,6 +2256,8 @@ tools:
     faq2a: 'YAML uses spaces (not tabs) for indentation. Sibling nodes must use the same indentation level.'
     faq3q: What do the YAML --- and ... markers mean?
     faq3a: --- is a document start marker allowing multiple independent YAML documents in one file. ... is an optional document end marker. For single-document files, --- can usually be omitted, but it is commonly used in Kubernetes, GitHub Actions, and Ansible to separate multiple configuration documents.
+    faq4q: In which scenarios do YAML and JSON each have an advantage?
+    faq4a: "YAML advantages: supports comments (essential for config files); indentation syntax is closer to natural language; supports multi-line strings; supports anchors and aliases to reduce repetition; more human-readable overall. JSON advantages: strict syntax with simple parser implementation; native browser support (JSON.parse); de facto standard for APIs and data exchange; no implicit type coercion pitfalls. Use YAML for config files; use JSON for data transport."
     title: YAML Viewer & Formatter
     description: Validate, format, and view YAML files online with syntax highlighting and error detection. Instantly checks for syntax errors in Kubernetes configs, Docker Compose, GitHub Actions, and other YAML configuration files.
     rawYaml: Raw YAML
@@ -2104,6 +2286,8 @@ tools:
     faq2a: 'Use the Regex Tester tool on this site to test and debug regular expressions in real-time.'
     faq3q: What is the difference between greedy and lazy quantifier matching?
     faq3a: 'Greedy (default) matches as much as possible: .* matches to the end of the string. Lazy (add ? after quantifier: .*?) matches as little as possible, stopping at the first match. For example: /<.*>/ greedily matches the whole line; /<.*?>/ lazily matches just the first complete tag.'
+    faq4q: What is the difference between greedy and non-greedy matching in regex?
+    faq4a: "Greedy quantifiers (* + ?) match as many characters as possible; non-greedy/lazy quantifiers (*? +? ??) match as few as possible. Example: for the string '<a>foo</a><b>bar</b>', <.*> greedy-matches the entire string, while <.*?> matches only the first '<a>'. This is critical when extracting HTML tag content — always use non-greedy to avoid matching from the first opening tag to the last closing tag."
     title: Regex cheat sheet
     description: A comprehensive regex cheat sheet with common patterns for email, URL, phone, date, IP address, and more. Copy-ready examples with explanations for JavaScript, Python, and PCRE.
     toc: Contents
@@ -2120,13 +2304,15 @@ tools:
     faq1q: What is the difference between XML and JSON?
     faq1a: XML uses tag-based structure, suitable for documents and configs. JSON uses key-value pairs, is more lightweight, and is the standard format for modern Web APIs.
     faq2q: Does conversion support XML attributes?
-    faq2a: Yes. XML element attributes are preserved as special keys (e.g. @attributes) in the JSON result.
+    faq2a: "Yes. XML element attributes are preserved as special keys (e.g. {'@'}attributes) in the JSON result."
     faq3q: How are XML namespaces handled when converting to JSON?
     faq3a: XML namespace prefixes (like <ns:tag>) are typically preserved as part of the key name in JSON (e.g. ns:tag). The namespace URI declaration attributes (xmlns:ns=...) are handled as regular attributes. For complex namespace-heavy XML, review the output carefully as the mapping can vary between conversion implementations.
+    faq4q: How do I handle the mapping between XML attributes and elements when converting to JSON?
+    faq4a: "XML has both attributes and elements as data carriers, while JSON only has key-value pairs. Common conversion strategies: map attributes to special JSON keys (e.g., {'@'}attr or a nested _attributes object); map text content to a #text key; handle arrays carefully (single vs. multiple child elements should both be converted to arrays for consistency). Different libraries (xml2js, fast-xml-parser) use different strategies — choose conversion options based on your use case."
 
   json-to-xml:
     title: JSON to XML Converter Converter
-    description: Convert JSON data to standard XML format, ideal for legacy system integration and data exchange.
+    description: Convert JSON data to standard XML format with customizable root element and attribute handling, ideal for legacy system integration and data exchange workflows.
     step1: 'Step 1: Paste your JSON text into the left input box.'
     step2: 'Step 2: The converted XML result is shown in real-time on the right.'
     step3: 'Step 3: Click copy or download to save the XML output.'
@@ -2136,6 +2322,8 @@ tools:
     faq2a: Each element in a JSON array becomes a repeated XML tag with the same name, preserving order and hierarchy.
     faq3q: What happens to the JSON root node when converting to XML?
     faq3a: XML requires a single root element but JSON objects/arrays have no root concept. The conversion adds <root> as the default root tag, or uses the first JSON object key as the root element name. The tool defaults to <root> which you can manually rename in the output.
+    faq4q: What validation issues should I check after converting JSON to XML?
+    faq4a: "After converting, verify: XML tag names cannot start with a digit or contain spaces (JSON keys like '2 users' need special handling); JSON null values have no standard XML equivalent; the choice between attributes vs. elements affects XML structure; if a schema is required (XSD), adjust the converted output accordingly. For enterprise system integration, refer to the target system's WSDL/XSD spec before finalizing."
 
   markdown-to-html:
     title: Markdown to HTML Converter
@@ -2149,10 +2337,12 @@ tools:
     faq2a: Click the "Print" button and select "Save as PDF" in the browser print dialog.
     faq3q: Why does the converted HTML look unstyled when pasted into a webpage?
     faq3a: The converted HTML uses standard semantic tags (h1–h6, p, ul, code, etc.) with no inline styles. To display it correctly, you need to link a CSS stylesheet that targets those tags — for example a GitHub Markdown CSS or a custom reset. Copy both the HTML and a stylesheet for a complete, styled result.
+    faq4q: How do I prevent XSS attacks when converting Markdown to HTML?
+    faq4a: "Markdown supports embedded raw HTML, which means malicious users may inject script tags or on* event attributes. Defenses: sanitize converted HTML server-side using DOMPurify or bleach (Python), allowing only whitelisted tags; or disable the Markdown engine's raw HTML support; use CSP (Content Security Policy) as a last line of defense."
 
   safelink-decoder:
     title: Outlook SafeLink Decoder
-    description: Decode Microsoft Outlook SafeLink protected URLs and restore the original destination link.
+    description: Decode Microsoft Outlook SafeLink protected URLs and restore the original destination link. Supports batch decoding for enterprise email users.
     step1: 'Step 1: Copy the SafeLink URL from an Outlook email (starts with "safelinks.protection.outlook.com").'
     step2: 'Step 2: Paste it into the input box.'
     step3: 'Step 3: The decoded original URL is shown instantly. Click to visit or copy.'
@@ -2162,6 +2352,8 @@ tools:
     faq2a: This tool only decodes the URL and does not perform security validation. Always verify the destination before visiting.
     faq3q: What are Microsoft Safe Links?
     faq3a: Microsoft Defender for Office 365 replaces URLs in emails with wrapped Safe Links (e.g. urldefense.com or safelinks.protection.outlook.com) to scan for malicious destinations. When you need the original URL (for sharing or debugging), this tool decodes and extracts it. Always verify the decoded URL before visiting.
+    faq4q: Why do email systems wrap links in SafeLink encoding?
+    faq4a: SafeLink wrapping is a feature of email security gateways (e.g., Microsoft Defender for Office 365, Proofpoint) that replaces all URLs in emails with proxied safety-check URLs. When clicked, the gateway first checks whether the destination is a known malicious site, phishing link, or newly registered suspicious domain, then redirects only if it passes. The downside is that the original URL is hidden. This tool restores the original address.
 
   common:
     faqSafe: Is this tool safe? Will my data be uploaded?

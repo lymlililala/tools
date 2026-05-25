@@ -87,8 +87,10 @@ tools:
     faq2a: '不会。所有分析均在浏览器本地完成，您的密码不会离开您的设备。'
     faq3q: 什么样的密码才算足够安全？
     faq3a: 一个安全的密码应至少 12 位，包含大小写字母、数字和特殊符号，且不含常见词语或个人信息。更安全的方式是使用密码管理器生成 20 位以上的随机密码，并为每个网站使用不同密码，配合双因素认证（2FA）。
+    faq4q: 什么样的密码才算真正安全？
+    faq4a: 真正安全的密码特征：至少 16 位（越长越好）；随机性高（不是单词或可预测模式）；包含大小写字母、数字和特殊字符的组合。最安全的方式是使用密码管理器（Bitwarden、1Password 等）生成和存储完全随机的高强度密码，不同网站使用不同密码。密码短语（4-5 个随机词）也是兼顾安全和记忆的好选择。
     title: 密码强度分析仪
-    description: 在线密码强度检测工具，实时评估密码的安全强度，估算暴力破解所需时间，并给出改进建议，帮助你设置更安全的密码。
+    description: 在线密码强度检测工具，实时评估密码的安全强度，估算暴力破解所需时间，并给出改进建议，支持信息熵值计算和常见弱密码检测，帮助你设置更安全的密码，防止账户被爆破攻击。
 
   chronometer:
     step1: '步骤 1：点击「开始」启动计时器。'
@@ -100,8 +102,10 @@ tools:
     faq2a: '是的，关闭或刷新页面将重置计时器，因为它运行在浏览器的 JavaScript 上下文中。计时器使用 Date.now() 计算差值，即使标签页切换到后台也能保持准确。'
     faq3q: 计时器和秒表有什么区别？
     faq3a: 秒表（stopwatch）从零开始正向计时，用于记录事件持续时长；计时器（countdown timer）从设定时间倒数到零，常用于提醒和限时任务。本工具是秒表功能，支持分段（Lap）记录，可以记录每一轮或每一段的时间，适合运动训练和会议计时。
+    faq4q: 计时器在 JavaScript 中如何精确计时？
+    faq4a: JavaScript 可使用 performance.now() 获取亚毫秒级精度的时间戳，比 Date.now() 更精确且不受系统时间调整影响。计时器通常用 setInterval 或 requestAnimationFrame 定期更新显示。长时间运行时，requestAnimationFrame 更节能且与屏幕刷新率同步，避免后台标签页中的过度计算。
     title: 在线计时器 / 秒表
-    description: 在线秒表计时器，支持毫秒级精度计时、分段（Lap）记录和圈速统计，操作简单直观，适合运动训练计时、演讲排练、会议控时等各类计时场景。
+    description: 在线秒表计时器，支持毫秒级精度计时、分段（Lap）圈速记录和最快/最慢圈统计，操作简单直观，适合运动训练计时、演讲排练、会议控时等各类精确计时和时间测量场景使用。
     idle: 就绪
     running: 计时中
     paused: 已暂停
@@ -129,8 +133,10 @@ tools:
     faq2a: 'Token 使用浏览器内置加密级随机数生成器生成，具有密码学安全性。'
     faq3q: 生成的 Token 可以用于生产环境吗？
     faq3a: 可以。本工具使用 crypto.getRandomValues() 生成密码学安全的随机字符串，熵值充足，适合 API 密钥、Session Token 等生产场景，所有生成过程在本地浏览器完成，不上传服务器。
+    faq4q: 生成 API Token 时应该注意哪些安全事项？
+    faq4a: 安全 Token 生成要点：使用密码学安全随机数（crypto.getRandomValues 或 os.urandom），不要用 Math.random()；足够长度（至少 128 位）防止暴力枚举；生成后只存储哈希值，不存储原文，泄露数据库时 Token 仍安全；设置过期时间；一次性展示给用户后即不再显示（类似 GitHub PAT）；实现速率限制和异常检测。
     title: Token 生成器
-    description: 在线随机 Token/字符串生成器，支持自定义长度和字符集（大写、小写、数字、特殊符号），可生成 API 密钥、随机密码、随机 ID 等安全令牌。
+    description: 在线随机 Token/字符串生成器，支持自定义长度（1～512 字符）和字符集（大写、小写、数字、特殊符号），可生成 API 密钥、随机密码、随机 ID 等安全令牌，一键复制。
 
     uppercase: '大写 (ABC...)'
     lowercase: '小写 (abc...)'
@@ -153,8 +159,10 @@ tools:
     faq2a: 'Y 的 X% = Y × (X / 100)。例如，150 的 20% = 150 × 0.20 = 30。'
     faq3q: 如何快速心算百分比？
     faq3a: 常用技巧：求 10% 直接将小数点左移一位（200 的 10% = 20）；求 5% 就是 10% 的一半；求 20% 就是 10% × 2；求 25% 就是除以 4；求 50% 就是除以 2。组合这些技巧可以快速心算大多数百分比，例如求 15% = 10% + 5%。
+    faq4q: 百分比计算在数据分析中有哪些常见误用？
+    faq4a: 常见误用：百分点（percentage point）和百分比的混淆——利率从 2% 升到 3% 是增加了 1 个百分点，也是增加了 50%（两者都对但含义不同）；基数不同时直接对比百分比（如小样本的 100% 增长）；多重百分比叠加（先涨 20% 再降 20% 不等于 0）；忽略分母变化时的同比环比误读。
     title: 百分比计算器
-    description: 在线百分比计算器，支持计算某值占总数的百分比、百分比对应的具体数值、两个数之间的增减幅度，结果即时显示，适合财务、学习和日常计算。
+    description: 在线百分比计算器，支持三种计算模式：计算某值占总数的百分比、百分比对应的具体数值、两个数之间的增减百分比幅度，结果即时显示，适合财务分析、学习成绩统计和日常折扣计算。
     card1Title: X 的 Y% 是多少？
     card2Title: X 是 Y 的百分之多少？
     card3Title: 从 X 到 Y 的百分比变化是多少？
@@ -187,8 +195,10 @@ tools:
     faq2a: 'SVG 占位图主要用于开发，可在生产环境作为 fallback 或骨架屏使用。'
     faq3q: SVG 占位图和 CSS 骨架屏有什么区别？
     faq3a: SVG 占位图是一个实际的图片元素，使用 SVG 格式显示指定尺寸的带文字的色块，通常用作图片加载失败时的替代（fallback）。CSS 骨架屏使用动画效果（如灰色渐变波纹）模拟内容加载中的状态，是一种更现代的 UX 占位方式，但需要额外的 HTML/CSS 代码。
+    faq4q: SVG 占位图相比 PNG/JPEG 占位图有哪些优势？
+    faq4a: SVG 占位图的优势：体积极小（通常小于 1KB，PNG 可能几十 KB）；矢量格式，任意尺寸显示清晰，无需多种分辨率版本；可直接嵌入 HTML/CSS 的 data URI，减少 HTTP 请求；可自定义颜色、文字、尺寸且无需重新生成；配合 img 的 width/height 属性可防止布局偏移（CLS），提升 Core Web Vitals 指标。
     title: SVG 占位符生成器
-    description: 在线 SVG 占位图生成器，支持自定义宽高、背景色、文字内容和字体大小，生成轻量级 SVG 占位图，可直接用于原型设计、UI 布局调试和开发阶段的图片占位。
+    description: 在线 SVG 占位图生成器，支持自定义宽高、背景色、文字内容和字体大小，即时生成轻量级 SVG 占位图，可直接复制 SVG 代码或 Data URI，适合原型设计和 UI 布局调试。
 
   json-to-csv:
     step1: '步骤 1：将 JSON 数组粘贴到输入框中。'
@@ -200,6 +210,8 @@ tools:
     faq2a: '工具会将所有对象中的唯一键合并为列标题。缺失字段在 CSV 输出中留空。'
     faq3q: JSON 数组中有嵌套对象时如何转 CSV？
     faq3a: 本工具会自动将嵌套对象扁平化，使用点号（.）连接字段路径作为列标题，例如 address.city 会成为单独一列。嵌套的数组会被序列化为字符串放入单元格中，保证转换完整性。
+    faq4q: JSON 转 CSV 时如何处理嵌套对象和数组？
+    faq4a: CSV 是二维扁平结构，不原生支持嵌套。常见处理策略：扁平化（将 user.address.city 展开为列名 user_address_city）；序列化（将嵌套对象转为 JSON 字符串放入单元格，可读性差）；规范化（拆分为多个 CSV 文件，用 ID 关联）。选择策略取决于下游使用：数据分析用扁平化，数据库导入用规范化。
     title: JSON 转 CSV 转换器
     description: 在线 JSON 转 CSV 工具，将 JSON 数组数据一键转换为 CSV 表格格式，自动检测字段作为表头，支持嵌套对象扁平化，可直接复制或下载 .csv 文件，无需安装任何软件。
     rawJson: 原始 JSON
@@ -229,8 +241,10 @@ tools:
     faq2a: '照片保存为 PNG 格式，视频保存为大多数现代浏览器支持的 WebM 格式。'
     faq3q: 录制时如何切换不同的摄像头？
     faq3a: 本工具列出浏览器检测到的所有摄像头设备（如前置、后置、外接 USB 摄像头），可在下拉菜单中切换。切换后工具会重新请求摄像头权限并开始预览。注意：浏览器需要 HTTPS 环境或 localhost 才能访问摄像头权限。
+    faq4q: 录制的视频格式是什么？支持哪些浏览器？
+    faq4a: 视频格式取决于浏览器支持：Chrome/Edge 通常录制为 WebM（VP8/VP9 编码），Firefox 也支持 WebM，Safari 可能录制为 MP4（H.264）。WebM 是开放格式，体积小，但 iOS 设备兼容性较差。如需广泛兼容，录制后可使用 FFmpeg 转换为 MP4。
     title: 在线摄像头录制工具
-    description: 在线摄像头录制工具，直接在浏览器中使用摄像头拍照或录制视频，支持切换摄像头和麦克风设备，录制完成后可一键下载保存到本地，无需安装任何软件。
+    description: 在线摄像头录制工具，直接在浏览器中使用摄像头拍照或录制视频，支持切换前后摄像头和麦克风设备，录制完成后可一键下载保存到本地，无需安装任何软件，纯本地处理保护隐私安全。
     notSupported: 浏览器不支持
     notSupportedDesc: 您的浏览器不支持从摄像头录制视频，请升级至最新版 Chrome、Firefox 或 Edge。
     videoPlaceholder: 摄像头画面将在此处显示
@@ -270,8 +284,10 @@ tools:
     faq2a: 'key 表示打印字符，code 表示物理按键位置，keyCode 是旧式数值。现代 JavaScript 推荐使用 key 和 code。'
     faq3q: 如何在 JavaScript 中正确监听键盘事件？
     faq3a: 推荐使用 event.key 获取用户按键的逻辑值（如 'a'、'Enter'、'ArrowUp'），使用 event.code 获取物理按键位置（如 'KeyA'、'ShiftLeft'）。旧版的 keyCode 已被废弃，现代浏览器中应优先使用 key 和 code 属性。
+    faq4q: KeyboardEvent 中 keyCode、which 和 key 有什么区别？
+    faq4a: keyCode 和 which 是已废弃的属性，返回数字（如 Enter=13），不同键盘布局下非字母键数值不一致；key 是现代标准，返回有意义的字符串（如 Enter、ArrowUp、a），与键盘布局无关，推荐使用。code 属性返回物理键位（如 KeyA），与输入语言无关。新代码应使用 event.key 或 event.code。
     title: Keycode 信息
-    description: 在线键盘键码查询工具，实时显示按键的 JavaScript keyCode、key、code、location 及修饰键信息，帮助开发者调试键盘事件。
+    description: 在线键盘键码查询工具，实时显示任意按键的 JavaScript keyCode、key、code、location 及修饰键（Ctrl/Shift/Alt/Meta）信息，帮助开发者快速调试键盘事件处理逻辑。
 
   emoji-picker:
     step1: '步骤 1：按名称或关键词浏览或搜索 Emoji。'
@@ -283,6 +299,8 @@ tools:
     faq2a: '可以。每个 Emoji 都有 Unicode 码点，可用于 HTML 实体或 JSON。URL 中需要进行百分比编码。'
     faq3q: Emoji 在所有设备上显示效果一样吗？
     faq3a: 不完全一样。Emoji 的视觉外观由操作系统和字体决定，同一个 Unicode 码点在 Apple、Google、Microsoft 和 Samsung 设备上可能有明显不同的外观。在跨平台通信中，要注意某些 Emoji 在不同平台上可能传达不同的情感含义。
+    faq4q: Emoji 在不同设备和系统上为什么显示不同？
+    faq4a: 每个操作系统（iOS、Android、Windows、macOS）都有自己的 Emoji 字体，同一 Unicode 码点的表情在各平台视觉设计不同。新 Emoji 也可能在旧系统上显示为方块（豆腐块）。跨平台内容应注意表情含义差异，避免因视觉差异引起误解。
     title: Emoji 表情选择 / 复制
     description: 在线 Emoji 表情选择器，快速搜索和复制粘贴 Emoji 表情符号，同时显示每个 Emoji 的 Unicode 码点、HTML 实体代码和短名称，便于开发者在代码和文档中使用。
     searchPlaceholder: "搜索 Emoji（如 'smile'）… 或按 ⌘K"
@@ -308,8 +326,10 @@ tools:
     faq2a: 'WCAG 对比度衡量文本在背景上的可读性。4.5:1 达到 AA 标准；7:1 达到 AAA 标准。'
     faq3q: HEX、RGB、HSL 颜色格式各有什么用途？
     faq3a: HEX（如 #FF5733）是网页中最常用的颜色格式，简洁易读。RGB 适合动态计算颜色值。HSL 按色相/饱和度/亮度描述颜色，更直观，适合做颜色变亮变暗的动态调整和生成配色方案。
+    faq4q: HSL 颜色模型相比 RGB 有什么优势？
+    faq4a: HSL（色相、饱和度、亮度）对人类更直观。改变亮度只需调整 L 值，不会影响色相；生成颜色主题更简单（如同色相不同亮度的变体）。在 CSS 中，hsl() 让调色更容易理解和维护，特别适合动态生成颜色渐变、主题切换和响应式配色方案设计。
     title: 颜色格式转换器（HEX/RGB/HSL）
-    description: 在线颜色格式转换器，支持 HEX、RGB、HSL、HSV、CMYK 和 CSS 命名颜色之间的相互转换，提供颜色预览，适合前端开发和设计师使用。
+    description: 在线颜色格式转换器，支持 HEX、RGB、HSL、HSV、CMYK 和 CSS 命名颜色之间的相互转换，提供实时颜色预览，适合前端开发、UI 设计和颜色系统建设场景。
   ascii-text-drawer:
     title: ASCII 艺术字生成器
     description: 在线 ASCII 艺术字生成器，将普通文字转换为各种 ASCII 艺术风格的大字，支持 100+ 种字体样式和自定义宽度，适合制作命令行 Banner、欢迎信息和装饰文字。
@@ -323,6 +343,8 @@ tools:
     faq2a: 可用于终端输出、README 文件、社交媒体个性化签名、CLI 工具标题横幅等场景。
     faq3q: ASCII 艺术字如何在代码中使用？
     faq3a: 在代码中可将 ASCII 艺术字用于 CLI 程序的欢迎 Banner（通常放在程序入口处）、README 文件的标题装饰（GitHub 上显示效果好）、注释分隔符，以及 Node.js/Python 等脚本的启动信息。使用时需确保字体等宽（monospace），否则对齐会错乱。
+    faq4q: ASCII 艺术字支持中文吗？
+    faq4a: 大多数 ASCII 艺术字体只支持英文字母、数字和基本符号，不支持中文字符。如需中文 ASCII 艺术，建议使用专门的中文字符画生成器，或将中文内容转换为拼音再生成艺术字。
     inputLabel: 输入文字
     inputPlaceholder: 在此输入文字...
     fontLabel: 字体
@@ -351,8 +373,10 @@ tools:
     faq2a: '代价因子控制哈希轮数。每增加 1，计算时间翻倍，使暴力破解更加困难。'
     faq3q: Bcrypt 的 cost factor 应该设置为多少？
     faq3a: 推荐将 cost factor（轮数）设置为 10~12。值越高安全性越高但耗时越长。2024 年建议生产环境至少 10，高安全场景建议 12，本工具默认使用 10。
+    faq4q: bcrypt 哈希能被破解吗？
+    faq4a: bcrypt 的设计使其极难被暴力破解。高 cost factor 会使每次尝试耗时很长，即使使用 GPU 集群也需要数百年。只要 cost factor 足够高（≥10），且用户密码足够复杂，bcrypt 在实践中几乎不可破解。
     title: Bcrypt 哈希与校验
-    description: 使用 bcrypt 对文本进行哈希和校验。Bcrypt 是一种单向密码哈希函数，基于 Blowfish 加密算法设计，故意慢速以抵御暴力破解。
+    description: 使用 bcrypt 在线对文本进行哈希和校验。bcrypt 是基于 Blowfish 加密算法设计的单向密码哈希函数，内置盐值，故意慢速以抵御暴力破解，是存储用户密码的最佳实践之一。
     hashTitle: 哈希
     inputLabel: '您的字符串：'
     inputPlaceholder: '输入要进行 bcrypt 哈希的字符串...'
@@ -384,8 +408,10 @@ tools:
     faq2a: '表示每 5 分钟执行一次。分钟字段中的 */5 表示在每小时的 0、5、10、15 分运行。'
     faq3q: Crontab 的 5 个字段分别代表什么？
     faq3a: 标准 Crontab 格式：分钟（0-59）、小时（0-23）、日（1-31）、月（1-12）、星期（0-7，0 和 7 都是周日）。例如 0 9 * * 1-5 表示工作日每天 9:00 执行。* 表示任意值，/ 表示步进间隔。
+    faq4q: 如何调试 cron 任务不执行的问题？
+    faq4a: 常见原因：路径问题（cron 环境变量少，需用绝对路径）、权限不足、脚本有语法错误、未输出错误日志。调试步骤：在命令末尾加 >> /tmp/cron.log 2>&1 捕获输出；使用 crontab -l 确认规则已注册；查看 /var/log/syslog 或 journalctl -u cron；确保 cron 服务正在运行。
     title: Crontab 表达式生成
-    description: 在线 Crontab 表达式生成器，可视化配置定时任务的分钟、小时、日期、月份、星期，自动生成 cron 表达式并提供中文可读描述，支持快速验证。
+    description: 在线 Crontab 表达式生成器，可视化配置定时任务的分钟、小时、日期、月份、星期字段，自动生成 cron 表达式并提供中文可读描述，支持快速验证和常见模板，适合运维和后端开发。
     copiedTooltip: 已复制！
     copyTooltip: 复制表达式
     copied: 已复制
@@ -404,8 +430,10 @@ tools:
     faq2a: '401 未授权表示需要身份验证但未提供。403 禁止访问表示服务器拒绝授权，即使凭据有效也不行。'
     faq3q: 2xx、3xx、4xx、5xx 状态码各代表什么类别？
     faq3a: HTTP 状态码按首位数字分类：1xx（信息性）表示请求已收到，继续处理；2xx（成功）表示请求已成功处理，如 200 OK；3xx（重定向）表示需要进一步操作，如 301 永久重定向；4xx（客户端错误）表示请求有问题，如 404 未找到；5xx（服务器错误）表示服务器处理失败，如 500 内部错误。
+    faq4q: 3xx 重定向和 4xx 客户端错误应该如何区分使用？
+    faq4a: 301 永久重定向（SEO 权重转移，如域名迁移）；302 临时重定向（如登录跳转）；304 未修改（缓存未变化，节省带宽）；400 请求格式错误；401 未认证（需要登录）；403 已认证但无权限；404 资源不存在；422 参数验证失败（RESTful API 常用）；429 请求频率超限；500 服务器内部错误。
     title: HTTP 状态码速查表
-    description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明。
+    description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明，附带常用错误码的实际应用场景和排查建议，适合 Web 开发和 API 设计。
     backToTop: 回到顶部
 
   sql-prettify:
@@ -419,6 +447,8 @@ tools:
     faq2a: '支持 MySQL、PostgreSQL、SQLite、MariaDB、BigQuery、Spark、TSQL 等。'
     faq3q: SQL 格式化会改变 SQL 的语义或执行结果吗？
     faq3a: SQL 格式化工具只调整空白字符（换行、缩进），不会改变 SQL 的语义和执行结果。格式化后的 SQL 与原始 SQL 在数据库中执行效果完全相同，有助于代码审查和发现潜在的 SQL 逻辑问题。
+    faq4q: 格式化 SQL 对团队协作有哪些好处？
+    faq4a: 统一格式化的 SQL 好处：代码审查时更容易发现逻辑问题，而非关注格式；版本控制（Git diff）只显示真正的逻辑变更，而不是空白变化；新成员更容易理解复杂查询；减少因格式不一致引发的低级错误。建议团队在 CI/CD 中集成 sqlfluff 等工具自动检查和格式化 SQL，保持代码库一致性。
     title: SQL 格式化 / 美化
     description: 在线 SQL 格式化美化工具，支持 MySQL、PostgreSQL、SQL Server、SQLite 等多种方言，将压缩混乱的 SQL 重新排版缩进，提升可读性。
     dialect: 方言
@@ -447,6 +477,8 @@ tools:
     faq2a: '基准测试在浏览器 JavaScript 引擎中运行，结果因浏览器和设备而异，适合相对比较。'
     faq3q: 进行基准测试时需要注意哪些影响因素？
     faq3a: 影响基准测试结果的因素包括：JIT 编译器优化（引擎可能优化掉未使用的代码）、垃圾回收暂停、浏览器后台任务、CPU 频率调节（电源模式）、缓存预热效应。建议：多次运行取平均值、关闭其他标签页、在一致的设备和浏览器条件下对比，并确保测试代码具有实际意义。
+    faq4q: 如何避免基准测试结果不准确？
+    faq4a: 常见误区包括：没有预热 JIT 编译器、测试循环次数太少、测试环境与生产不符、未排除垃圾回收干扰等。建议多次运行取平均值、分开测试热路径和冷路径、在隔离环境中进行，并使用专业工具（如 wrk、JMH、Benchmark.js）而非简单计时。
     title: 前端性能基准测试
     description: 在线 JavaScript 代码性能基准测试工具，轻松编写多个代码片段并进行性能对比，直观显示每个方案的执行时间（ops/sec），帮助开发者找出最优实现方案。
     valuePlaceholder: 输入测量值...
@@ -477,8 +509,10 @@ tools:
     faq2a: 'git fetch 下载远程变更但不合并。git pull = git fetch + git merge，将远程变更应用到当前分支。'
     faq3q: git merge 和 git rebase 有什么区别？
     faq3a: git merge 将两个分支的历史合并，保留完整的提交记录，产生一个合并提交（merge commit）。git rebase 将当前分支的提交重新应用到目标分支上，历史线性整洁但改写了提交哈希。团队协作时推荐 merge，个人分支清理时可用 rebase，但不要对已推送的公共分支使用 rebase。
+    faq4q: Git 工作流中最容易犯的错误是什么？
+    faq4a: 常见错误：直接向 main/master 提交（应使用分支）、提交信息不清晰（如 fix 或 update）、将密码/API Key 提交到仓库、合并时未解决冲突就提交、force push 到共享分支破坏他人历史。建议遵循 Conventional Commits 规范，使用 .gitignore 和 pre-commit 钩子自动检查，启用分支保护规则。
     title: Git 命令速查手册
-    description: Git 命令速查手册，涵盖初始化、提交、分支、合并、远程操作、撤销更改等最常用 Git 命令的语法和说明，帮助开发者快速查阅和学习 Git 版本控制。
+    description: Git 命令速查手册，涵盖初始化、提交、分支、合并、远程操作、标签、撤销更改等最常用 Git 命令语法和说明，帮助开发者快速查阅命令，提升 Git 版本控制工作效率。
     toc: 目录
     copiedTooltip: 已复制！
     copyTooltip: 复制命令
@@ -551,8 +585,10 @@ tools:
     faq2a: '支持。工具会将重音符号和特殊字符转换为 ASCII 等效字符，例如 é → e，ü → u。'
     faq3q: URL slug 有哪些最佳实践？
     faq3a: 好的 URL slug 应：全小写、用连字符（-）分隔单词（不用下划线）、不含特殊字符和空格、简短且包含核心关键词（不超过 60 字符）、避免使用冠词（a/an/the）。例如 /blog/seo-best-practices 比 /blog/SEO_Best_Practices_2024 更好。
+    faq4q: 生成 URL Slug 时应该遵循哪些最佳实践？
+    faq4a: URL Slug 最佳实践：全小写字母；用连字符（-）连接单词，不用下划线（下划线在 Google 视为单词连接符，不如连字符友好）；移除特殊字符和标点；非 ASCII 字符（如中文）转为拼音或删除；保持简短（3-5 个关键词）且有意义；避免停用词（a, the, is）。CMS 系统（WordPress、Ghost）默认使用此规范。
     title: 生成 URL Slug
-    description: 在线 Slug 生成工具，将中文、英文、特殊字符文本转换为 URL 安全的 slug 字符串，适合生成文章链接、文件名和数据库 ID。
+    description: 在线 Slug 生成工具，将中文、英文、特殊字符文本转换为 URL 安全的 slug 字符串，自动去除特殊符号和空格，适合生成文章链接、文件名、数据库 ID 和路由路径。
     inputLabel: 输入文本
     clear: 清空
     inputPlaceholder: 例如：Hello World! 这是一个测试
@@ -575,6 +611,8 @@ tools:
     faq2a: '所有加密和解密均在浏览器本地执行，您的数据和密钥不会离开您的设备。'
     faq3q: AES、TripleDES、RC4 三种算法应该选哪个？
     faq3a: 推荐使用 AES，它是目前最安全的对称加密标准，被政府和金融机构采用。TripleDES 速度较慢已逐渐淘汰。RC4 存在严重安全漏洞，现代场景不应使用。生产环境建议使用 AES-256-GCM 模式并配合安全密钥管理。
+    faq4q: AES-256 加密中密钥管理是最大的难题吗？
+    faq4a: 是的，密钥管理是对称加密中最关键的安全挑战。AES-256 算法本身极其安全，但密钥泄露意味着所有数据暴露。最佳实践：不要把密钥硬编码在代码中；使用 KMS（密钥管理服务，如 AWS KMS、HashiCorp Vault）；定期轮换密钥；使用不同密钥加密不同数据；安全地销毁不再使用的密钥。
     title: 加密/解密文本
     description: 在线文本加密解密工具，支持 AES、TripleDES、Rabbit、RC4 等主流对称加密算法，输入密钥对文本进行加密保护或解密还原，适合数据安全传输和敏感信息保护。
     encryptTitle: 加密
@@ -604,8 +642,10 @@ tools:
     faq2a: '启动本地开发服务器、容器或服务时，随机端口可避免与已运行进程冲突。'
     faq3q: 哪些端口号有特殊含义或应该避免使用？
     faq3a: 0-1023 是「知名端口」（Well-Known Ports），需要管理员权限，如 80（HTTP）、443（HTTPS）、22（SSH）、3306（MySQL）。1024-49151 是「注册端口」，许多应用有约定，如 8080（HTTP 备用）、5432（PostgreSQL）。49152-65535 是动态端口，可安全用于开发服务器和临时服务。
+    faq4q: 端口号分为哪几类？开发时应该选哪个范围？
+    faq4a: "端口分为三类：知名端口（0-1023），由 IANA 分配给系统服务（HTTP:80, HTTPS:443, SSH:22），需 root/管理员权限绑定；注册端口（1024-49151），已注册但可在用户级别使用；动态/私有端口（49152-65535），完全自由使用，最适合开发和测试服务。推荐开发时使用 3000-9999 范围，便于记忆且冲突少。"
     title: 随机端口生成
-    description: 快速生成随机可用端口号（1024–65535），可批量生成多个端口，避免与已知系统端口冲突，适合本地开发和测试环境配置。
+    description: 快速生成随机可用端口号（1024–65535），可批量生成多个端口，并自动标注与 IANA 已知系统端口的冲突风险，适合本地开发和测试环境配置，帮助开发者快速找到可用端口。
     countLabel: 生成数量
     includeWellKnown: 包含知名端口（0–1023）
     dynamicOnly: 仅动态端口（49152–65535）
@@ -629,6 +669,8 @@ tools:
     faq2a: '不会。格式化只改变空白和格式，数据值和结构保持完全不变。'
     faq3q: YAML 格式化后缩进不对怎么办？
     faq3a: YAML 强制要求使用空格（不能用 Tab）进行缩进，同级元素的缩进量必须完全一致。本工具格式化时统一使用 2 空格缩进。如果格式化后出现错误，通常是原始 YAML 存在语法问题，可查看错误提示定位问题行。
+    faq4q: YAML 格式化时需要注意哪些常见陷阱？
+    faq4a: YAML 的常见陷阱：缩进必须一致（混用 Tab 和空格会报错）；特殊值 yes/no/true/false/null 会被自动类型转换（如挪威语 NO 缩写会被解析为 false，需加引号）；冒号后必须有空格；多行字符串用 | 保留换行或 > 折叠换行；日期格式（2023-01-01）会被自动解析为日期对象。格式化前务必验证 YAML 语法。
     title: YAML 格式化 / 美化
     description: 在线 YAML 格式化工具，将压缩或格式混乱的 YAML 文本重新排版为整洁易读的标准缩进格式，同时进行语法校验，适合整理 Kubernetes 配置和 CI/CD 流水线文件。
 
@@ -643,8 +685,10 @@ tools:
     faq2a: 'ETA = (总数 - 已完成) / (已完成 / 已用时间)，假设处理速率恒定。'
     faq3q: ETA 估算不准确时怎么办？
     faq3a: ETA 计算假设处理速率恒定，但实际任务速率往往会变化（如下载速度随网络波动、任务前期快后期慢）。提高 ETA 准确性的方法：使用滑动窗口计算近期速率而非全程平均速率、增加采样频率，以及根据历史数据对特定类型任务进行校正。
+    faq4q: 如何更准确地估算任务完成时间？
+    faq4a: 提高 ETA 准确性的方法：基于历史速率而非乐观估算；将大任务分解为小里程碑，逐步修正估算；记录实际完成时间与预测的偏差，校正系统性偏差；使用三点估算（最乐观、最可能、最悲观）取加权平均；考虑任务依赖关系和资源竞争。软件开发常用集体估算方法提高准确性。
     title: ETA 到达时间计算器
-    description: 在线 ETA 预计完成时间计算器，根据任务总量、已完成量和当前速率，计算任务的预计剩余时间和完成时刻，适用于下载进度、工程进度等场景估算。
+    description: 在线 ETA 预计完成时间计算器，根据任务总量、已完成量和当前处理速率，精确计算剩余时间和预计完成时刻，适用于下载进度估算、工程进度跟踪、跑步配速预测等各类时间预估场景。
 
   roman-numeral-converter:
     step1: '步骤 1：在输入框中输入阿拉伯数字（1–3999）或罗马数字。'
@@ -656,8 +700,10 @@ tools:
     faq2a: '罗马数字使用减法记法：较小的数字在较大的数字前表示相减。IV = 5 - 1 = 4。'
     faq3q: 罗马数字能表示 0 和负数吗？
     faq3a: 罗马数字系统没有 0 和负数的表示方法，这是古罗马数字系统的主要局限。0 的概念由阿拉伯数字系统引入，对数学和科学的发展至关重要。罗马数字目前主要用于钟表、章节编号、电影年份等装饰性场景。
+    faq4q: 罗马数字在现代有哪些实际应用？
+    faq4a: 罗马数字在现代的使用场景：钟表表盘（经典设计）；电影版权年份；超级碗等体育赛事的届数（Super Bowl LVIII）；君主和教皇的序号（伊丽莎白二世 Elizabeth II）；书籍前言页码（i, ii, iii）；建筑铭文和纪念碑；大纲和法律文件的章节编号。
     title: 罗马数字转换器
-    description: 在线罗马数字转换工具，支持阿拉伯数字与罗马数字双向转换，支持 I~MMMCMXCIX（即 1~3999）范围。
+    description: 在线罗马数字转换工具，支持阿拉伯数字与罗马数字双向转换，支持 I～MMMCMXCIX（即 1～3999）范围，结果即时显示，适合历史文档阅读、表盘设计和教育学习场景。
 
   hmac-generator:
     step1: '步骤 1：输入要认证的消息。'
@@ -670,6 +716,8 @@ tools:
     faq2a: '普通哈希只验证数据完整性。HMAC 还需要共享密钥，只有拥有密钥的一方才能验证真实性。'
     faq3q: HMAC 在 API 开发中如何使用？
     faq3a: HMAC 常用于 API 请求签名：客户端将请求参数 + 时间戳用密钥生成 HMAC，附加在请求头中，服务端用相同密钥重新计算 HMAC 进行验证。这确保了请求未被篡改，且只有持有密钥的客户端才能发送合法请求。
+    faq4q: HMAC 在 API 请求签名中如何工作？
+    faq4a: API 签名流程：服务端和客户端共享一个密钥（secret）；客户端用 HMAC 对请求内容（URL+时间戳+body）签名，将签名放入请求头；服务端用同样密钥重新计算 HMAC，与请求头中的签名对比，相同则认证通过。时间戳防止重放攻击，通常允许 5 分钟窗口。AWS、Stripe、GitHub Webhooks 都使用此方案。
     title: HMAC 签名生成器
     description: 在线 HMAC 生成器，使用自定义密钥和 MD5、SHA1、SHA256、SHA512 等哈希函数生成消息认证码（HMAC），适合 API 签名验证和数据完整性校验。
 
@@ -684,8 +732,10 @@ tools:
     faq2a: '共有 2048 的 12 次方种可能，使暴力破解在计算上不可行。'
     faq3q: 丢失 BIP39 助记词会怎样？助记词可以找回吗？
     faq3a: 丢失助记词意味着永久失去对钱包中所有资产的访问权，无法找回。助记词是唯一的备份方式，必须离线安全保存（纸质、金属刻板等），绝不能截图、存入云端或以电子方式传输。任何声称能找回助记词的服务都是诈骗。
+    faq4q: 如何安全地存储 BIP39 助记词？
+    faq4a: 助记词是恢复加密货币钱包的唯一凭证，务必离线存储：写在纸上并存放在防火防水的安全地方，避免截图或存入云盘。可考虑金属刻板备份以防火灾。永远不要将助记词输入来路不明的网站或分享给他人。建议将备份分存于多个物理地点。
     title: BIP39密码生成器
-    description: 在线 BIP39 助记词生成器，支持从随机熵或现有助记词生成 BIP39 密码短语，可导出 HD 钱包根密钥，适合加密货币钱包备份和验证。
+    description: 在线 BIP39 助记词生成器，支持从随机熵或现有助记词生成 12/24 位 BIP39 密码短语，可导出 HD 钱包根密钥（BIP32 Master Key），适合加密货币钱包备份和离线验证。
     warningLabel: 安全提示
     warningText: 请勿将真实钱包的助记词输入任何在线工具，此工具仅供学习和测试使用。
     language: 语言
@@ -709,8 +759,10 @@ tools:
     faq2a: 'Base64 将文件大小增加约 33%。'
     faq3q: Base64 文件转换有什么常见用途？
     faq3a: Base64 文件编码常用于：在 HTML/CSS 中内联小图片（避免额外的 HTTP 请求）、在 JSON API 中传输文件内容、在电子邮件（MIME）中传输附件，以及在代码中嵌入证书、字体等静态资源文件。
+    faq4q: Base64 编码会增加多少文件大小？
+    faq4a: Base64 编码会使原始数据体积增加约 33%（每 3 字节编码为 4 个字符）。例如 1MB 的图片经 Base64 编码后约为 1.37MB。这在嵌入 CSS/HTML 时需要权衡：减少了 HTTP 请求，但增加了页面体积，建议只对小文件（小于 10KB）使用。
     title: Base64 文件转换器
-    description: 在线将文件（图片、PDF、二进制文件）转换为 Base64 字符串，或将 Base64 解码还原为文件，支持拖拽上传，结果可直接复制。
+    description: 在线将文件（图片、PDF、二进制文件等）转换为 Base64 字符串，或将 Base64 字符串解码还原为文件，支持拖拽上传，结果可直接复制，适合内联图片、API 数据传输等场景。
   list-converter:
     step1: '步骤 1：将列表数据粘贴到输入框中。'
     step2: '步骤 2：选择输入分隔符（换行、逗号、分号等）。'
@@ -722,8 +774,10 @@ tools:
     faq2a: '可以。工具支持去重、排序、去除首尾空格和反转列表。'
     faq3q: 列表转换工具支持哪些输入格式？
     faq3a: 本工具支持各种常见的列表分隔格式：换行分隔（每行一项）、逗号分隔（CSV 格式）、分号分隔、管道符（|）分隔，以及空格分隔等。可以将任意格式的列表转换为 JSON 数组、SQL IN 语句、Markdown 列表或自定义分隔格式。
+    faq4q: 列表转换在数据处理流水线中有哪些实际应用？
+    faq4a: 列表格式转换的实际场景：将换行列表转为 SQL IN 子句的逗号分隔格式；将 CSV 导出的列转为 JSON 数组；将 Markdown 列表转为纯文本用于邮件；将 HTML 列表项提取为结构化数据；在 Excel/SQL/代码之间批量转换数据格式。可节省大量手工复制粘贴的重复劳动。
     title: 列表格式转换器
-    description: 该工具可以处理基于数组的数据，并将各种更改（转置、添加前缀和后缀、反向列表、排序列表、小写值、截断值）应用于每一行。
+    description: 在线列表处理工具，可对多行数据进行转置、添加前缀和后缀、反转列表、排序（升序/降序）、大小写转换、去重以及截断等操作，支持批量处理任意行数的文本列表，适合数据清洗场景。
 
   base64-string-converter:
     title: Base64 字符串编码/解码
@@ -737,6 +791,8 @@ tools:
     faq2a: 不是。Base64 是编码，不是加密。它可以轻易被逆向解码，不提供任何安全保护。
     faq3q: Base64 的应用场景有哪些？
     faq3a: 'Base64 常用于：在 HTML/CSS 中内联图片（data URI）、在 HTTP Header 中传输二进制内容、JWT Token 中的 Base64url 编码、以及将证书文件（PEM 格式）转换为可在文本协议中传输的格式。'
+    faq4q: Base64 编码和加密是一回事吗？
+    faq4a: 不，Base64 是编码而非加密。它只是将二进制数据转换为可打印的 ASCII 字符串，任何人都可以轻松解码，没有密钥保护。不要用 Base64 来保护敏感数据，它仅用于数据传输和存储的格式兼容性。需要安全保护请使用 AES、RSA 等加密算法。
 
   toml-to-yaml:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -748,8 +804,10 @@ tools:
     faq2a: 'YAML 是一种人类可读的数据序列化格式，广泛用于配置文件（Docker Compose、Kubernetes 等）。'
     faq3q: 什么时候需要将 TOML 转换为 YAML？
     faq3a: 当工具或平台只接受 YAML 格式时需要转换，例如 Kubernetes 配置、GitHub Actions workflow 和 Ansible Playbook 都使用 YAML 格式。TOML 和 YAML 都是人类可读的配置格式，主要区别在于语法风格和生态支持。
+    faq4q: 什么情况下应该选 TOML 而不是 YAML 作为配置格式？
+    faq4a: 选 TOML 的场景：配置相对简单扁平（如 Cargo.toml、pyproject.toml）；团队不熟悉 YAML 的缩进陷阱；需要原生日期时间支持；偏好语法严格（TOML 无歧义）。选 YAML 的场景：Kubernetes/Helm/Ansible 生态（事实标准）；配置嵌套层次深；需要引用和锚点减少重复；工具链支持更广泛。总体上 YAML 更通用，TOML 更适合包管理配置。
     title: TOML 到 YAML
-    description: 在线 TOML 转 YAML 工具，支持标准 TOML 语法解析并转换为标准 YAML 格式，结果可直接复制使用，适合配置文件格式迁移。
+    description: 在线 TOML 转 YAML 工具，支持标准 TOML 语法解析并转换为标准 YAML 格式，结果可直接复制使用，适合将 Rust/Go 项目配置迁移到 YAML 格式的 CI/CD 和 Kubernetes 配置。
 
   math-evaluator:
     step1: '步骤 1：在输入框中输入数学表达式。'
@@ -761,8 +819,10 @@ tools:
     faq2a: '支持。支持嵌套函数、单位、矩阵和复数。'
     faq3q: 数学表达式计算器支持哪些常用函数？
     faq3a: 本工具支持的常用函数包括：三角函数（sin、cos、tan、asin、acos、atan）、对数（log、log2、log10、ln）、指数（exp、pow、sqrt、cbrt）、舍入（floor、ceil、round、abs）、统计（max、min、sum、mean）以及常数 pi（π）和 e。
+    faq4q: 在线数学计算器如何安全地执行用户输入的表达式？
+    faq4a: 安全的数学表达式求值不能直接使用 eval()（有代码注入风险）。应使用专用数学解析器：JavaScript 的 math.js 库（安全沙箱）；Python 的 asteval（基于 AST 白名单求值）；或自行实现词法分析和表达式树。本工具在客户端安全地解析表达式，只允许数学函数和运算符，不执行任意代码。
     title: 在线数学表达式计算器
-    description: 在线数学表达式计算器，支持四则运算、括号、科学函数（sqrt、sin、cos、tan、abs、log 等）、单位换算、矩阵运算和复数计算，适合工程和科学计算。
+    description: 在线数学表达式计算器，支持四则运算、括号优先级、科学函数（sqrt、sin、cos、tan、log 等）、单位换算、矩阵运算和复数计算，输入表达式即时求值，适合工程和科学计算。
     placeholder: '输入表达式，例如 sqrt(2) * pi'
     clear: 清空
     historyTitle: 计算历史
@@ -788,6 +848,8 @@ tools:
     faq2a: '是的。YAML 1.2 是 JSON 的超集，所有有效的 JSON 也是有效的 YAML。'
     faq3q: 什么情况下应该选择 YAML 而不是 JSON？
     faq3a: YAML 更适合需要人工维护的配置文件（如 Docker Compose、Kubernetes YAML、GitHub Actions），因为支持注释和多行字符串。JSON 更适合 API 数据传输，因为解析更快，大多数语言原生支持，且格式更严格不易出错。
+    faq4q: JSON 转 YAML 后有哪些人类可读性改进？
+    faq4a: YAML 相比 JSON 的可读性优势：支持注释（# 注释）；不需要引号（大多数字符串不加引号）；不需要逗号分隔符；使用缩进代替括号，视觉层次更清晰；支持多行字符串；布尔值更自然（true/false 或 yes/no）。特别适合 Kubernetes manifests、Ansible playbooks、CI/CD 配置文件。
     title: JSON到YAML转换器
     description: 在线 JSON 转 YAML 工具，将 JSON 数据一键转换为 YAML 格式，保留对象层级结构和数组关系，适用于 Kubernetes、Docker Compose 等配置文件迁移和格式转换。
 
@@ -800,7 +862,9 @@ tools:
     faq2q: '如果 URL 没有查询参数怎么办？'
     faq2a: '没有查询参数时，查询参数区域会自动隐藏。'
     faq3q: URL 的各个组成部分是什么？
-    faq3a: 一个完整的 URL 由以下部分组成：scheme（协议，如 https）、userinfo（用户名:密码，可选）、host（域名或 IP）、port（端口，可选）、path（路径）、query（查询参数，?key=value&…）、fragment（页面锚点，# 开头）。例如 https://user:pass@example.com:8080/path?q=1#top。
+    faq3a: "一个完整的 URL 由以下部分组成：scheme（协议，如 https）、userinfo（用户名:密码，可选）、host（域名或 IP）、port（端口，可选）、path（路径）、query（查询参数，?key=value&…）、fragment（页面锚点，# 开头）。例如 https://user:pass{'@'}example.com:8080/path?q=1#top。"
+    faq4q: 解析 URL 时应该使用浏览器内置 API 还是正则表达式？
+    faq4a: 强烈推荐使用内置 API：浏览器的 new URL(urlString) 和 Node.js 的 new URL(urlString) 能正确处理各种边界情况（IPv6 地址、Unicode 域名、相对路径）；而自己写的正则很难覆盖所有 RFC 3986 规定的合法 URL 格式。URL 解析看似简单，但边界情况非常多，使用标准库是最可靠的做法。
     title: URL 解析器
     description: 在线 URL 解析工具，解析 URL 字符串并拆分为协议（protocol）、主机（host）、路径（path）、查询参数（query string）、端口、用户名密码等各个组成部分。
 
@@ -814,8 +878,10 @@ tools:
     faq2a: 'IBAN 长度因国而异，从 15 位（挪威）到 34 位不等。始终以 2 字母国家代码和 2 位校验位开头。'
     faq3q: IBAN 是如何验证的？
     faq3a: IBAN 验证使用 MOD-97 算法：将字母转换为数字（A=10, B=11…），重新排列字符串（末4位移到头部），计算对大数除以 97 的余数，余数为 1 则有效。本工具还会解析出国家代码、银行代码和账户号码，并与已知的国家 IBAN 格式进行匹配验证。
+    faq4q: IBAN 验证和 SWIFT/BIC 代码有什么区别？
+    faq4a: IBAN（国际银行账号）标识具体的银行账户，用于国际转账中指定收款账户；SWIFT/BIC 代码（8-11位）标识具体的银行机构，用于路由国际汇款到正确的银行。国际电汇通常同时需要 IBAN（账户）和 BIC（银行），欧元区内 SEPA 转账只需 IBAN 即可。
     title: IBAN验证器和解析器
-    description: 验证和分析IBAN编号。检查IBAN是否有效，并获取国家BBAN，如果它是QR-IBAN和IBAN友好格式。
+    description: 在线 IBAN 国际银行账号验证和解析工具，检查 IBAN 格式和校验位是否有效，解析国家代码、BBAN，判断是否为 QR-IBAN，并展示标准友好格式，适合金融和跨境支付场景。
     placeholder: 请输入 IBAN 进行验证...
     validate: 验证
     clear: 清空
@@ -851,6 +917,8 @@ tools:
     faq2a: '出于历史兼容性原因，现代浏览器在 UA 中包含多个旧浏览器标识符，导致字符串越来越复杂。'
     faq3q: 如何在 JavaScript 中获取当前浏览器的 User-Agent？
     faq3a: 在浏览器端可用 navigator.userAgent 获取 UA 字符串。但建议避免依赖 UA 检测来判断浏览器能力，改用功能检测（如 if ('serviceWorker' in navigator)）。UA 可以被用户修改，且随着浏览器的「UA 精简」趋势，UA 包含的信息越来越少。
+    faq4q: User-Agent 字符串解析在现代 Web 开发中还有用吗？
+    faq4a: UA 字符串解析的局限：现代浏览器的 UA 字符串复杂且刻意模糊（历史兼容问题），新兴 User-Agent Client Hints API 更结构化可靠；Chrome 正在逐步冻结 UA 字符串。仍有用的场景：流量分析（区分真实用户和爬虫）；老旧系统兼容性检测；反爬虫；CDN 和 WAF 的 Bot 检测。新项目建议使用 Client Hints API。
     title: 用户代理分析器
     description: 在线 User-Agent 解析器，自动检测并分析 User-Agent 字符串，识别浏览器名称和版本、渲染引擎、操作系统、CPU 架构以及设备类型和型号，支持自定义 UA 输入。
     resultsLabel: 解析结果
@@ -869,8 +937,10 @@ tools:
     faq2a: 'i18n 这个术语归功于 20 世纪 70 年代的 DEC，后来在软件开发中广泛流行。'
     faq3q: 数字名称（numeronym）在哪些场景中使用？
     faq3a: 数字名称常见于软件开发：i18n（internationalization，国际化）、l10n（localization，本地化）、a11y（accessibility，无障碍）、k8s（Kubernetes）、g11n（globalization）。它们将长单词缩短为首字母 + 中间字符数 + 尾字母的形式，方便快速输入和讨论。
+    faq4q: 数字缩略词 Numeronyms 在技术领域有哪些知名例子？
+    faq4a: 技术领域著名数字缩略词：i18n（internationalization，i 到 n 之间 18 个字母）；l10n（localization）；a11y（accessibility，无障碍）；k8s（Kubernetes，k 到 s 之间 8 个字母）；o11y（observability，可观测性）。这类缩略词在 GitHub、技术文档和 Twitter 上极为常见，节省字符同时保持可识别性。
     title: 数字名称生成器
-    description: 数字名是一个用数字构成缩写的词。例如，"i18n"是"国际化"的名词，其中18表示单词中第一个i和最后一个n之间的字母数。
+    description: 数字名（Numeronym）是用数字构成缩写的词，如 i18n 代表 internationalization。在线将任意单词转换为数字名缩写，方便技术文档写作和国际化开关命名。
     inputLabel: 输入单词或短语
     inputPlaceholder: 例如 internationalization
     outputLabel: 数字缩略词
@@ -891,8 +961,10 @@ tools:
     faq2a: 'camelCase 以小写字母开头（如 myVariable），PascalCase 以大写字母开头（如 MyClass）。'
     faq3q: 不同编程语言各偏好哪种命名规范？
     faq3a: JavaScript/Java 变量和方法用 camelCase，类名用 PascalCase；Python 变量和函数用 snake_case，类名用 PascalCase；数据库字段通常用 snake_case；CSS 类名用 kebab-case；常量用 SCREAMING_SNAKE_CASE。
+    faq4q: 各种命名规范分别用于什么场景？
+    faq4a: camelCase（小驼峰）用于 JavaScript 变量和函数；PascalCase（大驼峰）用于类名和 React 组件；snake_case 用于 Python 变量、数据库列名和 URL；kebab-case 用于 CSS 类名、HTML 属性和 URL 路径；SCREAMING_SNAKE_CASE 用于常量和环境变量；Title Case 用于标题和书名。
     title: 字符串大小写转换器
-    description: 在线大小写转换工具，支持 camelCase、PascalCase、snake_case、kebab-case、UPPER_CASE 等多种命名法互转。
+    description: 在线大小写转换工具，支持 camelCase、PascalCase、snake_case、kebab-case、UPPER_CASE、Title Case 等多种命名法互转，适合代码变量重命名和 API 字段格式统一处理。
 
   html-entities:
     step1: '步骤 1：输入包含特殊字符的 HTML 文本，或输入实体进行解码。'
@@ -904,12 +976,14 @@ tools:
     faq2a: '转义 HTML 可防止显示用户生成内容时的 XSS 攻击。'
     faq3q: 哪些字符必须在 HTML 中进行实体转义？
     faq3a: 在 HTML 内容中，< 和 > 必须转义为 &lt; 和 &gt; 以防止被解析为标签；& 必须转义为 &amp;。在 HTML 属性值中，双引号 " 必须转义为 &quot;，单引号 ' 转义为 &#39;。正确转义是防止 XSS 攻击的基础安全措施。
+    faq4q: HTML 中什么时候必须使用实体编码？
+    faq4a: 必须编码的字符：< 和 > 避免被解析为标签（&lt; &gt;）；& 避免被解析为实体开始（&amp;）；属性值中的引号（&quot;）。用户输入的内容在展示到页面前务必进行 HTML 实体转义，防止 XSS（跨站脚本）攻击。现代框架（React、Vue）会自动处理这一转义。
     title: HTML 实体编码 / 解码
     description: 在线 HTML 实体转义工具，将特殊字符（< > & " '）转义为 HTML 实体（&lt; &gt; &amp; &quot;），或将 HTML 实体反解码为普通字符，有效防止 XSS 注入，确保网页内容安全显示。
 
   json-prettify:
     title: JSON 格式化 / 校验
-    description: 在线 JSON 格式化工具，将压缩或混乱的 JSON 重新排版为带缩进的标准格式，支持 JSON5 和语法校验。
+    description: 在线 JSON 格式化工具，将压缩或混乱的 JSON 重新排版为带缩进的标准格式，支持 JSON5 和语法校验，一键复制格式化结果，适合 API 调试、日志分析和数据查阅。
     step1: 第一步：将原始 JSON 文本粘贴到左侧输入框。
     step2: 第二步：根据需要调整缩进大小和键排序选项。
     step3: 第三步：格式化结果显示在右侧，点击复制按钮即可复制。
@@ -919,6 +993,8 @@ tools:
     faq2a: JSON 格式化添加空白和缩进，使 JSON 对人类可读。JSON 压缩删除所有不必要的空白以减小文件体积，适用于 API 传输和存储。
     faq3q: 支持 JSON5（注释、尾随逗号）吗？
     faq3a: 支持。本工具使用 JSON5 进行解析，除标准 JSON 外，还支持注释和尾随逗号。
+    faq4q: 大型 JSON 文件应该如何高效查看和处理？
+    faq4a: "超过 1MB 的 JSON 文件不建议用在线工具处理。推荐：命令行用 jq（cat data.json | jq '.'）效率最高；VS Code 内置 JSON 格式化（Alt+Shift+F）；Python（python3 -m json.tool data.json）内置无需安装；专业工具如 fx（交互式 JSON 查看器）。处理超大 JSON 建议用流式解析避免内存溢出。"
 
   json-viewer:
     sortKeys: 排序键
@@ -943,6 +1019,8 @@ tools:
     faq2a: '支持常用参数如 -p（端口）、-v（卷）、-e（环境变量）、--name、--network 等。'
     faq3q: 为什么要从 docker run 转换为 docker-compose？
     faq3a: docker-compose 的优势在于：可将多个容器的配置用一个文件管理，支持一键启动/停止整个应用栈（docker-compose up/down），配置文件可以纳入版本控制（Git），便于团队协作和重现环境。同时 docker-compose.yml 比长串的 docker run 命令更易读、更易维护。
+    faq4q: Docker Compose 相比 docker run 命令有哪些优势？
+    faq4a: Docker Compose 的优势：多容器服务用一个文件定义，版本可控；一条 docker compose up 命令启动整个环境；自动处理服务间网络和依赖顺序；变量用 .env 文件管理；可轻松扩展（scale）服务副本数；团队共享配置更方便，避免了冗长的 docker run 命令难以记忆和维护的问题。
     title: Docker Run 到 docker-compose 转换器
     description: 在线 docker run 转 Docker Compose 工具，将 docker run 命令自动转换为标准的 docker-compose.yml 格式，支持端口、卷、环境变量、网络等配置项解析。
     inputTitle: Docker Run 命令
@@ -969,6 +1047,8 @@ tools:
     faq2a: '前 3 字节（OUI——组织唯一标识符）由 IEEE 分配给制造商，后 3 字节由制造商分配以唯一标识每台设备。'
     faq3q: MAC 地址可以修改吗？如何修改？
     faq3a: MAC 地址可以通过软件方式修改（MAC 欺骗/spoofing）。在 Linux 上可用 ip link set dev eth0 address XX:XX:XX:XX:XX:XX；在 macOS 上用 ifconfig en0 ether；在 Windows 上通过设备管理器的网络适配器属性设置。修改重启后通常恢复为硬件烧录的原始地址，主要用于网络测试和隐私保护。
+    faq4q: MAC 地址的前三个字节（OUI）如何分配？
+    faq4a: "OUI（组织唯一标识符）由 IEEE 分配给硬件制造商，标识设备品牌。例如 DC:A6:32 属于树莓派基金会。企业购买 OUI 后可自由分配后三字节（设备唯一部分）。通过 OUI 可以识别网络中设备的制造商，常用于网络资产管理和安全审计（识别非授权设备品牌）。"
     title: MAC 地址厂商查询
     description: 在线 MAC 地址厂商查询工具，通过网卡 MAC 地址查询设备制造商和厂商信息，基于 IEEE OUI 数据库，支持批量查询，适用于网络设备识别、安全审计和故障排查。
     macAddressLabel: MAC 地址
@@ -993,8 +1073,10 @@ tools:
     faq2a: '服务器用 MIME 类型告知浏览器如何处理文件。错误的 MIME 类型会导致文件被下载而非显示。'
     faq3q: 常见的 MIME 类型有哪些？
     faq3a: 常见 MIME 类型：text/html（HTML 文档）、application/json（JSON 数据）、application/javascript（JS 脚本）、image/png 和 image/jpeg（图片）、video/mp4（视频）、application/pdf（PDF）、multipart/form-data（表单上传）。在 HTTP API 开发中，Content-Type 和 Accept 请求头使用 MIME 类型协商数据格式。
+    faq4q: MIME 类型在 Web 开发中有哪些关键作用？
+    faq4a: MIME 类型的关键作用：浏览器根据 Content-Type 决定如何处理响应（显示/下载/渲染）；错误的 MIME 类型可能导致文件下载而非展示（如 PDF）；API 响应必须设置 application/json；文件上传时验证 MIME 类型可防止恶意文件（但需与文件内容魔数校验结合）。
     title: MIME 类型速查表
-    description: MIME 类型与文件扩展名互查工具，快速查找文件格式对应的 Content-Type，方便 API 开发和服务器配置。
+    description: MIME 类型与文件扩展名互查工具，支持双向查询：输入文件扩展名获取 Content-Type，或输入 MIME 类型查找对应扩展名，方便 API 开发、服务器配置和文件上传场景使用。
 
   toml-to-json:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -1006,8 +1088,10 @@ tools:
     faq2a: 'JSON 不支持注释，因此所有 TOML 注释在转换为 JSON 时都会丢失。'
     faq3q: TOML 和 JSON 相比有什么优势？
     faq3a: TOML 是专为配置文件设计的格式，支持注释（# 开头），日期时间类型原生支持，多行字符串更易读。JSON 没有注释支持，更适合数据交换。TOML 在 Rust 生态（Cargo.toml）和 Hugo 等项目中广泛使用。
+    faq4q: TOML 转 JSON 后如何处理日期时间类型？
+    faq4a: TOML 原生支持日期时间（RFC 3339 格式），而 JSON 没有日期类型，只有字符串和数字。转换时 TOML 的日期时间通常转为 JSON 字符串（保持 ISO 8601 格式）。使用转换结果时，需在代码中手动将字符串解析为 Date 对象。建议在 API 文档中注明日期字段的格式约定，避免下游系统误解。
     title: TOML 到 JSON
-    description: 将 TOML 数据在线转换为 JSON 格式，适用于将 Rust/Go 项目的 TOML 配置转为 API 数据或前端处理。
+    description: 将 TOML 数据在线转换为 JSON 格式，适用于将 Rust/Go 项目的 TOML 配置转为 API 数据或前端处理，支持标准 TOML 语法解析，结果格式化展示，可一键复制使用。
 
   lorem-ipsum-generator:
     step1: '步骤 1：选择输出类型：段落、句子或单词。'
@@ -1019,6 +1103,8 @@ tools:
     faq2a: 'Lorem Ipsum 避免设计评审时被内容分散注意力，作为中性填充文本使用。'
     faq3q: Lorem Ipsum 文字是什么意思？它来自哪里？
     faq3a: Lorem Ipsum 来源于西塞罗公元前 45 年的著作《善恶之终》（De Finibus Bonorum et Malorum）的拉丁文片段，经过打乱后不再有意义。约从 16 世纪印刷术兴起后，它作为标准的排版占位文本沿用至今，几乎成为平面设计和网页设计的行业标准。
+    faq4q: Lorem Ipsum 文本的来源是什么？
+    faq4a: Lorem Ipsum 源自西塞罗（Cicero）于公元前 45 年所著《善恶之极》（De Finibus Bonorum et Malorum），是经过改动的拉丁文段落。最常见的开头 Lorem ipsum dolor sit amet 取自第 1.10.32 节。1960 年代排版软件开始使用它作为占位文本，此后沿用至今。现代设计师有时用真实内容替代，避免忽视真实排版问题。
     title: Lorem ipsum生成器
     description: 在线 Lorem Ipsum 占位文本生成器，快速生成任意段落数、句子数或单词数的 Lorem Ipsum 假文，用于 UI 原型设计、排版展示和网页开发中的文本占位，不依赖于有意义的内容。
     paragraphs: 段落数
@@ -1034,7 +1120,7 @@ tools:
 
   qrcode-generator:
     title: 二维码生成器
-    description: 在线二维码生成器，将 URL、文本、联系方式等内容转换为可扫描的 QR 码，支持自定义前景色、背景色，可下载 PNG 图片，免费无需注册。
+    description: 在线二维码生成器，将 URL、文本、联系方式等内容转换为可扫描的 QR 码，支持自定义前景色、背景色和容错率，可下载高质量 PNG 图片，免费无需注册，适合各类场景。
     step1: 第一步：输入要编码到二维码中的网址或文本。
     step2: 第二步：可根据需要自定义前景色和背景色。
     step3: 第三步：下载二维码图片（PNG 格式）。
@@ -1044,6 +1130,8 @@ tools:
     faq2a: 标准二维码最多可存储约 4,296 个字母数字字符或约 7,089 个数字字符。内容越短，二维码越简单，扫描成功率越高。
     faq3q: 生成的二维码可以添加 Logo 吗？
     faq3a: 可以，但需要在图片编辑工具中将 Logo 叠加到二维码中心。为确保 Logo 覆盖后仍可扫描，需将二维码的容错率设置为 H（最高，30% 损坏容忍）。Logo 建议不超过二维码面积的 30%，且使用高对比度颜色。本工具生成的 PNG 图片可在 Photoshop 或 Figma 中进行后期处理。
+    faq4q: 二维码能存储哪些类型的数据？
+    faq4a: 二维码可编码多种格式：URL（最常见，跳转网页）；vCard（联系人信息）；WiFi 配置（SSID+密码，手机可直接连接）；纯文本；电话号码；邮件地址；地理坐标；日历事件；支付信息（支付宝/微信支付的特定格式）。最大容量约 4296 个字母数字字符，中文字符会显著减少容量。
 
   wifi-qrcode-generator:
     step1: '步骤 1：输入 WiFi 网络名称（SSID）。'
@@ -1056,8 +1144,10 @@ tools:
     faq2a: '只应与信任的人分享——二维码包含可恢复的 WiFi 密码，任何扫描它的人都可以加入您的网络。'
     faq3q: WiFi 二维码支持哪些安全类型？
     faq3a: 'WiFi 二维码（WIFI: 格式）支持 WPA/WPA2/WPA3 个人版（最常见）、WEP（已过时，不安全）和无密码开放网络。本工具支持所有主流安全类型的配置。注意：WEP 存在严重安全漏洞，强烈建议升级到 WPA2 或 WPA3。'
+    faq4q: 手机扫描 WiFi 二维码时如何工作？
+    faq4a: "WiFi 二维码使用标准格式：WIFI:T:WPA;S:网络名称;P:密码;; 。手机相机 App（iOS 11+、Android 9+）原生支持识别此格式并弹出连接确认。WPA2/WPA3 密码通过二维码传递时是明文的（只有扫描者能看到），所以不要在公开场合展示带有密码的 WiFi 二维码。企业网络可以使用无密码的 802.1X 配置，但二维码方式不支持。"
     title: WiFi 二维码生成器
-    description: 在线生成 WiFi 二维码，手机扫码即可一键连接 WiFi，支持 WPA/WPA2/WEP 和企业级 EAP 认证，可下载 PNG。
+    description: 在线生成 WiFi 二维码，手机扫码即可一键连接 WiFi，无需手动输入密码，支持 WPA/WPA2/WEP 和企业级 EAP 认证，可自定义样式并下载高质量 PNG 图片。
 
   xml-formatter:
     step1: '步骤 1：将 XML 内容粘贴到输入编辑器。'
@@ -1069,6 +1159,8 @@ tools:
     faq2a: 'XML 使用标签和属性，支持注释，较为冗长。JSON 使用键值对和数组，更轻量，在现代 API 中更常见。'
     faq3q: 格式化 XML 会改变其数据内容吗？
     faq3a: 不会。XML 格式化工具只调整空白字符（换行、缩进对齐），不会改变 XML 的标签、属性值或文本节点内容。格式化前后的 XML 在解析器中读取结果完全相同，可放心用于生产配置文件的整理。
+    faq4q: 格式化 XML 时如何保留有意义的空白字符？
+    faq4a: "XML 中的 xml:space='preserve' 属性告诉解析器保留该元素及子元素中的所有空白（包括换行和缩进）。格式化工具通常会忽略这个属性，直接重新缩进整个文档。处理包含此属性的 XML（如 XSLT、Word 文档格式）时需谨慎，错误的格式化可能改变数据语义。建议格式化前备份原始文件。"
     title: XML 格式化 / 美化
     description: 在线 XML 格式化美化工具，将压缩或格式混乱的 XML 文本重新排版为带缩进的标准格式，支持语法高亮和错误校验，可自定义缩进大小，适合处理 XML 配置和 SOAP 消息。
     rawXml: 原始 XML
@@ -1089,7 +1181,7 @@ tools:
 
   temperature-converter:
     title: 温度单位换算器
-    description: 在线温度单位转换器，支持摄氏度、华氏度、开尔文、兰金、德莱尔、牛顿、雷奥穆尔和罗默 8 种温度单位互相转换，实时显示换算结果。
+    description: 在线温度单位转换器，支持摄氏度、华氏度、开尔文、兰金、德莱尔、牛顿、雷奥穆尔和罗默共 8 种温度单位互相转换，实时显示所有单位的换算结果，适合物理学习和工程计算。
     step1: 第一步：在任意单位输入框中输入温度值。
     step2: 第二步：其他所有单位的换算结果即时显示。
     faq1q: 如何将摄氏度转换为华氏度？
@@ -1098,6 +1190,8 @@ tools:
     faq2a: 绝对零度是最低可能温度：0 开尔文 = −273.15°C = −459.67°F。在此温度下，粒子的热运动降至最低。
     faq3q: 常用温度值有哪些？摄氏度和华氏度如何换算？
     faq3a: 常用参考温度：水的冰点 0°C/32°F，沸点 100°C/212°F，人体正常体温约 37°C/98.6°F，室温约 20~25°C/68~77°F。换算公式：°F = °C × 9/5 + 32；°C = (°F − 32) × 5/9。
+    faq4q: 开尔文（K）和摄氏度（℃）在实际中有什么应用场景？
+    faq4a: 摄氏度（℃）用于日常温度、烹饪、气象；华氏度（℉）主要在美国日常生活中使用；开尔文（K）是 SI 标准温度单位，用于科学计算（热力学、物理公式不允许负温度，开尔文从绝对零度开始）；色温（灯光摄影）用 K 表示（5500K 日光，3200K 钨丝灯）；医疗中美国用华氏度，其他国家用摄氏度。
     belowAbsoluteZero: '温度低于绝对零度（0 K / −273.15 °C），物理上不可能存在。'
     minus1: 减 1
     plus1: 加 1
@@ -1112,8 +1206,10 @@ tools:
     faq2a: '755 表示所有者有读+写+执行权限（7），组和其他用户有读+执行权限（5）。常用于 Web 服务器目录。'
     faq3q: chmod 数字权限和字符权限有什么区别？
     faq3a: 数字权限（如 chmod 755）将读（4）、写（2）、执行（1）相加，分别对应所有者、组、其他用户。字符权限（如 chmod u+x）更直观，可单独添加或删除某类权限，两者效果等价，数字权限在脚本中更常见。
+    faq4q: 如何在不破坏系统的情况下安全地修改文件权限？
+    faq4a: 修改权限时遵循最小权限原则，只给必要的权限。避免 chmod 777（任何人可读写执行），这是严重的安全隐患。Web 服务器文件建议 644（文件）和 755（目录）。修改前用 ls -la 确认当前权限。对系统文件格外谨慎，错误的权限可能导致服务无法启动或安全漏洞。
     title: Linux chmod 权限计算器
-    description: 在线 Linux chmod 权限计算器，可视化选择文件/目录的读、写、执行权限，自动生成对应的 chmod 八进制数字命令，适合运维和开发使用。
+    description: 在线 Linux chmod 权限计算器，可视化勾选文件/目录的读（r）、写（w）、执行（x）权限，自动生成对应的 chmod 八进制数字命令和符号命令，适合 Linux 运维和服务器权限管理。
     preset755: 目录推荐
     preset644: 文件推荐
     preset700: 仅所有者
@@ -1134,8 +1230,10 @@ tools:
     faq2a: '2048 位是安全推荐的最低标准。4096 位提供更强的安全性。1024 位被认为不安全，不应使用。'
     faq3q: RSA 公钥和私钥分别用来做什么？
     faq3a: RSA 公钥用于加密数据（只有私钥能解密）和验证签名（验证由私钥签名的数据）。私钥用于解密和创建数字签名。公钥可以公开分发，私钥必须安全保密。SSH 登录时，公钥放在服务器，私钥保存在本地。
+    faq4q: RSA-2048 和 RSA-4096 应该选哪个？
+    faq4a: RSA-2048 目前仍被认为安全，NIST 预计在 2030 年前不会被破解，性能更好（签名/加密速度约是 4096 的 4-8 倍）；RSA-4096 提供更长远的安全裕度，适合需要保护 10 年以上的高敏感数据。实际建议：TLS 证书和 SSH 密钥用 2048 足够（或改用 Ed25519，更短更快更安全）；代码签名证书或长期文档加密考虑 4096。
     title: RSA密钥对生成器
-    description: 在线生成 RSA 公私钥对，支持 1024/2048/4096 位密钥尺寸，输出 PEM 格式，适用于 SSL 证书、JWT 签名等加密场景。
+    description: 在线生成 RSA 公私钥对，支持 1024/2048/4096 位密钥尺寸，输出标准 PEM 格式，适用于 SSL/TLS 证书、JWT 签名、SSH 认证等加密场景，全程浏览器本地生成，密钥不上传。
 
   html-wysiwyg-editor:
     step1: '步骤 1：在所见即所得编辑器中输入或粘贴内容。'
@@ -1148,8 +1246,10 @@ tools:
     faq2a: '编辑器生成语义化 HTML5，尽量避免内联样式。'
     faq3q: WYSIWYG 编辑器生成的 HTML 代码质量如何？
     faq3a: WYSIWYG 编辑器通常生成基本可用的 HTML，但可能包含冗余标签和行内样式。本工具尽量输出语义化 HTML5（h1-h6、strong、em 等），而非 <font>、<b> 等旧式标签。建议将生成的 HTML 结合自定义 CSS 使用，以获得更一致的样式效果，避免依赖编辑器内联样式。
+    faq4q: 所见即所得编辑器生成的 HTML 有哪些常见问题？
+    faq4a: 常见问题：生成冗余嵌套标签和内联样式（难以维护）；从 Word 粘贴带入大量垃圾样式；不同浏览器的编辑行为不一致；输出的 HTML 可能包含 XSS 风险（需服务端清洗）；语义化差（大量 span style 而非语义标签）。使用时建议配合 DOMPurify 等库做服务端 sanitize。
     title: HTML所见即所得编辑器
-    description: 在线所见即所得 HTML 富文本编辑器（WYSIWYG），支持格式、列表、链接、图片等富文本功能，实时预览 HTML 源代码，适合快速生成页面内容。
+    description: 在线所见即所得 HTML 富文本编辑器（WYSIWYG），支持格式、列表、链接、图片等富文本功能，实时双栏预览 HTML 源代码，适合快速生成页面内容、邮件模板和 CMS 内容创作。
     editorLabel: 编辑器
     htmlSource: HTML 源码
     clearContent: 清空内容
@@ -1159,7 +1259,7 @@ tools:
 
   email-normalizer:
     title: 邮箱地址规范化工具
-    description: 在线邮箱地址规范化工具，批量去重和标准化邮件地址，支持处理 Gmail 的 + 别名和点符号忽略规则，以及主流邮件服务商的特殊格式。
+    description: 在线邮箱地址规范化工具，批量去重和标准化邮件地址，自动处理 Gmail 的 + 别名和点号忽略规则，支持主流邮件服务商的特殊格式，适合注册系统防刷和邮件列表清洗。
     step1: '步骤 1：粘贴或上传邮箱列表（每行一个）。'
     step2: '步骤 2：工具自动规范化地址，去除别名和多余的点。'
     step3: '步骤 3：复制或下载规范化后的邮箱列表。'
@@ -1168,7 +1268,9 @@ tools:
     faq2q: '支持哪些邮件服务商？'
     faq2a: '支持 Gmail、Outlook、Yahoo 等主流服务商。不同提供商的规范化规则可能不同。'
     faq3q: 邮箱规范化对什么场景最有用？
-    faq3a: 邮箱规范化对以下场景非常有用：用户注册时去除重复账号（防止同一人用 user+1@gmail.com 和 user@gmail.com 注册两次）、邮件营销时去重减少费用、CRM 数据清洗时合并同一用户的多条记录，以及用户登录时宽松匹配（不区分 Gmail 的点号）。
+    faq3a: "邮箱规范化对以下场景非常有用：用户注册时去除重复账号（防止同一人用 user+1{'@'}gmail.com 和 user{'@'}gmail.com 注册两次）、邮件营销时去重减少费用、CRM 数据清洗时合并同一用户的多条记录，以及用户登录时宽松匹配（不区分 Gmail 的点号）。"
+    faq4q: 为什么邮件地址规范化对系统很重要？
+    faq4a: "不规范化邮件地址会导致同一用户创建多个账号（如 User{'@'}Gmail.com 和 user+tag{'@'}gmail.com 是同一收件箱），造成重复数据和用户体验问题。规范化步骤：转小写、去除 Gmail 的点和加号后缀、去除首尾空格。在用户注册和登录时规范化可防止账号重复，并统一用户数据。"
     inputLabel: 输入邮箱列表
     uploadTooltip: 从文件导入（.txt 或 .csv）
     clearInput: 清空输入
@@ -1194,8 +1296,10 @@ tools:
     faq2a: '支持。YAML 支持锚点（&）和别名（*）用于复用内容。TOML 没有直接等效的功能。'
     faq3q: YAML 转换为 TOML 时需要注意什么？
     faq3a: YAML 转 TOML 时需注意：TOML 不支持 null 值（YAML 的 null 在 TOML 中无直接等价）；TOML 要求整数类型明确区分（不像 YAML 会自动推断）；YAML 的多文档格式（--- 分隔）在 TOML 中不支持；YAML 的复杂嵌套如果层级较深，TOML 的表格嵌套语法会比较繁琐。
+    faq4q: YAML 中的哪些特性在 TOML 中不受支持？
+    faq4a: YAML 到 TOML 转换的不兼容特性：YAML 的锚点和引用（&anchor、*alias）在 TOML 中不存在，转换时会展开；YAML 允许 null 值，TOML 不支持（会被忽略）；YAML 的特殊类型（二进制、时间戳带时区）处理方式不同；YAML 支持多文档流（---分隔），TOML 不支持。转换后请仔细审查输出以确保正确性。
     title: YAML 到 TOML
-    description: 将 YAML 数据在线转换为 TOML 格式，适用于 Rust、Go 等语言的配置文件迁移并保留层级结构。
+    description: 将 YAML 数据在线转换为 TOML 格式，适用于 Rust、Go 等语言的配置文件迁移，保留层级结构和注释，结果实时生成，可一键复制，帮助开发者快速完成配置格式迁移。
 
   mac-address-generator:
     step1: '步骤 1：输入要生成的 MAC 地址数量。'
@@ -1208,8 +1312,10 @@ tools:
     faq2a: '生成器默认创建单播地址。如果第一字节的最低有效位为 1，则该地址为组播地址。'
     faq3q: 本地管理 MAC 地址（LA）和全局管理地址有什么区别？
     faq3a: 全局管理地址（UAA）是由 IEEE 分配给硬件制造商的唯一 OUI 生成的，保证全球唯一。本地管理地址（LAA）将第一字节的第二低位设为 1，表示该地址由网络管理员手动配置，不由 IEEE 保证全局唯一。LAA 常用于虚拟机、容器和网络测试环境中。
+    faq4q: 随机 MAC 地址在网络测试中有哪些用途？
+    faq4a: 随机 MAC 地址的用途：网络模拟测试（测试 DHCP 服务器分配大量地址的能力）；交换机 MAC 表压力测试；网络隔离和虚拟化环境（VM 需要唯一 MAC）；隐私保护（现代手机在扫描 WiFi 时使用随机 MAC）；绕过基于 MAC 地址的访问控制测试其安全性。生成时注意本地管理位避免与真实设备冲突。
     title: MAC 地址生成器
-    description: 在线 MAC 地址生成器，支持自定义数量和前缀，可选大写或小写格式，支持批量生成随机 MAC 地址，适合网络测试和模拟场景。
+    description: 在线 MAC 地址生成器，支持自定义生成数量和前缀（OUI），可选大写或小写、冒号或连字符分隔格式，支持批量生成随机 MAC 地址，适合网络测试、模拟环境配置和固件开发场景。
     amount: 数量
     ouiPrefix: OUI 前缀
     prefixPlaceholder: '例如：64:16:7F'
@@ -1235,8 +1341,10 @@ tools:
     faq2a: '支持。对比查看器递归比较嵌套对象和数组，精确显示哪些深层嵌套键被添加、删除或修改。'
     faq3q: JSON 对比工具如何处理数组中元素顺序的变化？
     faq3a: 本工具将数组视为有序序列，按索引位置逐一比较。如果元素顺序改变，工具会将其显示为删除旧位置并在新位置添加。如果你的数据中数组元素顺序无关紧要，建议在对比前先对数组进行排序处理。
+    faq4q: 在 CI/CD 流水线中如何使用 JSON 对比工具？
+    faq4a: CI/CD 中 JSON 对比的用途：API 版本兼容性测试（对比新旧 API 响应结构变化）；配置文件审查（PR 中高亮配置变更）；快照测试（存储期望输出，自动检测非预期变化）；数据库 schema 变更审查。命令行工具推荐 jq 或 jsondiff（Python）用于自动化流水线中的 JSON 比较。
     title: JSON 差异比较
-    description: 在线 JSON Diff 对比工具，并排比较两个 JSON 对象的差异，高亮显示新增、删除和修改的字段。
+    description: 在线 JSON Diff 对比工具，并排比较两个 JSON 对象的差异，高亮显示新增、删除和修改的字段，支持嵌套结构和数组对比，帮助开发者快速定位 API 响应和配置文件的变化。
   jwt-parser:
     step1: '步骤 1：将 JWT 令牌粘贴到输入框中。'
     step2: '步骤 2：Header、Payload 和 Signature 被解码并用颜色标记。'
@@ -1247,6 +1355,8 @@ tools:
     faq2a: '标准 JWT（JWS）是签名的但未加密，任何人都可以解码 Payload。如需保密性，请使用 JWE。'
     faq3q: JWT 的 Header、Payload、Signature 各代表什么？
     faq3a: JWT 由三部分组成：Header 包含算法类型（如 HS256）；Payload 包含声明，如用户 ID、过期时间（exp）等；Signature 是用密钥对前两部分签名的结果，用于验证 Token 未被篡改，解码不需密钥但验证签名需要。
+    faq4q: 如何验证 JWT 令牌的签名是否有效？
+    faq4a: 验证 JWT 签名需要密钥：HMAC（HS256）用共享密钥；RSA/ECDSA 用公钥。本工具只解码 Token 内容，不验证签名（因为没有密钥）。在应用代码中，使用官方库（如 Node.js 的 jsonwebtoken、Python 的 PyJWT）进行完整验证，包括签名验证、exp 过期检查、iss/aud 声明验证。切勿在不验证签名的情况下信任 JWT 内容。
     title: JWT Token 解析器
     description: 在线 JWT Token 解析工具，将 JSON Web Token 解码为 Header、Payload、Signature 三部分，显示声明内容和过期时间，支持 HS256/RS256 等算法。
 
@@ -1260,8 +1370,10 @@ tools:
     faq2a: 'Unix 时间戳（纪元时间）是自 1970 年 1 月 1 日 00:00:00 UTC 起经过的秒数，与时区无关，在编程中广泛使用。'
     faq3q: 为什么 2038 年对 Unix 时间戳是个问题？
     faq3a: 32 位有符号整数最大值（2147483647）对应 2038-01-19 03:14:07 UTC，称为「2038 年问题」。超过该时间 32 位系统会溢出。现代系统使用 64 位整数存储时间戳，可覆盖数十亿年，不受此限制。
+    faq4q: 如何处理不同时区的日期时间转换？
+    faq4a: 时区处理的关键：始终以 UTC 存储时间，只在展示时转换为本地时区。JavaScript 中推荐使用 Intl.DateTimeFormat 或 date-fns-tz 库处理时区。夏令时（DST）会使同一时区在不同时段偏移不同，需特别注意。数据库建议使用带时区的时间戳类型确保数据准确性。
     title: 日期时间转换器
-    description: 在线日期时间转换工具，支持多种日期格式和时区转换，包括 Unix 时间戳、ISO 8601、UTC 互转。
+    description: 在线日期时间转换工具，支持多种日期格式和时区转换，包括 Unix 时间戳、ISO 8601、UTC 互转，实时显示转换结果，适合后端开发、日志分析和跨时区协作场景。
 
   phone-parser-and-formatter:
     step1: '步骤 1：输入任意格式的电话号码。'
@@ -1273,8 +1385,10 @@ tools:
     faq2a: '从电话号码可以确定国家、地区、运营商（有时）和类型（移动、座机、免费电话等）。'
     faq3q: E.164 格式是什么？为什么在系统中应该统一使用它？
     faq3a: E.164 是国际电话号码的标准格式：+ 号开头，后跟国家代码和号码，无空格和连字符，最多 15 位数字（如 +861381234xxxx）。在数据库和 API 中统一使用 E.164 格式可避免解析歧义，方便国际化，与 Twilio、AWS SNS 等通信服务直接兼容。
+    faq4q: 如何在系统中正确存储和处理国际电话号码？
+    faq4a: 最佳实践：始终以 E.164 格式（+1234567890）存储，包含国家代码，不含空格和破折号，便于全球统一处理；展示时用 libphonenumber 按用户所在国家格式化；验证时使用 libphonenumber（Google 开源，各语言均有实现）而非自己写正则；数据库用 VARCHAR(20) 存储，不用 INT（可能丢失前导零）。
     title: 电话分析器和格式化程序
-    description: 在线电话号码解析和格式化工具，支持解析、验证国际电话号码（E.164 格式），获取国家/地区代码、运营商类型，并转换为标准国际格式，适合表单验证和数据清洗。
+    description: 在线国际电话号码解析和格式化工具，支持验证 E.164 格式、获取国家/地区代码和运营商类型，并转换为标准国际格式，适合表单验证、用户注册系统和通讯录数据清洗。
     defaultCountryCode: 默认国家/地区代码
     phoneNumber: 电话号码
     phonePlaceholder: 请输入电话号码
@@ -1319,8 +1433,10 @@ tools:
     faq2a: '/24 子网有 256 个地址（2 的 8 次方）。减去网络地址和广播地址，剩余 254 个可用主机地址。'
     faq3q: CIDR 表示法（如 /24）是什么意思？
     faq3a: CIDR 中 /24 表示子网掩码前 24 位为 1，即 255.255.255.0，该子网可容纳 256 个 IP。/16 对应 65536 个地址，/32 表示单个主机地址。CIDR 比传统 A/B/C 类地址分配更灵活高效。
+    faq4q: VLSM 可变长子网掩码和固定子网掩码有什么区别？
+    faq4a: 传统固定子网掩码要求所有子网大小相同，浪费 IP 地址；VLSM 允许不同子网有不同大小，按需分配。例如总部 100 台主机用 /25（126 个可用地址），分支 20 台用 /27（30 个），WAN 链路 2 台用 /30（2 个），精确利用地址空间。现代网络设计普遍采用 VLSM。
     title: IPv4子网计算器
-    description: IPv4 子网计算器，输入 CIDR 地址段（如 192.168.1.0/24），自动计算网络地址、广播地址、可用 IP 范围、子网掩码和主机数量。
+    description: IPv4 子网计算器，输入 CIDR 地址段（如 192.168.1.0/24），自动计算网络地址、广播地址、可用 IP 范围、子网掩码、主机数量和地址类型，适合网络规划和运维排查。
     inputLabel: 输入 IPv4 地址（可带或不带掩码）
     inputPlaceholder: '例如：192.168.1.0/24'
     parseError: '无法解析此地址，请检查格式（例如：192.168.1.0/24）'
@@ -1352,8 +1468,10 @@ tools:
     faq2a: 'og:image 是页面在社交媒体分享时显示的缩略图。推荐尺寸为 1200×630px。'
     faq3q: 必须设置哪些基本的 Open Graph 标签？
     faq3a: 最基本的 OG 标签包括：og:title（页面标题）、og:type（内容类型，如 website 或 article）、og:image（缩略图 URL，建议 1200×630px）、og:url（页面规范 URL）。可选但重要的标签：og:description（简短描述）、og:site_name（网站名称）。缺少这些标签会导致社交媒体分享时显示异常。
+    faq4q: Open Graph 标签如何影响社交媒体分享效果？
+    faq4a: "完善的 OG 标签可以显著提升分享点击率：og:title（标题，建议 40-60 字符）；og:description（描述，建议 100-200 字符）；og:image（分享图片，推荐 1200x630px，大图更吸引眼球）；og:url（规范 URL）。Twitter 有独立的 Twitter Card 标签（twitter:card=summary_large_image 展示大图）。缺少这些标签，分享时只会显示 URL 或默认缩略图，大幅降低点击意愿。"
     title: Open Graph / OG Meta 标签生成器
-    description: 在线生成 Open Graph、Twitter Card 等社交媒体 meta 标签，提升网站在 Facebook、Twitter、微信等平台的分享效果。
+    description: 在线生成 Open Graph 和 Twitter Card 社交媒体 meta 标签代码，提升网站在 Facebook、Twitter、微信等平台的链接分享效果，支持自定义标题、描述、图片 URL 和页面类型。
 
   ipv6-ula-generator:
     step1: '步骤 1：点击「生成」创建随机的 IPv6 ULA 前缀。'
@@ -1365,8 +1483,10 @@ tools:
     faq2a: '根据 RFC 4193，40 位全局 ID 应使用当前时间和 EUI-64 伪随机生成，以最小化不同组织间的碰撞概率。'
     faq3q: IPv6 ULA 和公网 IPv6 地址有什么区别？
     faq3a: ULA（Unique Local Address，fc00::/7 前缀）类似于 IPv4 的私有地址（192.168.x.x），只在本地网络内路由，不在公网上传播。公网 IPv6（GUA，Global Unicast Address）全球唯一可路由。ULA 适合内部网络通信，不依赖 ISP 分配，即使没有互联网连接也能使用。
+    faq4q: IPv6 ULA 和全球单播地址（GUA）有什么区别？
+    faq4a: "ULA（唯一本地地址，fc00::/7）类似 IPv4 的私有地址，仅在本地网络路由，不在互联网上公告；GUA（全球单播地址，2000::/3）是互联网可路由的真实地址。IPv6 的优势是地址充裕，内网也可使用 GUA，但 ULA 用于纯内网设备（无需互联网可达）更安全，也适合实验和开发环境。"
     title: IPv6 ULA生成器
-    description: 按照 RFC 4193 规范生成 IPv6 ULA（唯一本地地址）前缀，用于局域网内部使用，无需申请公网地址即可构建私有 IPv6 网络。
+    description: 按照 RFC 4193 规范在线生成 IPv6 ULA（唯一本地地址）前缀，用于局域网内部使用，无需申请公网地址即可构建私有 IPv6 网络，适合家庭实验室和企业内网规划。
     infoText: ULA 地址用于私有网络内部，不会在互联网上路由
     macAddressLabel: MAC 地址（可选）
     placeholder: 例如：00:1A:2B:3C:4D:5E
@@ -1379,7 +1499,7 @@ tools:
 
   hash-text:
     title: Hash 文本生成器
-    description: '使用所需的函数哈希文本字符串：MD5、SHA1、SHA256、SHA224、SHA512、SHA384、SHA3或RIPEMD160'
+    description: 在线文本哈希工具，支持 MD5、SHA1、SHA256、SHA224、SHA512、SHA384、SHA3 和 RIPEMD160 等多种哈希算法，输入文本即时输出哈希值，适合数据完整性校验和密码学学习。
     step1: 第一步：在输入框中输入或粘贴文本。
     step2: 第二步：选择哈希算法（MD5、SHA-256 等）。
     step3: 第三步：哈希结果即时显示，点击即可复制。
@@ -1389,6 +1509,8 @@ tools:
     faq2a: 安全敏感场景请使用 SHA-256 或 SHA-512。MD5 和 SHA-1 在密码学上已被认为不安全，仅适用于非安全用途如校验和。
     faq3q: MD5 和 SHA256 有什么区别？哪个更安全？
     faq3a: MD5 已存在碰撞漏洞，不再适合安全场景，只适合文件完整性校验等非安全用途。SHA256 是目前安全的选择，适合数字签名和证书。密码存储请使用 bcrypt 或 Argon2，而非任何 SHA 系列算法。
+    faq4q: 为什么不应该用 MD5/SHA 来存储密码？
+    faq4a: MD5/SHA 系列算法设计用于快速哈希，对密码存储恰恰是缺点：GPU 每秒可计算数十亿次哈希，配合预计算的彩虹表，破解简单密码只需秒级。密码存储应使用专门设计的慢哈希算法：bcrypt（最广泛）、scrypt（内存密集）或 Argon2id（推荐，赢得密码哈希竞赛）。
 
   json-to-toml:
     step1: '步骤 1：将 JSON 内容粘贴到左侧编辑器。'
@@ -1400,8 +1522,10 @@ tools:
     faq2a: 'TOML 对配置文件更具可读性。某些工具（如 Cargo、Hugo）只支持 TOML，需要从 JSON 转换。'
     faq3q: JSON 转换为 TOML 后有什么需要注意的？
     faq3a: TOML 不支持 JSON 的 null 值，转换时会被忽略或处理为空字符串。JSON 中混合类型的数组（如同时包含数字和字符串）在 TOML 中不合法。此外，TOML 对日期时间有专门的格式，数字键名需要特殊处理。
+    faq4q: 在 Rust 项目中如何利用 JSON 转 TOML 迁移配置？
+    faq4a: Rust 生态（Cargo.toml、Tauri、Bevy）广泛使用 TOML 格式。迁移步骤：用本工具将现有 JSON 配置转换为 TOML；审查输出，注意 TOML 特有的日期时间格式（RFC 3339）和多行字符串（三引号）；在 Rust 中使用 serde + toml crate 反序列化。TOML 比 JSON 更适合手写配置，注释支持更友好。
     title: JSON 转 TOML 转换器
-    description: 将 JSON 数据在线转换为 TOML 格式，适用于应用配置迁移，保留层级结构，尤其适合 Rust 项目。
+    description: 将 JSON 数据在线转换为 TOML 格式，适用于应用配置迁移，保留层级结构，尤其适合 Rust、Go 项目从 JSON 迁移到 TOML 配置，结果实时生成，可一键复制使用。
 
   device-information:
     step1: '步骤 1：打开工具——设备信息自动检测。'
@@ -1413,8 +1537,10 @@ tools:
     faq2a: '不会。所有信息均从浏览器 JavaScript API 本地读取，不传输任何数据。'
     faq3q: 为什么不同网站检测到的设备信息有时不一样？
     faq3a: 不同网站使用不同的检测方法和库。有些信息（如屏幕分辨率、User-Agent）是准确的，而设备型号等信息通常是从 User-Agent 字符串推断的，准确性有限。现代浏览器为保护用户隐私，对某些 API 加入了随机噪声（如 canvas 指纹保护），导致不同站点可能获取到略有不同的值。
+    faq4q: 网站如何根据设备信息提供适配体验？
+    faq4a: 响应式设计根据屏幕宽度（viewport）调整布局；设备像素比（DPR）用于提供 1x/2x/3x 图片（srcset）；UA 检测可区分移动端和桌面端特性（如触摸支持）；连接速度信息可用于降低图片质量节省流量。现代建议用特性检测（feature detection）而非 UA 嗅探，更可靠且面向未来。
     title: 设备信息检测
-    description: 检测当前设备的详细信息，包括屏幕分辨率、像素比、浏览器版本、操作系统、用户代理字符串、网络连接类型等，帮助开发者进行设备适配调试。
+    description: 检测当前浏览器和运行设备的详细信息，包括屏幕分辨率、像素比、浏览器版本、操作系统、用户代理字符串和网络连接类型等，帮助前端开发者进行设备适配调试和响应式布局测试。
 
   pdf-signature-checker:
     step1: '步骤 1：拖放或选择 PDF 文件。'
@@ -1426,8 +1552,10 @@ tools:
     faq2a: '不会。PDF 完全在浏览器中使用 JavaScript 处理，您的文件不会离开您的设备。'
     faq3q: PDF 数字签名和电子签名有什么区别？
     faq3a: 数字签名（Digital Signature）使用公钥密码学（PKI）技术，通过证书颁发机构（CA）验证签署者身份，具有法律效力，可检测文档是否被篡改。电子签名（e-Signature）是更广泛的概念，包括扫描手写签名、在线签名平台等，技术要求较低。PDF 数字签名属于前者，本工具专门检测 PKI 数字签名。
+    faq4q: PDF 数字签名和电子签名有什么区别？
+    faq4a: 数字签名（Digital Signature）是使用 PKI 证书（如 X.509）对 PDF 进行加密签名，可验证签名者身份和文档完整性，法律效力强；电子签名（E-Signature）是广义概念，包括手写签名图片、点击确认等，未必有密码学保证。中国《电子签名法》认可符合条件的数字签名的法律效力。
     title: PDF签名检查器
-    description: '验证PDF文件的签名。签名的PDF文件包含一个或多个签名，可用于确定文件的内容在签名后是否已被更改。'
+    description: 在线 PDF 数字签名验证工具，检测 PDF 文件中的数字签名数量和有效性，判断文件签名后内容是否被篡改，支持拖拽上传，结果实时展示，适合合同核验和文档真实性验证。
 
   json-minify:
     step1: '步骤 1：将 JSON 粘贴到左侧编辑器。'
@@ -1439,8 +1567,10 @@ tools:
     faq2a: '不会。压缩只删除无关紧要的空白，数据值和结构保持完全不变。'
     faq3q: JSON 压缩能节省多少空间？
     faq3a: 压缩效果取决于格式化 JSON 中的空白量。通常情况下，压缩后体积可减少 20%~50%。对于嵌套层级较深的 JSON，压缩效果更明显。压缩后的 JSON 适合 API 响应和网络传输，而格式化 JSON 适合开发调试。
+    faq4q: JSON 压缩在生产环境中能带来多少性能提升？
+    faq4a: 实际效果取决于 JSON 大小和服务器是否开启 Gzip/Brotli 压缩。未压缩时，去除空白可减少 20-30% 体积；但如果服务器已开启 Brotli 压缩，手动 JSON 压缩效果微乎其微。建议始终开启 HTTP 响应的 Brotli/Gzip，而不是手动压缩 JSON；JSON 压缩主要用于减少存储空间或特定不支持 HTTP 压缩的传输场景。
     title: JSON 压缩 / 最小化
-    description: 在线 JSON 压缩工具，删除所有多余空白和换行，将 JSON 压缩到最小体积，适用于 API 传输和存储优化。
+    description: 在线 JSON 压缩工具，一键删除所有多余空白和换行，将 JSON 压缩到最小体积，适用于 API 传输和存储优化，减少网络数据传输量，结果一键复制，免费无需注册。
     rawJson: 原始 JSON
     minifiedResult: 压缩结果
     valid: 合法
@@ -1467,8 +1597,10 @@ tools:
     faq2a: 'ULID 可按创建时间排序（不同于 UUID v4），URL 安全，且字符串表示更紧凑（26 字符 vs UUID 的 36 字符）。'
     faq3q: ULID 和 UUID 相比有什么优势？
     faq3a: ULID 的优势在于：1）天然有时序，可按字符串直接排序；2）Base32 编码，URL 安全无需编码；3）只有 26 个字符，比 UUID 的 36 个字符（含连字符）更紧凑；4）可读性更强。缺点是依赖时间，精度相同毫秒内的 ULID 仍是随机顺序。
+    faq4q: ULID 和 UUID v4 相比有哪些优缺点？
+    faq4a: ULID 优势：时间戳前缀使其按创建时间天然有序（对 B-tree 索引更友好，减少页分裂）；字符串形式比 UUID 短（26 字符 vs 36 字符）；URL 安全（只含大写字母和数字）。UUID v4 优势：使用更广泛、库支持更完善；完全随机，无时间信息泄露顾虑。场景选择：数据库主键、需要排序的 ID 场景选 ULID；需要完全随机 ID 且不关心顺序选 UUID v4。
     title: ULID 唯一ID生成器
-    description: 在线生成 ULID（通用唯一词典可排序标识符），比 UUID 更易排序和调试，需要时间有序 ID 的分布式系统首选。
+    description: 在线生成 ULID（通用唯一词典可排序标识符），比 UUID 更易排序和调试，兼具唯一性和时间顺序性，特别适合需要时间有序 ID 的分布式系统、日志记录和数据库主键场景。
 
   string-obfuscator:
     step1: '步骤 1：输入要脱敏的字符串（如 API 密钥、IBAN、令牌）。'
@@ -1480,8 +1612,10 @@ tools:
     faq2a: '不一样。脱敏是用于显示目的的视觉技术，原始字符串无法从脱敏输出中恢复。加密则产生可逆的密文。'
     faq3q: 字符串脱敏的常见使用场景有哪些？
     faq3a: 字符串脱敏常用于：日志记录（隐藏 API 密钥和密码）、截图和演示（遮掩敏感 Token）、用户界面显示（显示部分银行卡号如 **** 1234）、错误报告（隐藏用户隐私信息），以及技术文档中展示示例配置时保护真实密钥。
+    faq4q: 字符串混淆能真正保护源代码中的敏感信息吗？
+    faq4a: 字符串混淆只是增加逆向难度，无法真正保护敏感信息。混淆代码仍可被反编译和静态分析，花费的时间更多但结果相同。真正的保护方案：敏感配置（API Key、数据库密码）放在环境变量或 KMS 中，不进入代码库；使用 .gitignore 和 secret scanning 工具防止意外提交；定期轮换密钥，泄露后能快速失效。
     title: 字符串混淆器
-    description: 在线字符串混淆工具，将敏感字符串（密钥、IBAN、Token、密码等）的中间字符替换为星号（*），生成可安全分享的脱敏版本，适合日志展示和截图分享。
+    description: 在线字符串混淆工具，将敏感字符串（密钥、IBAN、Token、密码等）的中间字符替换为星号，生成可安全分享的脱敏版本，支持自定义保留字符数，适合日志展示和截图分享。
     inputLabel: 输入字符串
     inputPlaceholder: 输入要脱敏的字符串...
     keepFirst: 保留开头字符数
@@ -1505,6 +1639,8 @@ tools:
     faq2a: '每个十六进制数字对应恰好 4 位二进制数。例如 F(hex) = 1111(binary)，所以 0xFF = 11111111。'
     faq3q: 在程序开发中各种进制分别有什么用途？
     faq3a: 二进制（bin）：计算机底层运算和位操作；八进制（oct）：Unix 文件权限（chmod）；十进制（dec）：日常数字；十六进制（hex）：内存地址、颜色值（#RRGGBB）、字节数据表示；Base64：二进制数据的文本编码。了解进制转换是理解计算机底层原理的基础。
+    faq4q: 进制转换在计算机中有哪些实际应用？
+    faq4a: 进制转换在计算机科学中广泛应用：十六进制用于表示颜色值（#FF5733）、内存地址和字节数据；二进制用于位运算和权限掩码；八进制历史上用于 Unix 文件权限；Base64 用于 URL 安全的数据编码。理解进制转换是底层编程的基础技能。
     title: 进制转换器（2/8/10/16）
     description: 在线进制转换器，支持数字在二进制（bin）、八进制（oct）、十进制（dec）、十六进制（hex）、Base64 之间互相转换，适合前端开发、汇编学习和颜色值转换。
 
@@ -1518,8 +1654,10 @@ tools:
     faq2a: '不保留。JSON 不支持注释，因此所有 YAML 注释在转换时都会被丢弃。'
     faq3q: YAML 和 JSON 在格式上有哪些主要差异？
     faq3a: YAML 使用缩进表示层级，支持注释（#）、多行字符串和锚点引用，更适合人类编写的配置文件。JSON 使用花括号和方括号，语法严格，更适合机器解析和 API 数据交换。YAML 1.2 是 JSON 的超集。
+    faq4q: YAML 中的锚点和引用在 JSON 中如何处理？
+    faq4a: YAML 支持锚点（&anchor）和引用（*alias）用于复用配置片段，这是 JSON 不具备的特性。转换为 JSON 时，引用会被展开（内联替换），生成完整的重复数据。这意味着转换后的 JSON 比 YAML 更冗长，且失去了原有的维护优势。如果需要 JSON 也支持复用，可以在应用层处理（如 JSON Schema 的 $ref）。
     title: YAML到JSON转换器
-    description: 将 YAML 数据在线转换为 JSON 格式，保留层级结构，适用于配置迁移、API 测试和数据格式转换。
+    description: 将 YAML 数据在线转换为 JSON 格式，保留层级结构和数据类型，适用于配置迁移、API 测试和数据格式转换，支持多文档 YAML，转换结果自动格式化，可一键复制。
 
   yaml-viewer:
     step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
@@ -1531,8 +1669,10 @@ tools:
     faq2a: 'YAML 使用空格缩进表示层级，不允许使用 Tab 键。缩进量不固定，但同级节点必须保持一致。'
     faq3q: YAML 的 --- 和 ... 分别是什么含义？
     faq3a: --- 是 YAML 文档开始标记，允许在一个文件中包含多个独立的 YAML 文档。... 是文档结束标记（可选）。对于单文档 YAML 文件，--- 通常可以省略，但在 Kubernetes 和 GitHub Actions 等场景中常用于分隔多份配置。
+    faq4q: YAML 和 JSON 在哪些场景下各有优势？
+    faq4a: YAML 的优势：支持注释（配置文件必备）；缩进语法更接近自然语言；支持多行字符串；支持锚点和引用减少重复；人类可读性更强。JSON 的优势：语法严格，解析器实现简单；浏览器原生支持（JSON.parse）；API 和数据交换的事实标准；不存在隐式类型转换陷阱。配置文件选 YAML，数据传输选 JSON。
     title: YAML 查看 / 格式化
-    description: 在线 YAML 查看 / 格式化工具，验证 YAML 语法正确性，提供语法高亮和结构化展示，帮助开发者快速检查配置文件是否合法。
+    description: 在线 YAML 查看与格式化工具，验证 YAML 语法正确性，提供语法高亮和结构化树形展示，帮助开发者快速检查 Kubernetes 配置、CI/CD 流水线等 YAML 文件是否合法。
     rawYaml: 原始 YAML
     formattedResult: 格式化结果
     sortKeys: 排序键
@@ -1561,6 +1701,8 @@ tools:
     faq2a: UUID v1 基于时间生成，包含机器 MAC 地址，可预测但有序。UUID v4 随机生成，是通用场景的最佳选择。
     faq3q: ULID 和 UUID 有什么区别？ULID 有什么优势？
     faq3a: ULID（通用唯一词典排序标识符）是有时序的 UUID 替代方案：26 个字符、Base32 编码、毫秒级时间戳前缀，天然可排序，适合数据库主键。UUID v4 完全随机，无排序性。ULID 在需要排序的场景比 UUID v4 更高效。
+    faq4q: UUID v4 和 v7 有什么区别？应该选哪个？
+    faq4a: UUID v4 完全随机，广泛支持，适合需要全局唯一 ID 的大多数场景；UUID v7（2023 年标准化）包含时间戳前缀，按时间天然有序，对数据库 B-tree 索引更友好（减少页分裂，提升插入性能），同时保留足够的随机性防碰撞。新项目数据库主键建议优先考虑 UUID v7 或 ULID；现有使用 v4 的系统无需迁移。
     versionLabel: UUID 版本
     quantity: 数量
     quantityPlaceholder: UUID 数量
@@ -1585,8 +1727,10 @@ tools:
     faq2a: 'IPv4 映射的 IPv6 地址以 ::ffff:x.x.x.x 格式表示 IPv4 地址，用于同时支持 IPv4 和 IPv6 的双栈系统。'
     faq3q: 为什么 IPv4 要转换为不同格式？
     faq3a: IPv4 地址格式转换有多种用途：二进制格式用于理解子网掩码和路由计算；十六进制格式在网络协议头部（如 TCP/IP 报文）和内存中使用；整数格式在数据库中高效存储 IP 地址（相比字符串节省空间，便于范围查询）；点分十进制是人类可读的标准格式。
+    faq4q: IPv4 地址的各种表示格式在哪些场景下使用？
+    faq4a: 点分十进制（192.168.1.1）是人类日常使用的格式；十六进制常见于汇编、C 代码和网络协议分析；32位整数用于数据库存储（INT 类型比 VARCHAR 更节省空间和索引效率高）；二进制表示用于理解子网掩码和 CIDR 的位运算逻辑。
     title: Ipv4地址转换器
-    description: IPv4 地址格式转换工具，将 IP 地址在点分十进制、二进制、十六进制、整数之间互相转换，适合网络工程师和安全研究人员使用。
+    description: IPv4 地址格式转换工具，将 IP 地址在点分十进制、二进制、十六进制、整数之间互相转换，适合网络工程师分析 IP 结构、安全研究人员处理数据包和教育场景的直观演示。
     inputLabel: IPv4 地址
     inputPlaceholder: '例如：192.168.1.1'
     errorMsg: 请输入有效的 IPv4 地址（每段范围 0–255，共四段，如 192.168.1.1）
@@ -1608,8 +1752,10 @@ tools:
     faq2a: '单词定义为由空白字符分隔的字符序列。附在单词上的标点符号算作单词的一部分。'
     faq3q: 阅读时间是如何估算的？
     faq3a: 阅读时间通常按成人平均阅读速度估算：英文约 200~250 词/分钟，中文约 400~500 字/分钟。本工具使用约 200 词/分钟的标准，适合一般内容。技术文档和学术论文的阅读速度通常更慢。
+    faq4q: 字数统计在 SEO 内容优化中有多重要？
+    faq4a: 内容长度对 SEO 的影响：研究显示 Google 排名靠前的页面平均字数在 1500-2500 词；长内容通常获得更多反向链接；但质量比数量更重要，填充低质量文字反而有害。建议根据竞争对手的平均字数确定目标，保持每段 50-100 词，使用标题和列表提升可读性，工具型内容（教程、对比）适合长篇，新闻资讯则不然。
     title: 文本统计分析工具
-    description: 在线文本统计分析工具，实时显示文本的字符数（含/不含空格）、单词数、句子数、行数、段落数、字节大小和阅读时间估算，帮助写作和内容创作。
+    description: 在线文本统计分析工具，实时显示字符数（含/不含空格）、单词数、句子数、行数、段落数、字节大小和中英文阅读时间估算，帮助写作、内容创作和 SEO 优化控制文本质量与长度。
     placeholder: 在此输入或粘贴文本…
     copyTooltip: 复制文本
     clearTooltip: 清空文本
@@ -1629,8 +1775,10 @@ tools:
     faq2a: '许多字母在电话或无线电中听起来相似。使用音标单词可减少口头拼写时的错误。'
     faq3q: NATO 音标字母表中各字母代表什么单词？
     faq3a: NATO 音标字母表（ITU/ICAO 标准）：Alpha、Bravo、Charlie、Delta、Echo、Foxtrot、Golf、Hotel、India、Juliet、Kilo、Lima、Mike、November、Oscar、Papa、Quebec、Romeo、Sierra、Tango、Uniform、Victor、Whiskey、X-ray、Yankee、Zulu。数字：Zero 到 Niner。
+    faq4q: NATO 字母表在哪些专业领域广泛使用？
+    faq4a: NATO 音标字母表（Alpha Bravo Charlie...）的使用场景：航空通信（飞行员与塔台通讯）；军事和警察无线电通话；客服电话中核实客户信息；医疗急救沟通（药品名称、患者 ID）；气象报告；业余无线电（HAM Radio）。它被 ICAO（国际民航组织）标准化，全球 26 个字母统一发音，消除因口音和背景噪音引起的误解。
     title: 文本转北约字母表
-    description: 将文本转换为北约音标字母（Alpha、Bravo、Charlie…），适用于当面拼写验证、无线零频通信等场景。
+    description: 将文本转换为北约音标字母（NATO Phonetic Alphabet：Alpha、Bravo、Charlie…），适用于当面拼写验证、无线电通信和航空等场景，支持实时转换和一键复制，帮助避免字母混淆。
 
   basic-auth-generator:
     step1: '步骤 1：输入您的用户名和密码。'
@@ -1642,6 +1790,8 @@ tools:
     faq2a: 'Basic Auth 本身不安全，因为凭据只是 Base64 编码而非加密。必须在 HTTPS 上使用。'
     faq3q: Basic Auth 和 Bearer Token 认证有什么区别？
     faq3a: Basic Auth 在每个请求的 Authorization 头中以 Base64 编码发送用户名和密码，简单但存在安全风险，必须配合 HTTPS。Bearer Token 在 Authorization 头中发送一个短期令牌（如 JWT），不直接暴露密码，可以设置过期时间和权限范围，更适合现代 API 设计和单点登录场景。
+    faq4q: Basic Auth 安全吗？应该在什么情况下使用？
+    faq4a: Basic Auth 将用户名和密码用 Base64 编码后放在请求头中，本身不提供加密。必须配合 HTTPS 使用才相对安全。适合内部 API、开发测试环境或不需要高安全性的场景。生产环境面向用户的服务建议使用 OAuth2、JWT 或 API Key 等更安全的认证方式。
     title: 基本身份验证生成器
     description: 在线生成 HTTP Basic Auth 认证头，输入用户名和密码即可生成 Base64 编码的 Authorization 标头，供 API 测试和开发调试使用。
 
@@ -1655,8 +1805,10 @@ tools:
     faq2a: 'Unicode 是分配码点的标准（如 U+0041 代表字母 A），UTF-8 是将这些码点在内存或文件中表示为 1–4 字节的编码方式。'
     faq3q: 为什么同一字符在不同系统上显示效果不同？
     faq3a: 不同的字体、操作系统和渲染引擎对相同 Unicode 字符的视觉呈现可能不同，特别是表情符号（Emoji）——同一 Unicode 码点在苹果、谷歌和微软平台上有完全不同的设计风格。字符集问题（如 GB2312 vs UTF-8）可能导致中文字符显示为乱码，统一使用 UTF-8 可解决大多数跨平台编码问题。
+    faq4q: Unicode 和 UTF-8、UTF-16 有什么区别？
+    faq4a: Unicode 是字符集标准，定义了 100 多万个字符的码点（U+0000 到 U+10FFFF）；UTF-8 和 UTF-16 是 Unicode 的不同编码实现。UTF-8：变长编码，英文 1 字节，中文 3 字节，向下兼容 ASCII，是 Web 标准；UTF-16：变长编码，基本平面 2 字节，JavaScript 和 Java 内部使用；UTF-32：定长 4 字节，处理简单但浪费空间。
     title: 文本转 Unicode
-    description: 将文本与 Unicode 码点双向转换，支持查看字符的 Unicode 编号、UTF-8/UTF-16 编码，适合国际化开发调试。
+    description: 将文本与 Unicode 码点双向转换，支持查看字符的 Unicode 编号、UTF-8/UTF-16 编码，适合国际化开发调试、查找特殊字符码点以及处理多语言文本编码问题。
     textPlaceholder: '例如：Hello 你好 🚀'
 
   ipv4-range-expander:
@@ -1669,8 +1821,10 @@ tools:
     faq2a: '不对齐 2 的幂次方边界的 IP 范围需要多个 CIDR 块来精确表示。'
     faq3q: 为什么用多个 CIDR 来表示一个 IP 范围，而不是一个？
     faq3a: CIDR 块的大小必须是 2 的幂次方（/24 = 256 个，/25 = 128 个等），且必须对齐到相应的边界。任意起止范围的 IP 段（如 10.0.0.5 到 10.0.0.20）通常无法用单个 CIDR 精确表示，需要分解为多个不重叠的 CIDR 块。本工具自动完成这个分解计算，适合防火墙规则配置。
+    faq4q: IP 范围扩展在实际网络配置中有哪些用途？
+    faq4a: IP 范围扩展的实际用途：防火墙规则（只允许特定 IP 段访问）；VPN 路由表配置（指定哪些流量走 VPN 隧道）；Nginx/Apache 的 allow/deny 指令；云服务安全组规则；CDN 白名单；数据库访问控制。CIDR 是最简洁的表达方式，单个 IP 范围可能对应多条 CIDR。
     title: IPv4范围扩展器
-    description: 在线 IPv4 地址范围扩展工具，输入起始和结束 IP 地址，自动计算覆盖该范围的 CIDR 网段列表，适合防火墙规则配置和网络规划场景。
+    description: 在线 IPv4 地址范围扩展工具，输入起始和结束 IP 地址，自动计算覆盖该范围所需的最少 CIDR 网段列表，适合精准配置防火墙规则、路由策略和网络访问控制。
     startAddress: 起始地址
     startPlaceholder: 例如：192.168.1.0
     endAddress: 结束地址
@@ -1694,8 +1848,10 @@ tools:
     faq2a: '可以。工具适用于任何文本内容，包括代码、散文、JSON 和 YAML。'
     faq3q: 文本对比工具能处理大文件吗？有字数限制吗？
     faq3a: 本工具完全在浏览器中运行，处理速度受设备性能影响。对于数千行的文件通常没有问题，但超大文件（数十 MB）可能导致浏览器卡顿。所有数据均在本地处理，适合对比含敏感信息的配置文件。
+    faq4q: 文本对比工具使用哪种算法？Git diff 和在线工具一样吗？
+    faq4a: 大多数文本对比工具使用 Myers 差分算法（O(ND) 算法），这也是 Git 默认的 diff 算法，寻找最短编辑路径（最小变更数）。Git 还支持 patience（更适合代码重构）和 histogram 算法（patience 的改进版）。在线对比工具通常使用 diff_match_patch（Google）或 jsdiff 库，基于相同 Myers 算法，结果与 git diff 基本一致。
     title: 文本差异对比工具
-    description: 在线文本差异对比工具，将两段文本并排展示，逐行高亮标注新增（绿色）和删除（红色）的内容，支持忽略空白符，适合代码审查、文档版本比较和配置文件对比。
+    description: 在线文本差异对比工具，并排高亮显示两段文本的新增（绿色）和删除（红色）行，支持忽略空白符和行尾差异，适合代码审查、文档版本比较、配置文件对比和 Git diff 预览。
     originalText: 原始文本
     modifiedText: 修改后文本
     originalPlaceholder: 在此粘贴原始文本…
@@ -1719,12 +1875,14 @@ tools:
     faq2a: 'TOTP 由 RFC 6238 定义，使用 HMAC-SHA1。被 Google Authenticator 和 Authy 等应用使用。'
     faq3q: TOTP 和 HOTP 有什么区别？
     faq3a: TOTP（Time-based OTP）基于当前时间生成 OTP，每 30 秒刷新一次，Google Authenticator 使用此方式。HOTP（HMAC-based OTP）基于计数器生成 OTP，只在使用时递增，不依赖时钟同步，适合硬件令牌和离线场景。
+    faq4q: TOTP 和 HOTP 有什么区别？应该选哪个？
+    faq4a: TOTP（基于时间）是 HOTP（基于计数器）的扩展，使用当前时间戳代替计数器。TOTP 每 30 秒自动刷新，即使 OTP 被截获也会快速失效，是 Google Authenticator、Authy 等 App 的标准；HOTP 基于递增计数器，不依赖时间同步，适合无网络的硬件令牌。现代双因子认证（2FA）几乎都使用 TOTP（RFC 6238），推荐使用。
     title: OTP代码生成器
     description: 在线 TOTP/OTP 动态口令生成器，支持基于时间的一次性密码（RFC 6238），可生成和验证 Google Authenticator 等双因素认证 App 使用的 6 位验证码。
 
   url-encoder:
     title: 编码/解码url格式的字符串
-    description: 在线 URL 编码 / 解码工具，将 URL 中的特殊字符转换为百分比编码格式，或将编码后的 URL 还原为可读形式，适合 API 开发和 Web 调试。
+    description: 在线 URL 编码 / 解码工具，将 URL 中的特殊字符转换为百分比编码（%xx）格式，或将编码后的 URL 还原为可读形式，支持完整 URL 和 URI 组件两种编码模式，适合 API 开发。
     step1: 第一步：选择"编码"或"解码"模式。
     step2: 第二步：将 URL 或文本粘贴到输入框中。
     step3: 第三步：编码/解码结果即时显示。
@@ -1734,6 +1892,8 @@ tools:
     faq2a: 将用户输入作为查询参数传递时、以编程方式构建 URL 时，或处理表单数据提交时。
     faq3q: URL 编码和 Base64 编码有什么区别？
     faq3a: URL 编码将特殊字符转换为 %XX 格式，用于 URL 中安全传输。Base64 将二进制数据编码为 ASCII 字符串，用于在文本协议中传输二进制内容。URL 参数应使用 URL 编码，而非 Base64。
+    faq4q: URL 编码（Percent-encoding）和 Base64 编码有什么区别？
+    faq4a: URL 编码（%XX）专门用于 URL 中不安全字符的转义，将字节转为 %+十六进制，使 URL 保持合法格式（如空格转 %20，中文转 %E4%B8%AD）；Base64 将任意二进制数据转为 64 个安全字符，使数据可在文本协议中传输，但会增加约 33% 体积。URL 编码用于 URL 参数；Base64 用于 data URI、API 认证、邮件附件等。
 
   text-to-binary:
     step1: '步骤 1：输入文本转换为二进制，或输入二进制解码回文本。'
@@ -1745,8 +1905,10 @@ tools:
     faq2a: '工具使用 UTF-8 编码，这是 Web 的标准编码。ASCII 字符使用单字节，非 ASCII 字符可能使用 2–4 字节。'
     faq3q: 二进制文本编码有什么实际用途？
     faq3a: 文本的二进制表示主要用于：理解计算机底层数据存储原理、调试网络协议和文件格式、学习编码系统（ASCII/UTF-8）、密码学和信息安全教学，以及部分隐写术应用（在文本中隐藏信息）。虽然日常开发中直接操作二进制文本较少，但理解其原理是计算机基础教育的重要组成部分。
+    faq4q: 文本转二进制在计算机底层是如何工作的？
+    faq4a: 计算机存储文字的底层过程：字符转字符编码（Unicode 码点，如 A = U+0041 = 65）→ 字节序列（UTF-8/UTF-16/ASCII 编码，如 ASCII 下 A = 01000001）→ 内存中的高低电平。英文字符在 ASCII 和 UTF-8 下都是 1 字节（8 位），中文在 UTF-8 下是 3 字节（24 位）。理解这一过程对处理编码问题（乱码）至关重要。
     title: 文本到 ASCII 二进制
-    description: 在线文本与 ASCII 二进制互转工具，支持将任意文本转换为 0/1 二进制字符串，或将二进制串解码还原为原始文本，适合编程学习和数据处理。
+    description: 在线文本与 ASCII 二进制互转工具，支持将任意文本转换为 0/1 二进制字符串，或将二进制串解码还原为原始文本，支持自定义分隔符，适合编程学习、数据处理和编码原理教学。
 
   mortgage-calculator:
     title: 房贷月供计算器
@@ -1790,6 +1952,8 @@ tools:
     faq2a: 大多数城市首套房最低首付为 20%，部分城市和贷款类型可能要求 30% 或更高。
     faq3q: 月供如何计算？
     faq3a: 等额还款公式：M = P × r × (1+r)^n / ((1+r)^n - 1)，其中 P 为贷款本金，r 为月利率（年利率 ÷ 12），n 为总还款月数。
+    faq4q: 等额本息和等额本金还款方式有什么区别？
+    faq4a: 等额本息：每月还款额固定，前期利息占比高、本金少，月供稳定易规划，总利息略高；等额本金：每月本金固定，利息递减，月供前高后低，总利息比等额本息少，适合收入较高且打算提前还款的借款人。中国多数住房贷款默认等额本息，商业贷款两种方式均可选择。
     year: 年
     downPaymentLabel: 首付
     maxLoan: 最大贷款额
@@ -1810,7 +1974,7 @@ tools:
 
   bmi-calculator:
     title: BMI 体重指数计算器
-    description: 在线 BMI 体质指数计算器，根据身高和体重计算 BMI 值，参照中国标准（WHO 标准）给出偏瘦、正常、超重、肥胖的体重分类评估和健康的理想体重范围建议。
+    description: 在线 BMI 体质指数计算器，根据身高和体重计算 BMI 值，参照中国标准（WHO 标准）给出偏瘦、正常、超重、肥胖的体重分类评估，并提示健康的理想体重范围建议。
     metric: 公制 (cm/kg)
     imperial: 英制 (in/lbs)
     height: 身高
@@ -1833,6 +1997,8 @@ tools:
     faq2a: WHO 标准：18.5–24.9 为正常。中国卫健委标准：18.5–23.9 为正常体重；24–27.9 为超重；≥28 为肥胖。
     faq3q: 这个计算器会上传我的数据吗？
     faq3a: 不会。所有计算完全在您的浏览器中运行，不会收集或传输任何健康数据。
+    faq4q: BMI 有哪些局限性？
+    faq4a: BMI 不区分脂肪和肌肉，肌肉发达的运动员可能被错误归为超重。它也不考虑脂肪分布（腰围比 BMI 更能预测心血管风险）、年龄、性别和种族差异。BMI 是群体统计工具，仅供个人参考，具体健康评估应咨询医生，结合腰围、体脂率和整体生活方式综合判断。
     decreaseHeight: 减少身高
     increaseHeight: 增加身高
     decreaseWeight: 减少体重
@@ -1848,8 +2014,10 @@ tools:
     faq2a: '目前工具对所有选项给予相同权重。如要加权某个选项，可在列表中多次添加它。'
     faq3q: 如何为随机选择添加权重？
     faq3a: 本工具每个选项权重相同，如需加权（例如某个选项出现概率更高），可在列表中多次输入该选项。例如想让「选项A」有 2 倍概率，就在列表中输入两次「选项A」。这种方式简单直接，无需额外设置，适合大多数非专业权重需求。
+    faq4q: 随机决策工具使用的是真随机还是伪随机？
+    faq4a: 本工具使用 JavaScript 的 Math.random()，这是伪随机数生成器（PRNG），基于确定性算法，不是真随机。对于日常决策，伪随机完全足够，统计上是均匀分布的。需要真随机（如密码学安全随机数）时应使用 window.crypto.getRandomValues()。真随机数源于物理过程（如量子噪声、大气噪声），Random.org 提供真随机服务。
     title: 随机决策选择器
-    description: 在线随机决策工具，无法做决定时输入你的多个选项，点击旋转按钮让转盘随机帮你做出选择，支持自定义选项列表和多种预设方案，让决策变得轻松有趣。
+    description: 在线随机决策转盘工具，输入多个候选选项，点击旋转按钮让转盘随机帮你做出选择，支持自定义选项列表和多种预设方案，告别选择困难，快速决定午餐、活动方案等日常选择难题。
     spin: 旋转！
     spinning: 旋转中...
     quickPick: 快速选择
@@ -1890,8 +2058,10 @@ tools:
     faq2a: '五险：养老保险、医疗保险、失业保险、工伤保险、生育保险。一金：住房公积金。费率因城市而异。'
     faq3q: 个人所得税专项附加扣除有哪些？
     faq3a: 2024 年个人所得税专项附加扣除包括：子女教育（每孩每月 2000 元）、继续教育（400~800 元/月）、大病医疗（上限 8 万元/年）、住房贷款利息（每月 1000 元）、住房租金（每月 800~1500 元，按城市）、赡养老人（每月最高 2000 元）、3 岁以下婴幼儿照护（每孩每月 2000 元）。
+    faq4q: 边际税率和实际税率有什么区别？
+    faq4a: 边际税率是最后一元收入适用的税率，而实际税率是总税额除以总收入的比例（通常远低于边际税率）。例如中国个税：月薪 2 万的实际税率约 8-12%，远低于边际档位的 20%。税收筹划时关注实际税率；理解边际税率有助于判断额外收入的税后价值。
     title: 个人所得税计算器
-    description: 根据中国现行个税政策（起征点5000元，7档税率），快速计算月薪应缴个税、五险一金和实发工资，支持专项附加扣除。
+    description: 根据中国现行个税政策（起征点 5000 元，7 档累进税率），快速计算月薪应缴个税、五险一金和实发工资，支持专项附加扣除配置，帮助职场人精确了解税后收入和扣税明细。
     income: 收入信息
     grossSalary: 税前月薪
     city: 社保城市
@@ -1931,7 +2101,7 @@ tools:
 
   css-unit-converter:
     title: CSS 单位转换器
-    description: 在 px、rem、em、vw、vh、pt 和百分比之间互转 CSS 单位，可自定义根字体大小、父元素字体大小和视口尺寸。
+    description: 在 px、rem、em、vw、vh、pt 和百分比之间互转 CSS 单位，可自定义根字体大小、父元素字体大小和视口尺寸，结果实时更新，适合前端开发响应式布局调试。
     input: 输入值
     value: 数值
     unit: 单位
@@ -1951,6 +2121,8 @@ tools:
     faq2a: 字体大小和间距使用 rem，可随用户浏览器字体设置自动缩放（更好的无障碍访问性）。px 适用于边框、固定尺寸元素等需要精确控制的场景。
     faq3q: 什么时候应该用 px，什么时候用 rem 或 em？
     faq3a: px 适合固定尺寸的元素（如边框、阴影、图标尺寸）。rem 适合字体大小和间距，基于根元素字体大小，便于全局缩放，无障碍访问更好。em 适合相对于父元素的尺寸调整。vw/vh 适合全屏布局和响应式设计。
+    faq4q: 什么时候应该用 rem 而不是 px？
+    faq4a: rem 基于根元素字体大小，适合响应式排版——用户在浏览器设置中调整字体大小时，rem 单位的元素会同比例变化，提升无障碍性。px 适合固定尺寸（如边框 1px）。最佳实践：字体大小、间距、容器宽度用 rem；边框、阴影用 px；媒体查询使用 em。
 
   unix-timestamp:
     title: Unix 时间戳转换器
@@ -1971,10 +2143,12 @@ tools:
     faq2a: 10 位数字为秒（如 1704067200），13 位数字为毫秒（如 1704067200000）。当前 Unix 时间约为 17 亿秒。
     faq3q: 如何在各编程语言中获取当前 Unix 时间戳？
     faq3a: '各语言获取时间戳：JavaScript: Date.now()（毫秒）或 Math.floor(Date.now()/1000)（秒）；Python: import time; int(time.time())；Java: System.currentTimeMillis()/1000；Go: time.Now().Unix()；Shell: date +%s。大多数语言默认返回秒级时间戳，JavaScript 例外返回毫秒。'
+    faq4q: Unix 时间戳在 2038 年会出现什么问题？
+    faq4a: "Y2K38 问题：32 位有符号整数最大值为 2147483647，对应 2038 年 1 月 19 日 03:14:07 UTC。超过这个时刻，32 位整数会溢出变成负数，导致系统将时间理解为 1901 年。解决方案：使用 64 位整数存储时间戳（Linux 内核 5.6+ 已在 32 位系统支持 64 位 time_t）；升级使用 32 位时间戳的老旧系统和嵌入式设备。"
 
   number-formatter:
     title: 数字格式化工具
-    description: 在线数字格式化工具，支持按不同地区（中文、英文、欧洲等）语言格式格式化数字，包括十进制、货币、百分比、科学计数法，方便国际化开发调试。
+    description: 在线数字格式化工具，支持按不同国家/地区（中文、英文、欧洲等）语言习惯格式化数字，包括十进制、货币、百分比和科学计数法四种显示模式，方便国际化开发调试和报表展示。
     input: 输入
     number: 数字
     locale: 语言地区
@@ -1999,6 +2173,8 @@ tools:
     faq2a: 科学计数法总是显示系数和指数（如 1.23E3）。紧凑模式使用本地化缩写（如 "1.2K"、"1.2万"），对大数字更直观易读。
     faq3q: 为什么不同国家的数字格式不一样？
     faq3a: 不同国家对小数点和千位分隔符的约定不同：美国/英国用逗号分隔千位（1,000.00），德国/法国用点分隔千位（1.000,00），印度使用不同的分组方式（1,00,000.00）。国际化开发中必须根据用户地区选择正确的格式。
+    faq4q: 不同国家的数字格式有哪些差异需要注意？
+    faq4a: 数字格式存在显著的国际差异：千位分隔符——美国/中国用逗号（1,000），欧洲用点或空格；小数点——美国/中国用点（3.14），欧洲用逗号（3,14）。开发国际化应用时用 Intl.NumberFormat API 处理，避免硬编码格式。货币符号的位置和格式也因国家而异。
     clear: 清空
     copy: 复制
     justCopied: 已复制！
@@ -2031,6 +2207,8 @@ tools:
     faq2a: 色阶是在基础色中加入白色（使颜色变浅），暗色阶是在基础色中加入黑色（使颜色变深）。本工具同时生成两者，提供完整的色彩范围。
     faq3q: UI 设计中如何使用调色板生成器？
     faq3a: 工作流程：1）确定品牌主色（可用色轮或参考竞品）；2）使用本工具生成完整色阶（50~900），用于背景、边框、文字等不同层级；3）生成互补色或类比色作为辅助色；4）生成灰色系用于文字和中性元素；5）在设计系统中定义语义化颜色（primary、success、warning、error）并映射到色阶值。
+    faq4q: 如何为项目选择一套协调的配色方案？
+    faq4a: "常用配色理论：互补色（色轮对面，高对比）、类比色（相邻色，和谐自然）、三等分色（等距三色，活泼平衡）。设计建议：选一个主色（品牌色），一个辅助色，加上中性色（灰色系）和点缀色。确保颜色对比度满足 WCAG AA 标准（4.5:1），兼顾色盲用户。"
     clickToChange: 点击更改颜色
     openPicker: 打开取色器
     hexError: 无效的十六进制颜色值
@@ -2072,7 +2250,7 @@ tools:
     ssidRequired: 请先填写 WiFi 名称（SSID）
   qr-code-generator:
     title: 二维码生成器
-    description: 在线免费二维码生成器，支持自定义前景色/背景色、容错率（L/M/Q/H）和边距，可下载高质量 PNG 格式，适合网址、名片、Wi-Fi 密码等场景。
+    description: 在线免费 WiFi 二维码生成器，支持自定义前景色/背景色、容错率（L/M/Q/H）和边距，可下载高质量 PNG 格式，适合网址分享、名片制作和 Wi-Fi 密码快速连接场景。
     step1: 步骤 1：在左侧输入要编码的内容（网址、文本等）。
     step2: 步骤 2：调整颜色、容错率和边距等选项（可选）。
     step3: 步骤 3：右侧实时预览二维码效果。
@@ -2083,6 +2261,8 @@ tools:
     faq2a: 容错率越高，二维码损坏后越容易被正确识别，但码图也会更复杂。一般场景选"中"即可，印刷或贴纸建议选"高"或"最高"。
     faq3q: 生成的二维码可以永久使用吗？有什么限制？
     faq3a: 本工具生成的二维码直接将内容（URL、文字等）编码进码图，不依赖服务器，可以永久使用，无扫描次数限制。但如果你的 URL 网址失效，二维码仍然有效只是目标无法访问。图片质量建议选高分辨率再打印。
+    faq4q: 二维码的纠错级别应该如何选择？
+    faq4a: QR 码有 4 个纠错级别：L（7%）、M（15%）、Q（25%）、H（30%），数值表示可修复的损坏比例。选择建议：普通 URL/文本用 L 或 M，体积最小；印刷品（可能磨损）用 M 或 Q；LOGO 叠加在二维码上必须用 H（LOGO 遮挡了部分码，需高纠错率）；纠错级别越高，二维码越密集，扫描距离需更近。
     contentLabel: 二维码内容
     contentPlaceholder: 请输入网址、文本或任意内容…
     charUnit: 字符
@@ -2119,6 +2299,8 @@ tools:
     faq2a: 使用圆括号 () 定义编号捕获组，使用 (?<name>...) 定义命名捕获组。匹配结果中会分别列出。
     faq3q: 如何确保正则表达式匹配整个字符串而非部分？
     faq3a: 使用锚点 ^ 匹配字符串开头，$ 匹配结尾，例如 /^[0-9]{4}$/ 只匹配恰好 4 位数字的字符串。多行模式（m 标志）下，^ 和 $ 会匹配每一行的开头和结尾，而非整个字符串。
+    faq4q: 如何优化性能很差的正则表达式防止 ReDoS？
+    faq4a: 灾难性回溯（Catastrophic Backtracking）是正则表达式 DoS 攻击的根源，常见于嵌套量词（如 (a+)+）。优化方法：避免嵌套量词；使用原子组或占有量词阻止回溯；将固定部分移出分组；使用锚定符（^ $）限制匹配范围；测试边界情况（大量重复字符的字符串）。正则测试工具可显示匹配步骤数，超过 100 万步则有 ReDoS 风险。
     regexPlaceholder: 输入正则表达式...
     testText: 测试文本
     textPlaceholder: 在此输入要匹配的文本...
@@ -2153,8 +2335,10 @@ tools:
     faq2a: '可以使用本站的 Regex Tester 工具实时测试和调试正则表达式。'
     faq3q: 正则表达式贪婪匹配和懒惰匹配有什么区别？
     faq3a: 贪婪匹配（默认）尽可能多地匹配字符：.* 会匹配到字符串末尾。懒惰匹配在量词后加 ?（如 .*?）尽可能少地匹配：遇到第一个满足条件的位置就停止。例如匹配 HTML 标签内容时，/<.*>/ 会匹配整行（贪婪），而 /<.*?>/ 只匹配第一个完整标签（懒惰）。
+    faq4q: 正则表达式中的贪婪匹配和非贪婪匹配有什么区别？
+    faq4a: 贪婪匹配（* + ?）尽可能多地匹配字符；非贪婪/懒惰匹配（*? +? ??）尽可能少地匹配。示例：对于 <a>foo</a><b>bar</b>，<.*> 贪婪匹配整个字符串，<.*?> 只匹配第一个标签。常见场景：提取 HTML 标签内容时必须用非贪婪，否则会从第一个开标签匹配到最后一个闭标签。
     title: 正则表达式速查表
-    description: 正则表达式速查手册，涵盖字符类（\d \w \s）、量词（* + ? {}）、锚点（^ $）、分组、命名捕获、零宽断言等常见正则语法，附带实用示例，一键复制表达式。
+    description: "正则表达式速查手册，涵盖字符类（\\d \\w \\s）、量词（* + ? {'{}'}）、锚点（^ $）、分组、命名捕获、零宽断言等常见正则语法，附带实用示例，一键复制表达式。"
     toc: 目录
     copied: 已复制到剪贴板
     copyExpr: 复制表达式
@@ -2169,9 +2353,11 @@ tools:
     faq1q: XML 与 JSON 有什么区别？
     faq1a: XML 使用标签结构，适合文档和配置；JSON 使用键值对，更轻量，是现代 Web API 的主流数据格式。
     faq2q: 转换是否支持 XML 属性？
-    faq2a: 支持。XML 元素的属性会作为特殊键（如 @attributes）保留在 JSON 结果中。
+    faq2a: "支持。XML 元素的属性会作为特殊键（如 {'@'}attributes）保留在 JSON 结果中。"
     faq3q: XML 命名空间（namespace）转换为 JSON 后怎么处理？
     faq3a: XML 命名空间前缀（如 <ns:tag>）在转换为 JSON 时通常作为键名的一部分保留（如 ns:tag），或者将命名空间 URI 单独记录。本工具会尽量保留原始 XML 的结构信息，但复杂的命名空间场景建议手动校验转换结果。
+    faq4q: XML 转 JSON 后如何处理属性和元素的对应关系？
+    faq4a: "XML 有属性（attribute）和元素（element）两种数据承载方式，JSON 只有键值对。常见转换策略：属性转为 JSON 对象的特殊键（如 {'@'}attr 或 _attributes 嵌套对象）；元素文本内容转为 #text 键；数组处理需要特别注意（单个子元素和多个子元素需统一为数组）。不同库（xml2js、fast-xml-parser）策略不同，需根据使用场景选择合适的转换选项。"
 
   json-to-xml:
     title: JSON 转 XML 转换器
@@ -2185,6 +2371,8 @@ tools:
     faq2a: JSON 数组中的每个元素会生成同名的重复 XML 标签，保持顺序和层级。
     faq3q: JSON 转 XML 后根节点叫什么？
     faq3a: 由于 XML 必须有唯一的根节点，而 JSON 对象/数组没有根节点概念，转换时通常会自动添加 <root> 作为根标签，或使用 JSON 对象的第一个键作为根节点名称。本工具默认使用 <root> 作为根节点，可在输出中手动修改。
+    faq4q: JSON 转 XML 后需要注意哪些验证问题？
+    faq4a: JSON 转 XML 后建议验证：XML 标签名不能以数字开头、不能含空格；JSON 的 null 值在 XML 中表示方式不统一；属性 vs 元素的选择影响 XML 结构设计；如有 Schema 要求（XSD），转换后需按 Schema 调整结构。企业级系统间对接时，建议参考目标系统的 WSDL/XSD 规范手动调整。
 
   markdown-to-html:
     title: Markdown 转 HTML
@@ -2198,10 +2386,12 @@ tools:
     faq2a: 点击"打印"按钮，在浏览器打印对话框中选择"另存为 PDF"即可导出高质量 PDF 文档。
     faq3q: Markdown 转换的 HTML 嵌入网页后样式不对怎么办？
     faq3a: 转换生成的 HTML 使用标准标签（h1-h6、p、ul、code 等），样式由 CSS 决定。将生成的 HTML 嵌入网页时，需要引入对应的 CSS（如 GitHub Markdown 样式表）才能正确显示格式和代码高亮。
+    faq4q: Markdown 转 HTML 时如何防止 XSS 攻击？
+    faq4a: Markdown 支持嵌入原生 HTML，恶意用户可能插入 script 标签或 on* 事件属性。防护措施：服务端用 DOMPurify、bleach（Python）等库对转换后的 HTML 进行 sanitize，只允许白名单标签；或禁用 Markdown 引擎的原生 HTML 支持；CSP（内容安全策略）可作为最后一道防线。
 
   safelink-decoder:
     title: Outlook 安全链接解码器
-    description: 解码 Microsoft Outlook 的 SafeLink 保护链接，还原为原始 URL，方便查看真实目标地址。
+    description: 解码 Microsoft Outlook SafeLink 保护链接，还原为原始 URL，方便查看真实目标地址，避免无法点击受保护链接的困扰，支持批量解码，适合企业邮件用户日常使用。
     step1: 步骤 1：复制 Outlook 邮件中以 "safelinks.protection.outlook.com" 开头的链接。
     step2: 步骤 2：将链接粘贴到输入框中。
     step3: 步骤 3：解码后的原始 URL 立即显示，点击即可访问或复制。
@@ -2211,6 +2401,8 @@ tools:
     faq2a: 本工具仅做 URL 解码，不做安全验证。访问解码后的链接前，请自行判断目标网站是否可信。
     faq3q: Outlook 安全链接是什么？为什么要解码它？
     faq3a: Microsoft Defender for Office 365 会将电子邮件中的 URL 替换为经过封装的「安全链接」（Safe Links），形如 https://urldefense.com/... 或 https://nam.safelinks.protection.outlook.com/...，用于扫描链接是否指向恶意网站。当你需要获取原始 URL 时（如分享或调试），可以用本工具将其解码还原。
+    faq4q: 为什么邮件系统要对链接进行 SafeLink 封装？
+    faq4a: SafeLink（安全链接）封装是邮件安全网关（如 Microsoft Defender for Office 365、Proofpoint）的功能，将所有邮件中的 URL 替换为安全代理 URL。点击时安全网关先检查目标 URL 是否是已知恶意网站、钓鱼链接或刚注册的可疑域名，确认安全后才重定向。本工具用于还原被封装的原始地址。
 
   common:
     faqSafe: 这个工具安全吗？我的数据会被上传吗？
