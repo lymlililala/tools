@@ -85,6 +85,8 @@ tools:
     faq1a: 'A strong password is long (12+ characters), uses a mix of uppercase, lowercase, numbers and symbols, and avoids common words.'
     faq2q: 'Is my password sent to a server?'
     faq2a: 'No. All analysis is done entirely in your browser. Your password never leaves your device.'
+    faq3q: What makes a password truly secure?
+    faq3a: 'A secure password should be at least 12 characters long, combine uppercase and lowercase letters, numbers, and symbols, and avoid dictionary words or personal information. Even better: use a password manager to generate 20+ character random passwords and use a unique password for every site, combined with two-factor authentication (2FA).'
     title: Password strength analyser
     description: Discover the strength of your password with this client-side-only password strength analyser and crack time estimation tool.
 
@@ -124,6 +126,8 @@ tools:
     faq1a: 'Random tokens are used as API keys, session tokens, CSRF tokens, password reset links, and any scenario requiring a unique unpredictable string.'
     faq2q: 'How secure is the generated token?'
     faq2a: 'The token uses the browser built-in cryptographic random number generator making it cryptographically secure.'
+    faq3q: Can I use the generated tokens in production?
+    faq3a: Yes. This tool uses crypto.getRandomValues() to generate cryptographically secure random strings with sufficient entropy, suitable for production use as API keys, session tokens, and CSRF tokens. All generation happens locally in your browser and is never sent to a server.
     title: Token generator
     description: Generate random string with the chars you want, uppercase or lowercase letters, numbers and/or symbols.
 
@@ -187,6 +191,8 @@ tools:
     faq1a: 'The tool supports a JSON array of objects.'
     faq2q: 'What if my JSON objects have different keys?'
     faq2a: 'The tool merges all unique keys as column headers. Missing fields are left empty in the CSV output.'
+    faq3q: How does the tool handle nested objects when converting JSON to CSV?
+    faq3a: The tool automatically flattens nested objects using dot notation as column headers — for example, address.city becomes its own column. Nested arrays are serialized as strings within their cell. This approach preserves all data, though complex deeply nested structures may require manual post-processing for specific use cases.
     title: JSON to CSV Converter
     description: Convert JSON arrays to CSV format online with automatic column header detection. Paste your JSON data and download a ready-to-use CSV file for Excel, Google Sheets, or databases.
     rawJson: Raw JSON
@@ -287,6 +293,8 @@ tools:
     faq1a: 'HEX is a 6-digit hexadecimal color code. RGB defines color by Red Green Blue channels (0-255). HSL defines Hue Saturation and Lightness as percentages.'
     faq2q: 'What is WCAG contrast ratio?'
     faq2a: 'The WCAG contrast ratio measures readability of text on a background. A ratio of 4.5:1 meets AA standard; 7:1 meets AAA.'
+    faq3q: What are the differences between HEX, RGB, and HSL color formats?
+    faq3a: HEX (e.g. #FF5733) is the most common format for web design — compact and easy to copy. RGB is useful for dynamic color calculations in JavaScript. HSL describes colors by hue, saturation, and lightness, making it more intuitive for creating color palettes and adjusting brightness or saturation programmatically.
     title: Color Format Converter (HEX/RGB/HSL)
     description: Convert colors between HEX, RGB, HSL, HSV, CMYK, and CSS named color formats. Preview the color in real time and copy values for use in CSS, design tools, or any application that requires specific color formats.
 
@@ -327,6 +335,8 @@ tools:
     faq1a: 'Bcrypt is a password-hashing algorithm designed to be intentionally slow to resist brute-force attacks. It uses a salt to protect against rainbow table attacks.'
     faq2q: 'What is the cost factor?'
     faq2a: 'The cost factor controls how many hashing rounds are performed. Increasing it by 1 doubles the computation time.'
+    faq3q: What cost factor should I use for bcrypt?
+    faq3a: A cost factor of 10–12 is recommended. Higher values increase security but slow down hashing. The 2024 recommendation is at least 10 for production, and 12 for high-security scenarios. This tool defaults to 10. Test your target server to ensure hashing completes within an acceptable time (ideally under 300ms).
     title: Bcrypt
     description: Hash and compare text string using bcrypt. Bcrypt is a password-hashing function based on the Blowfish cipher.
     hashTitle: Hash
@@ -358,6 +368,8 @@ tools:
     faq1a: 'A cron expression is a string of 5 fields (minute hour day month weekday) that defines a recurring schedule for Unix/Linux tasks.'
     faq2q: 'What does star slash 5 mean in cron?'
     faq2a: 'It means every 5 units. In the minute field it runs at 0, 5, 10, 15... minutes past each hour.'
+    faq3q: What do the 5 crontab fields represent?
+    faq3a: 'The 5 crontab fields are: minute (0–59), hour (0–23), day of month (1–31), month (1–12), and day of week (0–7, where 0 and 7 both mean Sunday). For example, 0 9 * * 1-5 runs at 9:00 AM Monday through Friday. Use * for any value, */n for step intervals, and comma-separated values for multiple choices.'
     title: Crontab generator
     description: Validate and generate crontab and get the human-readable description of the cron schedule.
     copiedTooltip: Copied!
@@ -389,6 +401,8 @@ tools:
     faq1a: 'Formatted SQL is easier to read, debug, and maintain. Consistent indentation helps spot errors faster.'
     faq2q: 'What SQL dialects are supported?'
     faq2a: 'The tool supports MySQL, PostgreSQL, SQLite, MariaDB, BigQuery, Spark, TSQL and more.'
+    faq3q: Does SQL formatting change the query's semantics or execution result?
+    faq3a: No. SQL formatting only adjusts whitespace (newlines, indentation, alignment) and does not change the query's meaning or execution result. The formatted SQL is semantically identical to the original. Formatting makes queries easier to review, understand, and spot potential logical errors like missing WHERE clauses.
     title: SQL Formatter & Beautifier
     description: Format and beautify SQL queries online. Supports MySQL, PostgreSQL, SQL Server, SQLite, and more. Converts minified or unformatted SQL into properly indented, readable code with keyword capitalization.
     dialect: Dialect
@@ -523,6 +537,8 @@ tools:
     faq1a: 'AES (Advanced Encryption Standard) is the industry standard for symmetric encryption and is recommended for most use cases.'
     faq2q: 'Is my data safe?'
     faq2a: 'All encryption and decryption is performed locally in your browser. Your data and keys never leave your device.'
+    faq3q: Which algorithm should I choose — AES, TripleDES, or RC4?
+    faq3a: Choose AES — it is the current industry standard for symmetric encryption, used by governments and financial institutions. TripleDES is slower and being phased out. RC4 has serious security vulnerabilities and should not be used in any modern application. For production use, prefer AES-256-GCM mode and pair it with a proper key management solution.
     title: Encrypt / decrypt text
     description: Encrypt clear text and decrypt ciphertext using crypto algorithms like AES, TripleDES, Rabbit or RC4.
     encryptTitle: Encrypt
@@ -608,6 +624,8 @@ tools:
     faq1a: 'HMAC (Hash-based Message Authentication Code) combines a cryptographic hash function with a secret key to verify data integrity and authenticity.'
     faq2q: 'What is the difference between HMAC and a regular hash?'
     faq2a: 'A regular hash only verifies data integrity. HMAC additionally requires a shared secret key.'
+    faq3q: How is HMAC used in API authentication?
+    faq3a: In API request signing, the client computes an HMAC of the request parameters plus a timestamp using a shared secret key, then includes it in the request header. The server recomputes the HMAC to verify the request has not been tampered with and originated from a legitimate client. This pattern is used by AWS Signature V4 and many webhook security implementations.
     title: HMAC Signature Generator
     description: Computes a hash-based message authentication code (HMAC) using a secret key and your favorite hashing function.
 
@@ -668,6 +686,8 @@ tools:
     faq1a: Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string. It is commonly used to embed images in HTML/CSS, encode email attachments, and pass binary data in URLs or JSON.
     faq2q: Is Base64 the same as encryption?
     faq2a: No. Base64 is encoding, not encryption. It is easily reversible and provides no security. Anyone can decode a Base64 string without a key.
+    faq3q: What are common use cases for Base64 encoding?
+    faq3a: Base64 is commonly used to embed images in HTML/CSS as data URIs, encode binary data in JSON APIs and email attachments (MIME), encode the header and payload in JWT tokens (Base64url variant), and include certificate files (PEM format) in text-based configuration files.
 
   toml-to-yaml:
     step1: 'Step 1: Paste your TOML content into the left editor.'
@@ -905,6 +925,8 @@ tools:
     faq1a: 'TOML is a configuration file format often used in Rust (Cargo.toml) and Hugo projects.'
     faq2q: 'What happens to TOML comments during conversion?'
     faq2a: 'JSON does not support comments so all TOML comments are lost during conversion.'
+    faq3q: What are the advantages of TOML over JSON?
+    faq3a: 'TOML is designed specifically for configuration files: it supports comments (#), has native date and time types, and uses a syntax that many find more readable than JSON for structured config. JSON is better for data interchange. TOML is widely used in the Rust ecosystem (Cargo.toml) and static site generators like Hugo.'
     title: TOML to JSON
     description: Convert TOML configuration files to JSON format online. Paste your TOML and get a valid, formatted JSON output instantly. Useful for config migrations and API integrations.
 
@@ -960,6 +982,8 @@ tools:
     faq1a: 'XML (Extensible Markup Language) is a flexible markup language for storing and transporting structured data.'
     faq2q: 'What is the difference between XML and JSON?'
     faq2a: 'XML uses tags and attributes and supports comments. JSON uses key-value pairs and is lighter-weight and more common in modern APIs.'
+    faq3q: Does XML formatting change the data content?
+    faq3a: No. The XML formatter only adjusts whitespace (newlines and indentation) and does not modify tag names, attribute values, or text node content. Formatted and original XML parse to exactly the same data structure. It is safe to format production configuration files as long as you verify the output afterward.
     title: XML Formatter & Beautifier
     description: Format and beautify XML code online with proper indentation and syntax highlighting. Validates XML structure, fixes whitespace, and makes complex XML documents easy to read and debug.
     rawXml: Raw XML
@@ -991,6 +1015,8 @@ tools:
     faq1a: 'chmod (change mode) is a Unix/Linux command that modifies file and directory permissions.'
     faq2q: 'What does chmod 755 mean?'
     faq2a: '755 means owner has read+write+execute (7), group and others have read+execute (5). Commonly used for web server directories.'
+    faq3q: What is the difference between numeric and symbolic chmod notation?
+    faq3a: Numeric chmod (e.g. 755) adds read (4), write (2), and execute (1) together for each of owner, group, and others. Symbolic chmod (e.g. chmod u+x) is more readable and lets you add or remove specific permissions without affecting others. Both are equivalent; numeric notation is more common in scripts and documentation.
     title: Linux chmod Permissions Calculator
     description: Calculate Linux/Unix file permissions visually. Select read, write, and execute permissions for owner, group, and others to instantly generate the chmod numeric value (e.g. 755, 644) and the corresponding shell command.
     preset755: Recommended for dirs
@@ -1011,6 +1037,8 @@ tools:
     faq1a: 'RSA (Rivest-Shamir-Adleman) is a widely used asymmetric encryption algorithm. A public key encrypts data; only the corresponding private key can decrypt it.'
     faq2q: 'What key size should I use?'
     faq2a: '2048-bit is the minimum recommended. 4096-bit provides stronger security. 1024-bit is considered insecure.'
+    faq3q: What are RSA public and private keys used for?
+    faq3a: The public key is used to encrypt data (only the private key can decrypt it) and to verify digital signatures. The private key is used to decrypt data and to create signatures. The public key can be freely shared; the private key must be kept secret. In SSH, the public key is placed on the server while the private key stays on your machine.
     title: RSA key pair generator
     description: Generate RSA public/private key pairs online for encryption, digital signatures, and SSL certificates. Supports 1024, 2048, and 4096-bit key sizes. Download PEM-formatted keys instantly for use in SSH, TLS, and JWT signing.
 
@@ -1110,6 +1138,8 @@ tools:
     faq1a: 'JWT (JSON Web Token) is an open standard (RFC 7519) for securely transmitting information as a JSON object. Commonly used for authentication.'
     faq2q: 'Is a JWT token encrypted?'
     faq2a: 'A standard JWT (JWS) is signed but NOT encrypted. The payload can be decoded by anyone. Use JWE for confidentiality.'
+    faq3q: What do the JWT Header, Payload, and Signature represent?
+    faq3a: 'A JWT has three parts: the Header specifies the algorithm (e.g. HS256); the Payload contains claims such as user ID, expiration time (exp), and issuer (iss); the Signature is computed by signing the header and payload with a secret key to verify that the token has not been tampered with. Decoding a JWT requires no key, but verifying the signature does.'
     title: JWT Token Decoder & Parser
     description: Decode and inspect JWT tokens instantly. Extracts and displays the Header, Payload (claims), and Signature sections. Shows expiration time, issued-at, subject, and all custom claims — no secret key required for decoding.
 
@@ -1121,6 +1151,8 @@ tools:
     faq1a: 'The tool supports ISO 8601, Unix timestamp, RFC 2822, and common locale formats.'
     faq2q: 'What is a Unix timestamp?'
     faq2a: 'A Unix timestamp is the number of seconds elapsed since January 1 1970 00:00:00 UTC. It is timezone-independent.'
+    faq3q: What is the Year 2038 problem?
+    faq3a: The Year 2038 problem occurs because 32-bit signed integers can only store timestamps up to 2038-01-19 03:14:07 UTC (value 2,147,483,647). After that, 32-bit systems overflow to negative values. Modern systems use 64-bit integers for timestamps, which can represent dates billions of years into the future without this issue.
     title: Date-time converter
     description: Convert dates and times between different formats and timezones. Supports ISO 8601, Unix timestamp, RFC 2822, and local date formats. Instantly shows equivalent representations for any date.
 
@@ -1176,6 +1208,8 @@ tools:
     faq1a: 'CIDR notation represents a network as IP address + prefix length. /24 means 255.255.255.0 netmask giving 254 usable hosts.'
     faq2q: 'How many hosts does /24 support?'
     faq2a: 'A /24 subnet has 256 addresses. Subtract 2 for network and broadcast addresses leaving 254 usable hosts.'
+    faq3q: What does CIDR notation like /24 mean?
+    faq3a: CIDR notation specifies the number of bits in the subnet mask. /24 means 24 bits are the network portion (mask 255.255.255.0), leaving 8 bits for hosts — 256 total addresses, 254 usable. /16 gives 65,536 addresses, /32 is a single host. CIDR allows more flexible address allocation than the old Class A/B/C system.
     title: IPv4 subnet calculator
     description: Calculate IPv4 subnet information from CIDR notation. Enter an IP address and prefix length to instantly get the network address, broadcast address, usable host range, subnet mask, wildcard mask, and total host count.
     inputLabel: Enter IPv4 address (with or without mask)
@@ -1240,6 +1274,8 @@ tools:
     faq1a: A hash function takes any input and produces a fixed-length output (digest). It is one-way — you cannot reverse a hash to get the original input. It is used in passwords, file integrity checks, and digital signatures.
     faq2q: Which hash algorithm should I use?
     faq2a: For security-sensitive use cases, use SHA-256 or SHA-512. MD5 and SHA-1 are considered cryptographically broken and should only be used for non-security purposes like checksums.
+    faq3q: What is the difference between MD5 and SHA256?
+    faq3a: MD5 has known collision vulnerabilities and should not be used for security purposes — it is only suitable for non-security tasks like checksums. SHA256 is the current secure choice for digital signatures and certificates. For password storage, use bcrypt, scrypt, or Argon2 instead of any SHA algorithm.
 
   json-to-toml:
     step1: 'Step 1: Paste your JSON content into the left editor.'
@@ -1308,6 +1344,8 @@ tools:
     faq1a: 'A ULID (Universally Unique Lexicographically Sortable Identifier) is a 128-bit identifier that encodes a timestamp and random component.'
     faq2q: 'What is the advantage of ULID over UUID?'
     faq2a: 'ULIDs are sortable by creation time unlike UUID v4, URL-safe, and more compact (26 chars vs 36 for UUID).'
+    faq3q: What are the advantages of ULID over UUID?
+    faq3a: 'ULID advantages include: 1) Lexicographically sortable by creation time; 2) URL-safe Base32 encoding with no need for escaping; 3) More compact at 26 characters vs 36 for UUID with hyphens; 4) More readable. The trade-off is time dependency — two ULIDs generated within the same millisecond retain random ordering among themselves.'
     title: ULID Unique ID Generator
     description: Generate ULIDs (Universally Unique Lexicographically Sortable Identifiers) online. ULIDs are 128-bit identifiers that are URL-safe, sortable by time, and compatible with UUID. Ideal as database primary keys.
 
@@ -1346,6 +1384,8 @@ tools:
     faq1a: 'JSON is more widely supported as an API data format. Converting YAML config to JSON makes it portable.'
     faq2q: 'Are YAML comments preserved in JSON?'
     faq2a: 'No. JSON does not support comments so all YAML comments are discarded during conversion.'
+    faq3q: What are the main differences between YAML and JSON?
+    faq3a: YAML uses indentation for nesting, supports comments (#), multiline strings, and anchors/aliases. JSON uses braces and brackets, has a stricter syntax, and is faster to parse. YAML 1.2 is a superset of JSON. YAML is preferred for human-maintained config files; JSON is preferred for API data exchange.
     title: YAML to JSON converter
     description: Convert YAML to JSON format online instantly. Paste your YAML configuration and get valid, formatted JSON output. Supports all YAML features including anchors, aliases, and multi-line strings.
 
@@ -1359,6 +1399,8 @@ tools:
     faq1a: A UUID (Universally Unique Identifier) is a 128-bit identifier used to uniquely identify information in distributed systems. There are approximately 5.3 × 10²² possible UUIDs in version 4.
     faq2q: What is the difference between UUID v1 and v4?
     faq2a: UUID v1 is time-based and includes the machine's MAC address, making it predictable but sequential. UUID v4 is randomly generated and is the most common choice for general use.
+    faq3q: What is the difference between UUID v4 and UUID v7?
+    faq3a: UUID v4 is completely random with no ordering, making it ideal for most use cases. UUID v7 (newer RFC 9562) is time-ordered, embedding a millisecond timestamp prefix for database-friendly sorting. If you need sortable unique IDs with time ordering for database primary keys, consider UUID v7 or ULID as modern alternatives to v4.
     versionLabel: UUID version
     quantity: Quantity
     quantityPlaceholder: UUID quantity
@@ -1478,6 +1520,8 @@ tools:
     faq1a: 'The tool uses a standard diff algorithm comparing texts line-by-line and character-by-character.'
     faq2q: 'Can I diff code files?'
     faq2a: 'Yes. The tool works with any text content including code, prose, JSON, and YAML.'
+    faq3q: Can the text diff tool handle large files?
+    faq3a: The tool runs entirely in your browser, so performance depends on your device. It handles files with thousands of lines well, but very large files (tens of MB) may cause the browser to slow down. All data is processed locally and never sent to a server, making it safe for comparing files with sensitive content.
     title: Text Diff & Compare Tool
     description: Compare two text blocks side-by-side and highlight the differences. Supports character, word, and line-level diff. Perfect for code review, document comparison, and change tracking.
     originalText: Original Text
@@ -1508,6 +1552,8 @@ tools:
     faq1a: URL encoding (percent-encoding) converts characters that are not allowed in URLs (like spaces, Chinese characters, or symbols) into a %XX format. For example, a space becomes %20.
     faq2q: When do I need to URL-encode a string?
     faq2a: When passing user input as query parameters, constructing URLs programmatically, or handling form data submissions.
+    faq3q: What is the difference between URL encoding and Base64?
+    faq3a: URL encoding (percent-encoding) converts special characters to %XX format for safe transmission in URLs. Base64 encodes binary data as ASCII text for transmission in text-based protocols. Use URL encoding for query parameters and form data; use Base64 for encoding binary content like files or images.
 
   text-to-binary:
     step1: 'Step 1: Enter text to convert to binary or enter binary to decode back to text.'
@@ -1834,6 +1880,8 @@ tools:
     faq1a: It depends on content type and error correction level. Numeric data can hold ~7,089 chars; alphanumeric ~4,296. Shorter content gives better scan reliability.
     faq2q: What does the error correction level affect?
     faq2a: Higher error correction makes the QR code more resilient to damage, but increases visual complexity. Medium is fine for most uses; High or Highest is recommended for printed materials.
+    faq3q: How much data can a QR code hold?
+    faq3a: The capacity depends on content type and error correction level. At level L (low), a QR code can hold up to 7,089 numeric characters, 4,296 alphanumeric characters, or 2,953 bytes of binary data. For URLs, keep the content short — shorter URLs generate simpler, more scannable QR codes that work better when printed small.
     contentLabel: QR Code Content
     contentPlaceholder: Enter a URL, text, or any content…
     charUnit: chars
@@ -1866,6 +1914,8 @@ tools:
     faq1a: 'Supported flags: g (global), i (case-insensitive), m (multiline), s (dotAll), u (unicode), v (unicode sets).'
     faq2q: 'How do I use capture groups?'
     faq2a: 'Use parentheses () for numbered groups, (?<name>...) for named groups. Both are shown in the match results.'
+    faq3q: How do I make a regex match the entire string, not just part of it?
+    faq3a: 'Use anchors: ^ matches the start of the string, and $ matches the end. For example, /^[0-9]{4}$/ matches exactly 4 digits. In multiline mode (m flag), ^ and $ match the start and end of each line rather than the whole string. Without anchors, the pattern can match anywhere inside the string.'
     title: Regex tester
     description: Test regular expressions with real-time match highlighting, capture groups, and named groups.
     regexPlaceholder: Enter regular expression…
@@ -1943,6 +1993,8 @@ tools:
     faq1a: XML uses tag-based structure, suitable for documents and configs. JSON uses key-value pairs, is more lightweight, and is the standard format for modern Web APIs.
     faq2q: Does conversion support XML attributes?
     faq2a: Yes. XML element attributes are preserved as special keys (e.g. @attributes) in the JSON result.
+    faq3q: How are XML namespaces handled when converting to JSON?
+    faq3a: XML namespace prefixes (like <ns:tag>) are typically preserved as part of the key name in JSON (e.g. ns:tag). The namespace URI declaration attributes (xmlns:ns=...) are handled as regular attributes. For complex namespace-heavy XML, review the output carefully as the mapping can vary between conversion implementations.
 
   json-to-xml:
     title: JSON to XML Converter Converter
@@ -1965,6 +2017,8 @@ tools:
     faq1a: Standard Markdown syntax is supported, including headings, bold, italic, links, images, code blocks, blockquotes, and ordered/unordered lists.
     faq2q: How do I export to PDF?
     faq2a: Click the "Print" button and select "Save as PDF" in the browser print dialog.
+    faq3q: Why does the converted HTML look unstyled when pasted into a webpage?
+    faq3a: The converted HTML uses standard semantic tags (h1–h6, p, ul, code, etc.) with no inline styles. To display it correctly, you need to link a CSS stylesheet that targets those tags — for example a GitHub Markdown CSS or a custom reset. Copy both the HTML and a stylesheet for a complete, styled result.
 
   safelink-decoder:
     title: Outlook SafeLink Decoder
