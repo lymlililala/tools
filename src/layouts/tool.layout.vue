@@ -192,7 +192,7 @@ const howToSteps = computed(() => {
 }
 
 .tool-header {
-  max-width: 720px;
+  width: 100%;
   padding: 24px 0 20px;
 
   @media (max-width: 768px) {
@@ -225,10 +225,9 @@ const howToSteps = computed(() => {
   font-size: 13.5px;
   opacity: 0.55;
   line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // ── 工具内容区 ────────────────────────────────────────────────────────────
