@@ -14303,4 +14303,867 @@ if (await bcrypt.compare(password, currentHash)) {
 
 → Use the [Bcrypt Tool](/bcrypt) to hash and verify passwords in the browser — useful for testing cost factors and verifying existing hashes.`,
   },
+
+  // ─── New SEO/GEO articles (2025-06) ──────────────────────────────────────
+  {
+    slug: 'json-parse-error-fix',
+    toolPath: '/json-format',
+    title: 'How to Fix JSON Parse Errors: Every Error Message Explained',
+    description: 'A practical guide to diagnosing and fixing JSON parse errors — covering syntax rules, common mistakes like trailing commas and unquoted keys, and how to validate JSON online.',
+    keywords: ['JSON parse error', 'fix JSON', 'invalid JSON', 'JSON syntax error', 'JSON validator', 'unexpected token JSON'],
+    category: 'Development',
+    publishedAt: '2025-06-02',
+    content: `## Why JSON Is So Strict About Syntax
+
+If you've ever seen \`SyntaxError: Unexpected token < in JSON at position 0\` or \`JSON.parse: unexpected character\`, you know how frustrating JSON errors can be. Unlike HTML or CSS, which browsers try to recover from, JSON parsers are zero-tolerance: one misplaced comma or an unquoted key and the entire parse fails.
+
+This guide walks through every common JSON error, what causes it, and how to fix it in under a minute.
+
+## The 7 Most Common JSON Parse Errors
+
+### 1. Trailing Comma
+
+JSON does not allow a comma after the last element in an array or object. This is the single most common mistake — it's valid in JavaScript objects, so developers write it out of habit.
+
+\`\`\`json
+// ❌ Invalid
+{
+  "name": "Alice",
+  "age": 30,
+}
+
+// ✅ Valid
+{
+  "name": "Alice",
+  "age": 30
+}
+\`\`\`
+
+**Error message:** \`SyntaxError: Unexpected token } in JSON\` (the parser hits \`}\` where it expects another key-value pair)
+
+### 2. Unquoted Keys
+
+JSON requires double quotes around every key. JavaScript objects let you write bare keys (\`{name: "Alice"}\`), but that is not valid JSON.
+
+\`\`\`json
+// ❌ Invalid
+{ name: "Alice" }
+
+// ✅ Valid
+{ "name": "Alice" }
+\`\`\`
+
+**Error message:** \`SyntaxError: Unexpected token n in JSON at position 2\`
+
+### 3. Single Quotes Instead of Double Quotes
+
+Only double quotes are valid in JSON. Single-quoted strings fail silently in some editors but blow up at parse time.
+
+\`\`\`json
+// ❌ Invalid
+{ "name": 'Alice' }
+
+// ✅ Valid
+{ "name": "Alice" }
+\`\`\`
+
+### 4. Comments in JSON
+
+JSON has no comment syntax. Neither \`//\` nor \`/* */\` are valid. If you need annotated config files, use YAML or TOML instead.
+
+\`\`\`json
+// ❌ Invalid
+{
+  // This is the user record
+  "name": "Alice"
+}
+\`\`\`
+
+If you're using JSON for config and want comments, consider [JSON5](https://json5.org/) or convert to [YAML](/yaml-format).
+
+### 5. Undefined, NaN, or Infinity Values
+
+JSON only supports these value types: strings, numbers, booleans (\`true\`/\`false\`), \`null\`, arrays, and objects. JavaScript-only values like \`undefined\`, \`NaN\`, and \`Infinity\` are not valid JSON.
+
+\`\`\`json
+// ❌ Invalid
+{ "score": NaN, "ratio": Infinity, "data": undefined }
+
+// ✅ Valid — use null for missing values
+{ "score": null, "ratio": null, "data": null }
+\`\`\`
+
+**In JavaScript:** \`JSON.stringify({a: undefined})\` silently drops the key. \`JSON.stringify({a: NaN})\` outputs \`{"a":null}\`. Know this before you round-trip data.
+
+### 6. Unexpected HTML or Plain Text in the Response
+
+\`Unexpected token < in JSON at position 0\` means your JSON parser received an HTML page instead of JSON — the \`<\` is the start of \`<!DOCTYPE html>\` or an error page.
+
+This happens when:
+- Your API endpoint returns an HTTP error page (404, 500) with HTML content
+- A reverse proxy or CDN intercepts the request and returns its own error page
+- You're hitting the wrong URL (missing base path, extra slash)
+
+\`\`\`javascript
+// Debug: log the raw response text before parsing
+const res = await fetch('/api/data');
+const text = await res.text();
+console.log(text); // See what you're actually getting
+const data = JSON.parse(text); // Now parse
+\`\`\`
+
+Always check \`res.status\` and \`res.headers.get('content-type')\` before parsing.
+
+### 7. Unescaped Special Characters in Strings
+
+Certain characters inside a JSON string must be escaped with a backslash. A raw newline or tab inside a string value is invalid.
+
+\`\`\`json
+// ❌ Invalid — raw newline inside string
+{ "message": "Hello
+World" }
+
+// ✅ Valid — escaped newline
+{ "message": "Hello\\nWorld" }
+\`\`\`
+
+Characters that must be escaped: \`"\`, \`\\\`, and control characters (\`\\n\`, \`\\r\`, \`\\t\`, \`\\b\`, \`\\f\`). Unicode escapes (\`\\uXXXX\`) are optional but valid.
+
+## Quick Reference: JSON Value Rules
+
+| Type | Valid examples | Invalid |
+|------|---------------|---------|
+| String | \`"hello"\`, \`""\` | \`'hello'\`, bare word |
+| Number | \`42\`, \`3.14\`, \`-7\`, \`1e10\` | \`NaN\`, \`Infinity\`, \`0xFF\` |
+| Boolean | \`true\`, \`false\` | \`True\`, \`TRUE\`, \`yes\` |
+| Null | \`null\` | \`None\`, \`undefined\`, \`nil\` |
+| Array | \`[1, 2, 3]\` | \`[1, 2, 3,]\` (trailing comma) |
+| Object | \`{"k": "v"}\` | \`{k: "v"}\` (unquoted key) |
+
+## How to Validate JSON Quickly
+
+**Online:** Paste your JSON into the [JSON Formatter](/json-format) — it highlights the exact line and character where the error occurred.
+
+**Node.js:**
+\`\`\`javascript
+try {
+  const data = JSON.parse(yourString);
+} catch (e) {
+  console.error('Parse error at:', e.message);
+  // "Unexpected token , in JSON at position 45"
+}
+\`\`\`
+
+**Python:**
+\`\`\`python
+import json
+try:
+    data = json.loads(your_string)
+except json.JSONDecodeError as e:
+    print(f"Error at line {e.lineno}, col {e.colno}: {e.msg}")
+\`\`\`
+
+**Command line (jq):**
+\`\`\`bash
+echo '{"name": "Alice",}' | jq .
+# parse error: Invalid numeric literal at line 1, column 20
+\`\`\`
+
+## Fixing JSON from External Sources
+
+When you receive JSON from an API, a config file, or a database dump that fails to parse:
+
+1. **Check the HTTP response status** — a 200 doesn't guarantee JSON body
+2. **Check \`Content-Type\`** — should be \`application/json\`
+3. **Log the raw string** before parsing — \`console.log(rawText.slice(0, 200))\`
+4. **Run it through a linter** — the [JSON Formatter](/json-format) shows the exact error position
+5. **Look for a BOM** — some tools prepend a UTF-8 byte order mark (\`\\uFEFF\`), which breaks \`JSON.parse\` in older environments
+
+## Why JSON Is Strict by Design
+
+JSON's strictness is a feature. Because the spec is unambiguous, a JSON string parsed in Go, Python, JavaScript, Rust, or Java produces the same data structure. If trailing commas or comments were allowed, every parser would have to decide how to handle edge cases, and interoperability would suffer.
+
+If you want a more permissive format for config files, consider YAML (allows comments, multiline strings, anchors) or TOML (designed specifically for human-editable config). For data interchange between services, JSON's strictness is exactly what you want.
+
+→ Validate and format your JSON with the [JSON Formatter](/json-format) — highlights errors with line numbers and auto-indents valid JSON.`,
+  },
+  {
+    slug: 'unix-timestamp-javascript-python',
+    toolPath: '/unix-timestamp',
+    title: 'Unix Timestamp in JavaScript and Python: Convert, Compare, Format',
+    description: 'Complete code reference for working with Unix timestamps in JavaScript and Python — get current time, convert to dates, handle timezones, and avoid the milliseconds vs seconds pitfall.',
+    keywords: ['unix timestamp javascript', 'epoch time python', 'convert timestamp to date', 'javascript date to timestamp', 'python datetime unix', 'epoch converter'],
+    category: 'Converter',
+    publishedAt: '2025-06-03',
+    content: `## The One Thing Most Developers Get Wrong
+
+The most common Unix timestamp bug is a silent one: JavaScript's \`Date.now()\` returns **milliseconds**, while Python's \`time.time()\` returns **seconds**. Pass a JavaScript timestamp to a Python function expecting seconds and you'll get a date in the year 33658. It's a mismatch that never throws an error — it just silently corrupts your data.
+
+This guide covers every common timestamp operation with copy-paste code in both languages.
+
+## What Is a Unix Timestamp?
+
+A Unix timestamp is the number of seconds (or milliseconds) elapsed since **January 1, 1970 00:00:00 UTC** — the Unix epoch. It has no timezone. It doesn't represent a local time. It's a single integer that means the same thing on every computer in the world.
+
+Current timestamp: you can check it live with the [Unix Timestamp Converter](/unix-timestamp).
+
+## JavaScript: Timestamps in Milliseconds
+
+\`\`\`javascript
+// Get current timestamp (milliseconds)
+const nowMs = Date.now();              // e.g. 1717200000000
+const nowMs2 = new Date().getTime();   // same thing
+
+// Get current timestamp (seconds — for APIs expecting Unix time)
+const nowSec = Math.floor(Date.now() / 1000);  // e.g. 1717200000
+
+// Convert timestamp to Date object
+const date = new Date(1717200000000);  // pass milliseconds
+console.log(date.toISOString());       // "2024-06-01T00:00:00.000Z"
+
+// Convert seconds timestamp to Date (multiply by 1000 first!)
+const fromSeconds = new Date(1717200000 * 1000);
+
+// Date to timestamp (milliseconds)
+const ts = new Date('2024-06-01').getTime();  // 1717200000000
+
+// Date to timestamp (seconds)
+const tsSec = Math.floor(new Date('2024-06-01').getTime() / 1000);
+\`\`\`
+
+## Python: Timestamps in Seconds (Floats)
+
+\`\`\`python
+import time
+import datetime
+
+# Get current timestamp (seconds, float)
+now_sec = time.time()           # e.g. 1717200000.123
+now_int = int(time.time())      # integer seconds
+
+# Convert timestamp to datetime (UTC)
+dt_utc = datetime.datetime.fromtimestamp(1717200000, tz=datetime.timezone.utc)
+print(dt_utc.isoformat())       # "2024-06-01T00:00:00+00:00"
+
+# Convert timestamp to local datetime (careful with DST)
+dt_local = datetime.datetime.fromtimestamp(1717200000)
+# Uses system timezone — can behave differently on different machines
+
+# datetime to timestamp
+dt = datetime.datetime(2024, 6, 1, tzinfo=datetime.timezone.utc)
+ts = dt.timestamp()             # 1717200000.0
+
+# Current UTC datetime to timestamp
+ts_now = datetime.datetime.now(datetime.timezone.utc).timestamp()
+\`\`\`
+
+## The Milliseconds vs Seconds Problem
+
+| Language/Platform | Unit | Example value |
+|---|---|---|
+| JavaScript \`Date.now()\` | Milliseconds | \`1717200000000\` |
+| JavaScript \`Date.getTime()\` | Milliseconds | \`1717200000000\` |
+| Python \`time.time()\` | Seconds (float) | \`1717200000.0\` |
+| Python \`datetime.timestamp()\` | Seconds (float) | \`1717200000.0\` |
+| Unix shell \`date +%s\` | Seconds | \`1717200000\` |
+| MySQL \`UNIX_TIMESTAMP()\` | Seconds | \`1717200000\` |
+| Java \`System.currentTimeMillis()\` | Milliseconds | \`1717200000000\` |
+| Go \`time.Now().Unix()\` | Seconds | \`1717200000\` |
+| Go \`time.Now().UnixMilli()\` | Milliseconds | \`1717200000000\` |
+
+**Rule of thumb:** If your timestamp is a 13-digit number, it's milliseconds. If it's 10 digits, it's seconds.
+
+\`\`\`javascript
+// Detect and normalize in JavaScript
+function toMilliseconds(ts) {
+  // If timestamp looks like seconds (10 digits), convert to ms
+  if (ts < 1e12) return ts * 1000;
+  return ts;
+}
+\`\`\`
+
+## Working with Timezones
+
+Unix timestamps are timezone-agnostic. The complexity comes when converting them to human-readable dates.
+
+\`\`\`javascript
+// JavaScript — display in specific timezone
+const ts = 1717200000000;
+const date = new Date(ts);
+
+// UTC
+date.toISOString();  // "2024-06-01T00:00:00.000Z"
+
+// User's local timezone
+date.toLocaleString();  // varies by system
+
+// Specific timezone (Intl API)
+date.toLocaleString('en-US', { timeZone: 'America/New_York' });
+// "5/31/2024, 8:00:00 PM"
+
+date.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' });
+// "6/1/2024, 8:00:00 AM"
+\`\`\`
+
+\`\`\`python
+# Python — timezone-aware conversion
+import datetime
+
+ts = 1717200000
+
+# Always use UTC explicitly — never rely on system timezone in server code
+utc = datetime.timezone.utc
+dt_utc = datetime.datetime.fromtimestamp(ts, tz=utc)
+
+# Convert to specific timezone (requires zoneinfo, Python 3.9+)
+from zoneinfo import ZoneInfo
+dt_ny = dt_utc.astimezone(ZoneInfo('America/New_York'))
+print(dt_ny.isoformat())  # "2024-05-31T20:00:00-04:00"
+\`\`\`
+
+## Calculating Time Differences
+
+\`\`\`javascript
+// JavaScript — time since an event
+const eventTs = 1717200000000;  // ms
+const now = Date.now();
+const diffSeconds = Math.floor((now - eventTs) / 1000);
+const diffMinutes = Math.floor(diffSeconds / 60);
+const diffHours = Math.floor(diffMinutes / 60);
+const diffDays = Math.floor(diffHours / 24);
+
+// Is a token expired?
+function isExpired(expiryTimestampSeconds) {
+  return Math.floor(Date.now() / 1000) > expiryTimestampSeconds;
+}
+\`\`\`
+
+\`\`\`python
+# Python — time differences
+import time
+import datetime
+
+ts1 = 1717200000
+ts2 = time.time()
+
+diff_seconds = ts2 - ts1
+diff_days = diff_seconds / 86400
+
+# timedelta for readable diffs
+dt1 = datetime.datetime.fromtimestamp(ts1, tz=datetime.timezone.utc)
+dt2 = datetime.datetime.now(datetime.timezone.utc)
+delta = dt2 - dt1
+print(delta.days, "days,", delta.seconds // 3600, "hours")
+\`\`\`
+
+## Common Gotchas
+
+**Storing timestamps as integers vs strings:** Store as integers in your database, not strings. Comparing \`1717200000\` as a string gives lexicographic ordering, not chronological.
+
+**Daylight saving time (DST):** A day is not always 86400 seconds when you cross a DST boundary in local time. Always do time arithmetic in UTC timestamps, then format for display.
+
+**Year 2038 problem:** 32-bit signed integers overflow at Unix timestamp \`2147483647\` (January 19, 2038). If you're storing timestamps in 32-bit \`INT\` columns in older databases, migrate to 64-bit \`BIGINT\` now.
+
+**Microseconds in Python:** \`time.time()\` returns a float with sub-second precision. Use \`int(time.time())\` if you need a clean integer seconds value.
+
+→ Convert any Unix timestamp to a human-readable date instantly with the [Unix Timestamp Converter](/unix-timestamp).`,
+  },
+  {
+    slug: 'how-to-store-passwords-securely',
+    toolPath: '/bcrypt',
+    title: 'How to Store Passwords Securely: The 2025 Developer Checklist',
+    description: 'A step-by-step checklist for storing user passwords safely — covering why MD5 and SHA-256 are wrong for passwords, how bcrypt and Argon2 work, and the exact code patterns to use.',
+    keywords: ['how to store passwords', 'password hashing best practices', 'bcrypt vs argon2', 'never store plaintext passwords', 'password security 2025', 'salted hash'],
+    category: 'Crypto',
+    publishedAt: '2025-06-04',
+    content: `## The Checklist First
+
+Before the explanation, here's what you must do to store passwords correctly. Every item matters.
+
+- [ ] Never store plaintext passwords
+- [ ] Never use MD5, SHA-1, or SHA-256 alone for passwords
+- [ ] Use bcrypt, Argon2id, or scrypt — not a general-purpose hash
+- [ ] Let the library generate the salt automatically — don't do it manually
+- [ ] Set a work factor that makes hashing take 100–300ms on your server
+- [ ] Enforce a minimum password length of 8 characters, maximum of 72 characters (bcrypt limit)
+- [ ] Hash the password on the server, not the client
+- [ ] Never log passwords, even in error messages
+- [ ] Implement rate limiting and account lockout on login endpoints
+
+## Why MD5 and SHA-256 Are Wrong for Passwords
+
+This is the most misunderstood point in password security. MD5, SHA-1, and SHA-256 are fast. Extremely fast. A modern GPU can compute **10 billion MD5 hashes per second**. That means a cracker can test every 8-character lowercase password in about 30 seconds against an MD5-hashed database.
+
+Password hashing algorithms like bcrypt, Argon2, and scrypt are deliberately slow. They're designed to be tunable so you can make hashing take exactly as long as your server can tolerate (typically 100–300ms). That same 30-second crack becomes 3,000 years.
+
+The other problem with raw SHA-256: **no salt**. If two users have the same password, their hashes are identical. An attacker can crack thousands of accounts at once by finding one matching hash in a rainbow table.
+
+## The Right Algorithms
+
+### bcrypt
+
+The most widely supported option. Available in every major language. Salt is built in — bcrypt generates and stores the salt inside the hash string automatically.
+
+Work factor (\`rounds\`) is a power of 2: rounds=12 means 2¹² = 4,096 iterations. Increase it as your hardware gets faster. The industry standard starting point is 10–12.
+
+\`\`\`javascript
+// Node.js with bcryptjs
+const bcrypt = require('bcryptjs');
+
+// Hash on registration
+const hash = await bcrypt.hash(plainPassword, 12);  // 12 rounds
+// Store 'hash' in your database
+
+// Verify on login
+const isMatch = await bcrypt.compare(plainPassword, storedHash);
+// Returns true/false — timing-safe comparison built in
+\`\`\`
+
+\`\`\`python
+# Python with bcrypt
+import bcrypt
+
+# Hash on registration
+salt = bcrypt.gensalt(rounds=12)
+hashed = bcrypt.hashpw(password.encode(), salt)
+# Store 'hashed' (bytes) in database
+
+# Verify on login
+is_match = bcrypt.checkpw(password.encode(), stored_hash)
+\`\`\`
+
+**Bcrypt limitations:** Maximum input is 72 bytes. Passwords longer than 72 characters are silently truncated. If you want to support longer passwords, pre-hash with SHA-256 and base64-encode before passing to bcrypt:
+
+\`\`\`javascript
+const crypto = require('crypto');
+const prehash = crypto.createHash('sha256').update(password).digest('base64');
+const hash = await bcrypt.hash(prehash, 12);
+\`\`\`
+
+### Argon2id
+
+Winner of the 2015 Password Hashing Competition. More configurable than bcrypt: you tune memory usage (RAM), parallelism (CPU threads), and iterations separately. Argon2id is the hybrid variant — resistant to both GPU and side-channel attacks.
+
+\`\`\`javascript
+// Node.js with argon2
+const argon2 = require('argon2');
+
+const hash = await argon2.hash(password, {
+  type: argon2.argon2id,
+  memoryCost: 65536,    // 64 MB
+  timeCost: 3,          // 3 iterations
+  parallelism: 4,       // 4 threads
+});
+
+const isMatch = await argon2.verify(hash, password);
+\`\`\`
+
+\`\`\`python
+# Python with argon2-cffi
+from argon2 import PasswordHasher
+
+ph = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=4)
+hash = ph.hash(password)
+
+try:
+    ph.verify(hash, password)
+    # login success
+    if ph.check_needs_rehash(hash):
+        new_hash = ph.hash(password)
+        # update database with new_hash
+except Exception:
+    pass  # login failure
+\`\`\`
+
+### scrypt
+
+Built into Python's standard library as of 3.6 and Node.js's \`crypto\` module. Good choice if you can't add external dependencies.
+
+\`\`\`javascript
+// Node.js built-in crypto
+const crypto = require('crypto');
+const util = require('util');
+const scrypt = util.promisify(crypto.scrypt);
+
+const salt = crypto.randomBytes(32);
+const hash = await scrypt(password, salt, 64);
+// Store: salt.toString('hex') + ':' + hash.toString('hex')
+\`\`\`
+
+## Algorithm Comparison
+
+| Algorithm | Salt built-in | GPU resistance | Memory hardness | Recommended? |
+|-----------|--------------|----------------|----------------|-------------|
+| MD5 | No | Very weak | No | ❌ Never |
+| SHA-256 | No | Very weak | No | ❌ Never |
+| bcrypt | Yes | Moderate | No | ✅ Yes |
+| scrypt | Manual | Strong | Yes | ✅ Yes |
+| Argon2id | Yes | Strong | Yes | ✅ Best choice |
+| PBKDF2 | Manual | Moderate | No | ✅ If others unavailable |
+
+## Setting the Right Work Factor
+
+The goal: hashing one password should take **100–300ms** on your production server. Too fast = easy to crack. Too slow = DoS risk from attackers spamming your login endpoint.
+
+\`\`\`javascript
+// Benchmark script — run this on your production hardware
+const bcrypt = require('bcryptjs');
+for (let rounds = 10; rounds <= 14; rounds++) {
+  const start = Date.now();
+  await bcrypt.hash('benchmark', rounds);
+  console.log(\`rounds=\${rounds}: \${Date.now() - start}ms\`);
+}
+// Pick the highest rounds value under 300ms
+\`\`\`
+
+Typical results on a modern server:
+- rounds=10: ~65ms
+- rounds=12: ~250ms ← good default
+- rounds=14: ~1000ms ← too slow for most apps
+
+## What Your Database Should Store
+
+For bcrypt, the entire hash string includes the algorithm, version, rounds, salt, and hash — all in one string like:
+
+\`$2b$12$LrhasAakElf4YCRZzEJxXONMpBRrAVbKCMSJIJSDJSJDHEIJJ\`
+
+Store this entire string in a single \`VARCHAR(255)\` or \`TEXT\` column. Never store the salt separately. Never store any metadata about the algorithm in a separate column — it's all in the hash string already.
+
+## Checking Existing Password Storage
+
+If you're auditing an existing application:
+
+\`\`\`sql
+-- PostgreSQL: look for unhashed passwords (plain text under 50 chars, no hash prefix)
+SELECT COUNT(*) FROM users WHERE LENGTH(password_hash) < 20;
+
+-- Look for MD5 hashes (32 hex chars)
+SELECT COUNT(*) FROM users WHERE password_hash ~ '^[a-f0-9]{32}$';
+
+-- Look for SHA-256 hashes (64 hex chars)
+SELECT COUNT(*) FROM users WHERE password_hash ~ '^[a-f0-9]{64}$';
+
+-- Look for bcrypt hashes (correct)
+SELECT COUNT(*) FROM users WHERE password_hash LIKE '$2%';
+\`\`\`
+
+→ Test bcrypt hash generation and verification in your browser with the [Bcrypt Tool](/bcrypt) — useful for verifying what your library produces.`,
+  },
+  {
+    slug: 'cidr-subnet-mask-explained',
+    toolPath: '/ipv4-subnet-calculator',
+    title: 'CIDR and Subnet Masks Explained: What /24 Actually Means',
+    description: 'A plain-English guide to CIDR notation and subnet masks — what /24, /16, /8 mean, how to calculate usable hosts, and how to split a network into subnets without a calculator.',
+    keywords: ['CIDR notation', 'subnet mask explained', 'what is /24 network', 'subnetting guide', 'IP address subnet', 'network prefix'],
+    category: 'Network',
+    publishedAt: '2025-06-05',
+    content: `## What Does /24 Actually Mean?
+
+If you've seen addresses like \`192.168.1.0/24\` or \`10.0.0.0/8\` and wondered what the number after the slash means, here's the short answer: **it's the number of bits used for the network portion of the address**. The remaining bits identify individual hosts on that network.
+
+A /24 means 24 bits are the network address, leaving 8 bits for hosts — which gives you 256 addresses (254 usable, since the first and last are reserved).
+
+## IP Addresses Are Just 32-Bit Numbers
+
+An IPv4 address like \`192.168.1.100\` is four groups of 8 bits (octets). In binary:
+
+\`\`\`
+192  = 11000000
+168  = 10101000
+1    = 00000001
+100  = 01100100
+
+192.168.1.100 = 11000000.10101000.00000001.01100100
+\`\`\`
+
+A subnet mask marks which part of this 32-bit number is the network and which part is the host. The mask is a sequence of 1s followed by a sequence of 0s:
+
+\`\`\`
+/24 mask = 11111111.11111111.11111111.00000000
+         = 255.255.255.0
+\`\`\`
+
+Network bits (covered by 1s): \`192.168.1\`
+Host bits (covered by 0s): \`100\`
+
+## CIDR Prefix to Subnet Mask Reference
+
+| CIDR | Subnet Mask | Hosts | Typical Use |
+|------|-------------|-------|-------------|
+| /8 | 255.0.0.0 | 16,777,214 | Large enterprise, Class A |
+| /16 | 255.255.0.0 | 65,534 | Medium enterprise, Class B |
+| /24 | 255.255.255.0 | 254 | Small office, home network |
+| /25 | 255.255.255.128 | 126 | Half a /24 |
+| /26 | 255.255.255.192 | 62 | Department subnet |
+| /27 | 255.255.255.224 | 30 | Small team |
+| /28 | 255.255.255.240 | 14 | Server cluster |
+| /29 | 255.255.255.248 | 6 | Point-to-point + servers |
+| /30 | 255.255.255.252 | 2 | Point-to-point link |
+| /32 | 255.255.255.255 | 1 | Single host route |
+
+The formula for usable hosts: **2^(32 - prefix) - 2**. Subtract 2 for the network address (all host bits = 0) and broadcast address (all host bits = 1).
+
+## Breaking Down a /24 Network
+
+Take \`192.168.10.0/24\`:
+
+- **Network address:** \`192.168.10.0\` (host bits all zero — not assignable)
+- **First usable host:** \`192.168.10.1\`
+- **Last usable host:** \`192.168.10.254\`
+- **Broadcast address:** \`192.168.10.255\` (host bits all one — not assignable)
+- **Total usable hosts:** 254
+
+## How to Split a /24 into Smaller Subnets
+
+You can divide a /24 into smaller subnets by borrowing bits from the host portion. Each additional bit you borrow doubles the number of subnets and halves the number of hosts per subnet.
+
+**Split 192.168.10.0/24 into four /26 subnets:**
+
+| Subnet | Range | Usable Hosts |
+|--------|-------|-------------|
+| 192.168.10.0/26 | .0 – .63 | .1 – .62 (62 hosts) |
+| 192.168.10.64/26 | .64 – .127 | .65 – .126 (62 hosts) |
+| 192.168.10.128/26 | .128 – .191 | .129 – .190 (62 hosts) |
+| 192.168.10.192/26 | .192 – .255 | .193 – .254 (62 hosts) |
+
+Each /26 has 62 usable hosts. Four subnets × 62 hosts + 8 reserved addresses = 256 total. The math always adds up.
+
+## Private Address Ranges
+
+Three ranges are reserved for private networks (RFC 1918) and are not routable on the public internet:
+
+| Range | CIDR | Addresses |
+|-------|------|-----------|
+| 10.0.0.0 – 10.255.255.255 | 10.0.0.0/8 | 16.7 million |
+| 172.16.0.0 – 172.31.255.255 | 172.16.0.0/12 | 1 million |
+| 192.168.0.0 – 192.168.255.255 | 192.168.0.0/16 | 65,536 |
+
+Home routers use \`192.168.x.x\`. AWS VPCs default to \`10.0.0.0/16\`. Docker uses \`172.17.0.0/16\` by default.
+
+## Reading Cloud Network Configs
+
+When you create a VPC or virtual network in AWS, GCP, or Azure, CIDR notation defines its size:
+
+\`\`\`
+AWS VPC:          10.0.0.0/16    → 65,534 addresses
+  Subnet A:       10.0.1.0/24   → 251 usable (AWS reserves 5 per subnet)
+  Subnet B:       10.0.2.0/24   → 251 usable
+  Subnet C:       10.0.3.0/24   → 251 usable
+
+Docker default:   172.17.0.0/16
+  Container range: 172.17.0.2 – 172.17.255.254
+\`\`\`
+
+AWS reserves 5 addresses per subnet (first 4 + last 1), so a /24 in AWS gives 251 usable addresses, not 254.
+
+## Checking if an IP Is in a Subnet
+
+\`\`\`python
+import ipaddress
+
+network = ipaddress.ip_network('192.168.10.0/24')
+ip = ipaddress.ip_address('192.168.10.42')
+
+print(ip in network)           # True
+print(network.num_addresses)   # 256
+print(list(network.hosts())[:3])  # [192.168.10.1, .2, .3]
+\`\`\`
+
+\`\`\`javascript
+// No built-in, but easy to implement
+function ipToInt(ip) {
+  return ip.split('.').reduce((acc, octet) => (acc << 8) | parseInt(octet), 0) >>> 0;
+}
+
+function isInSubnet(ip, cidr) {
+  const [net, bits] = cidr.split('/');
+  const mask = ~(0xFFFFFFFF >>> parseInt(bits)) >>> 0;
+  return (ipToInt(ip) & mask) === (ipToInt(net) & mask);
+}
+
+console.log(isInSubnet('192.168.10.42', '192.168.10.0/24')); // true
+\`\`\`
+
+→ Use the [IPv4 Subnet Calculator](/ipv4-subnet-calculator) to instantly break down any CIDR block — shows network address, broadcast, host range, and all subnets.`,
+  },
+  {
+    slug: 'url-encoding-vs-base64-vs-hex',
+    toolPath: '/url-encoder',
+    title: 'URL Encoding vs Base64 vs Hex: When to Use Which',
+    description: 'A practical comparison of URL encoding (percent encoding), Base64, and hexadecimal encoding — what each one does, when to use each, and common mistakes that cause data corruption.',
+    keywords: ['url encoding vs base64', 'percent encoding explained', 'when to use base64', 'hex encoding use cases', 'encode decode comparison', 'URL encode special characters'],
+    category: 'Converter',
+    publishedAt: '2025-06-06',
+    content: `## Three Encodings, Three Different Jobs
+
+URL encoding, Base64, and hex are all ways to represent data as printable ASCII text — but they solve completely different problems. Using the wrong one is a common source of bugs:
+
+- Passing a Base64 string directly in a URL breaks when it contains \`+\` and \`/\`
+- URL-encoding binary data instead of Base64ing it produces strings 3× the original size
+- Storing a password hash as Base64 instead of hex is fine, but mixing them in a system causes comparison failures
+
+Here's when to reach for each one.
+
+## URL Encoding (Percent Encoding)
+
+**Purpose:** Make arbitrary text safe to include in a URL.
+
+**How it works:** Every character that isn't a URL-safe alphanumeric or one of \`- _ . ~\` gets replaced with \`%\` followed by its two-digit hex code.
+
+\`\`\`
+Space    → %20
+&        → %26
+=        → %3D
+/        → %2F
++        → %2B
+"hello world" → "hello%20world"
+\`\`\`
+
+**When to use it:**
+- Query string parameters: \`?name=John+Doe\` or \`?name=John%20Doe\`
+- Path segments containing special characters
+- Form data submission (\`application/x-www-form-urlencoded\`)
+
+**When NOT to use it:**
+- Binary data (images, files) — the output is enormous
+- Data that will be stored in a database — decode before storing
+- Passwords or secrets — they should never appear in URLs at all
+
+\`\`\`javascript
+// JavaScript
+encodeURIComponent('hello world & more')  // "hello%20world%20%26%20more"
+decodeURIComponent('hello%20world')       // "hello world"
+
+// encodeURI vs encodeURIComponent
+encodeURI('https://example.com/path?q=hello world')
+// "https://example.com/path?q=hello%20world"  ← leaves : // ? = & intact
+
+encodeURIComponent('hello world')
+// "hello%20world"  ← encodes everything including : / ? = &
+\`\`\`
+
+\`\`\`python
+from urllib.parse import quote, unquote, urlencode
+
+quote('hello world & more')     # 'hello%20world%20%26%20more'
+quote('hello/world', safe='/')  # 'hello/world' — / not encoded
+unquote('hello%20world')        # 'hello world'
+
+# For query strings
+urlencode({'name': 'John Doe', 'age': 30})
+# 'name=John+Doe&age=30'  ← spaces as + in query strings
+\`\`\`
+
+## Base64
+
+**Purpose:** Represent binary data as printable ASCII text.
+
+**How it works:** Takes 3 bytes of binary data and encodes them as 4 ASCII characters from a 64-character alphabet (\`A-Z a-z 0-9 + /\`). Output size is always 4/3 (33%) larger than the input.
+
+\`\`\`
+"Hello" → "SGVsbG8="
+\`\`\`
+
+**When to use it:**
+- Embedding binary files (images, PDFs) in JSON or XML
+- Email attachments (MIME encoding)
+- HTTP Basic Authentication headers (\`Authorization: Basic dXNlcjpwYXNz\`)
+- Storing small binary blobs in text fields
+- Data URLs (\`<img src="data:image/png;base64,iVBOR...">\`)
+
+**When NOT to use it:**
+- URLs — the \`+\` and \`/\` characters are valid Base64 but have special meaning in URLs. Use **Base64url** instead (replaces \`+\` with \`-\` and \`/\` with \`_\`, removes padding)
+- Large files — the 33% size overhead adds up
+- Data that needs to be human-readable
+
+\`\`\`javascript
+// Browser
+btoa('Hello World')             // "SGVsbG8gV29ybGQ="
+atob('SGVsbG8gV29ybGQ=')       // "Hello World"
+
+// Node.js
+Buffer.from('Hello World').toString('base64')         // "SGVsbG8gV29ybGQ="
+Buffer.from('SGVsbG8gV29ybGQ=', 'base64').toString() // "Hello World"
+
+// Base64url (URL-safe, no padding)
+Buffer.from('Hello World').toString('base64url')      // "SGVsbG8gV29ybGQ"
+\`\`\`
+
+\`\`\`python
+import base64
+
+base64.b64encode(b'Hello World')          # b'SGVsbG8gV29ybGQ='
+base64.b64decode('SGVsbG8gV29ybGQ=')     # b'Hello World'
+
+# URL-safe Base64
+base64.urlsafe_b64encode(b'Hello World') # b'SGVsbG8gV29ybGQ='
+\`\`\`
+
+## Hexadecimal (Hex) Encoding
+
+**Purpose:** Represent binary data as a human-readable string of hex digits.
+
+**How it works:** Each byte becomes exactly two hex digits (0–9, a–f). A 32-byte SHA-256 hash becomes a 64-character hex string.
+
+\`\`\`
+0x48 0x65 0x6c 0x6c 0x6f → "48656c6c6f"
+\`\`\`
+
+**When to use it:**
+- Cryptographic hashes (SHA-256, MD5): \`a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3\`
+- Binary identifiers that need to be readable: transaction IDs, fingerprints
+- Debugging binary data
+- Color codes: \`#FF5733\`
+- MAC addresses: \`00:1A:2B:3C:4D:5E\`
+
+**When NOT to use it:**
+- When space efficiency matters — hex is 2× the size of the original binary (compared to Base64's 1.33×)
+- Embedding binary in JSON or HTTP — use Base64 instead
+
+\`\`\`javascript
+// Node.js
+crypto.createHash('sha256').update('hello').digest('hex')
+// "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+
+Buffer.from('Hello').toString('hex')  // "48656c6c6f"
+Buffer.from('48656c6c6f', 'hex').toString()  // "Hello"
+\`\`\`
+
+\`\`\`python
+import hashlib
+
+hashlib.sha256(b'hello').hexdigest()
+# "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+
+b'Hello'.hex()                          # '48656c6c6f'
+bytes.fromhex('48656c6c6f')            # b'Hello'
+\`\`\`
+
+## Side-by-Side Comparison
+
+| Property | URL Encoding | Base64 | Hex |
+|----------|-------------|--------|-----|
+| Input | Text strings | Any binary | Any binary |
+| Output size | Variable (up to 3×) | 4/3 × input | 2× input |
+| URL-safe | Yes (that's the point) | No (use Base64url) | Yes |
+| Human-readable | Somewhat | No | Somewhat |
+| Standard use | Query params, form data | Binary in text contexts | Hashes, fingerprints |
+| Padding | None | \`=\` padding | None |
+
+## The Base64 in URLs Trap
+
+JWT tokens use Base64url — not standard Base64. If you decode a JWT's header or payload with regular Base64, it works because the specific bytes happen to not contain \`+\` or \`/\`. But if your JWT library produces standard Base64 and you put it in a URL without re-encoding, any \`+\` becomes a space and \`/\` creates a path segment.
+
+\`\`\`javascript
+// Safe JWT in URL (base64url, no padding)
+const header = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';  // no + / or =
+
+// Dangerous: standard base64 in URL
+const standard = Buffer.from(data).toString('base64');
+// May contain + / = — must re-encode for URLs:
+const urlSafe = standard.replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=/g, '');
+\`\`\`
+
+→ Encode and decode URLs with the [URL Encoder](/url-encoder) or encode Base64 with the [Base64 Converter](/base64-string-converter).`,
+  },
 ];
