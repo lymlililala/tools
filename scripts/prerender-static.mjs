@@ -277,12 +277,16 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     html = html.replace('</head>', `  ${jsonLdTag}\n  </head>`)
   }
 
-  // 在 <div id="app"> 后注入 SEO 内容块
-  // 使用 sr-only 无障碍样式（clip + overflow:hidden 方案），对普通用户不可见
-  // 但对屏幕阅读器和初次无 JS 爬取可见，不触发 Google 的隐藏内容政策
-  const SR_ONLY = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden'
+  // 将 SEO 内容注入 <div id="app"> 内部
+  // Vue 挂载时会替换 #app 的全部内容，因此爬虫首次看到的 SEO 内容
+  // 与用户最终看到的交互界面自然过渡，不会触发 Cloaking 惩罚
+  //
+  // 关键原则：
+  // 1. 不使用 aria-hidden、display:none、left:-9999px 等隐藏手段
+  // 2. SEO 块是 #app 的初始内容，Vue 挂载后自动替换为完整交互界面
+  // 3. 对无 JS 的爬虫，SEO 块就是最终可见内容（真实、可读、非隐藏）
   const seoBlock = seoContent
-    ? `<div id="app"></div>\n    <div id="seo-content" aria-hidden="true" style="${SR_ONLY}">\n      <h1>${escapeHtml(h1)}</h1>\n${seoContent}\n    </div>`
+    ? `<div id="app"><div class="prerender-seo">\n      <h1>${escapeHtml(h1)}</h1>\n${seoContent}\n    </div></div>`
     : `<div id="app"></div>`
 
   html = html.replace('<div id="app"></div>', seoBlock)
@@ -629,7 +633,7 @@ console.log(`✅ Generated: dist/404.html`)
 count++
 
 // 5. 动态生成 dist/sitemap.xml（包含博客文章的真实 lastmod）
-const TOOL_LASTMOD = '2026-05-25'
+const TOOL_LASTMOD = new Date().toISOString().slice(0, 10)
 const toolUrlLines = []
 for (const [cat, slugs] of Object.entries(toolCategories)) {
   toolUrlLines.push(`  <!-- ${cat} -->`)

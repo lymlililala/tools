@@ -79,6 +79,62 @@
   </head>
   <body>
     <div id="app"></div>
+    <!--
+      预渲染 SEO 内容的样式（仅 JS 未加载时可见）
+      Vue 挂载时会替换 #app 的全部 innerHTML，此样式随之失效
+      注意：绝不使用 display:none / visibility:hidden / left:-9999px / aria-hidden
+            那些手段会被 Google 视为 Cloaking（隐藏内容欺骗），导致索引被拒
+    -->
+    <style>
+      .prerender-seo {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 24px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1a1a2e;
+        line-height: 1.7;
+      }
+      .prerender-seo h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 20px;
+        line-height: 1.3;
+      }
+      .prerender-seo h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 28px 0 12px;
+      }
+      .prerender-seo h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin: 20px 0 8px;
+      }
+      .prerender-seo p {
+        margin: 8px 0;
+        opacity: 0.8;
+      }
+      .prerender-seo ul, .prerender-seo ol {
+        padding-left: 24px;
+        margin: 8px 0;
+      }
+      .prerender-seo li {
+        margin-bottom: 4px;
+      }
+      .prerender-seo a {
+        color: #6366f1;
+        text-decoration: none;
+      }
+      .prerender-seo a:hover {
+        text-decoration: underline;
+      }
+      .prerender-seo section {
+        margin-top: 16px;
+      }
+      .prerender-seo nav {
+        margin-top: 16px;
+      }
+    </style>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
