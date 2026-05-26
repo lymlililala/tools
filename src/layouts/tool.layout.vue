@@ -225,10 +225,10 @@ const howToSteps = computed(() => {
   font-size: 13.5px;
   opacity: 0.55;
   line-height: 1.6;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 // ── 工具内容区 ────────────────────────────────────────────────────────────
