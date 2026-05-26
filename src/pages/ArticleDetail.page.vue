@@ -69,22 +69,25 @@ async function fetchArticle(s: string) {
     clearTimeout(timeout)
 
     if (sbError) {
-      console.warn('Supabase unavailable, using local data:', sbError.message)
+      // PGRST116 = row not found — always try local fallback first
+      console.warn('Supabase error, using local data:', sbError.message)
+      useLocalArticle(s)
+    }
+    else if (!data) {
+      // Supabase returned no data (shouldn't happen with .single(), but guard anyway)
       useLocalArticle(s)
     }
     else {
       article.value = data as DbArticle
 
-      if (data) {
-        const { data: related } = await supabase
-          .from('tools_articles')
-          .select('slug, title, description, category')
-          .eq('category', data.category)
-          .neq('slug', s)
-          .limit(3)
+      const { data: related } = await supabase
+        .from('tools_articles')
+        .select('slug, title, description, category')
+        .eq('category', data.category)
+        .neq('slug', s)
+        .limit(3)
 
-        relatedArticles.value = (related ?? []) as DbArticle[]
-      }
+      relatedArticles.value = (related ?? []) as DbArticle[]
     }
   }
   catch (e: any) {
