@@ -1,84 +1,30 @@
 {
   "redirects": [
-    { "source": "/json-prettify", "destination": "/json-format", "permanent": true },
-    { "source": "/json-viewer",   "destination": "/json-format", "permanent": true },
-    { "source": "/sql-prettify",  "destination": "/sql-format",  "permanent": true },
-    { "source": "/yaml-prettify", "destination": "/yaml-format", "permanent": true },
-    { "source": "/xml-formatter", "destination": "/xml-format",  "permanent": true },
-    { "source": "/cypher",              "destination": "/encryption",           "permanent": true },
-    { "source": "/file-to-base64",      "destination": "/base64-string-converter", "permanent": true },
-    { "source": "/base64-converter",    "destination": "/base64-string-converter", "permanent": true },
-    { "source": "/color-picker-converter", "destination": "/color-converter",   "permanent": true },
-    { "source": "/hash",                "destination": "/hash-text",            "permanent": true },
-    { "source": "/text-stats",               "destination": "/text-statistics",             "permanent": true },
-    { "source": "/meta-tag-generator",        "destination": "/og-meta-generator",           "permanent": true },
-    { "source": "/otp-code-generator-and-validator", "destination": "/otp-generator",        "permanent": true }
-  ],
-  "routes": [
     {
-      "src": "/(.*)",
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "www.myutl.com" }],
-      "headers": { "Location": "https://myutl.com/$1" },
-      "status": 301
+      "destination": "https://myutl.com/:path*",
+      "permanent": true
     },
-    {
-      "src": "/sitemap.xml",
-      "dest": "/sitemap.xml"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "/robots.txt"
-    },
-    {
-      "src": "/llms.txt",
-      "dest": "/llms.txt"
-    },
-    {
-      "src": "/sw.js",
-      "dest": "/sw.js"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(ico|png|svg|webp|jpg|jpeg|gif|webmanifest|txt|xml|css|js|woff|woff2|ttf|eot)$)",
-      "dest": "/$1"
-    },
-    {
-      "src": "^/$",
-      "dest": "/prerender-home/index.html"
-    },
-    {
-      "src": "^/blog/?$",
-      "dest": "/blog/index.html"
-    },
-    {
-      "src": "^/blog/([^/]+)/?$",
-      "dest": "/blog/$1/index.html",
-      "continue": true
-    },
-    {
-      "src": "^/blog/([^/]+)/?$",
-      "dest": "/index.html"
-    },
-    {
-      "src": "^/about/([^/]+)/?$",
-      "dest": "/index.html"
-    },
-    {
-      "src": "^/([a-z][a-z0-9-]*)/?$",
-      "dest": "/tools/$1/index.html",
-      "continue": true
-    },
-    {
-      "src": "^/([a-z][a-z0-9-]*)/?$",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/404.html",
-      "status": 404
-    }
+
+    { "source": "/json-prettify",  "destination": "/json-format",              "permanent": true },
+    { "source": "/json-viewer",    "destination": "/json-format",              "permanent": true },
+    { "source": "/sql-prettify",   "destination": "/sql-format",               "permanent": true },
+    { "source": "/yaml-prettify",  "destination": "/yaml-format",              "permanent": true },
+    { "source": "/xml-formatter",  "destination": "/xml-format",               "permanent": true },
+    { "source": "/cypher",         "destination": "/encryption",               "permanent": true },
+    { "source": "/file-to-base64", "destination": "/base64-string-converter",  "permanent": true },
+    { "source": "/base64-converter","destination": "/base64-string-converter", "permanent": true },
+    { "source": "/color-picker-converter", "destination": "/color-converter",  "permanent": true },
+    { "source": "/hash",           "destination": "/hash-text",                "permanent": true },
+    { "source": "/text-stats",     "destination": "/text-statistics",          "permanent": true },
+    { "source": "/meta-tag-generator", "destination": "/og-meta-generator",   "permanent": true },
+    { "source": "/otp-code-generator-and-validator", "destination": "/otp-generator", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/",          "destination": "/prerender-home/index.html" },
+    { "source": "/blog",      "destination": "/blog/index.html" },
+    { "source": "/blog/:slug","destination": "/blog/:slug/index.html" },
+    { "source": "/:path*",    "destination": "/index.html" }
   ]
 }
