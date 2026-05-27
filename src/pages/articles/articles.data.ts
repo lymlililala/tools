@@ -15371,9 +15371,9 @@ Variable substitution in compose file:
 \`\`\`yaml
 services:
   web:
-    image: myapp:${APP_VERSION:-latest}   # Default to 'latest' if unset
+    image: myapp:\${APP_VERSION:-latest}   # Default to 'latest' if unset
     ports:
-      - "${HOST_PORT:-3000}:3000"
+      - "\${HOST_PORT:-3000}:3000"
 \`\`\`
 
 ## Health Checks
