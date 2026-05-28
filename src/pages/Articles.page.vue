@@ -3,17 +3,6 @@ import { useHead } from '@vueuse/head'
 import { RouterLink } from 'vue-router'
 import { supabase } from '../lib/supabase'
 import type { DbArticle } from '../lib/supabase'
-import type { Article } from './articles/articles.data'
-
-// 懒加载：文章数据体积大（98k 行），用动态 import 拆分到独立 chunk，不阻塞首屏
-let localArticles: Article[] = []
-async function loadLocalArticles() {
-  if (localArticles.length === 0) {
-    const mod = await import('./articles/articles.data')
-    localArticles = mod.articles
-  }
-  return localArticles
-}
 
 const { t } = useI18n()
 
@@ -40,40 +29,10 @@ const searchQuery = ref('')
 const currentPage = ref(1)
 const PAGE_SIZE = 10
 
-// ─── Convert local article format to DbArticle ───────────────────────────────
-function localToDb(a: Article): DbArticle {
-  return {
-    slug: a.slug,
-    tool_path: a.toolPath,
-    title: a.title,
-    description: a.description,
-    keywords: a.keywords,
-    category: a.category,
-    published_at: a.publishedAt,
-    content: a.content,
-  }
-}
-
-// ─── Local data fallback ─────────────────────────────────────────────────────
-async function useLocalArticles() {
-  const data = await loadLocalArticles()
-  articles.value = data.map(localToDb).sort((a, b) =>
-    b.published_at.localeCompare(a.published_at),
-  )
-}
-
-// ─── Fetch from Supabase, fallback to local data ─────────────────────────────
+// ─── Fetch from Supabase ──────────────────────────────────────────────────────
 async function fetchArticles() {
   loading.value = true
   error.value = null
-
-  // Timeout: if Supabase doesn't respond in 5s, fall back to local data
-  const timeout = setTimeout(() => {
-    if (loading.value) {
-      console.warn('Supabase timeout, falling back to local data')
-      useLocalArticles().finally(() => { loading.value = false })
-    }
-  }, 5000)
 
   try {
     const { data, error: sbError } = await supabase
@@ -81,25 +40,15 @@ async function fetchArticles() {
       .select('id, slug, tool_path, title, description, keywords, category, published_at')
       .order('published_at', { ascending: false })
 
-    clearTimeout(timeout)
+    if (sbError)
+      throw new Error(sbError.message)
 
-    if (sbError) {
-      console.warn('Supabase unavailable, using local data:', sbError.message)
-      await useLocalArticles()
-    }
-    else {
-      articles.value = (data ?? []) as DbArticle[]
-      if (articles.value.length === 0)
-        await useLocalArticles()
-    }
+    articles.value = (data ?? []) as DbArticle[]
   }
   catch (e: any) {
-    clearTimeout(timeout)
-    console.warn('Supabase fetch failed, using local data:', e)
-    await useLocalArticles()
+    error.value = e?.message ?? '加载失败，请稍后重试'
   }
   finally {
-    clearTimeout(timeout)
     loading.value = false
   }
 }
