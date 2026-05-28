@@ -3,17 +3,6 @@ import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { supabase } from '../lib/supabase'
 import type { DbArticle } from '../lib/supabase'
-import type { Article } from './articles/articles.data'
-
-// 懒加载：文章数据体积大，用动态 import 拆分到独立 chunk，不阻塞首屏
-let localArticles: Article[] = []
-async function loadLocalArticles() {
-  if (localArticles.length === 0) {
-    const mod = await import('./articles/articles.data')
-    localArticles = mod.articles
-  }
-  return localArticles
-}
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
@@ -24,50 +13,12 @@ const relatedArticles = ref<DbArticle[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-// ─── Convert local article format to DbArticle ───────────────────────────────
-function localToDb(a: Article): DbArticle {
-  return {
-    slug: a.slug,
-    tool_path: a.toolPath,
-    title: a.title,
-    description: a.description,
-    keywords: a.keywords,
-    category: a.category,
-    published_at: a.publishedAt,
-    content: a.content,
-  }
-}
-
-// ─── Local fallback helpers ───────────────────────────────────────────────────
-async function useLocalArticle(s: string) {
-  const data = await loadLocalArticles()
-  const local = data.find(a => a.slug === s)
-  if (local) {
-    article.value = localToDb(local)
-    relatedArticles.value = data
-      .filter(a => a.category === local.category && a.slug !== s)
-      .slice(0, 3)
-      .map(localToDb)
-  }
-  else {
-    error.value = 'Article not found'
-  }
-}
-
-// ─── Fetch article ────────────────────────────────────────────────────────────
+// ─── Fetch article from Supabase ──────────────────────────────────────────────
 async function fetchArticle(s: string) {
   loading.value = true
   error.value = null
   article.value = null
   relatedArticles.value = []
-
-  // Timeout: if Supabase doesn't respond in 5s, fall back to local data
-  const timeout = setTimeout(() => {
-    if (loading.value) {
-      console.warn('Supabase timeout, falling back to local data')
-      useLocalArticle(s).finally(() => { loading.value = false })
-    }
-  }, 5000)
 
   try {
     const { data, error: sbError } = await supabase
@@ -76,37 +27,27 @@ async function fetchArticle(s: string) {
       .eq('slug', s)
       .single()
 
-    clearTimeout(timeout)
-
     if (sbError) {
-      // PGRST116 = row not found — always try local fallback first
-      console.warn('Supabase error, using local data:', sbError.message)
-      await useLocalArticle(s)
+      // PGRST116 = row not found
+      error.value = sbError.code === 'PGRST116' ? 'Article not found' : sbError.message
+      return
     }
-    else if (!data) {
-      // Supabase returned no data (shouldn't happen with .single(), but guard anyway)
-      await useLocalArticle(s)
-    }
-    else {
-      article.value = data as DbArticle
 
-      const { data: related } = await supabase
-        .from('tools_articles')
-        .select('slug, title, description, category')
-        .eq('category', data.category)
-        .neq('slug', s)
-        .limit(3)
+    article.value = data as DbArticle
 
-      relatedArticles.value = (related ?? []) as DbArticle[]
-    }
+    const { data: related } = await supabase
+      .from('tools_articles')
+      .select('slug, title, description, category')
+      .eq('category', data.category)
+      .neq('slug', s)
+      .limit(3)
+
+    relatedArticles.value = (related ?? []) as DbArticle[]
   }
   catch (e: any) {
-    clearTimeout(timeout)
-    console.warn('Supabase fetch failed, using local data:', e)
-    await useLocalArticle(s)
+    error.value = e?.message ?? '加载失败，请稍后重试'
   }
   finally {
-    clearTimeout(timeout)
     loading.value = false
   }
 }
