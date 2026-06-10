@@ -2,29 +2,473 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.myutl.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.myutl.com"
+        }
+      ],
       "destination": "https://myutl.com/:path*",
       "permanent": true
     },
-
-    { "source": "/json-prettify",  "destination": "/json-format",              "permanent": true },
-    { "source": "/json-viewer",    "destination": "/json-format",              "permanent": true },
-    { "source": "/sql-prettify",   "destination": "/sql-format",               "permanent": true },
-    { "source": "/yaml-prettify",  "destination": "/yaml-format",              "permanent": true },
-    { "source": "/xml-formatter",  "destination": "/xml-format",               "permanent": true },
-    { "source": "/cypher",         "destination": "/encryption",               "permanent": true },
-    { "source": "/file-to-base64", "destination": "/base64-string-converter",  "permanent": true },
-    { "source": "/base64-converter","destination": "/base64-string-converter", "permanent": true },
-    { "source": "/color-picker-converter", "destination": "/color-converter",  "permanent": true },
-    { "source": "/hash",           "destination": "/hash-text",                "permanent": true },
-    { "source": "/text-stats",     "destination": "/text-statistics",          "permanent": true },
-    { "source": "/meta-tag-generator", "destination": "/og-meta-generator",   "permanent": true },
-    { "source": "/otp-code-generator-and-validator", "destination": "/otp-generator", "permanent": true }
+    {
+      "source": "/json-prettify",
+      "destination": "/json-format",
+      "permanent": true
+    },
+    {
+      "source": "/json-viewer",
+      "destination": "/json-format",
+      "permanent": true
+    },
+    {
+      "source": "/sql-prettify",
+      "destination": "/sql-format",
+      "permanent": true
+    },
+    {
+      "source": "/yaml-prettify",
+      "destination": "/yaml-format",
+      "permanent": true
+    },
+    {
+      "source": "/xml-formatter",
+      "destination": "/xml-format",
+      "permanent": true
+    },
+    {
+      "source": "/cypher",
+      "destination": "/encryption",
+      "permanent": true
+    },
+    {
+      "source": "/file-to-base64",
+      "destination": "/base64-string-converter",
+      "permanent": true
+    },
+    {
+      "source": "/base64-converter",
+      "destination": "/base64-string-converter",
+      "permanent": true
+    },
+    {
+      "source": "/color-picker-converter",
+      "destination": "/color-converter",
+      "permanent": true
+    },
+    {
+      "source": "/hash",
+      "destination": "/hash-text",
+      "permanent": true
+    },
+    {
+      "source": "/text-stats",
+      "destination": "/text-statistics",
+      "permanent": true
+    },
+    {
+      "source": "/meta-tag-generator",
+      "destination": "/og-meta-generator",
+      "permanent": true
+    },
+    {
+      "source": "/otp-code-generator-and-validator",
+      "destination": "/otp-generator",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/",          "destination": "/prerender-home/index.html" },
-    { "source": "/blog",      "destination": "/blog/index.html" },
-    { "source": "/blog/:slug","destination": "/blog/:slug/index.html" },
-    { "source": "/:path*",    "destination": "/index.html" }
+    {
+      "source": "/",
+      "destination": "/prerender-home/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/:slug/index.html"
+    },
+    {
+      "source": "/ascii-text-drawer",
+      "destination": "/tools/ascii-text-drawer/index.html"
+    },
+    {
+      "source": "/base-converter",
+      "destination": "/tools/base-converter/index.html"
+    },
+    {
+      "source": "/base64-file-converter",
+      "destination": "/tools/base64-file-converter/index.html"
+    },
+    {
+      "source": "/base64-string-converter",
+      "destination": "/tools/base64-string-converter/index.html"
+    },
+    {
+      "source": "/basic-auth-generator",
+      "destination": "/tools/basic-auth-generator/index.html"
+    },
+    {
+      "source": "/bcrypt",
+      "destination": "/tools/bcrypt/index.html"
+    },
+    {
+      "source": "/benchmark-builder",
+      "destination": "/tools/benchmark-builder/index.html"
+    },
+    {
+      "source": "/bip39-generator",
+      "destination": "/tools/bip39-generator/index.html"
+    },
+    {
+      "source": "/bmi-calculator",
+      "destination": "/tools/bmi-calculator/index.html"
+    },
+    {
+      "source": "/camera-recorder",
+      "destination": "/tools/camera-recorder/index.html"
+    },
+    {
+      "source": "/case-converter",
+      "destination": "/tools/case-converter/index.html"
+    },
+    {
+      "source": "/chmod-calculator",
+      "destination": "/tools/chmod-calculator/index.html"
+    },
+    {
+      "source": "/chronometer",
+      "destination": "/tools/chronometer/index.html"
+    },
+    {
+      "source": "/color-converter",
+      "destination": "/tools/color-converter/index.html"
+    },
+    {
+      "source": "/color-palette-generator",
+      "destination": "/tools/color-palette-generator/index.html"
+    },
+    {
+      "source": "/crontab-generator",
+      "destination": "/tools/crontab-generator/index.html"
+    },
+    {
+      "source": "/css-unit-converter",
+      "destination": "/tools/css-unit-converter/index.html"
+    },
+    {
+      "source": "/date-converter",
+      "destination": "/tools/date-converter/index.html"
+    },
+    {
+      "source": "/device-information",
+      "destination": "/tools/device-information/index.html"
+    },
+    {
+      "source": "/docker-run-to-docker-compose-converter",
+      "destination": "/tools/docker-run-to-docker-compose-converter/index.html"
+    },
+    {
+      "source": "/email-normalizer",
+      "destination": "/tools/email-normalizer/index.html"
+    },
+    {
+      "source": "/emoji-picker",
+      "destination": "/tools/emoji-picker/index.html"
+    },
+    {
+      "source": "/encryption",
+      "destination": "/tools/encryption/index.html"
+    },
+    {
+      "source": "/eta-calculator",
+      "destination": "/tools/eta-calculator/index.html"
+    },
+    {
+      "source": "/git-memo",
+      "destination": "/tools/git-memo/index.html"
+    },
+    {
+      "source": "/hash-text",
+      "destination": "/tools/hash-text/index.html"
+    },
+    {
+      "source": "/hmac-generator",
+      "destination": "/tools/hmac-generator/index.html"
+    },
+    {
+      "source": "/html-entities",
+      "destination": "/tools/html-entities/index.html"
+    },
+    {
+      "source": "/html-wysiwyg-editor",
+      "destination": "/tools/html-wysiwyg-editor/index.html"
+    },
+    {
+      "source": "/http-status-codes",
+      "destination": "/tools/http-status-codes/index.html"
+    },
+    {
+      "source": "/iban-validator-and-parser",
+      "destination": "/tools/iban-validator-and-parser/index.html"
+    },
+    {
+      "source": "/income-tax-calculator",
+      "destination": "/tools/income-tax-calculator/index.html"
+    },
+    {
+      "source": "/ipv4-address-converter",
+      "destination": "/tools/ipv4-address-converter/index.html"
+    },
+    {
+      "source": "/ipv4-range-expander",
+      "destination": "/tools/ipv4-range-expander/index.html"
+    },
+    {
+      "source": "/ipv4-subnet-calculator",
+      "destination": "/tools/ipv4-subnet-calculator/index.html"
+    },
+    {
+      "source": "/ipv6-ula-generator",
+      "destination": "/tools/ipv6-ula-generator/index.html"
+    },
+    {
+      "source": "/json-diff",
+      "destination": "/tools/json-diff/index.html"
+    },
+    {
+      "source": "/json-format",
+      "destination": "/tools/json-format/index.html"
+    },
+    {
+      "source": "/json-minify",
+      "destination": "/tools/json-minify/index.html"
+    },
+    {
+      "source": "/json-to-csv",
+      "destination": "/tools/json-to-csv/index.html"
+    },
+    {
+      "source": "/json-to-toml",
+      "destination": "/tools/json-to-toml/index.html"
+    },
+    {
+      "source": "/json-to-xml",
+      "destination": "/tools/json-to-xml/index.html"
+    },
+    {
+      "source": "/json-to-yaml-converter",
+      "destination": "/tools/json-to-yaml-converter/index.html"
+    },
+    {
+      "source": "/jwt-parser",
+      "destination": "/tools/jwt-parser/index.html"
+    },
+    {
+      "source": "/keycode-info",
+      "destination": "/tools/keycode-info/index.html"
+    },
+    {
+      "source": "/list-converter",
+      "destination": "/tools/list-converter/index.html"
+    },
+    {
+      "source": "/lorem-ipsum-generator",
+      "destination": "/tools/lorem-ipsum-generator/index.html"
+    },
+    {
+      "source": "/mac-address-generator",
+      "destination": "/tools/mac-address-generator/index.html"
+    },
+    {
+      "source": "/mac-address-lookup",
+      "destination": "/tools/mac-address-lookup/index.html"
+    },
+    {
+      "source": "/markdown-to-html",
+      "destination": "/tools/markdown-to-html/index.html"
+    },
+    {
+      "source": "/math-evaluator",
+      "destination": "/tools/math-evaluator/index.html"
+    },
+    {
+      "source": "/mime-types",
+      "destination": "/tools/mime-types/index.html"
+    },
+    {
+      "source": "/mortgage-calculator",
+      "destination": "/tools/mortgage-calculator/index.html"
+    },
+    {
+      "source": "/number-formatter",
+      "destination": "/tools/number-formatter/index.html"
+    },
+    {
+      "source": "/numeronym-generator",
+      "destination": "/tools/numeronym-generator/index.html"
+    },
+    {
+      "source": "/og-meta-generator",
+      "destination": "/tools/og-meta-generator/index.html"
+    },
+    {
+      "source": "/otp-generator",
+      "destination": "/tools/otp-generator/index.html"
+    },
+    {
+      "source": "/password-strength-analyser",
+      "destination": "/tools/password-strength-analyser/index.html"
+    },
+    {
+      "source": "/pdf-signature-checker",
+      "destination": "/tools/pdf-signature-checker/index.html"
+    },
+    {
+      "source": "/percentage-calculator",
+      "destination": "/tools/percentage-calculator/index.html"
+    },
+    {
+      "source": "/phone-parser-and-formatter",
+      "destination": "/tools/phone-parser-and-formatter/index.html"
+    },
+    {
+      "source": "/qrcode-generator",
+      "destination": "/tools/qrcode-generator/index.html"
+    },
+    {
+      "source": "/random-decision-picker",
+      "destination": "/tools/random-decision-picker/index.html"
+    },
+    {
+      "source": "/random-port-generator",
+      "destination": "/tools/random-port-generator/index.html"
+    },
+    {
+      "source": "/regex-memo",
+      "destination": "/tools/regex-memo/index.html"
+    },
+    {
+      "source": "/regex-tester",
+      "destination": "/tools/regex-tester/index.html"
+    },
+    {
+      "source": "/roman-numeral-converter",
+      "destination": "/tools/roman-numeral-converter/index.html"
+    },
+    {
+      "source": "/rsa-key-pair-generator",
+      "destination": "/tools/rsa-key-pair-generator/index.html"
+    },
+    {
+      "source": "/safelink-decoder",
+      "destination": "/tools/safelink-decoder/index.html"
+    },
+    {
+      "source": "/slugify-string",
+      "destination": "/tools/slugify-string/index.html"
+    },
+    {
+      "source": "/sql-format",
+      "destination": "/tools/sql-format/index.html"
+    },
+    {
+      "source": "/string-obfuscator",
+      "destination": "/tools/string-obfuscator/index.html"
+    },
+    {
+      "source": "/svg-placeholder-generator",
+      "destination": "/tools/svg-placeholder-generator/index.html"
+    },
+    {
+      "source": "/temperature-converter",
+      "destination": "/tools/temperature-converter/index.html"
+    },
+    {
+      "source": "/text-diff",
+      "destination": "/tools/text-diff/index.html"
+    },
+    {
+      "source": "/text-statistics",
+      "destination": "/tools/text-statistics/index.html"
+    },
+    {
+      "source": "/text-to-binary",
+      "destination": "/tools/text-to-binary/index.html"
+    },
+    {
+      "source": "/text-to-nato-alphabet",
+      "destination": "/tools/text-to-nato-alphabet/index.html"
+    },
+    {
+      "source": "/text-to-unicode",
+      "destination": "/tools/text-to-unicode/index.html"
+    },
+    {
+      "source": "/token-generator",
+      "destination": "/tools/token-generator/index.html"
+    },
+    {
+      "source": "/toml-to-json",
+      "destination": "/tools/toml-to-json/index.html"
+    },
+    {
+      "source": "/toml-to-yaml",
+      "destination": "/tools/toml-to-yaml/index.html"
+    },
+    {
+      "source": "/ulid-generator",
+      "destination": "/tools/ulid-generator/index.html"
+    },
+    {
+      "source": "/unix-timestamp",
+      "destination": "/tools/unix-timestamp/index.html"
+    },
+    {
+      "source": "/url-encoder",
+      "destination": "/tools/url-encoder/index.html"
+    },
+    {
+      "source": "/url-parser",
+      "destination": "/tools/url-parser/index.html"
+    },
+    {
+      "source": "/user-agent-parser",
+      "destination": "/tools/user-agent-parser/index.html"
+    },
+    {
+      "source": "/uuid-generator",
+      "destination": "/tools/uuid-generator/index.html"
+    },
+    {
+      "source": "/wifi-qrcode-generator",
+      "destination": "/tools/wifi-qrcode-generator/index.html"
+    },
+    {
+      "source": "/xml-format",
+      "destination": "/tools/xml-format/index.html"
+    },
+    {
+      "source": "/xml-to-json",
+      "destination": "/tools/xml-to-json/index.html"
+    },
+    {
+      "source": "/yaml-format",
+      "destination": "/tools/yaml-format/index.html"
+    },
+    {
+      "source": "/yaml-to-json-converter",
+      "destination": "/tools/yaml-to-json-converter/index.html"
+    },
+    {
+      "source": "/yaml-to-toml",
+      "destination": "/tools/yaml-to-toml/index.html"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
   ]
 }
