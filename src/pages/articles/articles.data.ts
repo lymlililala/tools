@@ -23296,7 +23296,7 @@ fetchUser(userId)
   .finally(() => setLoading(false));       // Always runs
 \`\`\`
 
-**Key rule**: `.then()` always returns a new Promise, so you can chain infinitely.
+**Key rule**: \`.then()\` always returns a new Promise, so you can chain infinitely.
 
 ## Async/Await — Cleaner Syntax
 
@@ -23632,7 +23632,7 @@ require('dotenv').config(); // CommonJS
 console.log(process.env.PORT); // 3000
 \`\`\`
 
-**Critical**: Add `.env` to `.gitignore`!
+**Critical**: Add \`.env\` to \`.gitignore\`!
 
 \`\`\`bash
 # .gitignore
@@ -23795,7 +23795,7 @@ services:
 
 ## Production Secrets Management
 
-For production, avoid `.env` files on servers. Use proper secrets managers:
+For production, avoid \`.env\` files on servers. Use proper secrets managers:
 
 | Platform | Tool |
 |----------|------|
@@ -23871,8 +23871,8 @@ if (features.maintenanceMode) {
 
 | Rule | Why |
 |------|-----|
-| Never commit `.env` | Contains real secrets |
-| Always commit `.env.example` | Documents required config |
+| Never commit \`.env\` | Contains real secrets |
+| Always commit \`.env.example\` | Documents required config |
 | Validate at startup | Fail fast with clear errors |
 | Use a secrets manager in production | Secure, auditable, rotatable |
 | Never log sensitive values | Logs end up in many places |
@@ -30812,8 +30812,8 @@ services:
       - NODE_ENV=development
       - PORT=3000
       # Reference from host environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_URL=\${DATABASE_URL}
+      - JWT_SECRET=\${JWT_SECRET}
     env_file:
       - .env  # Load entire .env file
 \`\`\`
@@ -40739,7 +40739,7 @@ CMD ["python", "app.py"]
 # ❌ Bad: token ends up in image layers (visible in docker history)
 FROM node:20-alpine
 ARG NPM_TOKEN                    # Shows up in docker history!
-RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+RUN echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 RUN npm install
 # .npmrc stays in layer even if you delete it later!
 
@@ -40748,7 +40748,7 @@ RUN npm install
 FROM node:20-alpine
 RUN --mount=type=secret,id=npm_token \
     NPM_TOKEN=$(cat /run/secrets/npm_token) && \
-    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc && \
+    echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc && \
     npm install && \
     rm .npmrc
 # Secret never stored in any layer!
@@ -40923,7 +40923,7 @@ RUN npm audit --audit-level=high
 FROM base AS runner
 # Metadata labels
 LABEL org.opencontainers.image.source="https://github.com/company/repo"
-LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.revision="\${GIT_COMMIT}"
 
 # Non-root user
 RUN addgroup --system --gid 1001 nodejs && \
@@ -44119,7 +44119,7 @@ function SwipeableCard({ onDismiss }) {
   )
 
   const style = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }, { rotate: \`${rotation.value}deg\` }]
+    transform: [{ translateX: translateX.value }, { rotate: \`\${rotation.value}deg\` }]
   }))
 
   return (
@@ -61945,7 +61945,7 @@ function signRequest(method, path, body, secret) {
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const payload = [method, path, timestamp, body].join('\n');
   const sig = crypto.createHmac('sha256', secret).update(payload).digest('base64');
-  return { 'X-Timestamp': timestamp, 'X-Signature': \`hmac-sha256=${sig}\` };
+  return { 'X-Timestamp': timestamp, 'X-Signature': \`hmac-sha256=\${sig}\` };
 }
 // Prevent replay attacks: reject if |timestamp - now| > 300 seconds
 \`\`\`
@@ -62333,7 +62333,7 @@ Count requests in a fixed time window (e.g., each 60-second minute starting at :
 
 \`\`\`javascript
 async function isRateLimited(clientId, limit = 100, windowSeconds = 60) {
-  const key = \`rate:${clientId}:${Math.floor(Date.now() / 1000 / windowSeconds)}\`;
+  const key = \`rate:\${clientId}:\${Math.floor(Date.now() / 1000 / windowSeconds)}\`;
   const count = await redis.incr(key);
   if (count === 1) await redis.expire(key, windowSeconds);
   return count > limit;
@@ -62354,8 +62354,8 @@ async function isRateLimitedSliding(clientId, limit = 100, windowSeconds = 60) {
   const elapsed = now % windowSeconds;
 
   const [prevCount, currCount] = await redis.mget(
-    \`rate:${clientId}:${prevWindow}\`,
-    \`rate:${clientId}:${currWindow}\`
+    \`rate:\${clientId}:\${prevWindow}\`,
+    \`rate:\${clientId}:\${currWindow}\`
   );
 
   const weighted = (Number(prevCount) || 0) * (1 - elapsed / windowSeconds)
@@ -62363,8 +62363,8 @@ async function isRateLimitedSliding(clientId, limit = 100, windowSeconds = 60) {
   if (weighted >= limit) return true;
 
   const pipeline = redis.pipeline();
-  pipeline.incr(\`rate:${clientId}:${currWindow}\`);
-  pipeline.expire(\`rate:${clientId}:${currWindow}\`, windowSeconds * 2);
+  pipeline.incr(\`rate:\${clientId}:\${currWindow}\`);
+  pipeline.expire(\`rate:\${clientId}:\${currWindow}\`, windowSeconds * 2);
   await pipeline.exec();
   return false;
 }
@@ -62390,7 +62390,7 @@ const script = \`
 
 async function isAllowed(clientId) {
   return (await redis.eval(script, 1,
-    \`bucket:${clientId}\`, 100, 1.67, Date.now()/1000)) === 1;
+    \`bucket:\${clientId}\`, 100, 1.67, Date.now()/1000)) === 1;
 }
 \`\`\`
 

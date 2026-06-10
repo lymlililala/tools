@@ -83,6 +83,11 @@ async function upsertBatch(articles, batchSize = 50) {
   return { success, failed }
 }
 
+// 一篇文章是否字段完整(可安全 upsert)。源文件里有 ~280 篇纯博客指南字段残缺
+// (缺 toolPath/keywords 等),其完整数据由数据库维护,这类文章应跳过、不可用残缺源覆盖。
+const REQUIRED = ['toolPath', 'title', 'description', 'keywords', 'category', 'publishedAt', 'content']
+const isComplete = a => REQUIRED.every(k => a[k] != null)
+
 // ─── 主流程 ────────────────────────────────────────────────────────────────────
 async function main() {
   console.log('🚀 开始同步文章到 Supabase...\n')
@@ -109,9 +114,15 @@ async function main() {
     .select('*', { count: 'exact', head: true })
   console.log(`📊 同步前数据库中有 ${beforeCount ?? '未知'} 篇文章\n`)
 
-  // 3. upsert
-  console.log(`📤 开始上传（每批50条）...`)
-  const { success, failed } = await upsertBatch(articles)
+  // 3. 跳过源数据不完整(由 DB 维护)的纯博客文章,只 upsert 字段完整的
+  const complete = articles.filter(isComplete)
+  const skipped = articles.length - complete.length
+  if (skipped)
+    console.log(`⏭️  跳过 ${skipped} 篇源数据不完整(缺 toolPath/keywords 等、由 DB 维护)的文章\n`)
+
+  // 4. upsert
+  console.log(`📤 开始上传 ${complete.length} 篇（每批50条）...`)
+  const { success, failed } = await upsertBatch(complete)
 
   // 4. 验证
   const { count: afterCount } = await supabase
