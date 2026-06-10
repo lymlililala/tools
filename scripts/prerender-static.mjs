@@ -15,6 +15,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { execSync } from 'child_process'
 import { parse as parseYaml } from 'yaml'
+import { marked } from 'marked'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(__dirname, '..')
@@ -513,28 +514,13 @@ function buildArticleSeoContent(content, description, category) {
     parts.push(`      <p>${escapeHtml(description)}</p>`)
   }
 
-  // 提取 ## H2 段落及其内容（前 5 个段落）
-  const sections = raw.split(/^#{2}\s+/m).slice(1, 6)
-  sections.forEach((section) => {
-    const lines = section.split('\n')
-    const heading = lines[0].trim()
-    const bodyLines = lines.slice(1)
-      .join(' ')
-      .replace(/#{1,6}\s+\S+/g, '')
-      .replace(/\*\*([^*]+)\*\*/g, '$1')
-      .replace(/\*([^*]+)\*/g, '$1')
-      .replace(/`[^`]+`/g, '')
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      .replace(/\s+/g, ' ')
-      .trim()
-      .slice(0, 300)
-    if (heading && bodyLines.length > 20) {
-      parts.push(`      <section>`)
-      parts.push(`        <h2>${escapeHtml(heading)}</h2>`)
-      parts.push(`        <p>${escapeHtml(bodyLines)}</p>`)
-      parts.push(`      </section>`)
-    }
-  })
+  // 渲染完整 Markdown 正文为 HTML —— GEO 优化:
+  // 让不执行 JS 的 AI 答案引擎/爬虫也能直接获取文章全文(而非仅摘要)
+  if (raw.trim()) {
+    parts.push(`      <article class="prose">`)
+    parts.push(marked.parse(raw))
+    parts.push(`      </article>`)
+  }
 
   // 同类工具推荐内链（根据文章分类）
   if (category) {
