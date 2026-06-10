@@ -634,6 +634,9 @@ count++
 
 // 5. 动态生成 dist/sitemap.xml（包含博客文章的真实 lastmod）
 const TOOL_LASTMOD = new Date().toISOString().slice(0, 10)
+// 博客内容修订日:2026-06-10 修复了预渲染(空壳 → 完整 HTML),所有博客页实质变更,
+// 用它兜底 lastmod 以提示 Google 重新抓取、消除"重复/备用页/未编入索引"标记。
+const BLOG_CONTENT_REV = '2026-06-10'
 const toolUrlLines = []
 for (const [cat, slugs] of Object.entries(toolCategories)) {
   toolUrlLines.push(`  <!-- ${cat} -->`)
@@ -672,7 +675,9 @@ for (const s of extraBlogSlugsFromStatic) {
   allBlogSlugsInOrder.push(s)
 }
 for (const s of allBlogSlugsInOrder) {
-  const lastmod = articlePubMap[s] || TOOL_LASTMOD
+  const pub = articlePubMap[s] || TOOL_LASTMOD
+  // 取「发布日」与「内容修订日」中较晚者(ISO 日期可直接字符串比较)
+  const lastmod = pub > BLOG_CONTENT_REV ? pub : BLOG_CONTENT_REV
   blogUrlLines.push(`  <url><loc>${SITE}/blog/${s}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`)
 }
 
