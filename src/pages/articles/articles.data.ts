@@ -98626,4 +98626,476 @@ Kotlin Coroutines and Flow provide:
 The combination makes async Android and backend code maintainable and testable.
 `,
   },
+  {
+    slug: 'ulid-generator-guide',
+    toolPath: '/ulid-generator',
+    title: 'How to Generate ULIDs: Format, Sorting, and Real-World Usage',
+    description: 'Generate ULIDs and learn the 26-character format, how lexicographic sorting works, monotonic generation, and when ULIDs beat UUIDs as database keys.',
+    keywords: ['ULID generator', 'generate ULID', 'ULID format', 'sortable unique id', 'ULID vs UUID database key'],
+    category: 'Crypto',
+    publishedAt: '2026-06-11',
+    content: `## What a ULID Actually Is
+
+A **ULID** (Universally Unique Lexicographically Sortable Identifier) is a 128-bit identifier written as 26 characters, designed to be unique like a UUID but sortable by creation time. A typical ULID looks like this:
+
+\`\`\`
+01ARZ3NDEKTSV4RRFFQ69G5FAV
+\`\`\`
+
+The 128 bits are split into two parts: the first 48 bits are a millisecond Unix timestamp, and the remaining 80 bits are random. Because the timestamp comes first and the encoding preserves byte order, sorting ULIDs as plain strings sorts them by time — which is the whole point.
+
+## The 26-Character Format
+
+ULIDs are encoded with **Crockford's Base32** (digits \`0-9\` and letters \`A-Z\`, excluding \`I\`, \`L\`, \`O\`, and \`U\` to avoid ambiguity). The layout is fixed:
+
+\`\`\`
+ 01ARZ3NDEK      TSV4RRFFQ69G5FAV
+|----------|    |----------------|
+ Timestamp        Randomness
+ 48 bits          80 bits
+ 10 chars         16 chars
+\`\`\`
+
+A few consequences fall out of this:
+
+- ULIDs are **case-insensitive** and contain no special characters, so they are safe in URLs without encoding.
+- The timestamp covers dates until the year **10889**, so overflow is not a practical concern.
+- 80 bits of randomness means collisions within the same millisecond are astronomically unlikely.
+
+## Generating a ULID in Code
+
+Most languages have a small library. In JavaScript:
+
+\`\`\`javascript
+import { ulid } from 'ulid';
+
+ulid(); // '01ARZ3NDEKTSV4RRFFQ69G5FAV'
+
+// You can also pass an explicit timestamp (ms)
+ulid(1469918176385); // '01ARYZ6S41TSV4RRFFQ69G5FAV'
+\`\`\`
+
+In Python:
+
+\`\`\`python
+from ulid import ULID
+
+str(ULID())  # '01ARZ3NDEKTSV4RRFFQ69G5FAV'
+\`\`\`
+
+Decoding the timestamp back out is straightforward, because the first 10 characters are just the Base32-encoded milliseconds:
+
+\`\`\`javascript
+import { decodeTime } from 'ulid';
+
+decodeTime('01ARZ3NDEKTSV4RRFFQ69G5FAV'); // 1469918176385
+\`\`\`
+
+## Monotonic Generation
+
+Within a single millisecond, two plain ULIDs are randomly ordered relative to each other. If you generate many IDs per millisecond and need them strictly increasing, use a **monotonic** factory, which increments the random component instead of regenerating it:
+
+\`\`\`javascript
+import { monotonicFactory } from 'ulid';
+const next = monotonicFactory();
+
+next(); // 01ARZ3NDEKTSV4RRFFQ69G5FAV
+next(); // 01ARZ3NDEKTSV4RRFFQ69G5FAW  ← +1, same ms
+next(); // 01ARZ3NDEKTSV4RRFFQ69G5FAX
+\`\`\`
+
+This matters when ULIDs are used as primary keys and you rely on them to reflect insertion order.
+
+## ULID vs UUID as a Database Key
+
+The practical reason teams reach for ULIDs is index performance. Random UUIDv4 keys scatter inserts across a B-tree index, causing page splits and poor cache locality. Because ULIDs are time-ordered, new rows append near the "right edge" of the index, much like an auto-increment integer — but without a central sequence and without leaking a row count.
+
+| Property | UUIDv4 | ULID |
+|----------|--------|------|
+| Sortable by time | No | Yes |
+| Index locality on insert | Poor (random) | Good (sequential) |
+| Length as text | 36 chars | 26 chars |
+| Reveals creation time | No | Yes (timestamp embedded) |
+| URL-safe without encoding | No (hyphens) | Yes |
+
+The one trade-off worth noting: a ULID **exposes its creation time** to anyone who has it. If a public-facing identifier must not reveal when a record was created, use a random UUID instead.
+
+## When to Use ULIDs
+
+ULIDs are a strong default for:
+
+- Primary keys in high-insert tables (orders, events, messages)
+- Distributed systems that need client-generated IDs without coordination
+- Log and event identifiers where time-ordering aids debugging
+- Public IDs where a compact, URL-safe string is preferable to a UUID
+
+Avoid them when creation time must stay private, or when an existing system mandates UUID format.
+
+## Frequently Asked Questions
+
+**How long is a ULID?**
+128 bits, written as 26 characters in Crockford Base32 — 10 characters of timestamp followed by 16 characters of randomness.
+
+**Are ULIDs guaranteed unique?**
+Not mathematically guaranteed, but with 80 random bits per millisecond a collision is so improbable it can be treated as unique in practice. Use monotonic generation to also guarantee ordering within a millisecond.
+
+**Can I get the timestamp back from a ULID?**
+Yes. The first 10 characters decode to the millisecond Unix timestamp, so no separate \`created_at\` column is strictly required.
+
+**Are ULIDs better than UUIDs?**
+For time-ordered, index-friendly keys, yes. For identifiers that must not leak creation time, a random UUID is better. They solve different problems.
+
+Use the ULID generator above to create single or bulk ULIDs, inspect the embedded timestamp, and copy them straight into your database or test fixtures.
+`,
+  },
+  {
+    slug: 'json-to-toml-guide',
+    toolPath: '/json-to-toml',
+    title: 'Converting JSON to TOML: A Practical Guide for Config Files',
+    description: 'Convert JSON to TOML correctly — how objects, arrays, and nested data map to TOML tables, common pitfalls with null and mixed arrays, and when TOML is the better config format.',
+    keywords: ['json to toml', 'convert json to toml', 'toml config', 'json toml converter', 'toml tables'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## Why Convert JSON to TOML?
+
+JSON is everywhere as a data-interchange format, but it was never designed to be edited by hand. It has no comments, is strict about trailing commas, and nests deeply with braces that are hard to scan. **TOML** (Tom's Obvious Minimal Language) targets exactly the human-edited config use case: it reads like an INI file, supports comments, and maps cleanly onto a hash table. Converting a JSON config to TOML is a common step when adopting tools like Cargo, Hugo, or any project that standardizes on \`*.toml\`.
+
+## How the Structures Map
+
+The core idea: a JSON **object** becomes a TOML **table**, and keys become \`key = value\` pairs. Here is a side-by-side:
+
+\`\`\`json
+{
+  "title": "My App",
+  "owner": {
+    "name": "Ada",
+    "active": true
+  },
+  "ports": [8000, 8001]
+}
+\`\`\`
+
+Becomes:
+
+\`\`\`toml
+title = "My App"
+ports = [8000, 8001]
+
+[owner]
+name = "Ada"
+active = true
+\`\`\`
+
+Notice that top-level scalars come first, and the nested \`owner\` object becomes a \`[owner]\` table header. TOML requires scalar keys to appear before any table headers at the same level — a converter handles this ordering for you, but it explains why the output is reordered relative to the JSON.
+
+## Arrays and Arrays of Tables
+
+A JSON array of objects maps to a TOML **array of tables**, written with double brackets:
+
+\`\`\`json
+{ "servers": [
+  { "host": "alpha", "port": 8000 },
+  { "host": "beta",  "port": 8001 }
+]}
+\`\`\`
+
+\`\`\`toml
+[[servers]]
+host = "alpha"
+port = 8000
+
+[[servers]]
+host = "beta"
+port = 8001
+\`\`\`
+
+Each \`[[servers]]\` block is one element of the array. This is one of TOML's most distinctive features and the part people most often hand-write incorrectly — letting a converter generate it removes the guesswork.
+
+## The Pitfalls
+
+Two JSON things have **no TOML equivalent**, and a good conversion has to decide what to do:
+
+- **\`null\`** — TOML has no null type. Most converters drop null keys entirely; be aware a key can silently disappear. If the key is meaningful, replace it with a sentinel or omit it deliberately.
+- **Mixed-type arrays** — JSON allows \`[1, "two", true]\`. TOML arrays should be homogeneous; mixed arrays are technically allowed in TOML 1.0 but many parsers reject them. Normalize the data first.
+
+Also watch **deeply nested objects**: TOML expresses depth with dotted table headers like \`[a.b.c]\`, which stays readable up to a point but becomes awkward past three or four levels. If your JSON is deeply nested, TOML may not be the right target at all.
+
+## When TOML Is the Right Choice
+
+TOML shines for **static, human-edited configuration** — tool settings, build manifests, app config. It is a poor fit for large data payloads, anything with lots of nulls, or machine-to-machine messaging where JSON's ubiquity wins. Use the converter to move a config into TOML once, then maintain it by hand with comments.
+
+## Frequently Asked Questions
+
+**Does JSON-to-TOML preserve key order?**
+Not exactly. TOML requires scalar keys before nested tables, so top-level values are emitted first and tables follow. The data is identical; only presentation order changes.
+
+**What happens to null values?**
+TOML has no null. Keys with null values are typically dropped during conversion. Decide explicitly whether to omit them or substitute a placeholder.
+
+**Can every JSON file become valid TOML?**
+No. Mixed-type arrays and null values have no clean TOML representation, and extremely deep nesting becomes unwieldy. Flat-to-moderately-nested configs convert cleanly.
+
+Paste your JSON into the converter above to get formatted TOML instantly, including correct array-of-tables output for nested object lists.
+`,
+  },
+  {
+    slug: 'toml-to-yaml-guide',
+    toolPath: '/toml-to-yaml',
+    title: 'Converting TOML to YAML: Tables, Indentation, and CI Configs',
+    description: 'Convert TOML to YAML the right way — how tables and arrays of tables become nested YAML, indentation rules, quoting gotchas, and why CI pipelines often need YAML.',
+    keywords: ['toml to yaml', 'convert toml to yaml', 'yaml config', 'toml yaml converter', 'ci config yaml'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## Why Go from TOML to YAML?
+
+TOML is a great hand-edited config format, but a lot of the ecosystem — Kubernetes, GitHub Actions, GitLab CI, Ansible, Docker Compose — speaks **YAML**. When a tool or pipeline only accepts YAML, you need to translate your TOML config without changing its meaning. The two formats describe the same underlying data model (a tree of maps, lists, and scalars), so the conversion is lossless in the TOML→YAML direction.
+
+## How Tables Become Nesting
+
+A TOML table header becomes an **indented YAML key**. Where TOML uses flat \`[section]\` markers, YAML uses indentation to express the same hierarchy:
+
+\`\`\`toml
+title = "My App"
+
+[database]
+host = "localhost"
+port = 5432
+\`\`\`
+
+\`\`\`yaml
+title: My App
+database:
+  host: localhost
+  port: 5432
+\`\`\`
+
+The \`[database]\` header turns into a \`database:\` key whose children are indented two spaces. Dotted TOML headers like \`[a.b.c]\` become three levels of YAML indentation.
+
+## Arrays of Tables Become Lists of Maps
+
+TOML's double-bracket array of tables maps to a YAML **sequence of mappings**:
+
+\`\`\`toml
+[[steps]]
+name = "build"
+run = "make"
+
+[[steps]]
+name = "test"
+run = "make test"
+\`\`\`
+
+\`\`\`yaml
+steps:
+  - name: build
+    run: make
+  - name: test
+    run: make test
+\`\`\`
+
+Each \`[[steps]]\` block becomes one \`- \` list item. This is the exact shape CI systems expect for job steps, which is why TOML→YAML conversion shows up so often in pipeline work.
+
+## Quoting and Indentation Gotchas
+
+YAML is whitespace-sensitive and has a long list of values that change meaning if unquoted. A converter handles these, but it helps to know why the output quotes certain strings:
+
+- **Booleans in disguise** — \`yes\`, \`no\`, \`on\`, \`off\`, \`true\`, \`false\` are interpreted as booleans in YAML 1.1. A string \`"yes"\` must be quoted to stay a string.
+- **Numbers and versions** — \`1.10\` parses as the number \`1.1\`; a version string like \`"1.10"\` needs quotes.
+- **Leading zeros and colons** — values like \`08:00\` or \`0755\` can be misread; quoting keeps them literal.
+- **Indentation must be spaces**, never tabs. A generated file uses consistent two-space indentation.
+
+## Verifying the Result
+
+Because YAML is sensitive to formatting, validate the output before committing it to a pipeline. A quick round-trip check — parse the YAML and compare the resulting data structure to the original TOML — catches any quoting surprise. Most CI platforms also offer a config linter; run it once after converting.
+
+## Frequently Asked Questions
+
+**Is TOML-to-YAML conversion lossless?**
+Yes. Both formats represent the same map/list/scalar model, and everything expressible in TOML has a YAML equivalent, so no data is lost going this direction.
+
+**Why does the converter quote some strings and not others?**
+To protect values YAML would otherwise reinterpret — \`yes\`/\`no\` as booleans, \`1.10\` as a number, times like \`08:00\`. Quoting forces them to stay strings.
+
+**Can I convert TOML straight into a GitHub Actions or Kubernetes file?**
+The data structure converts cleanly, but each platform expects specific top-level keys. Convert first, then adjust the key names to match the target schema.
+
+Paste your TOML into the converter above to get clean, correctly indented YAML ready for CI pipelines and Kubernetes manifests.
+`,
+  },
+  {
+    slug: 'yaml-to-toml-guide',
+    toolPath: '/yaml-to-toml',
+    title: 'Converting YAML to TOML: When and How to Make the Switch',
+    description: 'Convert YAML to TOML safely — how nested mappings and sequences translate, what YAML features have no TOML equivalent, and how to handle anchors, nulls, and multi-line strings.',
+    keywords: ['yaml to toml', 'convert yaml to toml', 'yaml toml converter', 'toml from yaml', 'yaml anchors toml'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## Why Convert YAML to TOML?
+
+Teams move from YAML to TOML when they want a config format that is harder to get wrong. YAML's significant whitespace and surprising type coercion (\`no\` becoming \`false\`, \`1.10\` becoming a number) cause real bugs. TOML's explicit, bracket-delimited tables remove the indentation ambiguity. The conversion is common when adopting Rust tooling, or simply standardizing a polyglot repo on one config style.
+
+## How Mappings and Sequences Translate
+
+A YAML mapping becomes a TOML table; a YAML sequence becomes a TOML array. The direction reverses what we saw going TOML→YAML:
+
+\`\`\`yaml
+title: My App
+database:
+  host: localhost
+  port: 5432
+\`\`\`
+
+\`\`\`toml
+title = "My App"
+
+[database]
+host = "localhost"
+port = 5432
+\`\`\`
+
+A YAML list of maps becomes an array of tables:
+
+\`\`\`yaml
+steps:
+  - name: build
+    run: make
+  - name: test
+    run: make test
+\`\`\`
+
+\`\`\`toml
+[[steps]]
+name = "build"
+run = "make"
+
+[[steps]]
+name = "test"
+run = "make test"
+\`\`\`
+
+## What Has No TOML Equivalent
+
+This direction is where conversions can lose information, because YAML has features TOML simply lacks:
+
+- **Anchors and aliases** (\`&anchor\` / \`*alias\`) — TOML has no reference mechanism. A converter must **expand** them, duplicating the referenced data inline. The result is correct but larger, and the de-duplication intent is lost.
+- **\`null\`** — YAML \`null\` (or empty value) has no TOML type. These keys are typically dropped; decide whether that is acceptable.
+- **Non-string keys** — YAML allows numbers or even sequences as mapping keys. TOML keys are strings, so such keys must be stringified.
+- **Multiple documents** — a single YAML file can hold several documents separated by \`---\`. TOML has no such concept; convert one document at a time.
+
+## Multi-Line Strings
+
+Both formats support multi-line strings, but with different syntax. YAML block scalars (\`|\` literal and \`>\` folded) map onto TOML's triple-quoted strings:
+
+\`\`\`yaml
+description: |
+  Line one
+  Line two
+\`\`\`
+
+\`\`\`toml
+description = """
+Line one
+Line two
+"""
+\`\`\`
+
+A folded \`>\` scalar, which joins lines with spaces, is converted to its already-folded single-line form before being written.
+
+## A Safe Conversion Workflow
+
+1. Resolve or remove anchors/aliases mentally — know that they will be expanded.
+2. Convert one YAML document at a time.
+3. Check that no meaningful \`null\` keys were silently dropped.
+4. Validate the TOML with a parser before committing.
+
+## Frequently Asked Questions
+
+**Does YAML-to-TOML lose data?**
+It can. Anchors/aliases are expanded (losing the reference), nulls are dropped, and multi-document files must be split. Plain mappings, sequences, and scalars convert cleanly.
+
+**What happens to YAML anchors and aliases?**
+TOML has no references, so the converter inlines the referenced content everywhere it was used. The data is preserved but duplicated.
+
+**Can I convert a multi-document YAML file?**
+Not in one pass — TOML has no document separator. Convert each \`---\` section into its own TOML file.
+
+Paste your YAML into the converter above to get valid TOML, with anchors expanded and tables generated automatically.
+`,
+  },
+  {
+    slug: 'list-converter-guide',
+    toolPath: '/list-converter',
+    title: 'List Converter: Transform, Sort, and Deduplicate Lists Fast',
+    description: 'Turn messy lists into clean output — convert between line breaks, commas, and quotes; deduplicate and sort; wrap items for SQL IN clauses, CSV, and code arrays.',
+    keywords: ['list converter', 'convert list to comma separated', 'deduplicate list', 'list to csv', 'sql in clause generator'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## What a List Converter Does
+
+A **list converter** takes a list of items in one shape and rewrites it in another: changing the separator, adding or removing quotes, trimming whitespace, removing duplicates, sorting, and wrapping each item with a prefix or suffix. It exists because the lists we copy from spreadsheets, logs, and emails are almost never in the format the next tool expects — and reformatting them by hand is tedious and error-prone.
+
+## The Most Common Conversions
+
+**Newlines to comma-separated.** You copy a column from a spreadsheet and need a single comma-separated line:
+
+\`\`\`
+apple          apple, banana, cherry
+banana    →
+cherry
+\`\`\`
+
+**Wrapping for a SQL IN clause.** A list of IDs needs quotes and commas to drop into a query:
+
+\`\`\`
+101            '101', '102', '103'
+102    →
+103
+\`\`\`
+
+\`\`\`sql
+SELECT * FROM orders WHERE id IN ('101', '102', '103');
+\`\`\`
+
+**Building a code array.** The same list, wrapped as a JavaScript array literal:
+
+\`\`\`javascript
+const ids = ['101', '102', '103'];
+\`\`\`
+
+These are all the same operation — set a prefix, suffix, and separator — applied with different settings.
+
+## Deduplicate and Sort
+
+Two transforms do most of the cleanup work:
+
+- **Deduplicate** removes repeated items. This is invaluable for turning a raw log of values into a unique set — for example, collapsing thousands of repeated user IDs into the distinct ones.
+- **Sort** orders items alphabetically or numerically. Combined with deduplication, a chaotic pasted list becomes a clean, ordered, unique set in one step.
+
+Order matters: trim whitespace first, then deduplicate (so \` apple\` and \`apple\` are recognized as the same), then sort.
+
+## Quoting and Escaping
+
+When wrapping items in quotes, watch for items that already contain the quote character or the separator. A value like \`O'Brien\` will break a single-quoted SQL list unless the quote is escaped (\`'O''Brien'\`). For CSV output, any item containing a comma must itself be quoted. Decide on the target format's escaping rules before generating, and review the output for items with special characters.
+
+## Practical Workflows
+
+- **From spreadsheet to query**: paste a column, dedupe, wrap in quotes, join with commas → SQL \`IN\` list.
+- **From log to allowlist**: paste raw lines, trim, dedupe, sort → a clean config array.
+- **From CSV to newlines**: split on commas, strip quotes → one item per line for further editing.
+- **From list to JSON array**: wrap each item in quotes, comma-join, surround with brackets.
+
+## Frequently Asked Questions
+
+**How do I convert a list to comma-separated values?**
+Paste the list with one item per line and set the output separator to a comma. The converter joins them into a single line, optionally adding quotes around each item.
+
+**Can it remove duplicates from a list?**
+Yes. Enable deduplication to keep only the first occurrence of each item. Trim whitespace first so visually identical items are matched correctly.
+
+**How do I build a SQL IN clause from a list?**
+Wrap each item in single quotes, join with commas, and paste the result between the parentheses of \`IN (...)\`. Escape any values that contain a quote.
+
+Use the list converter above to reshape, deduplicate, sort, and wrap lists for SQL, CSV, and code without manual editing.
+`,
+  },
 ];
