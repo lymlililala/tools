@@ -24,16 +24,19 @@ const rootDir = path.join(__dirname, '..')
 async function loadArticles() {
   console.log('📖 正在读取 articles.data.ts ...')
 
-  // 用 esbuild 把 TS 编译为临时 JS
+  // 用 esbuild 把 TS 编译为临时 ESM（需要 esbuild 为直接依赖：pnpm add -D esbuild）
   const { build } = await import('esbuild')
-  const tmpFile = path.join(rootDir, 'dist', '_articles_tmp.mjs')
+  const distDir = path.join(rootDir, 'dist')
+  fs.mkdirSync(distDir, { recursive: true })
+  const tmpFile = path.join(distDir, '_articles_tmp.mjs')
 
   await build({
     entryPoints: [path.join(rootDir, 'src/pages/articles/articles.data.ts')],
     bundle: false,
     format: 'esm',
-    outfile: tmpFile,
     platform: 'node',
+    outfile: tmpFile,
+    logLevel: 'silent',
   })
 
   const mod = await import(pathToFileURL(tmpFile).href + '?t=' + Date.now())
@@ -85,8 +88,20 @@ async function main() {
   console.log('🚀 开始同步文章到 Supabase...\n')
 
   // 1. 加载文章
-  const articles = await loadArticles()
-  console.log(`✅ 读取到 ${articles.length} 篇文章\n`)
+  let articles = await loadArticles()
+  console.log(`✅ 读取到 ${articles.length} 篇文章`)
+
+  // 可选：只同步指定 slug（设置 ONLY_SLUG 环境变量），用于精准补单篇、零覆盖其余
+  const onlySlug = process.env.ONLY_SLUG
+  if (onlySlug) {
+    articles = articles.filter(a => a.slug === onlySlug)
+    console.log(`🔎 ONLY_SLUG=${onlySlug} → 仅同步 ${articles.length} 篇`)
+    if (articles.length === 0) {
+      console.error(`❌ 在 articles.data.ts 中找不到 slug=${onlySlug}`)
+      process.exit(1)
+    }
+  }
+  console.log('')
 
   // 2. 查询当前数据库数量
   const { count: beforeCount } = await supabase

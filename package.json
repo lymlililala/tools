@@ -140,6 +140,7 @@
     "@vue/test-utils": "^2.3.2",
     "@vue/tsconfig": "^0.4.0",
     "consola": "^3.0.2",
+    "esbuild": "^0.28.0",
     "eslint": "^8.47.0",
     "hygen": "^6.2.11",
     "jsdom": "^22.0.0",

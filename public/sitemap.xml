@@ -368,7 +368,6 @@
   <url><loc>https://myutl.com/blog/web-security-headers-complete-guide</loc><lastmod>2026-05-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/jwt-authentication-best-practices</loc><lastmod>2026-05-31</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/go-concurrency-goroutines-channels-guide</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://myutl.com/blog/rust-ownership-borrowing-beginners-guide</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/go-web-development-guide</loc><lastmod>2026-06-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/rust-practical-systems-programming</loc><lastmod>2026-06-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/kubernetes-beginners-complete-guide</loc><lastmod>2026-06-03</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
@@ -463,7 +462,6 @@
   <url><loc>https://myutl.com/blog/opensearch-full-text-search</loc><lastmod>2026-06-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/data-pipeline-testing-strategies</loc><lastmod>2026-06-03</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/kafka-streams-real-time-analytics</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://myutl.com/blog/my-app</loc><lastmod>2026-06-05</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/vue3-composition-api-complete-guide</loc><lastmod>2026-06-06</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/svelte-5-runes-guide</loc><lastmod>2026-06-07</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/blog/astro-static-site-guide</loc><lastmod>2026-06-08</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
