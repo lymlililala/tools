@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { supabase } from '../lib/supabase'
-import type { DbArticle } from '../lib/supabase'
+import { fetchArticleDetail } from '../lib/articles'
+import type { DbArticle } from '../lib/articles'
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
@@ -21,31 +21,14 @@ async function fetchArticle(s: string) {
   relatedArticles.value = []
 
   try {
-    const { data, error: sbError } = await supabase
-      .from('tools_articles')
-      .select('*')
-      .eq('slug', s)
-      .single()
-
-    if (sbError) {
-      // PGRST116 = row not found
-      error.value = sbError.code === 'PGRST116' ? 'Article not found' : sbError.message
-      return
-    }
-
-    article.value = data as DbArticle
-
-    const { data: related } = await supabase
-      .from('tools_articles')
-      .select('slug, title, description, category')
-      .eq('category', data.category)
-      .neq('slug', s)
-      .limit(3)
-
-    relatedArticles.value = (related ?? []) as DbArticle[]
+    const { article: data, related } = await fetchArticleDetail(s)
+    article.value = data
+    relatedArticles.value = related
   }
   catch (e: any) {
-    error.value = e?.message ?? '加载失败，请稍后重试'
+    error.value = e?.status === 404
+      ? 'Article not found'
+      : (e?.message ?? '加载失败，请稍后重试')
   }
   finally {
     loading.value = false

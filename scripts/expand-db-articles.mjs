@@ -4,12 +4,7 @@
  * Updates short articles that exist in DB but not in source code
  * These are extra articles from previous seeding sessions
  */
-import { createClient } from '@supabase/supabase-js'
-
-const SUPABASE_URL = 'https://tixgzezefjjsyuzgdhcd.supabase.co'
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpeGd6ZXplZmpqc3l1emdkaGNkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODE0OTM3OCwiZXhwIjoyMDkzNzI1Mzc4fQ.CBarLrHnr-tr5ZPaGs2JvW3NJE6O5O1Hw7oTWsHuI-E'
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+import { supabase } from './supabase-admin.mjs'
 
 const articles = {
 

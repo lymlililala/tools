@@ -3,12 +3,13 @@
  * 把 articles.data.ts 中的 500 篇文章全量 upsert 到 Supabase
  *
  * 使用方式：
- *   SUPABASE_SERVICE_KEY=<your-service-role-key> node scripts/sync-articles-to-supabase.mjs
+ *   SUPABASE_SECRET_KEY=<your-secret-key> node scripts/sync-articles-to-supabase.mjs
+ *   （或将 SUPABASE_SECRET_KEY 写入根目录 .env，已被 .gitignore 屏蔽）
  *
- * service_role key 在 Supabase Dashboard → Project Settings → API → service_role (secret)
+ * secret key 在 Supabase Dashboard → Project Settings → API Keys → Secret keys
  */
 
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './supabase-admin.mjs'
 import { createRequire } from 'module'
 import { register } from 'node:module'
 import { pathToFileURL } from 'node:url'
@@ -18,27 +19,6 @@ import fs from 'node:fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(__dirname, '..')
-
-// ─── Supabase 配置 ─────────────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://tixgzezefjjsyuzgdhcd.supabase.co'
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
-
-if (!SUPABASE_SERVICE_KEY) {
-  console.error(`
-❌ 缺少 SUPABASE_SERVICE_KEY 环境变量
-
-请在 Supabase Dashboard 获取 service_role key：
-  https://supabase.com/dashboard/project/tixgzezefjjsyuzgdhcd/settings/api
-
-然后执行：
-  SUPABASE_SERVICE_KEY=eyJ... node scripts/sync-articles-to-supabase.mjs
-`)
-  process.exit(1)
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
-  auth: { persistSession: false },
-})
 
 // ─── 读取文章数据（通过 esbuild 临时编译 TS）──────────────────────────────────
 async function loadArticles() {

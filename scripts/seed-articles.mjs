@@ -12,18 +12,11 @@
  * Get DB_PASSWORD: Supabase Dashboard → Settings → Database → Connection string
  */
 
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './supabase-admin.mjs'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-// ─── Supabase config ──────────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://tixgzezefjjsyuzgdhcd.supabase.co'
-const SUPABASE_SERVICE_KEY
-  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpeGd6ZXplZmpqc3l1emdkaGNkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODE0OTM3OCwiZXhwIjoyMDkzNzI1Mzc4fQ.CBarLrHnr-tr5ZPaGs2JvW3NJE6O5O1Hw7oTWsHuI-E'
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 const CREATE_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS tools_articles (

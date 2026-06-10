@@ -4,7 +4,7 @@
  * 
  * Run: node scripts/fix-missing-articles.mjs
  */
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './supabase-admin.mjs'
 import { readFileSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -12,10 +12,6 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 
-const supabase = createClient(
-  'https://tixgzezefjjsyuzgdhcd.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpeGd6ZXplZmpqc3l1emdkaGNkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODE0OTM3OCwiZXhwIjoyMDkzNzI1Mzc4fQ.CBarLrHnr-tr5ZPaGs2JvW3NJE6O5O1Hw7oTWsHuI-E'
-)
 
 // The 14 missing articles with their correct metadata from seed-articles.mjs
 // These slugs exist in articles.data.ts but not in Supabase

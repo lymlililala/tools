@@ -1,12 +1,7 @@
 /**
  * Check all DB articles - show those with short content
  */
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  'https://tixgzezefjjsyuzgdhcd.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpeGd6ZXplZmpqc3l1emdkaGNkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODE0OTM3OCwiZXhwIjoyMDkzNzI1Mzc4fQ.CBarLrHnr-tr5ZPaGs2JvW3NJE6O5O1Hw7oTWsHuI-E'
-)
+import { supabase } from './supabase-admin.mjs'
 
 const { data, error } = await supabase
   .from('tools_articles')

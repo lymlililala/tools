@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head'
 import { RouterLink } from 'vue-router'
-import { supabase } from '../lib/supabase'
-import type { DbArticle } from '../lib/supabase'
+import { fetchArticleList } from '../lib/articles'
+import type { DbArticle } from '../lib/articles'
 
 const { t } = useI18n()
 
@@ -35,15 +35,7 @@ async function fetchArticles() {
   error.value = null
 
   try {
-    const { data, error: sbError } = await supabase
-      .from('tools_articles')
-      .select('id, slug, tool_path, title, description, keywords, category, published_at')
-      .order('published_at', { ascending: false })
-
-    if (sbError)
-      throw new Error(sbError.message)
-
-    articles.value = (data ?? []) as DbArticle[]
+    articles.value = await fetchArticleList()
   }
   catch (e: any) {
     error.value = e?.message ?? '加载失败，请稍后重试'
