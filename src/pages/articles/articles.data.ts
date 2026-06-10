@@ -7549,7 +7549,7 @@ Essential for web developers working with user-generated content, building templ
     toolPath: '/basic-auth-generator',
     title: 'HTTP Basic Authentication: How It Works and How to Generate Headers',
     description: 'Understand HTTP Basic Auth, generate Base64-encoded credentials, and learn when to use (and not use) Basic Auth.',
-    keywords: ['basic auth generator', 'HTTP basic auth', 'authorization header', 'basic authentication', 'base64 credentials'],
+    keywords: ['basic auth generator', 'HTTP basic auth', 'authorization header basic', 'basic authentication header', 'basic auth decode', 'basic auth in url', 'http basic authentication header example', 'base64 credentials', 'what is basic auth'],
     category: 'Web',
     publishedAt: '2025-08-25',
     content: `## What Is HTTP Basic Authentication?
@@ -7575,6 +7575,66 @@ Base64:   YWRtaW46c2VjcmV0MTIz
 
 Header:   Authorization: Basic YWRtaW46c2VjcmV0MTIz
 \`\`\`
+
+## The Authorization Header Format
+
+Every Basic Auth request carries one header, and the format never changes:
+
+\`\`\`
+Authorization: Basic <base64(username:password)>
+\`\`\`
+
+Three parts matter: the header name \`Authorization\`, the scheme keyword \`Basic\` (capital B, then a single space), and the Base64 token. A complete example with username \`admin\` and password \`secret123\`:
+
+\`\`\`http
+GET /api/orders HTTP/1.1
+Host: api.example.com
+Authorization: Basic YWRtaW46c2VjcmV0MTIz
+\`\`\`
+
+A frequent cause of \`401\` responses is a malformed header — a missing \`Basic \` prefix, lowercase \`basic\` on a strict server, or stray whitespace around the token. The scheme name is case-insensitive per RFC 7617, but most clients send \`Basic\` exactly as shown.
+
+## Encoding Credentials Step by Step
+
+The token is built in three deterministic steps:
+
+1. Join username and password with a single colon: \`admin:secret123\`. The username cannot contain a colon; the password can.
+2. Treat that string as UTF-8 bytes.
+3. Base64-encode the bytes → \`YWRtaW46c2VjcmV0MTIz\`.
+
+On the command line:
+
+\`\`\`bash
+printf '%s' 'admin:secret123' | base64
+# YWRtaW46c2VjcmV0MTIz
+\`\`\`
+
+Use \`printf\` (or \`echo -n\`) instead of \`echo\` — a trailing newline changes the token and produces credentials the server will reject.
+
+## How to Decode a Basic Auth Header
+
+Decoding is the exact reverse: take the value after \`Basic \` and Base64-decode it back to \`username:password\`.
+
+\`\`\`bash
+echo 'YWRtaW46c2VjcmV0MTIz' | base64 --decode
+# admin:secret123
+\`\`\`
+
+Because anyone can do this in one step, an intercepted Authorization header is fully exposed credentials. Decoding is for debugging — verifying a client sent what you expected — never a security boundary. The generator above includes a decode mode for pasting an existing header.
+
+## Basic Auth in a URL
+
+Credentials can be embedded directly in a URL using the \`user:password@host\` form:
+
+\`\`\`
+https://admin:secret123@api.example.com/data
+\`\`\`
+
+A client splits off the credentials and converts them into an \`Authorization: Basic\` header for you. Three things to know before relying on it:
+
+- Modern browsers strip credentials from the address bar and warn about embedded passwords, because the pattern is widely abused in phishing.
+- The browser \`fetch()\` API ignores credentials in the URL — set the header explicitly instead.
+- Credentials in URLs leak into browser history, server access logs, and \`Referer\` headers. For anything beyond a quick local test, send the header instead.
 
 ## Security Considerations
 
@@ -7671,6 +7731,26 @@ Our tool:
 5. **curl command** — generates the complete curl command with authentication
 
 Use it for quickly generating auth headers during API testing, debugging authentication issues, and generating credentials for documentation examples.
+
+## Frequently Asked Questions
+
+**What is the format of a Basic Auth header?**
+\`Authorization: Basic <token>\`, where \`<token>\` is the Base64 encoding of \`username:password\`. For \`admin:secret123\` the header is \`Authorization: Basic YWRtaW46c2VjcmV0MTIz\`.
+
+**How do I decode a Basic Auth header?**
+Remove the \`Basic \` prefix and Base64-decode the rest. \`echo 'YWRtaW46c2VjcmV0MTIz' | base64 --decode\` returns \`admin:secret123\`. No key or password is required — Base64 is reversible by anyone.
+
+**Is Basic Authentication secure?**
+Only over HTTPS. Credentials are encoded, not encrypted, so over plain HTTP they travel in effectively cleartext. With TLS the header is protected in transit, which makes Basic Auth acceptable for internal APIs and machine-to-machine calls.
+
+**What is the difference between Basic and Bearer authorization?**
+Basic sends reusable \`username:password\` credentials on every request. Bearer sends a token (often a JWT or OAuth access token) that can expire and carry scopes. Bearer suits user-facing apps; Basic is simplest for service accounts and internal tooling.
+
+**Can I put Basic Auth credentials in a URL?**
+Yes, as \`https://user:pass@host\`, and tools like curl convert them to a header. But browsers warn about and often ignore it, and the credentials leak into logs and history — so the header form is safer.
+
+**Why does Basic Auth fail when the password is correct?**
+The usual culprits are a stray newline from \`echo\` instead of \`echo -n\`/\`printf\`, a missing \`Basic \` prefix, or a colon inside the username. Re-encode with \`printf '%s' 'user:pass' | base64\` and compare the token.
 `,
   },
   {
