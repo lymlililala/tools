@@ -55,11 +55,12 @@ const SITE = 'https://myutl.com'
 const SITE_NAME = 'MyUtl'
 const OG_IMAGE = `${SITE}/banner.png`
 
-// ── 读取 zh.yml 获取工具 title / description ──────────────────────────────────
-const zhYmlPath = path.join(rootDir, 'locales', 'zh.yml')
-const zhRaw = fs.readFileSync(zhYmlPath, 'utf-8')
-const zh = parseYaml(zhRaw)
-const toolsI18n = zh.tools ?? {}
+// ── 读取 en.yml 获取工具 title / description / steps / FAQ ────────────────────
+// 站点面向英文受众(lang=en),预渲染(爬虫可见)的工具页 SEO 内容与 schema 必须为英文。
+const enYmlPath = path.join(rootDir, 'locales', 'en.yml')
+const enRaw = fs.readFileSync(enYmlPath, 'utf-8')
+const en = parseYaml(enRaw)
+const toolsI18n = en.tools ?? {}
 
 // sitemap slug（新路径）→ zh.yml 中对应的 key（工具目录名/旧路径）
 // 当工具路由路径与 zh.yml key 不一致时需要在此配置映射
@@ -91,19 +92,21 @@ const slugCategory = {}
 for (const [cat, slugs] of Object.entries(toolCategories)) {
   for (const s of slugs) slugCategory[s] = cat
 }
-// 分类中文名
+// 分类英文标签(预渲染面向英文受众)
 const categoryNames = {
-  Crypto: '加密安全',
-  Converter: '格式转换',
-  Web: 'Web 工具',
-  'Images and videos': '图片视频',
-  Development: '开发工具',
-  Network: '网络工具',
-  Math: '数学计算',
-  Measurement: '测量工具',
-  Text: '文本处理',
-  Data: '数据工具',
+  Crypto: 'Crypto & Security',
+  Converter: 'Converter',
+  Web: 'Web',
+  'Images and videos': 'Image & Video',
+  Development: 'Development',
+  Network: 'Network',
+  Math: 'Math',
+  Measurement: 'Measurement',
+  Text: 'Text',
+  Data: 'Data',
 }
+// 分类名 → 分类 hub slug（与 src/lib/categories.ts 一致）
+const catHubSlug = name => String(name).toLowerCase().replace(/\s+/g, '-')
 
 // ── 从 sitemap.xml 提取所有工具路径 ────────────────────────────────────────────
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml')
@@ -125,7 +128,7 @@ while ((m = urlRegex.exec(sitemapXml)) !== null) {
 // 首页 SEO 内容：列出热门工具分类和内链
 const homeSeoContent = (() => {
   const parts = []
-  parts.push(`      <p>MyUtl 提供 90+ 免费在线工具，全部在浏览器本地运行，无需注册，数据不上传服务器，安全可靠。</p>`)
+  parts.push(`      <p>MyUtl offers 90+ free online developer tools that run entirely in your browser — no signup, no upload, your data never leaves your device.</p>`)
   // 每个分类取前 5 个工具
   for (const [cat, slugs] of Object.entries(toolCategories)) {
     const catLabel = categoryNames[cat] || cat
@@ -150,17 +153,17 @@ const staticRoutes = [
   {
     path: '/',
     outPath: 'prerender-home/index.html', // 不覆盖 dist/index.html 模板
-    title: `${SITE_NAME} - 免费在线工具箱 | 90+ 开发者在线工具`,
-    description: `${SITE_NAME} 提供 90+ 免费在线工具，包括 JSON 格式化、Base64 编解码、加密解密、URL 编码、二维码生成、计算器等开发者与日常实用工具，全部在浏览器本地运行，安全无需注册。`,
-    h1: `${SITE_NAME} — 免费在线工具箱`,
-    keywords: '在线工具,开发者工具,JSON格式化,Base64,URL编码,二维码生成,加密解密,免费工具',
+    title: `${SITE_NAME} — Free Online Developer Toolbox | 90+ Tools`,
+    description: `${SITE_NAME} offers 90+ free online tools — JSON formatter, Base64 encode/decode, encryption, URL encoding, QR code generator, hash, JWT, calculators, and more. Everything runs locally in your browser, no signup required.`,
+    h1: `${SITE_NAME} — Free Online Toolbox`,
+    keywords: 'online tools, developer tools, json formatter, base64, url encoder, qr code generator, encryption, free online tools',
     seoContent: homeSeoContent,
     jsonld: {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: SITE_NAME,
       url: SITE,
-      description: '免费在线工具箱，提供90+实用工具',
+      description: 'Free online toolbox with 90+ developer and everyday utilities, all running locally in your browser.',
       potentialAction: {
         '@type': 'SearchAction',
         target: { '@type': 'EntryPoint', urlTemplate: `${SITE}/?search={search_term_string}` },
@@ -170,14 +173,14 @@ const staticRoutes = [
   },
   {
     path: '/blog',
-    title: '博客 - 开发者工具使用指南',
-    description: `${SITE_NAME} 工具使用指南：深度讲解加密、编码、正则、网络、格式转换等 100+ 开发者工具的原理与实践。`,
+    title: 'Developer Tools Guides — MyUtl Blog',
+    description: `In-depth guides to 100+ developer tools — encryption, encoding, regex, networking, and data conversion, explained with practical examples.`,
     h1: 'Developer Tools Guides — MyUtl Blog',
-    keywords: '开发者工具指南,编程教程,在线工具博客',
+    keywords: 'developer tools guides, programming tutorials, online tools blog',
     jsonld: {
       '@context': 'https://schema.org',
       '@type': 'Blog',
-      name: `${SITE_NAME} 博客`,
+      name: `${SITE_NAME} Blog`,
       url: `${SITE}/blog`,
       publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
     },
@@ -260,10 +263,10 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     }
   }
 
-  // 替换 hreflang（统一更新所有 zh/zh-CN/en hreflang 指向当前页 canonical）
+  // 替换 hreflang（英文单语站,指向当前页 canonical）
   html = html
-    .replace(/<link rel="alternate" hreflang="zh(?:-CN)?"[^>]*>/g, `<link rel="alternate" hreflang="zh-CN" href="${canonicalUrl}" />`)
-    .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, '')
+    .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, `<link rel="alternate" hreflang="en" href="${canonicalUrl}" />`)
+    .replace(/<link rel="alternate" hreflang="zh(?:-CN)?"[^>]*>/g, '')
     .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, `<link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />`)
 
   // 替换原有 JSON-LD（如果没匹配到，就注入到 </head> 前）
@@ -433,7 +436,7 @@ function resolveToolCategory(article) {
     new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0),
   )
   const parts = []
-  parts.push(`      <p>MyUtl 博客提供开发者工具深度使用指南，涵盖加密算法、编码格式、正则表达式、网络协议等主题。</p>`)
+  parts.push(`      <p>The MyUtl blog publishes in-depth guides to developer tools, covering hashing and encryption, encoding formats, regular expressions, networking, and more.</p>`)
   if (sorted.length) {
     parts.push(`      <ul>`)
     sorted.forEach((a) => {
@@ -487,7 +490,7 @@ function buildToolSeoContent(i18n, slug) {
   }
   if (steps.length > 0) {
     parts.push(`      <section>`)
-    parts.push(`        <h2>使用方法</h2>`)
+    parts.push(`        <h2>How to Use</h2>`)
     parts.push(`        <ol>`)
     steps.forEach(s => parts.push(`          <li>${escapeHtml(s)}</li>`))
     parts.push(`        </ol>`)
@@ -504,7 +507,7 @@ function buildToolSeoContent(i18n, slug) {
   }
   if (faqs.length > 0) {
     parts.push(`      <section>`)
-    parts.push(`        <h2>常见问题</h2>`)
+    parts.push(`        <h2>Frequently Asked Questions</h2>`)
     faqs.forEach(({ q, a }) => {
       parts.push(`        <div>`)
       parts.push(`          <h3>${escapeHtml(q)}</h3>`)
@@ -521,8 +524,8 @@ function buildToolSeoContent(i18n, slug) {
       const siblings = (toolCategories[cat] || []).filter(s => s !== slug).slice(0, 6)
       if (siblings.length > 0) {
         const catLabel = categoryNames[cat] || cat
-        parts.push(`      <nav aria-label="相关工具">`)
-        parts.push(`        <h2>${catLabel}相关工具</h2>`)
+        parts.push(`      <nav aria-label="Related tools">`)
+        parts.push(`        <h2>Related ${catLabel} Tools</h2>`)
         parts.push(`        <ul>`)
         siblings.forEach((s) => {
           const sKey = slugToI18nKey[s] ?? s
@@ -547,14 +550,14 @@ for (const slug of toolSlugs) {
   const toolTitle = i18n.title || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
   const toolDesc
     = i18n.description
-    || `${toolTitle} — 免费在线工具，在浏览器中运行，无需安装，安全无需注册。`
+    || `${toolTitle} — a free online tool that runs in your browser, no install, no signup.`
 
   let seoContent = buildToolSeoContent(i18n, slug)
 
   // 工具页 → 相关指南文章 反向内链（按 toolPath 匹配的全部文章）
   const toolGuides = guidesForTool(slug)
   if (toolGuides.length > 0) {
-    const guideParts = ['      <nav aria-label="相关指南">', '        <h2>相关教程与指南</h2>', '        <ul>']
+    const guideParts = ['      <nav aria-label="Related guides">', '        <h2>Related Guides &amp; Tutorials</h2>', '        <ul>']
     toolGuides.forEach((a) => {
       guideParts.push(`          <li><a href="/blog/${a.slug}">${escapeHtml(a.title)}</a></li>`)
     })
@@ -588,30 +591,55 @@ for (const slug of toolSlugs) {
     provider: { '@type': 'Organization', name: SITE_NAME, url: SITE },
   }
 
-  // 构建 JSON-LD：有 FAQ 时使用 @graph 复合模式
-  const jsonld = faqItems.length > 0
-    ? {
-        '@context': 'https://schema.org',
-        '@graph': [
-          webAppSchema,
-          {
-            '@type': 'FAQPage',
-            mainEntity: faqItems.map(({ q, a }) => ({
-              '@type': 'Question',
-              name: q,
-              acceptedAnswer: { '@type': 'Answer', text: a },
-            })),
-          },
-        ],
-      }
-    : { '@context': 'https://schema.org', ...webAppSchema }
+  // 收集操作步骤用于 HowTo schema
+  const howToSteps = []
+  for (let n = 1; n <= 8; n++) {
+    if (i18n[`step${n}`]) howToSteps.push(i18n[`step${n}`])
+    else break
+  }
+
+  // 构建 JSON-LD @graph：WebApplication + Breadcrumb + (HowTo) + (FAQPage)
+  const graph = [webAppSchema]
+
+  // BreadcrumbList: Home > [Category] > Tool
+  const cat = slugCategory[slug]
+  const crumbs = [{ name: 'Home', url: `${SITE}/` }]
+  if (cat) crumbs.push({ name: categoryNames[cat] || cat, url: `${SITE}/c/${catHubSlug(cat)}` })
+  crumbs.push({ name: toolTitle, url: `${SITE}/${slug}` })
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })),
+  })
+
+  // HowTo
+  if (howToSteps.length > 0) {
+    graph.push({
+      '@type': 'HowTo',
+      name: `How to use ${toolTitle}`,
+      step: howToSteps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, text: s })),
+    })
+  }
+
+  // FAQPage
+  if (faqItems.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    })
+  }
+
+  const jsonld = { '@context': 'https://schema.org', '@graph': graph }
 
   const route = {
     path: `/${slug}`,
     title: toolTitle,
     description: toolDesc,
     h1: toolTitle,
-    keywords: [toolTitle, slug, '在线工具', '免费', '在线', SITE_NAME].filter(Boolean).join(','),
+    keywords: [toolTitle, slug, 'online tool', 'free', 'browser', SITE_NAME].filter(Boolean).join(','),
     seoContent,
     jsonld,
   }
@@ -644,8 +672,8 @@ function buildArticleSeoContent(article, related = []) {
 
   // 相关文章内链(按 toolPath 聚类，填补文章↔文章互链空白)
   if (related.length > 0) {
-    parts.push(`      <nav aria-label="相关文章">`)
-    parts.push(`        <h2>相关指南</h2>`)
+    parts.push(`      <nav aria-label="Related guides">`)
+    parts.push(`        <h2>Related Guides</h2>`)
     parts.push(`        <ul>`)
     related.forEach((a) => {
       parts.push(`          <li><a href="/blog/${a.slug}">${escapeHtml(a.title)}</a></li>`)
@@ -660,8 +688,8 @@ function buildArticleSeoContent(article, related = []) {
     const catTools = (toolCategories[cat] || []).filter(s => s !== ownTool).slice(0, 6)
     if (catTools.length > 0) {
       const catLabel = categoryNames[cat] || cat
-      parts.push(`      <nav aria-label="相关工具">`)
-      parts.push(`        <h2>推荐${catLabel}在线工具</h2>`)
+      parts.push(`      <nav aria-label="Related tools">`)
+      parts.push(`        <h2>Related ${catLabel} Tools</h2>`)
       parts.push(`        <ul>`)
       catTools.forEach((s) => {
         const sKey = slugToI18nKey[s] ?? s
@@ -707,23 +735,35 @@ for (const article of blogArticles) {
     seoContent: articleSeoContent,
     jsonld: {
       '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: title,
-      description: description || plainText,
-      url: `${SITE}/blog/${slug}`,
-      datePublished: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
-      dateModified: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
-      image: OG_IMAGE,
-      author: { '@type': 'Organization', name: SITE_NAME, url: SITE },
-      publisher: {
-        '@type': 'Organization',
-        name: SITE_NAME,
-        url: SITE,
-        logo: { '@type': 'ImageObject', url: `${SITE}/android-chrome-192x192.png` },
-      },
-      articleSection: category,
-      keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/blog/${slug}` },
+      '@graph': [
+        {
+          '@type': 'Article',
+          headline: title,
+          description: description || plainText,
+          url: `${SITE}/blog/${slug}`,
+          datePublished: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
+          dateModified: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
+          image: OG_IMAGE,
+          author: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+          publisher: {
+            '@type': 'Organization',
+            name: SITE_NAME,
+            url: SITE,
+            logo: { '@type': 'ImageObject', url: `${SITE}/android-chrome-192x192.png` },
+          },
+          articleSection: category,
+          keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+          mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/blog/${slug}` },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
+            { '@type': 'ListItem', position: 3, name: title, item: `${SITE}/blog/${slug}` },
+          ],
+        },
+      ],
     },
   }
 
@@ -781,7 +821,7 @@ for (const hub of CATEGORY_HUBS) {
     parts.push(`      </ul>`)
   }
   // 其它分类内链
-  parts.push(`      <nav aria-label="其它分类"><h2>Browse other categories</h2><ul>`)
+  parts.push(`      <nav aria-label="Other categories"><h2>Browse other categories</h2><ul>`)
   for (const c of CATEGORY_HUBS) {
     if (c.slug === hub.slug) continue
     parts.push(`        <li><a href="/c/${c.slug}">${escapeHtml(c.label)}</a></li>`)
@@ -797,10 +837,21 @@ for (const hub of CATEGORY_HUBS) {
     seoContent: parts.join('\n'),
     jsonld: {
       '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: hub.label,
-      description: hub.desc,
-      url: `${SITE}/c/${hub.slug}`,
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          name: hub.label,
+          description: hub.desc,
+          url: `${SITE}/c/${hub.slug}`,
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: hub.label, item: `${SITE}/c/${hub.slug}` },
+          ],
+        },
+      ],
     },
   }
   const outDir = path.join(distDir, 'c', hub.slug)
@@ -812,16 +863,16 @@ console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染
 
 // 4. 生成 404.html（Vercel/Netlify 兜底，返回 404 状态码）
 let html404 = template
-  .replace(/<title>[^<]*<\/title>/, `<title>页面未找到 — ${SITE_NAME}</title>`)
+  .replace(/<title>[^<]*<\/title>/, `<title>Page Not Found — ${SITE_NAME}</title>`)
   .replace(/<link rel="canonical"[^>]*>/g, '') // 移除 canonical，404 不应有 canonical
-// 替换 hreflang：移除 en，修正 zh → zh-CN，x-default 指向首页
+// 替换 hreflang：英文单语站,x-default 指向首页
 html404 = html404
-  .replace(/<link rel="alternate" hreflang="zh"[^>]*>/g, `<link rel="alternate" hreflang="zh-CN" href="${SITE}/" />`)
-  .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, '')
+  .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, `<link rel="alternate" hreflang="en" href="${SITE}/" />`)
+  .replace(/<link rel="alternate" hreflang="zh(?:-CN)?"[^>]*>/g, '')
   .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, `<link rel="alternate" hreflang="x-default" href="${SITE}/" />`)
 // 注入 noindex
 html404 = html404.replace('</head>',
-  `    <meta name="description" content="您访问的页面不存在，请返回 ${SITE_NAME} 主页继续使用免费在线工具。" />\n    <meta name="robots" content="noindex, follow" />\n  </head>`)
+  `    <meta name="description" content="The page you are looking for does not exist. Return to the ${SITE_NAME} home page to keep using the free online tools." />\n    <meta name="robots" content="noindex, follow" />\n  </head>`)
 const path404 = path.join(distDir, '404.html')
 fs.writeFileSync(path404, html404, 'utf-8')
 console.log(`✅ Generated: dist/404.html`)
