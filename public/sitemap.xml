@@ -13,6 +13,18 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Category Hubs -->
+  <url><loc>https://myutl.com/c/crypto</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/converter</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/web</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/images-and-videos</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/development</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/network</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/math</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/measurement</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/text</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myutl.com/c/data</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
   <!-- Crypto -->
   <url><loc>https://myutl.com/token-generator</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://myutl.com/hash-text</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>

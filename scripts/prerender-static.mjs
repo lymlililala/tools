@@ -734,6 +734,82 @@ for (const article of blogArticles) {
 }
 console.log(`✅ Blog: ${blogArticles.length} 篇文章页预渲染完成`)
 
+// 3.5 分类 hub 页（/c/<slug>）—— 与 src/lib/categories.ts 保持一致
+const CATEGORY_HUBS = [
+  { slug: 'crypto', name: 'Crypto', label: 'Crypto & Security Tools', desc: 'Free online cryptography and security tools — hashing, encryption, token and key generation, password strength, and more. Everything runs in your browser.' },
+  { slug: 'converter', name: 'Converter', label: 'Converter Tools', desc: 'Free online converters for dates, numbers, colors, text encodings, and data formats like JSON, YAML, TOML, and XML. Fast, private, no upload required.' },
+  { slug: 'web', name: 'Web', label: 'Web Developer Tools', desc: 'Free online tools for web developers — URL encoding, HTML entities, JWT, basic auth, HTTP status codes, user-agent parsing, and more.' },
+  { slug: 'images-and-videos', name: 'Images and videos', label: 'Image & Video Tools', desc: 'Free online image and video tools — QR code and SVG placeholder generators, color palettes, and an in-browser camera recorder.' },
+  { slug: 'development', name: 'Development', label: 'Developer Utilities', desc: 'Free online developer utilities — JSON/SQL/XML/YAML formatting, regex testing, crontab, chmod, Docker, and Git references. Runs entirely in your browser.' },
+  { slug: 'network', name: 'Network', label: 'Network Tools', desc: 'Free online network tools — IPv4 subnet and range calculators, MAC address lookup and generation, and IPv6 ULA generation.' },
+  { slug: 'math', name: 'Math', label: 'Math & Calculator Tools', desc: 'Free online math and finance calculators — expression evaluator, percentage, mortgage, income tax, ETA, and number formatting.' },
+  { slug: 'measurement', name: 'Measurement', label: 'Measurement Tools', desc: 'Free online measurement tools — chronometer, temperature converter, BMI calculator, and a code benchmark builder.' },
+  { slug: 'text', name: 'Text', label: 'Text Tools', desc: 'Free online text tools — lorem ipsum, text statistics, diffing, emoji picker, string obfuscation, ASCII art, and more.' },
+  { slug: 'data', name: 'Data', label: 'Data Tools', desc: 'Free online data tools — phone number parsing and formatting, and IBAN validation and parsing.' },
+]
+const categoryHubSlugs = []
+for (const hub of CATEGORY_HUBS) {
+  const toolSlugs = toolCategories[hub.name] || []
+  if (toolSlugs.length === 0) continue
+  const parts = []
+  parts.push(`      <p>${escapeHtml(hub.desc)}</p>`)
+  // 工具列表
+  parts.push(`      <h2>${escapeHtml(hub.label)}</h2>`)
+  parts.push(`      <ul>`)
+  for (const s of toolSlugs) {
+    const sKey = slugToI18nKey[s] ?? s
+    const sI18n = toolsI18n[sKey] ?? toolsI18n[s] ?? {}
+    const sTitle = sI18n.title || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    const sDesc = sI18n.description ? ` — ${escapeHtml(String(sI18n.description).slice(0, 80))}` : ''
+    parts.push(`        <li><a href="/${s}">${escapeHtml(sTitle)}</a>${sDesc}</li>`)
+  }
+  parts.push(`      </ul>`)
+  // 相关指南(聚合该分类工具的指南,去重)
+  const seenG = new Set()
+  const guideLines = []
+  for (const s of toolSlugs) {
+    for (const g of guidesForTool(s, 4)) {
+      if (seenG.has(g.slug)) continue
+      seenG.add(g.slug)
+      guideLines.push(`        <li><a href="/blog/${g.slug}">${escapeHtml(g.title)}</a></li>`)
+    }
+  }
+  if (guideLines.length) {
+    parts.push(`      <h2>${escapeHtml(hub.label)} Guides</h2>`)
+    parts.push(`      <ul>`)
+    parts.push(...guideLines.slice(0, 12))
+    parts.push(`      </ul>`)
+  }
+  // 其它分类内链
+  parts.push(`      <nav aria-label="其它分类"><h2>Browse other categories</h2><ul>`)
+  for (const c of CATEGORY_HUBS) {
+    if (c.slug === hub.slug) continue
+    parts.push(`        <li><a href="/c/${c.slug}">${escapeHtml(c.label)}</a></li>`)
+  }
+  parts.push(`      </ul></nav>`)
+
+  const route = {
+    path: `/c/${hub.slug}`,
+    title: `${hub.label} — Free Online`,
+    description: hub.desc,
+    h1: hub.label,
+    keywords: [hub.label, `${hub.name} tools`, 'online tools', 'free', SITE_NAME].join(','),
+    seoContent: parts.join('\n'),
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: hub.label,
+      description: hub.desc,
+      url: `${SITE}/c/${hub.slug}`,
+    },
+  }
+  const outDir = path.join(distDir, 'c', hub.slug)
+  fs.mkdirSync(outDir, { recursive: true })
+  fs.writeFileSync(path.join(outDir, 'index.html'), buildHtml(route), 'utf-8')
+  categoryHubSlugs.push(hub.slug)
+}
+console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染完成`)
+
 // 4. 生成 404.html（Vercel/Netlify 兜底，返回 404 状态码）
 let html404 = template
   .replace(/<title>[^<]*<\/title>/, `<title>页面未找到 — ${SITE_NAME}</title>`)
@@ -815,13 +891,16 @@ const newSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>0.9</priority>
   </url>
 
+  <!-- Category Hubs -->
+${categoryHubSlugs.map(s => `  <url><loc>${SITE}/c/${s}</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`).join('\n')}
+
 ${toolUrlLines.join('\n')}
   <!-- Blog Articles -->
 ${blogUrlLines.join('\n')}
 </urlset>`
 
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), newSitemapXml, 'utf-8')
-console.log(`✅ Generated: dist/sitemap.xml (${allBlogSlugsInOrder.length} 篇博客 + ${toolSlugs.length} 个工具)`)
+console.log(`✅ Generated: dist/sitemap.xml (${allBlogSlugsInOrder.length} 篇博客 + ${toolSlugs.length} 个工具 + ${categoryHubSlugs.length} 个分类)`)
 
 console.log(`\n🎉 预渲染完成：生成了 ${count} 个静态 HTML 文件`)
 console.log(`   - ${staticRoutes.length} 个静态页面（首页、博客列表）`)

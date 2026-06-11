@@ -5,6 +5,7 @@ import { computed } from 'vue';
 import Draggable from 'vuedraggable';
 import ColoredCard from '../components/ColoredCard.vue';
 import ToolCard from '../components/ToolCard.vue';
+import { CATEGORY_META } from '@/lib/categories';
 import { useToolStore } from '@/tools/tools.store';
 import { config } from '@/config';
 
@@ -42,6 +43,18 @@ function onUpdateFavoriteTools() {
         {{ $t('home.heroSubtitle') }}
       </p>
     </div>
+
+    <!-- 按分类浏览(链接到分类 hub 页) -->
+    <nav class="category-nav" aria-label="Browse tools by category">
+      <RouterLink
+        v-for="c in CATEGORY_META"
+        :key="c.slug"
+        :to="`/c/${c.slug}`"
+        class="category-chip"
+      >
+        {{ c.label }}
+      </RouterLink>
+    </nav>
 
     <div class="tools-grid">
       <ColoredCard v-if="config.showBanner" :title="$t('home.follow.title')" :icon="IconHeart">
@@ -123,6 +136,31 @@ function onUpdateFavoriteTools() {
 // ── SEO 标题 ──────────────────────────────────────────────────────────────────
 .seo-hero {
   margin-bottom: 20px;
+}
+
+// ── 按分类浏览 ────────────────────────────────────────────────────────────────
+.category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.category-chip {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  font-size: 12.5px;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.85;
+  transition: border-color 0.15s, opacity 0.15s;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.5);
+    opacity: 1;
+  }
 }
 
 .seo-h1 {

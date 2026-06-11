@@ -91,6 +91,10 @@
       "destination": "/blog/:slug/index.html"
     },
     {
+      "source": "/c/:slug",
+      "destination": "/c/:slug/index.html"
+    },
+    {
       "source": "/ascii-text-drawer",
       "destination": "/tools/ascii-text-drawer/index.html"
     },
