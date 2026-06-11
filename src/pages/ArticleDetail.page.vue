@@ -13,6 +13,15 @@ const relatedArticles = ref<DbArticle[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
+// 仅当文章 toolPath 与主题相关时才显示 "Try the Tool" CTA。
+// 白名单来自构建时生成的 /article-tools.json（DB 里约 26% 的 toolPath 是历史错配）。
+const toolPathMap = ref<Record<string, string>>({})
+fetch('/article-tools.json')
+  .then(r => (r.ok ? r.json() : {}))
+  .then((m) => { toolPathMap.value = m })
+  .catch(() => {})
+const effectiveToolPath = computed(() => toolPathMap.value[slug.value] || '')
+
 // ─── Fetch article from Supabase ──────────────────────────────────────────────
 async function fetchArticle(s: string) {
   loading.value = true
@@ -112,7 +121,7 @@ watchEffect(() => {
         <p class="article-description">
           {{ article.description }}
         </p>
-        <RouterLink :to="article.tool_path" class="try-tool-btn">
+        <RouterLink v-if="effectiveToolPath" :to="effectiveToolPath" class="try-tool-btn">
           <icon-mdi-tools style="margin-right:6px" />
           Try the Tool →
         </RouterLink>
@@ -129,8 +138,8 @@ watchEffect(() => {
       </div>
 
       <!-- CTA -->
-      <div class="article-cta">
-        <RouterLink :to="article.tool_path" class="cta-btn">
+      <div v-if="effectiveToolPath" class="article-cta">
+        <RouterLink :to="effectiveToolPath" class="cta-btn">
           🚀 Open {{ article.title.split(':')[0] }} Tool
         </RouterLink>
       </div>

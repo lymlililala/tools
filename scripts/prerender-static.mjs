@@ -329,8 +329,14 @@ function relatedArticles(article, n = 6) {
   const seen = new Set([article.slug])
   const picks = []
   const add = (a) => { if (a && !seen.has(a.slug)) { seen.add(a.slug); picks.push(a) } }
-  // 1) 同 toolPath（最强相关信号）
-  for (const a of (articlesByTool[article.toolPath] || [])) { if (picks.length >= n) break; add(a) }
+  // 1) 同 toolPath（最强相关信号）—— 仅当本文与该 toolPath 主题相关,
+  //    且只聚合同样相关的同伴,避免错配文章把无关文章拉到一起
+  if (article.toolPath && isTopicalGuide(article.toolPath, article)) {
+    for (const a of (articlesByTool[article.toolPath] || [])) {
+      if (picks.length >= n) break
+      if (isTopicalGuide(article.toolPath, a)) add(a)
+    }
+  }
   // 2) 同「工具分类」
   if (picks.length < n) {
     const toolSlug = (article.toolPath || '').replace(/^\//, '')
@@ -376,6 +382,17 @@ function guidesForTool(toolSlug, n = 8) {
   }
   fs.writeFileSync(path.join(distDir, 'tool-guides.json'), JSON.stringify(map), 'utf-8')
   console.log(`✅ Generated: dist/tool-guides.json (${Object.keys(map).length} 个工具的相关指南)`)
+}
+
+// 导出「文章 slug → 相关工具路径」映射,仅收录 toolPath 与主题相关的文章。
+// 文章页据此决定是否显示 "Try the Tool" CTA,避免错配文章指向无关工具。
+{
+  const m = {}
+  for (const a of blogArticles) {
+    if (a.toolPath && isTopicalGuide(a.toolPath, a)) m[a.slug] = a.toolPath
+  }
+  fs.writeFileSync(path.join(distDir, 'article-tools.json'), JSON.stringify(m), 'utf-8')
+  console.log(`✅ Generated: dist/article-tools.json (${Object.keys(m).length} 篇文章有相关工具,${blogArticles.length - Object.keys(m).length} 篇无)`)
 }
 
 // 工具别名 → 真实工具 slug（与 vercel.json 重定向一致），用于解析文章 toolPath
