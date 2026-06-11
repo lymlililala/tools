@@ -6,6 +6,8 @@ import type { HeadObject } from '@vueuse/head';
 import BaseLayout from './base.layout.vue';
 import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
+import { fetchArticleList } from '@/lib/articles';
+import type { DbArticle } from '@/lib/articles';
 
 const route = useRoute();
 const { t, te, locale } = useI18n();
@@ -125,6 +127,27 @@ const howToSteps = computed(() => {
   }
   return steps;
 });
+
+// 相关指南：当前工具对应的博客文章（按 tool_path 匹配），给用户延伸阅读入口。
+// 内链此前只在预渲染 HTML（爬虫可见），这里让 SPA 用户也能看到。
+const relatedGuides = ref<DbArticle[]>([]);
+let _allArticles: DbArticle[] | null = null;
+
+async function loadRelatedGuides() {
+  try {
+    if (!_allArticles) _allArticles = await fetchArticleList();
+    relatedGuides.value = _allArticles
+      .filter(a => a.tool_path === route.path)
+      .slice(0, 6);
+  }
+  catch {
+    relatedGuides.value = [];
+  }
+}
+
+onMounted(loadRelatedGuides);
+watch(() => route.path, loadRelatedGuides);
+
 </script>
 
 <template>
@@ -179,6 +202,27 @@ const howToSteps = computed(() => {
               {{ faq.a }}
             </n-collapse-item>
           </n-collapse>
+        </div>
+      </div>
+      <!-- 相关指南（当前工具对应的博客文章） -->
+      <div v-if="relatedGuides.length > 0" class="seo-block">
+        <h2 class="seo-heading">
+          {{ $t('layout.seoRelatedGuides') }}
+        </h2>
+        <div class="related-grid">
+          <RouterLink
+            v-for="g in relatedGuides"
+            :key="g.slug"
+            :to="`/blog/${g.slug}`"
+            class="related-card"
+          >
+            <div class="related-card-title">
+              {{ g.title }}
+            </div>
+            <div class="related-card-desc">
+              {{ g.description }}
+            </div>
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -291,5 +335,43 @@ const howToSteps = computed(() => {
 
 .faq-list {
   font-size: 13.5px;
+}
+
+// ── 相关指南卡片（复用 ArticleDetail 同款样式） ──
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.related-card {
+  display: block;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+}
+
+.related-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.related-card-desc {
+  font-size: 12px;
+  opacity: 0.6;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

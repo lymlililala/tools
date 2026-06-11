@@ -297,12 +297,14 @@ const lineNumbers = computed(() => Array.from({ length: lineCount.value }, (_, i
     white-space: pre-wrap;
     word-break: break-word;
     overflow-wrap: anywhere;
+    font-size: 16px; // 与 textarea 一起提到 16px:消除 iOS 聚焦缩放,且两者同步 → 高亮对齐不破
   }
 
   .code-textarea {
     white-space: pre-wrap;
     word-break: break-word;
     overflow-wrap: anywhere;
+    font-size: 16px;
   }
 }
 </style>

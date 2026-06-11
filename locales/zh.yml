@@ -2426,6 +2426,7 @@ layout:
   keywords: '在线工具, 免费, 开发者'
   seoHowTo: '如何使用 {tool}'
   seoFaq: 常见问题
+  seoRelatedGuides: 相关指南
 
 blog:
   metaTitle: '博客 - 开发者工具使用指南 | MyUtl'

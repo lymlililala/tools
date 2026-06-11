@@ -2377,6 +2377,7 @@ layout:
   keywords: 'online tools, free, developer'
   seoHowTo: 'How to use {tool}'
   seoFaq: Frequently Asked Questions
+  seoRelatedGuides: Related Guides
 
 blog:
   metaTitle: 'Blog - Developer Tools Guides | MyUtl'
