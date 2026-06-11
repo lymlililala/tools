@@ -1792,6 +1792,12 @@ tools:
     modifiedPlaceholder: Paste modified text here…
     swap: Swap
     swapTooltip: Swap left and right texts
+    clear: Clear
+    clearTooltip: Clear both panels
+    copyResult: Copy result
+    copyTooltip: Copy the modified text
+    copied: Copied!
+    justCopied: Copied!
 
   otp-generator:
     step1: 'Step 1: Enter your TOTP secret key from your authenticator app.'

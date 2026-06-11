@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import db from 'oui-data';
 import { refDebounced } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
 
 const { t } = useI18n();
+
+// ── 按需加载 OUI 厂商数据库（~3MB）──────────────────────────────
+// 静态 import 会让该工具页首屏背负 3MB,严重拖累 CWV。改为页面挂载后
+// 异步加载:输入框立即可用,数据库在后台加载完成后查询即生效。
+const ouiDb = ref<Record<string, string> | null>(null);
+onMounted(async () => {
+  ouiDb.value = ((await import('oui-data')).default) as Record<string, string>;
+});
 
 // ── 输入与校验 ────────────────────────────────────────────────
 const macAddress = ref('20:37:06:12:34:56');
@@ -15,13 +22,16 @@ const isValidMac = computed(() => MAC_RE.test(debouncedMac.value.trim()));
 const hasInput   = computed(() => debouncedMac.value.trim().length > 0);
 const showError  = computed(() => hasInput.value && !isValidMac.value);
 
+// 数据库尚未加载完成且输入合法时显示加载态
+const dbLoading = computed(() => isValidMac.value && ouiDb.value === null);
+
 // ── OUI 查询 ──────────────────────────────────────────────────
 const getVendorKey = (addr: string) =>
   addr.trim().replace(/[.:\-]/g, '').toUpperCase().substring(0, 6);
 
 const details = computed<string | undefined>(() =>
-  isValidMac.value
-    ? (db as Record<string, string>)[getVendorKey(debouncedMac.value)]
+  isValidMac.value && ouiDb.value
+    ? ouiDb.value[getVendorKey(debouncedMac.value)]
     : undefined,
 );
 
@@ -103,6 +113,14 @@ const { copy, isJustCopied } = useCopy({
             {{ vendorAddress }}
           </p>
         </div>
+      </div>
+
+      <!-- 数据库加载中 -->
+      <div v-else-if="dbLoading" key="loading" class="state-panel">
+        <icon-mdi-loading class="state-icon spin" />
+        <p class="state-sub">
+          Loading vendor database…
+        </p>
       </div>
 
       <!-- 未找到厂商 -->
@@ -364,4 +382,7 @@ const { copy, isJustCopied } = useCopy({
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 .icon-fade-enter-active, .icon-fade-leave-active { transition: opacity 0.15s; }
 .icon-fade-enter-from, .icon-fade-leave-to { opacity: 0; }
+
+.spin { animation: mal-spin 0.8s linear infinite; }
+@keyframes mal-spin { to { transform: rotate(360deg); } }
 </style>

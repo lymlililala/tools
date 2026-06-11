@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import * as monaco from 'monaco-editor';
+import type * as Monaco from 'monaco-editor';
+import { useVModel } from '@vueuse/core';
 import { useStyleStore } from '@/stores/style.store';
 
 const props = withDefaults(defineProps<{
-  options?: monaco.editor.IDiffEditorOptions
+  original?: string
+  modified?: string
+  options?: Monaco.editor.IDiffEditorOptions
   originalPlaceholder?: string
   modifiedPlaceholder?: string
 }>(), {
+  original: '',
+  modified: '',
   options: () => ({}),
   originalPlaceholder: 'Paste original text here…',
   modifiedPlaceholder: 'Paste modified text here…',
@@ -17,55 +22,34 @@ const emit = defineEmits<{
   (e: 'update:modified', v: string): void
 }>();
 
-// 双向绑定：外部可传入初始值
-const originalContent = defineModel<string>('original', { default: '' });
-const modifiedContent = defineModel<string>('modified', { default: '' });
+// 双向绑定 —— 用 useVModel 实现(本项目 Vue 3.3.4 未启用 defineModel 编译宏)
+const originalContent = useVModel(props, 'original', emit, { passive: true, defaultValue: '' });
+const modifiedContent = useVModel(props, 'modified', emit, { passive: true, defaultValue: '' });
 
 const { options } = toRefs(props);
 
 const editorContainer = ref<HTMLElement | null>(null);
-let editor: monaco.editor.IStandaloneDiffEditor | null = null;
-let originalModel: monaco.editor.ITextModel | null = null;
-let modifiedModel: monaco.editor.ITextModel | null = null;
+// Monaco 约 3MB —— 改为按需动态加载,避免静态打包拖垮该工具页首屏 CWV
+let monaco: typeof import('monaco-editor') | null = null;
+let editor: Monaco.editor.IStandaloneDiffEditor | null = null;
+let originalModel: Monaco.editor.ITextModel | null = null;
+let modifiedModel: Monaco.editor.ITextModel | null = null;
 
 // 防止 watch 和 Monaco change 事件互相触发死循环
 let suppressWatch = false;
 
-monaco.editor.defineTheme('it-tools-dark', {
-  base: 'vs-dark',
-  inherit: true,
-  rules: [],
-  colors: {
-    'editor.background': '#00000000',
-    // 深色模式：柔和的红绿高亮，降低饱和度防止刺眼
-    'diffEditor.insertedLineBackground': '#1a3a1a',
-    'diffEditor.removedLineBackground': '#3a1a1a',
-    'diffEditor.insertedTextBackground': '#2d5a2d80',
-    'diffEditor.removedTextBackground': '#5a2d2d80',
-  },
-});
-
-monaco.editor.defineTheme('it-tools-light', {
-  base: 'vs',
-  inherit: true,
-  rules: [],
-  colors: {
-    'editor.background': '#00000000',
-  },
-});
-
 const styleStore = useStyleStore();
 
-watch(
-  () => styleStore.isDarkTheme,
-  isDarkTheme => monaco.editor.setTheme(isDarkTheme ? 'it-tools-dark' : 'it-tools-light'),
-  { immediate: true },
-);
+function applyTheme() {
+  monaco?.editor.setTheme(styleStore.isDarkTheme ? 'it-tools-dark' : 'it-tools-light');
+}
+
+watch(() => styleStore.isDarkTheme, applyTheme);
 
 watch(
   () => options.value,
   options => editor?.updateOptions(options),
-  { immediate: true, deep: true },
+  { deep: true },
 );
 
 useResizeObserver(editorContainer, () => {
@@ -87,7 +71,37 @@ watch(modifiedContent, (val) => {
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
+  if (!editorContainer.value) return;
+
+  monaco = await import('monaco-editor');
+
+  monaco.editor.defineTheme('it-tools-dark', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [],
+    colors: {
+      'editor.background': '#00000000',
+      // 深色模式：柔和的红绿高亮，降低饱和度防止刺眼
+      'diffEditor.insertedLineBackground': '#1a3a1a',
+      'diffEditor.removedLineBackground': '#3a1a1a',
+      'diffEditor.insertedTextBackground': '#2d5a2d80',
+      'diffEditor.removedTextBackground': '#5a2d2d80',
+    },
+  });
+
+  monaco.editor.defineTheme('it-tools-light', {
+    base: 'vs',
+    inherit: true,
+    rules: [],
+    colors: {
+      'editor.background': '#00000000',
+    },
+  });
+
+  applyTheme();
+
+  // 容器可能在异步加载期间被卸载
   if (!editorContainer.value) return;
 
   editor = monaco.editor.createDiffEditor(editorContainer.value, {
