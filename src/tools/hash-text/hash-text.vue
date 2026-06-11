@@ -240,6 +240,14 @@ async function copyHash(algo: AlgoNames) {
   align-items: center;
 }
 
+/* c-tooltip 的内层 div（ref=targetRef）默认 min-width:auto，会被长哈希撑破；
+   约束它作为 flex item 可收缩，使内部 .hash-value 的 ellipsis 生效、复制按钮不被挤出屏幕 */
+.hash-value-wrap > :deep(div:first-child) {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .hash-value {
   flex: 1;
   padding: 10px 12px;
