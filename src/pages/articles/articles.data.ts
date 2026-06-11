@@ -99444,4 +99444,373 @@ Use 403 when it's fine to reveal the resource exists. Use 404 when even acknowle
 Look up any response code with the [HTTP status codes tool](/http-status-codes), and see how authentication headers work in [The HTTP Authorization Header Explained](/blog/http-authorization-header-explained).
 `,
   },
+  {
+    slug: 'chmod-permissions-cheat-sheet',
+    toolPath: '/chmod-calculator',
+    title: 'chmod Permissions Cheat Sheet: Numeric Table and Common Modes',
+    description: 'A quick chmod reference — what each octal digit means, the read/write/execute bit values, and a table of common modes like 777, 755, 644, and 600.',
+    keywords: ['chmod cheat sheet', 'chmod 777', 'chmod 755', 'chmod numeric permissions', 'chmod table'],
+    category: 'Development',
+    publishedAt: '2026-06-11',
+    content: `## How chmod Numbers Work
+
+A chmod mode is three octal digits — one each for **owner**, **group**, and **others**. Each digit is the sum of three bits:
+
+| Bit | Value | Meaning |
+|-----|-------|---------|
+| read (r) | 4 | view file / list directory |
+| write (w) | 2 | modify file / add-remove entries |
+| execute (x) | 1 | run file / enter directory |
+
+Add the bits you want per role. \`7\` = 4+2+1 = rwx, \`6\` = 4+2 = rw-, \`5\` = 4+1 = r-x, \`4\` = r--.
+
+## Single-Digit Reference
+
+| Octal | Binary | Symbolic | Permissions |
+|-------|--------|----------|-------------|
+| 0 | 000 | --- | none |
+| 1 | 001 | --x | execute |
+| 2 | 010 | -w- | write |
+| 3 | 011 | -wx | write + execute |
+| 4 | 100 | r-- | read |
+| 5 | 101 | r-x | read + execute |
+| 6 | 110 | rw- | read + write |
+| 7 | 111 | rwx | read + write + execute |
+
+## Common Modes
+
+| Mode | Symbolic | Typical use |
+|------|----------|-------------|
+| 777 | rwxrwxrwx | Everyone full access — avoid; almost never correct |
+| 755 | rwxr-xr-x | Executables, directories, web content |
+| 700 | rwx------ | Private scripts/dirs (owner only) |
+| 644 | rw-r--r-- | Regular files (owner edits, others read) |
+| 640 | rw-r----- | Config readable by group, not world |
+| 600 | rw------- | Private files (SSH keys, secrets) |
+| 444 | r--r--r-- | Read-only for everyone |
+
+## Files vs Directories
+
+The execute bit means different things:
+
+- **On a file**, \`x\` lets you run it as a program/script.
+- **On a directory**, \`x\` lets you \`cd\` into it and access its contents. A directory with \`r\` but no \`x\` lets you list names but not open anything — usually a mistake. That's why directories are typically \`755\`, not \`644\`.
+
+## Quick Tips
+
+- Web servers usually want \`755\` for directories and \`644\` for files.
+- SSH is strict: \`~/.ssh\` must be \`700\` and private keys \`600\`, or it refuses them.
+- \`chmod -R\` applies recursively — be careful applying file modes to directories (you'll strip the needed \`x\`).
+
+## Frequently Asked Questions
+
+**What does chmod 777 mean?**
+Read, write, and execute for owner, group, and others — full access for everyone. It's a security risk and rarely the right answer; prefer 755 or 644.
+
+**What is the difference between 755 and 644?**
+755 (rwxr-xr-x) includes the execute bit, used for directories and executables. 644 (rw-r--r--) has no execute, used for regular files.
+
+**Why do SSH keys need chmod 600?**
+SSH refuses to use a private key that other users can read. 600 (rw-------) restricts it to the owner only.
+
+Compute any mode visually with the [chmod calculator](/chmod-calculator), and learn the model in depth in [Linux File Permissions Explained](/blog/linux-file-permissions-chmod-guide).
+`,
+  },
+  {
+    slug: 'base64-alphabet-table',
+    toolPath: '/base64-string-converter',
+    title: 'Base64 Alphabet Table: The 64 Characters and Index Reference',
+    description: 'The full Base64 character set — the 64 index-to-character mappings (A–Z, a–z, 0–9, + /), how padding with = works, and the Base64url variant for URLs.',
+    keywords: ['base64 alphabet', 'base64 character table', 'base64 index table', 'base64url', 'base64 padding'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## What the Base64 Alphabet Is
+
+Base64 encodes binary data using 64 printable characters, so every 6 bits of input map to exactly one character. The standard alphabet (RFC 4648) is, in index order:
+
+\`\`\`
+A-Z  →  0–25
+a-z  →  26–51
+0-9  →  52–61
++    →  62
+/    →  63
+\`\`\`
+
+## Full Index Table
+
+| Idx | Ch | Idx | Ch | Idx | Ch | Idx | Ch |
+|----|----|----|----|----|----|----|----|
+| 0 | A | 16 | Q | 32 | g | 48 | w |
+| 1 | B | 17 | R | 33 | h | 49 | x |
+| 2 | C | 18 | S | 34 | i | 50 | y |
+| 3 | D | 19 | T | 35 | j | 51 | z |
+| 4 | E | 20 | U | 36 | k | 52 | 0 |
+| 5 | F | 21 | V | 37 | l | 53 | 1 |
+| 6 | G | 22 | W | 38 | m | 54 | 2 |
+| 7 | H | 23 | X | 39 | n | 55 | 3 |
+| 8 | I | 24 | Y | 40 | o | 56 | 4 |
+| 9 | J | 25 | Z | 41 | p | 57 | 5 |
+| 10 | K | 26 | a | 42 | q | 58 | 6 |
+| 11 | L | 27 | b | 43 | r | 59 | 7 |
+| 12 | M | 28 | c | 44 | s | 60 | 8 |
+| 13 | N | 29 | d | 45 | t | 61 | 9 |
+| 14 | O | 30 | e | 46 | u | 62 | + |
+| 15 | P | 31 | f | 47 | v | 63 | / |
+
+## How Padding Works
+
+Base64 processes input in 3-byte (24-bit) groups, producing 4 characters. When the input isn't a multiple of 3 bytes, \`=\` pads the output:
+
+| Input bytes | Output | Padding |
+|-------------|--------|---------|
+| 3 | 4 chars | none |
+| 2 | 3 chars + \`=\` | one \`=\` |
+| 1 | 2 chars + \`==\` | two \`=\` |
+
+So \`Man\` → \`TWFu\` (no padding), \`Ma\` → \`TWE=\`, \`M\` → \`TQ==\`.
+
+## Base64url: The URL-Safe Variant
+
+\`+\` and \`/\` are unsafe in URLs and filenames, so the **base64url** variant swaps them:
+
+| Standard | Base64url |
+|----------|-----------|
+| \`+\` (62) | \`-\` |
+| \`/\` (63) | \`_\` |
+| \`=\` padding | usually omitted |
+
+JWTs, for example, use base64url for their header and payload — which is why you see \`-\` and \`_\` but never \`+\` or \`/\` in a token.
+
+## Frequently Asked Questions
+
+**What are the 64 characters in Base64?**
+\`A–Z\` (0–25), \`a–z\` (26–51), \`0–9\` (52–61), \`+\` (62), and \`/\` (63).
+
+**What does the = sign mean in Base64?**
+It is padding. One \`=\` means the final group had 2 input bytes; \`==\` means it had 1. It keeps the output length a multiple of 4.
+
+**What is the difference between Base64 and Base64url?**
+Base64url replaces \`+\` with \`-\` and \`/\` with \`_\` so the result is safe in URLs and filenames, and usually drops the \`=\` padding.
+
+Encode or decode any text with the [Base64 converter](/base64-string-converter), and see how it compares to other encodings in [Base64 vs Hex Encoding](/blog/base64-vs-hex-encoding).
+`,
+  },
+  {
+    slug: 'ascii-table-reference',
+    toolPath: '/text-to-binary',
+    title: 'ASCII Table Reference: Decimal, Hex, Binary, and Characters',
+    description: 'A complete ASCII table — printable characters 32–126 with decimal, hex, and binary values, plus the control characters and what they do.',
+    keywords: ['ascii table', 'ascii to binary', 'ascii decimal hex', 'ascii character codes', 'text to binary'],
+    category: 'Converter',
+    publishedAt: '2026-06-11',
+    content: `## What ASCII Is
+
+ASCII maps the numbers 0–127 to characters: 0–31 and 127 are **control characters**, 32–126 are **printable**. Each code fits in 7 bits, which is why converting text to binary produces 7- or 8-bit groups per character.
+
+## Printable Characters (32–126)
+
+| Dec | Hex | Char | Dec | Hex | Char | Dec | Hex | Char |
+|----|----|----|----|----|----|----|----|----|
+| 32 | 20 | (space) | 64 | 40 | @ | 96 | 60 | \` |
+| 33 | 21 | ! | 65 | 41 | A | 97 | 61 | a |
+| 34 | 22 | " | 66 | 42 | B | 98 | 62 | b |
+| 35 | 23 | # | 67 | 43 | C | 99 | 63 | c |
+| 36 | 24 | $ | 68 | 44 | D | 100 | 64 | d |
+| 37 | 25 | % | 69 | 45 | E | 101 | 65 | e |
+| 38 | 26 | & | 70 | 46 | F | 102 | 66 | f |
+| 39 | 27 | ' | 71 | 47 | G | 103 | 67 | g |
+| 40 | 28 | ( | 72 | 48 | H | 104 | 68 | h |
+| 41 | 29 | ) | 73 | 49 | I | 105 | 69 | i |
+| 48 | 30 | 0 | 80 | 50 | P | 112 | 70 | p |
+| 49 | 31 | 1 | 81 | 51 | Q | 113 | 71 | q |
+| 57 | 39 | 9 | 90 | 5A | Z | 122 | 7A | z |
+| 58 | 3A | : | 91 | 5B | [ | 123 | 7B | { |
+| 61 | 3D | = | 93 | 5D | ] | 125 | 7D | } |
+| 63 | 3F | ? | 95 | 5F | _ | 126 | 7E | ~ |
+
+(Letters and digits are contiguous: \`A\`=65, \`Z\`=90, \`a\`=97, \`z\`=122, \`0\`=48, \`9\`=57.)
+
+## Two Handy Facts
+
+- **Uppercase to lowercase** differ by exactly 32 (\`A\`=65, \`a\`=97). Flip the 0x20 bit to change case.
+- **Digit to value:** \`'7'\` is 55, so subtract 48 (\`'0'\`) to get the numeric value — the classic \`char - '0'\` trick.
+
+## Control Characters (selected)
+
+| Dec | Hex | Name | Meaning |
+|----|----|------|---------|
+| 0 | 00 | NUL | null terminator |
+| 9 | 09 | HT | horizontal tab |
+| 10 | 0A | LF | line feed (newline on Unix) |
+| 13 | 0D | CR | carriage return |
+| 27 | 1B | ESC | escape (ANSI sequences) |
+| 127 | 7F | DEL | delete |
+
+\`\\r\\n\` (CR+LF, 13+10) is the Windows line ending; Unix uses just \`\\n\` (10).
+
+## ASCII, Unicode, and Binary
+
+ASCII is the first 128 code points of Unicode, and UTF-8 encodes them identically — one byte each. Anything beyond 127 (accents, emoji, CJK) needs multiple bytes in UTF-8. To see a character's bits, convert it with the [text to binary tool](/text-to-binary); for code points beyond ASCII, use [text to Unicode](/blog/text-to-unicode-guide).
+
+## Frequently Asked Questions
+
+**What is the ASCII code for 'A'?**
+65 in decimal, 0x41 in hex, 1000001 in binary. Lowercase 'a' is 97.
+
+**How many characters are in ASCII?**
+128 (codes 0–127): 33 control characters and 95 printable characters including space.
+
+**What is the binary for ASCII letters?**
+Each ASCII character is 7 bits (often stored in 8). 'A' (65) is \`1000001\`; convert any text to see its bits.
+
+Convert text to its binary representation with the [text to binary tool](/text-to-binary).
+`,
+  },
+  {
+    slug: 'html-entities-cheat-sheet',
+    toolPath: '/html-entities',
+    title: 'HTML Entities Cheat Sheet: Common Named and Numeric References',
+    description: 'A quick HTML entities reference — the must-escape characters, common symbols and their named/numeric codes, and when you actually need to encode.',
+    keywords: ['html entities list', 'html entities cheat sheet', 'html special characters', 'html entity codes', 'escape html'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## What HTML Entities Are
+
+An HTML entity represents a character that is either **reserved** in HTML or hard to type. Entities come in three forms: named (\`&amp;\`), decimal numeric (\`&#38;\`), and hex numeric (\`&#x26;\`). All three render the same character.
+
+## The Must-Escape Characters
+
+These five break HTML if left raw — escaping them prevents broken markup and cross-site scripting:
+
+| Char | Named | Numeric | Why escape |
+|------|-------|---------|-----------|
+| & | \`&amp;\` | \`&#38;\` | starts every entity |
+| < | \`&lt;\` | \`&#60;\` | starts a tag |
+| > | \`&gt;\` | \`&#62;\` | ends a tag |
+| " | \`&quot;\` | \`&#34;\` | ends an attribute value |
+| ' | \`&#39;\` | \`&#39;\` | ends an attribute value (no \`&apos;\` in HTML4) |
+
+## Common Symbols
+
+| Char | Named | Numeric | Name |
+|------|-------|---------|------|
+| (nbsp) | \`&nbsp;\` | \`&#160;\` | non-breaking space |
+| © | \`&copy;\` | \`&#169;\` | copyright |
+| ® | \`&reg;\` | \`&#174;\` | registered |
+| ™ | \`&trade;\` | \`&#8482;\` | trademark |
+| — | \`&mdash;\` | \`&#8212;\` | em dash |
+| – | \`&ndash;\` | \`&#8211;\` | en dash |
+| … | \`&hellip;\` | \`&#8230;\` | ellipsis |
+| € | \`&euro;\` | \`&#8364;\` | euro |
+| £ | \`&pound;\` | \`&#163;\` | pound |
+| × | \`&times;\` | \`&#215;\` | multiplication |
+| ÷ | \`&divide;\` | \`&#247;\` | division |
+| → | \`&rarr;\` | \`&#8594;\` | right arrow |
+
+## When You Actually Need to Encode
+
+- **Inside HTML content:** escape \`<\`, \`>\`, and \`&\` so they show as text instead of being parsed.
+- **Inside attribute values:** also escape the quote character you're using (\`"\` or \`'\`).
+- **You do NOT need entities for most Unicode** if your page is UTF-8 — you can write \`€\` or \`→\` directly. Entities are for the reserved characters and for environments where you can't trust the encoding.
+
+A frequent bug is **double-encoding**: escaping text that was already escaped, turning \`&amp;\` into \`&amp;amp;\`. Encode once, at output time.
+
+## Frequently Asked Questions
+
+**What are the 5 HTML entities I must escape?**
+\`&\` (&amp;), \`<\` (&lt;), \`>\` (&gt;), \`"\` (&quot;), and \`'\` (&#39;). These are reserved and can break markup or enable XSS.
+
+**Do I need HTML entities for accented or Unicode characters?**
+Not if the page is UTF-8 — you can type them directly. Entities are mainly for the reserved characters and unambiguous encoding.
+
+**What is the entity for a non-breaking space?**
+\`&nbsp;\` (or \`&#160;\`). It renders a space that won't wrap or collapse.
+
+Encode or decode entities instantly with the [HTML entities tool](/html-entities), and see the full picture in the [HTML Entities Guide](/blog/html-entities-guide).
+`,
+  },
+  {
+    slug: 'mime-types-cheat-sheet',
+    toolPath: '/mime-types',
+    title: 'MIME Types Cheat Sheet: Common Content-Type Values by Extension',
+    description: 'A quick MIME types reference — the Content-Type values for common file extensions (json, html, png, pdf, fonts, video) and how charset and the octet-stream fallback work.',
+    keywords: ['mime types list', 'content-type header', 'mime type cheat sheet', 'application/json', 'mime type by extension'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## What a MIME Type Is
+
+A MIME type (media type) tells the client what kind of data a response body contains. It rides in the \`Content-Type\` header as \`type/subtype\`, optionally with parameters:
+
+\`\`\`
+Content-Type: text/html; charset=utf-8
+\`\`\`
+
+Browsers use it to decide whether to render, download, or parse a response — getting it wrong is a common cause of "the browser downloaded my page instead of showing it."
+
+## Text and Web
+
+| Extension | MIME type |
+|-----------|-----------|
+| .html | text/html |
+| .css | text/css |
+| .js / .mjs | text/javascript |
+| .json | application/json |
+| .xml | application/xml |
+| .csv | text/csv |
+| .txt | text/plain |
+| .md | text/markdown |
+
+## Images
+
+| Extension | MIME type |
+|-----------|-----------|
+| .png | image/png |
+| .jpg / .jpeg | image/jpeg |
+| .gif | image/gif |
+| .webp | image/webp |
+| .svg | image/svg+xml |
+| .avif | image/avif |
+| .ico | image/x-icon |
+
+## Documents, Archives, Fonts
+
+| Extension | MIME type |
+|-----------|-----------|
+| .pdf | application/pdf |
+| .zip | application/zip |
+| .gz | application/gzip |
+| .woff2 | font/woff2 |
+| .woff | font/woff |
+| .ttf | font/ttf |
+
+## Audio and Video
+
+| Extension | MIME type |
+|-----------|-----------|
+| .mp3 | audio/mpeg |
+| .wav | audio/wav |
+| .mp4 | video/mp4 |
+| .webm | video/webm |
+| .ogg | audio/ogg |
+
+## charset and the Fallback
+
+- **\`charset=utf-8\`** matters for text types so the browser decodes bytes correctly. It's meaningless for binary types like images.
+- **\`application/octet-stream\`** is the "unknown binary" fallback. Servers send it when they can't determine the type — and browsers usually download rather than render it.
+- Serving JavaScript or CSS with the wrong type can make strict browsers refuse to execute it, so match the extension to the table above.
+
+## Frequently Asked Questions
+
+**What is the MIME type for JSON?**
+\`application/json\`. It has no charset parameter because JSON is always UTF-8 by specification.
+
+**What is the Content-Type for JavaScript?**
+\`text/javascript\` is the current standard. The older \`application/javascript\` still works but \`text/javascript\` is preferred.
+
+**What does application/octet-stream mean?**
+It's the generic "arbitrary binary data" type used when the real type is unknown; browsers typically download it instead of rendering.
+
+Look up the type for any extension with the [MIME types tool](/mime-types), and read the full reference in the [MIME Types Guide](/blog/mime-types-guide).
+`,
+  },
 ];
