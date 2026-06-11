@@ -6,8 +6,6 @@ import type { HeadObject } from '@vueuse/head';
 import BaseLayout from './base.layout.vue';
 import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
-import { fetchArticleList } from '@/lib/articles';
-import type { DbArticle } from '@/lib/articles';
 
 const route = useRoute();
 const { t, te, locale } = useI18n();
@@ -128,17 +126,19 @@ const howToSteps = computed(() => {
   return steps;
 });
 
-// 相关指南：当前工具对应的博客文章（按 tool_path 匹配），给用户延伸阅读入口。
-// 内链此前只在预渲染 HTML（爬虫可见），这里让 SPA 用户也能看到。
-const relatedGuides = ref<DbArticle[]>([]);
-let _allArticles: DbArticle[] | null = null;
+// 相关指南：当前工具对应的博客文章，给用户延伸阅读入口。
+// 数据来自构建时从源 toolPath 生成的 /tool-guides.json（干净、相关性准确),
+// 而非运行时按 DB tool_path 过滤(历史随机指派会混入无关文章)。
+const relatedGuides = ref<Array<{ slug: string; title: string; description: string }>>([]);
+let _guideMap: Record<string, Array<{ slug: string; title: string; description: string }>> | null = null;
 
 async function loadRelatedGuides() {
   try {
-    if (!_allArticles) _allArticles = await fetchArticleList();
-    relatedGuides.value = _allArticles
-      .filter(a => a.tool_path === route.path)
-      .slice(0, 6);
+    if (!_guideMap) {
+      const res = await fetch('/tool-guides.json');
+      _guideMap = res.ok ? await res.json() : {};
+    }
+    relatedGuides.value = (_guideMap[route.path] ?? []).slice(0, 6);
   }
   catch {
     relatedGuides.value = [];

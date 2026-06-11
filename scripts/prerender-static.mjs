@@ -345,9 +345,37 @@ function relatedArticles(article, n = 6) {
   return picks.slice(0, n)
 }
 
-// 一个工具对应的指南文章（工具页反向内链用）
+// 相关性过滤:源 toolPath 有约 26% 散落错配(通用博客被挂到不相关工具)。
+// 只保留「工具名词根真正出现在文章 slug/title/keywords」的指南,宁缺毋滥。
+const _RELSTOP = new Set(['the', 'a', 'to', 'and', 'of', 'online', 'tool', 'generator', 'converter', 'guide', 'for', 'with', 'in', 'your', 'how', 'what', 'is', 'vs'])
+function _toks(s) {
+  return String(s || '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length > 2 && !_RELSTOP.has(w))
+}
+function isTopicalGuide(toolPath, a) {
+  const toolToks = _toks(String(toolPath).replace(/^\//, '').replace(/-/g, ' '))
+  if (toolToks.length === 0) return true
+  const hay = new Set([..._toks(a.slug), ..._toks(a.title), ...((a.keywords || []).flatMap(_toks))])
+  return toolToks.some(t => hay.has(t) || [...hay].some(h => h.includes(t) || t.includes(h)))
+}
+
+// 一个工具对应的指南文章（工具页反向内链用）—— 已做相关性过滤
 function guidesForTool(toolSlug, n = 8) {
-  return (articlesByTool[`/${toolSlug}`] || []).slice(0, n)
+  const tp = `/${toolSlug}`
+  return (articlesByTool[tp] || []).filter(a => isTopicalGuide(tp, a)).slice(0, n)
+}
+
+// 导出「工具路径 → 相关文章」干净映射(来自源 toolPath + 相关性过滤),
+// 供运行时工具页 fetch,取代受污染的 DB tool_path 匹配,保证相关性。
+{
+  const map = {}
+  for (const [toolPath, arts] of Object.entries(articlesByTool)) {
+    if (!toolPath || toolPath === 'undefined') continue
+    const relevant = arts.filter(a => isTopicalGuide(toolPath, a))
+    if (relevant.length === 0) continue
+    map[toolPath] = relevant.slice(0, 6).map(a => ({ slug: a.slug, title: a.title, description: a.description }))
+  }
+  fs.writeFileSync(path.join(distDir, 'tool-guides.json'), JSON.stringify(map), 'utf-8')
+  console.log(`✅ Generated: dist/tool-guides.json (${Object.keys(map).length} 个工具的相关指南)`)
 }
 
 // 工具别名 → 真实工具 slug（与 vercel.json 重定向一致），用于解析文章 toolPath
