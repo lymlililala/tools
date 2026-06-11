@@ -283,6 +283,28 @@ const lineNumbers = computed(() => Array.from({ length: lineCount.value }, (_, i
   cursor: default;
   user-select: text;
 }
+
+/* ── 移动端适配：长行换行显示，避免代码结果被裁切且无法横向滚动 ──
+   高亮层只做纵向同步(无横向同步),窄屏下让 textarea 与高亮层都按 pre-wrap 换行、
+   并隐藏行号(换行会破坏行号对齐),两者同宽同字体同换行点 → 完美对齐、内容全可见。 */
+@media (max-width: 480px) {
+  .line-numbers {
+    display: none;
+  }
+
+  .highlight-layer {
+    left: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .code-textarea {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+}
 </style>
 
 <style>
