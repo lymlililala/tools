@@ -99098,4 +99098,350 @@ Wrap each item in single quotes, join with commas, and paste the result between 
 Use the list converter above to reshape, deduplicate, sort, and wrap lists for SQL, CSV, and code without manual editing.
 `,
   },
+  {
+    slug: 'http-authorization-header-explained',
+    toolPath: '/basic-auth-generator',
+    title: 'The HTTP Authorization Header Explained: Basic, Bearer, Digest, and API Keys',
+    description: 'Understand the HTTP Authorization header — its format, the Basic / Bearer / Digest schemes, how the server challenges with WWW-Authenticate, and which scheme to use when.',
+    keywords: ['authorization header', 'http authorization header', 'authorization basic', 'bearer token header', 'www-authenticate'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## What the Authorization Header Is
+
+The \`Authorization\` request header carries the credentials a client uses to prove its identity to a server. Its grammar is deceptively simple — a **scheme** name, a space, and **credentials** whose format depends on the scheme:
+
+\`\`\`
+Authorization: <scheme> <credentials>
+\`\`\`
+
+Everything else — Basic, Bearer, Digest, API keys — is just a different value for \`<scheme>\` and a different encoding of \`<credentials>\`.
+
+## The Challenge–Response Flow
+
+Authentication usually starts with the server, not the client. When you request a protected resource without credentials, the server replies \`401 Unauthorized\` and a \`WWW-Authenticate\` header naming the scheme it expects:
+
+\`\`\`http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Basic realm="Admin Area"
+\`\`\`
+
+The client then retries with an \`Authorization\` header that matches. If you are unsure whether a failed request is an auth problem, that \`401\` plus \`WWW-Authenticate\` pair is the tell — see [401 vs 403: Unauthorized vs Forbidden](/blog/401-vs-403-unauthorized-forbidden) for the distinction.
+
+## The Common Schemes
+
+### Basic
+Credentials are \`base64(username:password)\`. Simple, reusable, sent on every request, and **only safe over HTTPS** because Base64 is reversible. Full details in [HTTP Basic Authentication: How It Works](/blog/basic-auth-generator-guide).
+
+\`\`\`
+Authorization: Basic YWRtaW46c2VjcmV0MTIz
+\`\`\`
+
+### Bearer
+Credentials are an opaque or signed **token** (often a JWT or OAuth access token). The token can expire and carry scopes, which makes Bearer the modern default for user-facing apps and APIs. Compare them in [Basic Auth vs Bearer Token](/blog/basic-auth-vs-bearer-token).
+
+\`\`\`
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+\`\`\`
+
+If your token is a JWT, you can inspect its header and payload with the [JWT Parser](/jwt-parser).
+
+### Digest
+A challenge–response scheme that hashes the password with a server-provided nonce so the raw password never crosses the wire. More secure than Basic over plain HTTP, but largely superseded by TLS + Bearer tokens today.
+
+### API keys
+Not a registered HTTP scheme, but commonly carried as \`Authorization: Bearer <key>\`, a custom header like \`X-API-Key\`, or a query parameter. Convenient for service-to-service calls; treat the key like a password.
+
+## Which Scheme Should You Use?
+
+| Need | Scheme |
+|------|--------|
+| Internal API or quick protection, over HTTPS | Basic |
+| User login, expiring/scoped access | Bearer (JWT/OAuth) |
+| Legacy systems that must avoid sending the password | Digest |
+| Machine-to-machine service calls | API key (as Bearer) |
+
+## Frequently Asked Questions
+
+**What is the format of the Authorization header?**
+\`Authorization: <scheme> <credentials>\`. For Basic it is \`Basic base64(user:pass)\`; for Bearer it is \`Bearer <token>\`.
+
+**What is the difference between Authorization: Basic and Bearer?**
+Basic sends reusable \`username:password\` credentials encoded in Base64. Bearer sends a token that can expire and carry scopes. Basic suits internal tooling; Bearer suits user-facing apps.
+
+**What is the WWW-Authenticate header?**
+It is the server's challenge, returned with a \`401\` response, telling the client which authentication scheme (and realm) to use when it retries.
+
+Generate and decode \`Authorization: Basic\` headers with the [Basic Auth generator](/basic-auth-generator), and look up response codes like 401 with the [HTTP status codes reference](/http-status-codes).
+`,
+  },
+  {
+    slug: 'how-to-use-basic-auth-curl-postman-fetch',
+    toolPath: '/basic-auth-generator',
+    title: 'How to Send Basic Auth in curl, Postman, fetch, and Python',
+    description: 'Copy-paste examples for sending HTTP Basic Authentication from curl, Postman, JavaScript fetch, Python requests, and Node.js — plus the common mistakes that cause 401s.',
+    keywords: ['basic auth curl', 'basic auth postman', 'basic auth fetch', 'python requests basic auth', 'send basic auth header'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## The One Thing Every Example Does
+
+Basic Auth always reduces to one header: \`Authorization: Basic base64(username:password)\`. Every tool below either builds that header for you or lets you set it directly. If you just need the encoded value, paste your credentials into the [Basic Auth generator](/blog/basic-auth-generator-guide) and copy the header.
+
+## curl
+
+The \`-u\` flag is the shortcut — curl encodes the credentials for you:
+
+\`\`\`bash
+curl -u admin:secret123 https://api.example.com/data
+\`\`\`
+
+Or set the header explicitly (useful when scripting):
+
+\`\`\`bash
+curl -H "Authorization: Basic $(printf '%s' 'admin:secret123' | base64)" \\
+  https://api.example.com/data
+\`\`\`
+
+Use \`printf\` (not \`echo\`) so no trailing newline corrupts the token.
+
+## Postman
+
+1. Open the request → **Authorization** tab.
+2. Type: **Basic Auth**.
+3. Enter **Username** and **Password**.
+
+Postman builds the \`Authorization\` header automatically and shows it under the **Headers** tab. Make sure the request URL is **https** — Postman will happily send credentials over http, but you should not.
+
+## JavaScript fetch
+
+\`\`\`javascript
+const credentials = btoa('admin:secret123');
+const res = await fetch('https://api.example.com/data', {
+  headers: { Authorization: \`Basic \${credentials}\` },
+});
+\`\`\`
+
+\`btoa()\` runs in the browser. In Node.js use \`Buffer.from('admin:secret123').toString('base64')\` instead.
+
+## Python requests
+
+\`\`\`python
+import requests
+
+res = requests.get(
+    'https://api.example.com/data',
+    auth=('admin', 'secret123'),  # requests builds the header for you
+)
+\`\`\`
+
+## Node.js (built-in)
+
+\`\`\`javascript
+const token = Buffer.from('admin:secret123').toString('base64');
+const res = await fetch('https://api.example.com/data', {
+  headers: { Authorization: \`Basic \${token}\` },
+});
+\`\`\`
+
+## Why It Returns 401 When the Password Is Right
+
+Almost every "correct password but still 401" case is one of these:
+
+- A trailing newline from \`echo\` instead of \`echo -n\` / \`printf\`.
+- A missing or lowercase \`Basic \` prefix.
+- A colon inside the **username** (only the password may contain colons).
+- Sending over http where a proxy strips the header.
+
+Re-encode with \`printf '%s' 'user:pass' | base64\` and compare. If the server keeps rejecting valid credentials, confirm it is actually a 401 and not a 403 — [401 vs 403 explained](/blog/401-vs-403-unauthorized-forbidden).
+
+## Frequently Asked Questions
+
+**How do I send Basic Auth in curl?**
+\`curl -u username:password https://host\`, or set \`-H "Authorization: Basic <token>"\` where the token is \`base64(user:pass)\`.
+
+**How do I add Basic Auth in fetch?**
+Set the header \`Authorization: Basic <btoa('user:pass')>\`. The browser \`fetch\` ignores credentials placed in the URL, so set the header explicitly.
+
+**Why is my Basic Auth request failing with a correct password?**
+Usually a stray newline from \`echo\`, a missing \`Basic \` prefix, or a colon in the username. Re-encode with \`printf '%s' 'user:pass' | base64\`.
+
+Build the exact header with the [Basic Auth generator](/basic-auth-generator), and read how the scheme works in [The HTTP Authorization Header Explained](/blog/http-authorization-header-explained).
+`,
+  },
+  {
+    slug: 'basic-auth-vs-bearer-token',
+    toolPath: '/basic-auth-generator',
+    title: 'Basic Auth vs Bearer Token: When to Use Which',
+    description: 'Compare HTTP Basic Auth and Bearer tokens — credentials vs tokens, expiry, scopes, revocation, and a clear decision guide for APIs, internal tools, and user-facing apps.',
+    keywords: ['basic auth vs bearer', 'bearer token vs basic auth', 'basic vs bearer authorization', 'api authentication comparison', 'authorization scheme'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## Same Header, Different Idea
+
+Both schemes ride in the same place — the \`Authorization\` header (see [the full header reference](/blog/http-authorization-header-explained)) — but they represent two different models:
+
+\`\`\`
+Authorization: Basic  YWRtaW46c2VjcmV0MTIz        ← reusable username:password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...      ← a token, often short-lived
+\`\`\`
+
+**Basic** sends the *same credentials* on every request. **Bearer** sends a *token* that was issued earlier and can expire, be scoped, and be revoked.
+
+## The Core Differences
+
+| Aspect | Basic Auth | Bearer Token |
+|--------|-----------|--------------|
+| What is sent | username:password (Base64) | A token (often a JWT) |
+| Lifetime | Until the password changes | Until the token expires |
+| Scopes / permissions | None — all or nothing | Can encode scopes |
+| Revocation | Change the password | Revoke/rotate the token |
+| Server state | Verify credentials each time | Verify signature or session |
+| Best for | Internal APIs, M2M, dev | User-facing apps, public APIs |
+
+## Why Bearer Tokens Win for User-Facing Apps
+
+The problem with Basic Auth in a consumer app is that the client must **hold the real password** and resend it constantly. A leaked request log leaks the password itself. Bearer tokens fix this: the user authenticates once, the server issues a short-lived token, and only that token travels afterward. If it leaks, it expires soon and can be revoked without forcing a password reset.
+
+Most Bearer tokens are **JWTs** — self-contained, signed tokens you can inspect with the [JWT Parser](/jwt-parser). For the deeper model, see [JWT vs Session Tokens](/blog/jwt-vs-session-tokens-authentication) and [OAuth 2.0 and OpenID Connect](/blog/oauth2-openid-connect-complete-guide).
+
+## Why Basic Auth Still Has a Place
+
+Bearer isn't automatically "better" — it's heavier. Basic Auth needs no token endpoint, no refresh logic, and no token store. For an internal service behind a VPN, a cron job calling an API, or a quick staging-environment lock, Basic Auth over HTTPS is the pragmatic choice. Adding OAuth there is over-engineering.
+
+## A Quick Decision Guide
+
+- **Building a public or user-facing API?** Bearer (JWT/OAuth).
+- **Securing an internal/admin endpoint over HTTPS?** Basic.
+- **Service-to-service call you control both ends of?** Either — Basic is simpler, Bearer if you want expiry/scopes.
+- **Need per-client permissions or token revocation?** Bearer.
+
+## Frequently Asked Questions
+
+**What is the difference between Basic Auth and Bearer token?**
+Basic sends reusable \`username:password\` credentials on every request; Bearer sends an issued token that can expire, carry scopes, and be revoked. Basic is simplest; Bearer is more flexible and safer for user-facing apps.
+
+**Is Bearer token more secure than Basic Auth?**
+Over HTTPS both protect data in transit. Bearer reduces blast radius because a leaked token expires and can be revoked, whereas a leaked Basic credential is the actual password.
+
+**Can I use Basic Auth for a REST API?**
+Yes, especially internal or machine-to-machine APIs over HTTPS. For public or user-facing APIs, Bearer tokens are the better fit.
+
+Generate Basic credentials with the [Basic Auth generator](/basic-auth-generator), or decode a Bearer JWT with the [JWT Parser](/jwt-parser).
+`,
+  },
+  {
+    slug: 'is-http-basic-auth-secure',
+    toolPath: '/basic-auth-generator',
+    title: 'Is HTTP Basic Authentication Secure? Risks and Best Practices',
+    description: 'Is Basic Auth safe to use? Understand why Base64 is not encryption, the real risks (logging, no logout, replay), and the practices that make Basic Auth acceptable in production.',
+    keywords: ['is basic auth secure', 'basic authentication security', 'basic auth https', 'base64 not encryption', 'basic auth best practices'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## The Short Answer
+
+Basic Auth is **as secure as the transport it runs on**. Over HTTPS it is acceptable for many real systems. Over plain HTTP it is effectively sending the password in cleartext. The scheme itself adds no confidentiality — so the security conversation is really about how you deploy it.
+
+## Why Base64 Is Not Security
+
+The credentials in \`Authorization: Basic YWRtaW46c2VjcmV0MTIz\` are just Base64, which anyone can reverse in one step:
+
+\`\`\`bash
+echo 'YWRtaW46c2VjcmV0MTIz' | base64 --decode
+# admin:secret123
+\`\`\`
+
+Base64 is an **encoding**, not encryption — there is no key. Treat a captured Authorization header as fully exposed credentials. This is the single most misunderstood point about Basic Auth.
+
+## The Real Risks
+
+- **Plaintext over HTTP.** Without TLS, every request leaks the password to anyone on the network path. Non-negotiable: use HTTPS.
+- **Credential logging.** Web servers, proxies, and CDNs often log request headers. The Authorization header — and thus the password — can end up in plaintext logs unless you redact it.
+- **No logout.** Browsers cache Basic credentials for the session; there is no server-side way to invalidate them short of changing the password.
+- **Replay on every request.** Because the same credentials are sent each time, a single leaked request is a permanent compromise until the password changes — unlike a short-lived [Bearer token](/blog/basic-auth-vs-bearer-token).
+- **No scopes.** Credentials are all-or-nothing; you cannot grant limited access.
+
+## Best Practices That Make It Acceptable
+
+1. **Always HTTPS.** Reject Basic Auth on http entirely.
+2. **Per-client credentials.** Give each consumer its own username/password so you can revoke one without affecting others.
+3. **Store hashes, not passwords.** Verify against bcrypt/argon2 hashes server-side.
+4. **Redact the Authorization header** in access logs and error trackers.
+5. **Rotate regularly**, and scope Basic Auth to low-sensitivity or internal resources.
+6. **Add network controls** — VPN, IP allow-lists, or a WAF — for anything important.
+
+## When to Choose Something Else
+
+If you need expiring access, per-user permissions, or revocation without password changes, use Bearer tokens instead — see [Basic Auth vs Bearer Token](/blog/basic-auth-vs-bearer-token) and [OAuth 2.0 and OpenID Connect](/blog/oauth2-openid-connect-complete-guide). For end-user login in a consumer app, Basic Auth is the wrong tool.
+
+## Frequently Asked Questions
+
+**Is HTTP Basic Authentication secure?**
+Only over HTTPS. Base64 is reversible, so without TLS the password travels in effectively cleartext. With TLS plus per-client credentials and header redaction, Basic Auth is acceptable for internal and machine-to-machine APIs.
+
+**Is Base64 encoding encryption?**
+No. Base64 has no key and is reversible by anyone. It provides zero confidentiality on its own.
+
+**Can I use Basic Auth in production?**
+Yes, for internal or service-to-service APIs over HTTPS with proper credential hygiene. Avoid it for end-user authentication in public-facing apps.
+
+Generate and inspect Basic Auth headers with the [Basic Auth generator](/basic-auth-generator), and see the full scheme in [HTTP Basic Authentication: How It Works](/blog/basic-auth-generator-guide).
+`,
+  },
+  {
+    slug: '401-vs-403-unauthorized-forbidden',
+    toolPath: '/http-status-codes',
+    title: '401 vs 403: Unauthorized vs Forbidden Explained',
+    description: 'The difference between HTTP 401 Unauthorized and 403 Forbidden — who each one is for, the WWW-Authenticate header, and how to decide which to return in your API.',
+    keywords: ['401 vs 403', 'unauthorized vs forbidden', '401 unauthorized', '403 forbidden', 'http status codes authentication'],
+    category: 'Web',
+    publishedAt: '2026-06-11',
+    content: `## The One-Sentence Difference
+
+**401 Unauthorized** means "I don't know who you are — authenticate." **403 Forbidden** means "I know who you are, and you still can't have this." The first is about *authentication* (identity), the second about *authorization* (permission).
+
+## 401 Unauthorized
+
+A \`401\` says the request lacks valid credentials. The name is a historical misnomer — it really means *unauthenticated*. A correct \`401\` must include a \`WWW-Authenticate\` header telling the client how to authenticate:
+
+\`\`\`http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Basic realm="Admin Area"
+\`\`\`
+
+The client is expected to **retry with credentials** — for example an \`Authorization: Basic ...\` header (see [the Authorization header explained](/blog/http-authorization-header-explained)). If you send credentials and still get \`401\`, the credentials were rejected; re-check them with the practical tips in [Basic Auth in curl, Postman, fetch](/blog/how-to-use-basic-auth-curl-postman-fetch).
+
+## 403 Forbidden
+
+A \`403\` says the server understood the request and the client's identity, but refuses to authorize it. Retrying with the same credentials will **not** help — the account simply lacks permission, or a rule (IP block, plan limit, ownership check) denies it. A \`403\` does not use \`WWW-Authenticate\`, because re-authenticating changes nothing.
+
+## How to Decide Which to Return
+
+| Situation | Return |
+|-----------|--------|
+| No credentials sent | 401 |
+| Credentials sent but invalid/expired | 401 |
+| Valid identity, but lacks permission | 403 |
+| Valid identity, resource hidden for privacy | 404 (sometimes preferred over 403) |
+
+A subtle design choice: some APIs return \`404 Not Found\` instead of \`403\` for resources a user shouldn't even know exist, to avoid leaking their existence. Look up the exact semantics of any code with the [HTTP status codes reference](/http-status-codes).
+
+## Common Mistakes
+
+- Returning \`401\` without a \`WWW-Authenticate\` header — technically non-compliant and confuses clients.
+- Using \`403\` when you mean \`401\` (no credentials) — clients won't know to authenticate.
+- Returning \`200\` with an error body for an auth failure — breaks clients that rely on status codes.
+
+## Frequently Asked Questions
+
+**What is the difference between 401 and 403?**
+401 means the request is not authenticated (no or invalid credentials) and the client should authenticate; 403 means the client is authenticated but not allowed, and retrying won't help.
+
+**Does 401 require a WWW-Authenticate header?**
+Yes. A compliant 401 response includes \`WWW-Authenticate\` naming the scheme (e.g. \`Basic\`, \`Bearer\`) the client should use.
+
+**Should I return 403 or 404 for a forbidden resource?**
+Use 403 when it's fine to reveal the resource exists. Use 404 when even acknowledging its existence would leak information.
+
+Look up any response code with the [HTTP status codes tool](/http-status-codes), and see how authentication headers work in [The HTTP Authorization Header Explained](/blog/http-authorization-header-explained).
+`,
+  },
 ];
