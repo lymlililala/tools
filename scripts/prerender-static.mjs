@@ -319,6 +319,69 @@ const blogArticles = fs.existsSync(articlesJsonPath)
   ? JSON.parse(fs.readFileSync(articlesJsonPath, 'utf-8'))
   : []
 
+// ── 内链索引：toolPath → 文章列表（用于相关文章 / 工具页反向链接）────────────
+const articlesByTool = {}
+for (const a of blogArticles) (articlesByTool[a.toolPath] ||= []).push(a)
+const articlesByRecency = [...blogArticles].sort((x, y) => (y.publishedAt || '').localeCompare(x.publishedAt || ''))
+
+// 为一篇文章挑选相关文章（确定性）：同 toolPath > 同工具分类 > 最近
+function relatedArticles(article, n = 6) {
+  const seen = new Set([article.slug])
+  const picks = []
+  const add = (a) => { if (a && !seen.has(a.slug)) { seen.add(a.slug); picks.push(a) } }
+  // 1) 同 toolPath（最强相关信号）
+  for (const a of (articlesByTool[article.toolPath] || [])) { if (picks.length >= n) break; add(a) }
+  // 2) 同「工具分类」
+  if (picks.length < n) {
+    const toolSlug = (article.toolPath || '').replace(/^\//, '')
+    const cat = slugCategory[toolSlug]
+    if (cat) {
+      const catTools = new Set((toolCategories[cat] || []).map(s => `/${s}`))
+      for (const a of articlesByRecency) { if (picks.length >= n) break; if (catTools.has(a.toolPath)) add(a) }
+    }
+  }
+  // 3) 最近文章兜底（保证每篇都有相关文章）
+  for (const a of articlesByRecency) { if (picks.length >= n) break; add(a) }
+  return picks.slice(0, n)
+}
+
+// 一个工具对应的指南文章（工具页反向内链用）
+function guidesForTool(toolSlug, n = 8) {
+  return (articlesByTool[`/${toolSlug}`] || []).slice(0, n)
+}
+
+// 工具别名 → 真实工具 slug（与 vercel.json 重定向一致），用于解析文章 toolPath
+const TOOL_ALIASES = {
+  'json-viewer': 'json-format', 'json-prettify': 'json-format', 'sql-prettify': 'sql-format',
+  'yaml-prettify': 'yaml-format', 'xml-formatter': 'xml-format', 'cypher': 'encryption',
+  'file-to-base64': 'base64-string-converter', 'base64-converter': 'base64-string-converter',
+  'color-picker-converter': 'color-converter', 'hash': 'hash-text', 'text-stats': 'text-statistics',
+  'meta-tag-generator': 'og-meta-generator', 'otp-code-generator-and-validator': 'otp-generator',
+  'date-time-converter': 'date-converter', 'javascript-obfuscator': 'string-obfuscator',
+  'integer-base-converter': 'base-converter', 'image-converter': 'base64-file-converter',
+}
+// 文章碎片化 category（小写）→ toolCategories 键，用于无 toolPath 的纯博客文章
+const ARTICLE_CAT_TO_TOOLCAT = {
+  development: 'Development', backend: 'Development', 'software engineering': 'Development',
+  devops: 'Development', 'developer tools': 'Development', 'system design': 'Development',
+  architecture: 'Development', performance: 'Development', testing: 'Development',
+  python: 'Development', 'ai/ml engineering': 'Development', ai: 'Development', mobile: 'Development',
+  database: 'Development', databases: 'Development',
+  web: 'Web', frontend: 'Web',
+  security: 'Crypto', crypto: 'Crypto',
+  data: 'Data', converter: 'Converter', text: 'Text',
+  network: 'Network', math: 'Math', measurement: 'Measurement', 'images and videos': 'Images and videos',
+}
+// 解析一篇文章应推荐的工具分类（始终返回一个有效分类，保证 100% 有工具内链）
+function resolveToolCategory(article) {
+  let ts = (article.toolPath || '').replace(/^\//, '')
+  ts = TOOL_ALIASES[ts] || ts
+  if (slugCategory[ts]) return { cat: slugCategory[ts], ownTool: ts }
+  const mapped = ARTICLE_CAT_TO_TOOLCAT[(article.category || '').toLowerCase()]
+  return { cat: mapped || 'Development', ownTool: ts || null }
+}
+
+
 // 博客列表页 SEO 内容：注入所有博客文章链接（按发布时间降序）
 {
   const sorted = [...blogArticles].sort((a, b) =>
@@ -441,7 +504,18 @@ for (const slug of toolSlugs) {
     = i18n.description
     || `${toolTitle} — 免费在线工具，在浏览器中运行，无需安装，安全无需注册。`
 
-  const seoContent = buildToolSeoContent(i18n, slug)
+  let seoContent = buildToolSeoContent(i18n, slug)
+
+  // 工具页 → 相关指南文章 反向内链（按 toolPath 匹配的全部文章）
+  const toolGuides = guidesForTool(slug)
+  if (toolGuides.length > 0) {
+    const guideParts = ['      <nav aria-label="相关指南">', '        <h2>相关教程与指南</h2>', '        <ul>']
+    toolGuides.forEach((a) => {
+      guideParts.push(`          <li><a href="/blog/${a.slug}">${escapeHtml(a.title)}</a></li>`)
+    })
+    guideParts.push('        </ul>', '      </nav>')
+    seoContent += '\n' + guideParts.join('\n')
+  }
 
   // 收集 FAQ 数据用于 FAQPage schema
   const faqItems = []
@@ -506,7 +580,8 @@ for (const slug of toolSlugs) {
 }
 
 // ── 辅助：从 Markdown 内容构建博客文章 SEO 正文 HTML ──────────────────────────
-function buildArticleSeoContent(content, description, category) {
+function buildArticleSeoContent(article, related = []) {
+  const { content, description, toolPath } = article
   const raw = content || ''
   const parts = []
 
@@ -522,11 +597,24 @@ function buildArticleSeoContent(content, description, category) {
     parts.push(`      </article>`)
   }
 
-  // 同类工具推荐内链（根据文章分类）
-  if (category) {
-    const catTools = (toolCategories[category] || []).slice(0, 6)
+  // 相关文章内链(按 toolPath 聚类，填补文章↔文章互链空白)
+  if (related.length > 0) {
+    parts.push(`      <nav aria-label="相关文章">`)
+    parts.push(`        <h2>相关指南</h2>`)
+    parts.push(`        <ul>`)
+    related.forEach((a) => {
+      parts.push(`          <li><a href="/blog/${a.slug}">${escapeHtml(a.title)}</a></li>`)
+    })
+    parts.push(`        </ul>`)
+    parts.push(`      </nav>`)
+  }
+
+  // 同类工具推荐内链(解析工具分类，含别名解析 + 无 toolPath 时按文章分类归一化，保证 100% 覆盖)
+  const { cat, ownTool } = resolveToolCategory(article)
+  if (cat) {
+    const catTools = (toolCategories[cat] || []).filter(s => s !== ownTool).slice(0, 6)
     if (catTools.length > 0) {
-      const catLabel = categoryNames[category] || category
+      const catLabel = categoryNames[cat] || cat
       parts.push(`      <nav aria-label="相关工具">`)
       parts.push(`        <h2>推荐${catLabel}在线工具</h2>`)
       parts.push(`        <ul>`)
@@ -546,7 +634,7 @@ function buildArticleSeoContent(content, description, category) {
 
 // 3. 博客文章路由（从 articles.data.ts 读取）
 for (const article of blogArticles) {
-  const { slug, title, description, keywords = [], category = 'Development', publishedAt, content } = article
+  const { slug, toolPath, title, description, keywords = [], category = 'Development', publishedAt, content } = article
 
   // 从 markdown 内容提取纯文本摘要（取前 300 字符，去掉 markdown 语法）
   const plainText = (content || '')
@@ -558,7 +646,7 @@ for (const article of blogArticles) {
     .trim()
     .slice(0, 300)
 
-  const articleSeoContent = buildArticleSeoContent(content, description, category)
+  const articleSeoContent = buildArticleSeoContent(article, relatedArticles(article))
 
   const articleRoute = {
     path: `/blog/${slug}`,
