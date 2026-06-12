@@ -18,7 +18,9 @@ interface Result {
 
 const result = computed((): Result => {
   const raw = debouncedJson.value.trim();
-  if (!raw) return { csv: '', error: null };
+  if (!raw) {
+    return { csv: '', error: null };
+  }
 
   try {
     const parsed = JSON5.parse(raw);
@@ -41,7 +43,9 @@ const isInvalid = computed(() => hasInput.value && !!parseError.value);
 
 // ── 格式化输入 ────────────────────────────────────────────────
 function formatInput() {
-  if (!jsonInput.value.trim()) return;
+  if (!jsonInput.value.trim()) {
+    return;
+  }
   try {
     const parsed = JSON5.parse(jsonInput.value);
     jsonInput.value = JSON.stringify(parsed, null, 2);
@@ -62,7 +66,9 @@ const { copy: copyCsv, isJustCopied } = useCopy({
 
 // ── 下载 CSV ──────────────────────────────────────────────────
 function downloadCsv() {
-  if (!csvOutput.value) return;
+  if (!csvOutput.value) {
+    return;
+  }
   const blob = new Blob([csvOutput.value], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -74,7 +80,9 @@ function downloadCsv() {
 
 // ── 统计信息 ──────────────────────────────────────────────────
 const stats = computed(() => {
-  if (!csvOutput.value) return null;
+  if (!csvOutput.value) {
+    return null;
+  }
   const lines = csvOutput.value.split('\n');
   const rows = lines.length - 1; // 减去标题行
   const cols = lines[0]?.split(',').length ?? 0;
@@ -84,7 +92,7 @@ const stats = computed(() => {
 
 <template>
   <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="csv-panes tool-wide">
+  <div class="tool-wide csv-panes">
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">

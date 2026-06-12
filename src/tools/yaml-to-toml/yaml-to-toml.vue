@@ -14,11 +14,15 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedYaml.value.trim();
-  if (!raw) return { toml: '', error: null };
+  if (!raw) {
+    return { toml: '', error: null };
+  }
 
   try {
     const obj = parseYaml(raw, { merge: true });
-    if (obj === null || obj === undefined) return { toml: '', error: null };
+    if (obj === null || obj === undefined) {
+      return { toml: '', error: null };
+    }
     const toml = [stringifyToml(obj as any)].flat().join('\n').trim();
     return { toml, error: null };
   }
@@ -30,18 +34,6 @@ const result = computed((): ConvertResult => {
 const tomlOutput = computed(() => result.value.toml);
 const parseError = computed(() => result.value.error);
 
-// ── 下载 ─────────────────────────────────────────────────────────────────
-function downloadToml() {
-  if (!tomlOutput.value) return;
-  const blob = new Blob([tomlOutput.value], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'output.toml';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 // ── 清空 ─────────────────────────────────────────────────────────────────
 function clearInput() {
   yamlInput.value = '';
@@ -49,7 +41,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="yaml-toml-wrap tool-wide">
+  <div class="tool-wide yaml-toml-wrap">
     <div class="editor-grid">
       <!-- 左：YAML 输入 -->
       <div class="pane">

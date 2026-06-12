@@ -16,7 +16,9 @@ const networkInfo = computed(() => withDefaultOnError(() => getNetworkInfo(ip.va
 
 // ── 错误信息 ──────────────────────────────────────────────────
 const parseError = computed((): string => {
-  if (!ip.value.trim()) return '';
+  if (!ip.value.trim()) {
+    return '';
+  }
   if (!isNotThrowing(() => getNetworkInfo(ip.value.trim()))) {
     return t('tools.ipv4-subnet-calculator.parseError');
   }
@@ -99,7 +101,9 @@ const sections = computed((): Section[] => [
 // ── 翻页 ──────────────────────────────────────────────────────
 function switchToBlock(count: number) {
   const next = networkInfo.value?.next(count);
-  if (next) ip.value = next.toString();
+  if (next) {
+    ip.value = next.toString();
+  }
 }
 
 // ── 行复制 ────────────────────────────────────────────────────
@@ -109,7 +113,9 @@ const { copy } = useCopy({ createToast: true, text: computed(() => t('tools.ipv4
 async function copyRow(label: string, value: string) {
   await copy(value);
   copiedKey.value = label;
-  setTimeout(() => { copiedKey.value = ''; }, 1800);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1800);
 }
 </script>
 
@@ -125,7 +131,7 @@ async function copyRow(label: string, value: string) {
           :placeholder="t('tools.ipv4-subnet-calculator.inputPlaceholder')"
           spellcheck="false"
           autocomplete="off"
-        />
+        >
       </div>
       <transition name="slide-down">
         <div v-if="hasError" class="error-msg">

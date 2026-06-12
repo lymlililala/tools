@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 // ── 配置 ──────────────────────────────────────────────────────
 const indentSize = useStorage('yaml-prettify:indent-size', 2);
-const sortKeys   = useStorage('yaml-prettify:sort-keys', false);
+const sortKeys = useStorage('yaml-prettify:sort-keys', false);
 
 // ── 输入 ──────────────────────────────────────────────────────
 const rawYaml = useStorage('yaml-prettify:raw-yaml', '');
@@ -23,7 +23,9 @@ const cleanYaml = computed(() =>
 // ── 解析错误 ──────────────────────────────────────────────────
 const parseError = computed(() => {
   const raw = debouncedYaml.value.trim();
-  if (!raw) return null;
+  if (!raw) {
+    return null;
+  }
   try {
     yaml.parse(raw);
     return null;
@@ -33,24 +35,32 @@ const parseError = computed(() => {
   }
 });
 
-const hasInput  = computed(() => rawYaml.value.trim().length > 0);
+const hasInput = computed(() => rawYaml.value.trim().length > 0);
 const isInvalid = computed(() => hasInput.value && parseError.value !== null);
-const isValid   = computed(() => hasInput.value && parseError.value === null);
+const isValid = computed(() => hasInput.value && parseError.value === null);
 
 // ── 文件上传 ──────────────────────────────────────────────────
 const fileInputRef = ref<HTMLInputElement | null>(null);
-function triggerUpload() { fileInputRef.value?.click(); }
+function triggerUpload() {
+  fileInputRef.value?.click();
+}
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   const reader = new FileReader();
-  reader.onload = () => { rawYaml.value = reader.result as string; };
+  reader.onload = () => {
+    rawYaml.value = reader.result as string;
+  };
   reader.readAsText(file, 'utf-8');
   (e.target as HTMLInputElement).value = '';
 }
 
 // ── 清空 ──────────────────────────────────────────────────────
-function clearInput() { rawYaml.value = ''; }
+function clearInput() {
+  rawYaml.value = '';
+}
 
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy: copyYaml, isJustCopied } = useCopy({
@@ -60,7 +70,9 @@ const { copy: copyYaml, isJustCopied } = useCopy({
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadYaml() {
-  if (!cleanYaml.value) return;
+  if (!cleanYaml.value) {
+    return;
+  }
   const blob = new Blob([cleanYaml.value], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -73,115 +85,119 @@ function downloadYaml() {
 
 <template>
   <div class="tool-wide">
-  <!-- ── 配置工具栏 ─────────────────────────────────────────── -->
-  <div class="toolbar">
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.yaml-viewer.sortKeys') }}</span>
-      <n-switch v-model:value="sortKeys" size="small" />
-    </div>
-    <div class="toolbar-divider" />
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.yaml-viewer.indentSize') }}</span>
-      <div class="indent-ctrl">
-        <button class="indent-btn" :disabled="indentSize <= 1" @click="indentSize = Math.max(1, indentSize - 1)">−</button>
-        <span class="indent-val">{{ indentSize }}</span>
-        <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">+</button>
+    <!-- ── 配置工具栏 ─────────────────────────────────────────── -->
+    <div class="toolbar">
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.yaml-viewer.sortKeys') }}</span>
+        <n-switch v-model:value="sortKeys" size="small" />
       </div>
-    </div>
-  </div>
-
-  <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="yaml-panes">
-    <!-- 输入面板 -->
-    <div class="pane" :class="{ 'pane--error': isInvalid }">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.yaml-viewer.rawYaml') }}</span>
-
-        <!-- 状态徽章 -->
-        <span v-if="isValid" class="status-badge status-badge--valid">
-          <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          {{ t('tools.yaml-viewer.valid') }}
-        </span>
-        <span v-else-if="isInvalid" class="status-badge status-badge--error">
-          <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          {{ t('tools.yaml-viewer.invalid') }}
-        </span>
-
-        <!-- 操作按钮 -->
-        <div class="action-group">
-          <c-tooltip :tooltip="t('tools.yaml-viewer.uploadFile')" position="bottom">
-            <button class="hdr-btn" @click="triggerUpload">
-              <icon-mdi-upload />
-            </button>
-          </c-tooltip>
-          <input
-            ref="fileInputRef"
-            type="file"
-            accept=".yaml,.yml,text/yaml"
-            style="display:none"
-            @change="onFileChange"
-          />
-          <c-tooltip v-if="hasInput" :tooltip="t('tools.yaml-viewer.clearInput')" position="bottom">
-            <button class="hdr-btn" @click="clearInput">
-              <icon-mdi-close-circle-outline />
-            </button>
-          </c-tooltip>
+      <div class="toolbar-divider" />
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.yaml-viewer.indentSize') }}</span>
+        <div class="indent-ctrl">
+          <button class="indent-btn" :disabled="indentSize <= 1" @click="indentSize = Math.max(1, indentSize - 1)">
+            −
+          </button>
+          <span class="indent-val">{{ indentSize }}</span>
+          <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">
+            +
+          </button>
         </div>
       </div>
-
-      <c-code-input
-        v-model="rawYaml"
-        language="yaml"
-        :placeholder="t('tools.yaml-viewer.inputPlaceholder')"
-        class="code-editor"
-        :class="{ 'editor--error': isInvalid }"
-      />
-
-      <!-- 错误详情 -->
-      <transition name="slide-down">
-        <div v-if="parseError" class="error-panel">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>{{ parseError }}</span>
-        </div>
-      </transition>
     </div>
 
-    <!-- 输出面板 -->
-    <div class="pane">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.yaml-viewer.formattedResult') }}</span>
-        <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? t('tools.yaml-viewer.copied') : t('tools.yaml-viewer.copyYaml')" position="bottom">
-            <button
-              class="hdr-btn"
-              :class="{ 'hdr-btn--success': isJustCopied }"
-              :disabled="!cleanYaml"
-              @click="copyYaml()"
+    <!-- ── 双面板 ─────────────────────────────────────────────── -->
+    <div class="yaml-panes">
+      <!-- 输入面板 -->
+      <div class="pane" :class="{ 'pane--error': isInvalid }">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.yaml-viewer.rawYaml') }}</span>
+
+          <!-- 状态徽章 -->
+          <span v-if="isValid" class="status-badge status-badge--valid">
+            <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
+            {{ t('tools.yaml-viewer.valid') }}
+          </span>
+          <span v-else-if="isInvalid" class="status-badge status-badge--error">
+            <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
+            {{ t('tools.yaml-viewer.invalid') }}
+          </span>
+
+          <!-- 操作按钮 -->
+          <div class="action-group">
+            <c-tooltip :tooltip="t('tools.yaml-viewer.uploadFile')" position="bottom">
+              <button class="hdr-btn" @click="triggerUpload">
+                <icon-mdi-upload />
+              </button>
+            </c-tooltip>
+            <input
+              ref="fileInputRef"
+              type="file"
+              accept=".yaml,.yml,text/yaml"
+              style="display:none"
+              @change="onFileChange"
             >
-              <icon-mdi-check v-if="isJustCopied" />
-              <icon-mdi-content-copy v-else />
-            </button>
-          </c-tooltip>
-          <c-tooltip :tooltip="t('tools.yaml-viewer.downloadFile')" position="bottom">
-            <button class="hdr-btn" :disabled="!cleanYaml" @click="downloadYaml">
-              <icon-mdi-download />
-            </button>
-          </c-tooltip>
+            <c-tooltip v-if="hasInput" :tooltip="t('tools.yaml-viewer.clearInput')" position="bottom">
+              <button class="hdr-btn" @click="clearInput">
+                <icon-mdi-close-circle-outline />
+              </button>
+            </c-tooltip>
+          </div>
         </div>
+
+        <c-code-input
+          v-model="rawYaml"
+          language="yaml"
+          :placeholder="t('tools.yaml-viewer.inputPlaceholder')"
+          class="code-editor"
+          :class="{ 'editor--error': isInvalid }"
+        />
+
+        <!-- 错误详情 -->
+        <transition name="slide-down">
+          <div v-if="parseError" class="error-panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ parseError }}</span>
+          </div>
+        </transition>
       </div>
 
-      <c-code-input
-        :model-value="cleanYaml"
-        language="yaml"
-        :placeholder="t('tools.yaml-viewer.outputPlaceholder')"
-        class="code-editor"
-        readonly
-      />
+      <!-- 输出面板 -->
+      <div class="pane">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.yaml-viewer.formattedResult') }}</span>
+          <div class="action-group">
+            <c-tooltip :tooltip="isJustCopied ? t('tools.yaml-viewer.copied') : t('tools.yaml-viewer.copyYaml')" position="bottom">
+              <button
+                class="hdr-btn"
+                :class="{ 'hdr-btn--success': isJustCopied }"
+                :disabled="!cleanYaml"
+                @click="copyYaml()"
+              >
+                <icon-mdi-check v-if="isJustCopied" />
+                <icon-mdi-content-copy v-else />
+              </button>
+            </c-tooltip>
+            <c-tooltip :tooltip="t('tools.yaml-viewer.downloadFile')" position="bottom">
+              <button class="hdr-btn" :disabled="!cleanYaml" @click="downloadYaml">
+                <icon-mdi-download />
+              </button>
+            </c-tooltip>
+          </div>
+        </div>
+
+        <c-code-input
+          :model-value="cleanYaml"
+          language="yaml"
+          :placeholder="t('tools.yaml-viewer.outputPlaceholder')"
+          class="code-editor"
+          readonly
+        />
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

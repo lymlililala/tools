@@ -6,7 +6,11 @@ const { t } = useI18n();
 // ── 实时当前时间 ───────────────────────────────────────────────────────────
 const now = ref(Date.now());
 let timer: ReturnType<typeof setInterval>;
-onMounted(() => { timer = setInterval(() => { now.value = Date.now(); }, 1000); });
+onMounted(() => {
+  timer = setInterval(() => {
+    now.value = Date.now();
+  }, 1000);
+});
 onUnmounted(() => clearInterval(timer));
 
 const currentTimestamp = computed(() => Math.floor(now.value / 1000));
@@ -26,17 +30,23 @@ interface ParseResult {
 
 function smartParse(raw: string): ParseResult | null {
   const trimmed = raw.trim();
-  if (trimmed === '') return null;
+  if (trimmed === '') {
+    return null;
+  }
 
   // 纯数字：按长度自动决定秒/毫秒
   if (/^-?\d+$/.test(trimmed)) {
     const n = Number(trimmed);
-    if (Number.isNaN(n)) return null;
+    if (Number.isNaN(n)) {
+      return null;
+    }
     // 13 位及以上视为毫秒
     const isMs = Math.abs(n).toString().length >= 13;
     try {
       const d = isMs ? new Date(n) : fromUnixTime(n);
-      if (Number.isNaN(d.getTime())) return null;
+      if (Number.isNaN(d.getTime())) {
+        return null;
+      }
       return { date: d, mode: isMs ? 'unix-ms' : 'unix-s' };
     }
     catch { return null; }
@@ -45,7 +55,9 @@ function smartParse(raw: string): ParseResult | null {
   // 日期字符串
   try {
     const d = new Date(trimmed);
-    if (Number.isNaN(d.getTime())) return null;
+    if (Number.isNaN(d.getTime())) {
+      return null;
+    }
     return { date: d, mode: 'date-str' };
   }
   catch { return null; }
@@ -55,8 +67,12 @@ const parseResult = computed(() => smartParse(tsInput.value));
 const parsedDate = computed(() => parseResult.value?.date ?? null);
 const parseMode = computed(() => parseResult.value?.mode ?? null);
 const tsError = computed(() => {
-  if (tsInput.value.trim() === '') return null;
-  if (!parseResult.value) return 'Invalid input — enter a Unix timestamp or a date string';
+  if (tsInput.value.trim() === '') {
+    return null;
+  }
+  if (!parseResult.value) {
+    return 'Invalid input — enter a Unix timestamp or a date string';
+  }
   return null;
 });
 
@@ -74,15 +90,23 @@ function getRelative(d: Date): string {
   const diff = Math.floor((Date.now() - d.getTime()) / 1000);
   const abs = Math.abs(diff);
   const dir = diff >= 0 ? 'ago' : 'from now';
-  if (abs < 60) return `${abs} second${abs !== 1 ? 's' : ''} ${dir}`;
-  if (abs < 3600) return `${Math.floor(abs / 60)} minute${Math.floor(abs / 60) !== 1 ? 's' : ''} ${dir}`;
-  if (abs < 86400) return `${Math.floor(abs / 3600)} hour${Math.floor(abs / 3600) !== 1 ? 's' : ''} ${dir}`;
+  if (abs < 60) {
+    return `${abs} second${abs !== 1 ? 's' : ''} ${dir}`;
+  }
+  if (abs < 3600) {
+    return `${Math.floor(abs / 60)} minute${Math.floor(abs / 60) !== 1 ? 's' : ''} ${dir}`;
+  }
+  if (abs < 86400) {
+    return `${Math.floor(abs / 3600)} hour${Math.floor(abs / 3600) !== 1 ? 's' : ''} ${dir}`;
+  }
   return `${Math.floor(abs / 86400)} day${Math.floor(abs / 86400) !== 1 ? 's' : ''} ${dir}`;
 }
 
 const tsResults = computed(() => {
   const d = parsedDate.value;
-  if (!d) return null;
+  if (!d) {
+    return null;
+  }
   return {
     iso: d.toISOString(),
     utc: d.toUTCString(),
@@ -102,22 +126,30 @@ function useNow() {
 }
 
 // ── 日期 → 时间戳 ─────────────────────────────────────────────────────────
-const dateInput = ref(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"));
+const dateInput = ref(format(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss'));
 const dateError = computed(() => {
-  if (dateInput.value.trim() === '') return null;
+  if (dateInput.value.trim() === '') {
+    return null;
+  }
   try {
     const d = new Date(dateInput.value);
-    if (Number.isNaN(d.getTime())) return 'Invalid date string';
+    if (Number.isNaN(d.getTime())) {
+      return 'Invalid date string';
+    }
     return null;
   }
   catch { return 'Invalid date string'; }
 });
 
 const dateResults = computed(() => {
-  if (dateError.value !== null) return null;
+  if (dateError.value !== null) {
+    return null;
+  }
   try {
     const d = new Date(dateInput.value);
-    if (Number.isNaN(d.getTime())) return null;
+    if (Number.isNaN(d.getTime())) {
+      return null;
+    }
     return {
       unix: String(Math.floor(d.getTime() / 1000)),
       ms: String(d.getTime()),
@@ -136,19 +168,27 @@ const dateResults = computed(() => {
       </template>
       <div class="current-grid">
         <div class="current-item">
-          <div class="current-label">Unix Timestamp (s)</div>
-          <c-text-copyable :value="String(currentTimestamp)" class="current-value mono" />
+          <div class="current-label">
+            Unix Timestamp (s)
+          </div>
+          <c-text-copyable :value="String(currentTimestamp)" class="mono current-value" />
         </div>
         <div class="current-item">
-          <div class="current-label">Milliseconds</div>
+          <div class="current-label">
+            Milliseconds
+          </div>
           <c-text-copyable :value="String(currentMs)" class="current-value mono" />
         </div>
         <div class="current-item">
-          <div class="current-label">ISO 8601</div>
+          <div class="current-label">
+            ISO 8601
+          </div>
           <c-text-copyable :value="new Date(now).toISOString()" class="current-value mono" />
         </div>
         <div class="current-item">
-          <div class="current-label">Local Time</div>
+          <div class="current-label">
+            Local Time
+          </div>
           <c-text-copyable :value="new Date(now).toLocaleString()" class="current-value mono" />
         </div>
       </div>
@@ -194,7 +234,7 @@ const dateResults = computed(() => {
       <div v-if="tsResults" class="result-table">
         <div v-for="(val, key) in tsResults" :key="key" class="result-row">
           <span class="result-key">{{ key }}</span>
-          <c-text-copyable :value="val" class="result-val mono" />
+          <c-text-copyable :value="val" class="mono result-val" />
         </div>
       </div>
 

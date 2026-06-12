@@ -4,28 +4,35 @@ import { describe, expect, it } from 'vitest';
 
 function hexToHsl(hex: string): { h: number; s: number; l: number } | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return null;
-  const r = parseInt(result[1], 16) / 255;
-  const g = parseInt(result[2], 16) / 255;
-  const b = parseInt(result[3], 16) / 255;
+  if (!result) {
+    return null;
+  }
+  const r = Number.parseInt(result[1], 16) / 255;
+  const g = Number.parseInt(result[2], 16) / 255;
+  const b = Number.parseInt(result[3], 16) / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0; let s = 0;
+  let h = 0;
+  let s = 0;
   const l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        break;
+      case g: h = ((b - r) / d + 2) / 6;
+        break;
+      case b: h = ((r - g) / d + 4) / 6;
+        break;
     }
   }
   return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
 function hslToHex(h: number, s: number, l: number): string {
-  s /= 100; l /= 100;
+  s /= 100;
+  l /= 100;
   const a = s * Math.min(l, 1 - l);
   const f = (n: number) => {
     const k = (n + h / 30) % 12;
@@ -37,8 +44,10 @@ function hslToHex(h: number, s: number, l: number): string {
 
 function hexToRgb(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return '';
-  return `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`;
+  if (!result) {
+    return '';
+  }
+  return `rgb(${Number.parseInt(result[1], 16)}, ${Number.parseInt(result[2], 16)}, ${Number.parseInt(result[3], 16)})`;
 }
 
 describe('Color Palette Generator', () => {
@@ -127,15 +136,17 @@ describe('Color Palette Generator', () => {
     testColors.forEach((hex) => {
       it(`${hex} 十六进制往返转换应一致`, () => {
         const hsl = hexToHsl(hex);
-        if (!hsl) return;
+        if (!hsl) {
+          return;
+        }
         const back = hslToHex(hsl.h, hsl.s, hsl.l).toLowerCase();
         // 允许 ±1 的舍入误差
-        const originalR = parseInt(hex.slice(1, 3), 16);
-        const originalG = parseInt(hex.slice(3, 5), 16);
-        const originalB = parseInt(hex.slice(5, 7), 16);
-        const backR = parseInt(back.slice(1, 3), 16);
-        const backG = parseInt(back.slice(3, 5), 16);
-        const backB = parseInt(back.slice(5, 7), 16);
+        const originalR = Number.parseInt(hex.slice(1, 3), 16);
+        const originalG = Number.parseInt(hex.slice(3, 5), 16);
+        const originalB = Number.parseInt(hex.slice(5, 7), 16);
+        const backR = Number.parseInt(back.slice(1, 3), 16);
+        const backG = Number.parseInt(back.slice(3, 5), 16);
+        const backB = Number.parseInt(back.slice(5, 7), 16);
         expect(Math.abs(originalR - backR)).toBeLessThanOrEqual(1);
         expect(Math.abs(originalG - backG)).toBeLessThanOrEqual(1);
         expect(Math.abs(originalB - backB)).toBeLessThanOrEqual(1);

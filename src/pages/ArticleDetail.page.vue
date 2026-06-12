@@ -1,58 +1,59 @@
 <script setup lang="ts">
-import { useRoute, RouterLink } from 'vue-router'
-import { useHead } from '@vueuse/head'
-import { fetchArticleDetail } from '../lib/articles'
-import type { DbArticle } from '../lib/articles'
+import { RouterLink, useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
+import { fetchArticleDetail } from '../lib/articles';
+import type { DbArticle } from '../lib/articles';
 
-const route = useRoute()
-const slug = computed(() => route.params.slug as string)
+const route = useRoute();
+const slug = computed(() => route.params.slug as string);
 
 // ─── State ────────────────────────────────────────────────────────────────────
-const article = ref<DbArticle | null>(null)
-const relatedArticles = ref<DbArticle[]>([])
-const loading = ref(true)
-const error = ref<string | null>(null)
+const article = ref<DbArticle | null>(null);
+const relatedArticles = ref<DbArticle[]>([]);
+const loading = ref(true);
+const error = ref<string | null>(null);
 
 // 仅当文章 toolPath 与主题相关时才显示 "Try the Tool" CTA。
 // 白名单来自构建时生成的 /article-tools.json（DB 里约 26% 的 toolPath 是历史错配）。
-const toolPathMap = ref<Record<string, string>>({})
+const toolPathMap = ref<Record<string, string>>({});
 fetch('/article-tools.json')
   .then(r => (r.ok ? r.json() : {}))
-  .then((m) => { toolPathMap.value = m })
-  .catch(() => {})
-const effectiveToolPath = computed(() => toolPathMap.value[slug.value] || '')
+  .then((m) => { toolPathMap.value = m; })
+  .catch(() => {});
+const effectiveToolPath = computed(() => toolPathMap.value[slug.value] || '');
 
 // ─── Fetch article from Supabase ──────────────────────────────────────────────
 async function fetchArticle(s: string) {
-  loading.value = true
-  error.value = null
-  article.value = null
-  relatedArticles.value = []
+  loading.value = true;
+  error.value = null;
+  article.value = null;
+  relatedArticles.value = [];
 
   try {
-    const { article: data, related } = await fetchArticleDetail(s)
-    article.value = data
-    relatedArticles.value = related
+    const { article: data, related } = await fetchArticleDetail(s);
+    article.value = data;
+    relatedArticles.value = related;
   }
   catch (e: any) {
     error.value = e?.status === 404
       ? 'Article not found'
-      : (e?.message ?? '加载失败，请稍后重试')
+      : (e?.message ?? '加载失败，请稍后重试');
   }
   finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 // Re-fetch when slug changes
-watch(slug, fetchArticle, { immediate: true })
+watch(slug, fetchArticle, { immediate: true });
 
 // ─── SEO ──────────────────────────────────────────────────────────────────────
-const canonicalUrl = computed(() => `https://myutl.com/blog/${slug.value}`)
+const canonicalUrl = computed(() => `https://myutl.com/blog/${slug.value}`);
 
 watchEffect(() => {
-  if (!article.value)
-    return
+  if (!article.value) {
+    return;
+  }
   useHead({
     title: `${article.value.title} | MyUtl Blog`,
     meta: [
@@ -81,8 +82,8 @@ watchEffect(() => {
         }),
       },
     ],
-  })
-})
+  });
+});
 </script>
 
 <template>
@@ -95,16 +96,22 @@ watchEffect(() => {
     <!-- Error / Not Found -->
     <div v-else-if="error || !article" class="not-found">
       <h2>Article not found</h2>
-      <RouterLink to="/blog">← Back to Blog</RouterLink>
+      <RouterLink to="/blog">
+        ← Back to Blog
+      </RouterLink>
     </div>
 
     <!-- Article -->
     <template v-else>
       <!-- Breadcrumb -->
       <nav class="breadcrumb">
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">
+          Home
+        </RouterLink>
         <span class="sep">›</span>
-        <RouterLink to="/blog">Blog</RouterLink>
+        <RouterLink to="/blog">
+          Blog
+        </RouterLink>
         <span class="sep">›</span>
         <span>{{ article.category }}</span>
       </nav>

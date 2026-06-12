@@ -7,13 +7,22 @@ const options = ref<string[]>(['Option A', 'Option B', 'Option C', 'Option D']);
 const duplicateWarning = ref(false);
 let duplicateTimer: ReturnType<typeof setTimeout> | null = null;
 
+// 转盘状态
+const isSpinning = ref(false);
+const selectedIndex = ref<number | null>(null);
+const showResult = ref(false);
+
 function addOption() {
   const text = inputText.value.trim();
-  if (!text) return;
+  if (!text) {
+    return;
+  }
   if (options.value.includes(text)) {
     // 提示重复
     duplicateWarning.value = true;
-    if (duplicateTimer) clearTimeout(duplicateTimer);
+    if (duplicateTimer) {
+      clearTimeout(duplicateTimer);
+    }
     duplicateTimer = setTimeout(() => (duplicateWarning.value = false), 2200);
     return;
   }
@@ -29,14 +38,10 @@ function removeOption(index: number) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter') addOption();
+  if (e.key === 'Enter') {
+    addOption();
+  }
 }
-
-// 转盘状态
-const isSpinning = ref(false);
-const rotation = ref(0);
-const selectedIndex = ref<number | null>(null);
-const showResult = ref(false);
 
 // 颜色列表
 const COLORS = [
@@ -63,15 +68,15 @@ function updateCanvasSize() {
   }
 }
 
-const centerX = computed(() => canvasSize.value / 2);
-const centerY = computed(() => canvasSize.value / 2);
-const radius = computed(() => canvasSize.value / 2 - 8);
-
 function drawWheel(extraRotation = 0) {
   const canvas = canvasRef.value;
-  if (!canvas) return;
+  if (!canvas) {
+    return;
+  }
   const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  if (!ctx) {
+    return;
+  }
   const size = canvasSize.value;
   const cx = size / 2;
   const cy = size / 2;
@@ -89,7 +94,7 @@ function drawWheel(extraRotation = 0) {
     ctx.strokeStyle = '#e5e7eb';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.font = `13px sans-serif`;
+    ctx.font = '13px sans-serif';
     ctx.fillStyle = '#9ca3af';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -152,10 +157,14 @@ const showEmptyWarning = ref(false);
 let emptyWarnTimer: ReturnType<typeof setTimeout> | null = null;
 
 function spinWheel() {
-  if (isSpinning.value) return;
+  if (isSpinning.value) {
+    return;
+  }
   if (options.value.length < 2) {
     showEmptyWarning.value = true;
-    if (emptyWarnTimer) clearTimeout(emptyWarnTimer);
+    if (emptyWarnTimer) {
+      clearTimeout(emptyWarnTimer);
+    }
     emptyWarnTimer = setTimeout(() => (showEmptyWarning.value = false), 2500);
     return;
   }
@@ -173,7 +182,7 @@ function spinWheel() {
   const startTime = performance.now();
 
   function easeOut(t: number) {
-    return 1 - Math.pow(1 - t, 4);
+    return 1 - (1 - t) ** 4;
   }
 
   function animate(now: number) {
@@ -202,7 +211,9 @@ function spinWheel() {
 function quickPick() {
   if (options.value.length === 0) {
     showEmptyWarning.value = true;
-    if (emptyWarnTimer) clearTimeout(emptyWarnTimer);
+    if (emptyWarnTimer) {
+      clearTimeout(emptyWarnTimer);
+    }
     emptyWarnTimer = setTimeout(() => (showEmptyWarning.value = false), 2500);
     return;
   }
@@ -228,7 +239,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (animationId) cancelAnimationFrame(animationId);
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
 });
 
 const presets = computed(() => [
@@ -246,8 +259,12 @@ function applyPreset(items: string[]) {
 // 单选项时的状态文字
 const spinBtnDisabled = computed(() => isSpinning.value || options.value.length < 2);
 const spinBtnTitle = computed(() => {
-  if (options.value.length === 0) return t('tools.random-decision-picker.needMoreOptions');
-  if (options.value.length === 1) return t('tools.random-decision-picker.needMoreOptions');
+  if (options.value.length === 0) {
+    return t('tools.random-decision-picker.needMoreOptions');
+  }
+  if (options.value.length === 1) {
+    return t('tools.random-decision-picker.needMoreOptions');
+  }
   return '';
 });
 </script>
@@ -341,7 +358,9 @@ const spinBtnTitle = computed(() => {
       <div ref="containerRef" class="wheel-panel">
         <div class="wheel-wrap">
           <!-- 指针 -->
-          <div class="wheel-pointer">▼</div>
+          <div class="wheel-pointer">
+            ▼
+          </div>
           <canvas
             ref="canvasRef"
             :width="canvasSize"

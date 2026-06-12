@@ -82,7 +82,7 @@ const tools = computed<ToolCategory[]>(() => [
 
         <div class="topbar-right">
           <c-tooltip :tooltip="$t('menu.blogLink')" position="bottom">
-            <c-button to="/blog" variant="text" :aria-label="'Blog'" class="topbar-blog-btn">
+            <c-button to="/blog" variant="text" aria-label="Blog" class="topbar-blog-btn">
               <icon-mdi-newspaper-variant-outline style="font-size:17px" />
             </c-button>
           </c-tooltip>

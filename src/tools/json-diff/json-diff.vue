@@ -20,11 +20,15 @@ const rightJson = computed(() => withDefaultOnError(() => JSON5.parse(debouncedR
 
 // ── 验证 ──────────────────────────────────────────────────────────────────
 const leftError = computed(() => {
-  if (!rawLeftJson.value.trim()) return '';
+  if (!rawLeftJson.value.trim()) {
+    return '';
+  }
   return isNotThrowing(() => JSON5.parse(rawLeftJson.value)) ? '' : 'Invalid JSON format';
 });
 const rightError = computed(() => {
-  if (!rawRightJson.value.trim()) return '';
+  if (!rawRightJson.value.trim()) {
+    return '';
+  }
   return isNotThrowing(() => JSON5.parse(rawRightJson.value)) ? '' : 'Invalid JSON format';
 });
 
@@ -51,15 +55,22 @@ function swapJson() {
 }
 
 // ── 清空 ──────────────────────────────────────────────────────────────────
-function clearLeft() { rawLeftJson.value = ''; }
-function clearRight() { rawRightJson.value = ''; }
-function clearAll() { rawLeftJson.value = ''; rawRightJson.value = ''; }
+function clearLeft() {
+  rawLeftJson.value = '';
+}
+function clearRight() {
+  rawRightJson.value = '';
+}
+function clearAll() {
+  rawLeftJson.value = '';
+  rawRightJson.value = '';
+}
 
 const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value.trim());
 </script>
 
 <template>
-  <div class="json-diff-wrap tool-wide" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide json-diff-wrap" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ── 中间操作工具栏 ───────────────────────────────────────────── -->
     <div class="toolbar">
       <div class="toolbar-left">
@@ -134,7 +145,7 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
             <icon-mdi-numeric-1-circle-outline class="pane-num" />
             First JSON
           </span>
-          <span v-if="rawLeftJson && !leftError" class="pane-status valid">
+          <span v-if="rawLeftJson && !leftError" class="valid pane-status">
             <icon-mdi-check-circle-outline class="ps-icon" />Valid
           </span>
         </div>

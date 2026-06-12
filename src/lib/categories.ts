@@ -19,12 +19,12 @@ export const CATEGORY_META: CategoryMeta[] = [
   { slug: 'measurement', name: 'Measurement', label: 'Measurement Tools', description: 'Free online measurement tools — chronometer, temperature converter, BMI calculator, and a code benchmark builder.' },
   { slug: 'text', name: 'Text', label: 'Text Tools', description: 'Free online text tools — lorem ipsum, text statistics, diffing, emoji picker, string obfuscation, ASCII art, and more.' },
   { slug: 'data', name: 'Data', label: 'Data Tools', description: 'Free online data tools — phone number parsing and formatting, and IBAN validation and parsing.' },
-]
+];
 
 export function categorySlug(name: string): string {
-  return name.toLowerCase().replace(/\s+/g, '-')
+  return name.toLowerCase().replace(/\s+/g, '-');
 }
 
 export function findCategoryBySlug(slug: string): CategoryMeta | undefined {
-  return CATEGORY_META.find(c => c.slug === slug)
+  return CATEGORY_META.find(c => c.slug === slug);
 }

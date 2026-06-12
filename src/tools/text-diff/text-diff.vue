@@ -34,7 +34,7 @@ function swapTexts() {
 </script>
 
 <template>
-  <div class="td-wrapper tool-wide">
+  <div class="tool-wide td-wrapper">
     <!-- 工具栏 -->
     <div class="td-toolbar">
       <div class="toolbar-left">
@@ -79,7 +79,7 @@ function swapTexts() {
     </div>
 
     <!-- Diff 编辑器卡片 -->
-    <c-card class="td-card" important:pa-0 important:flex-1>
+    <c-card class="td-card" important:flex-1 important:pa-0>
       <c-diff-editor
         ref="diffEditorRef"
         v-model:original="originalText"

@@ -13,9 +13,14 @@ const encodedText = ref('Hello%20world%20%3A)');
 const debouncedPlain = refDebounced(plainText, 120);
 const debouncedEncoded = refDebounced(encodedText, 120);
 
+const encodeError = ref<string | null>(null);
+const decodeError = ref<string | null>(null);
+
 // 上方（明文）编辑 → 下方（编码）实时更新
 watch(debouncedPlain, (val) => {
-  if (activePane.value !== 'plain') return;
+  if (activePane.value !== 'plain') {
+    return;
+  }
   try {
     encodedText.value = encodeURIComponent(val);
     encodeError.value = null;
@@ -27,7 +32,9 @@ watch(debouncedPlain, (val) => {
 
 // 下方（编码）编辑 → 上方（明文）实时更新
 watch(debouncedEncoded, (val) => {
-  if (activePane.value !== 'encoded') return;
+  if (activePane.value !== 'encoded') {
+    return;
+  }
   try {
     plainText.value = decodeURIComponent(val);
     decodeError.value = null;
@@ -36,9 +43,6 @@ watch(debouncedEncoded, (val) => {
     decodeError.value = e?.message ?? 'Invalid percent-encoding sequence';
   }
 });
-
-const encodeError = ref<string | null>(null);
-const decodeError = ref<string | null>(null);
 
 // ── 编辑焦点切换 ──────────────────────────────────────────────────────────
 function onPlainInput(v: string) {
@@ -69,14 +73,18 @@ const copyPlainSuccess = ref(false);
 const copyEncodedSuccess = ref(false);
 
 async function copyPlain() {
-  if (!plainText.value) return;
+  if (!plainText.value) {
+    return;
+  }
   await navigator.clipboard.writeText(plainText.value);
   copyPlainSuccess.value = true;
   setTimeout(() => (copyPlainSuccess.value = false), 1600);
 }
 
 async function copyEncoded() {
-  if (!encodedText.value) return;
+  if (!encodedText.value) {
+    return;
+  }
   await navigator.clipboard.writeText(encodedText.value);
   copyEncodedSuccess.value = true;
   setTimeout(() => (copyEncodedSuccess.value = false), 1600);
@@ -88,7 +96,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
 </script>
 
 <template>
-  <div class="url-encoder-wrap tool-wide">
+  <div class="tool-wide url-encoder-wrap">
     <!-- 工具栏 -->
     <div class="toolbar">
       <div class="direction-hint">

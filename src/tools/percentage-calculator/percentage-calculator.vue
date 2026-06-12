@@ -6,18 +6,22 @@ const { t } = useI18n();
 // ─── 工具函数 ─────────────────────────────────────────────────────────────────
 /** 格式化数字结果，最多保留 8 位有效小数；超大数用科学计数法 */
 function formatResult(n: number): string {
-  if (!Number.isFinite(n) || Number.isNaN(n)) return '';
+  if (!Number.isFinite(n) || Number.isNaN(n)) {
+    return '';
+  }
   // 科学计数法阈值
   if (Math.abs(n) >= 1e12 || (Math.abs(n) < 1e-6 && n !== 0)) {
     return n.toPrecision(6);
   }
   // 保留最多 8 位小数，去除尾零
-  return parseFloat(n.toFixed(8)).toString();
+  return Number.parseFloat(n.toFixed(8)).toString();
 }
 
 /** 解析输入字符串为数字，返回 null 表示无效 */
 function parseNum(v: string): number | null {
-  if (v === '' || v === null || v === undefined) return null;
+  if (v === '' || v === null || v === undefined) {
+    return null;
+  }
   const n = Number(v);
   return Number.isNaN(n) ? null : n;
 }
@@ -29,7 +33,9 @@ const pctXNum = computed(() => parseNum(pctX.value));
 const pctYNum = computed(() => parseNum(pctY.value));
 
 const pctResult = computed(() => {
-  if (pctXNum.value === null || pctYNum.value === null) return '';
+  if (pctXNum.value === null || pctYNum.value === null) {
+    return '';
+  }
   return formatResult((pctYNum.value / 100) * pctXNum.value);
 });
 
@@ -40,8 +46,12 @@ const numXNum = computed(() => parseNum(numX.value));
 const numYNum = computed(() => parseNum(numY.value));
 
 const numResult = computed(() => {
-  if (numXNum.value === null || numYNum.value === null) return '';
-  if (numYNum.value === 0) return '';
+  if (numXNum.value === null || numYNum.value === null) {
+    return '';
+  }
+  if (numYNum.value === 0) {
+    return '';
+  }
   return formatResult((numXNum.value / numYNum.value) * 100);
 });
 
@@ -54,8 +64,12 @@ const numFromNum = computed(() => parseNum(numFrom.value));
 const numToNum = computed(() => parseNum(numTo.value));
 
 const changeResult = computed(() => {
-  if (numFromNum.value === null || numToNum.value === null) return '';
-  if (numFromNum.value === 0) return '';
+  if (numFromNum.value === null || numToNum.value === null) {
+    return '';
+  }
+  if (numFromNum.value === 0) {
+    return '';
+  }
   return formatResult(((numToNum.value - numFromNum.value) / numFromNum.value) * 100);
 });
 
@@ -64,10 +78,16 @@ const fromIsZero = computed(() => numFromNum.value !== null && numFromNum.value 
 // ─── 复制逻辑 ─────────────────────────────────────────────────────────────────
 const copiedKey = ref<string | null>(null);
 function copyValue(key: string, val: string) {
-  if (!val) return;
+  if (!val) {
+    return;
+  }
   navigator.clipboard.writeText(val).then(() => {
     copiedKey.value = key;
-    setTimeout(() => { if (copiedKey.value === key) copiedKey.value = null; }, 2000);
+    setTimeout(() => {
+      if (copiedKey.value === key) {
+        copiedKey.value = null;
+      }
+    }, 2000);
   });
 }
 </script>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { QRCodeErrorCorrectionLevel } from 'qrcode';
 import QRCode from 'qrcode';
-import { useStorage, useClipboard } from '@vueuse/core';
+
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useStorage } from '@vueuse/core';
 import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 import { useStyleStore } from '@/stores/style.store';
 
@@ -13,8 +15,8 @@ const text = useStorage('qr:text', 'https://it-tools.tech');
 const foreground = useStorage('qr:fg', '#000000');
 const background = useStorage('qr:bg', '#ffffff');
 const errorCorrectionLevel = useStorage<QRCodeErrorCorrectionLevel>('qr:ec', 'M');
-const margin = useStorage('qr:margin', 2);   // 边距 (0-10)
-const size = useStorage('qr:size', 300);     // 预览尺寸 px
+const margin = useStorage('qr:margin', 2); // 边距 (0-10)
+const size = useStorage('qr:size', 300); // 预览尺寸 px
 
 const errorCorrectionOptions = computed(() => [
   { label: `L – ${t('tools.qr-code-generator.ecLow')} (7%)`, value: 'L', short: 'L' },
@@ -36,8 +38,8 @@ watchEffect(async () => {
   try {
     qrcode.value = await QRCode.toDataURL(text.value.trim(), {
       color: {
-        dark: foreground.value + 'ff',
-        light: background.value + 'ff',
+        dark: `${foreground.value}ff`,
+        light: `${background.value}ff`,
       },
       errorCorrectionLevel: errorCorrectionLevel.value,
       margin: margin.value,
@@ -62,7 +64,9 @@ const sameColorWarning = computed(() => foreground.value.toLowerCase() === backg
 // ── 复制图片到剪贴板 ───────────────────────────────────────────
 const copyImgFeedback = ref(false);
 async function copyImage() {
-  if (!qrcode.value) return;
+  if (!qrcode.value) {
+    return;
+  }
   try {
     const blob = await (await fetch(qrcode.value)).blob();
     await navigator.clipboard.write([
@@ -152,7 +156,7 @@ async function copyImage() {
 
           <!-- 容错率 -->
           <div class="setting-row">
-              <div class="setting-label">
+            <div class="setting-label">
               <span>{{ t('tools.qr-code-generator.errorCorrection') }}</span>
               <span class="setting-hint">{{ t('tools.qr-code-generator.errorCorrectionHint') }}</span>
             </div>
@@ -211,7 +215,7 @@ async function copyImage() {
             <span class="ctrl-label">{{ t('tools.qr-code-generator.livePreview') }}</span>
           </div>
 
-          <div class="qr-preview-wrap" :style="{ background: background }">
+          <div class="qr-preview-wrap" :style="{ background }">
             <template v-if="qrcode && !generating">
               <img
                 :src="qrcode"

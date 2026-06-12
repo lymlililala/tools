@@ -15,7 +15,9 @@ function generateNumeronym(word: string): string {
  * 非字母的 token（符号、数字）原样保留
  */
 function generateNumeronymPhrase(phrase: string): string {
-  if (!phrase.trim()) return '';
+  if (!phrase.trim()) {
+    return '';
+  }
   // 按空白分割，保留各 token，对纯字母单词生成缩略词
   return phrase
     .split(/(\s+)/)

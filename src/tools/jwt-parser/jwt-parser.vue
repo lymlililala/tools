@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useClipboard } from '@vueuse/core';
-import { useStorage } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useStorage } from '@vueuse/core';
 import CryptoJS from 'crypto-js';
 import { decodeJwt } from './jwt-parser.service';
 import { withDefaultOnError } from '@/utils/defaults';
@@ -29,7 +29,9 @@ const jwtParts = computed(() => {
 const isEmpty = computed(() => rawJwt.value.trim() === '');
 
 const isValidFormat = computed(() => {
-  if (isEmpty.value) return false;
+  if (isEmpty.value) {
+    return false;
+  }
   return jwtParts.value.count === 3 && jwtParts.value.header && jwtParts.value.payload;
 });
 
@@ -38,7 +40,9 @@ const decodedJWT = computed(() =>
 );
 
 const isDecodeSuccess = computed(() => {
-  if (!isValidFormat.value) return false;
+  if (!isValidFormat.value) {
+    return false;
+  }
   try {
     decodeJwt({ jwt: rawJwt.value });
     return true;
@@ -53,23 +57,36 @@ const copiedKey = ref('');
 async function docopy(key: string, text: string) {
   await copy(text);
   copiedKey.value = key;
-  setTimeout(() => { copiedKey.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1400);
 }
 
-function copyToken() { docopy('token', rawJwt.value); }
-function clearToken() { rawJwt.value = ''; }
+function copyToken() {
+  docopy('token', rawJwt.value);
+}
+function clearToken() {
+  rawJwt.value = '';
+}
 
 async function copySection(key: string, items: { claim: string; value: string }[]) {
   const obj: Record<string, string> = {};
-  for (const { claim, value } of items)
+  for (const { claim, value } of items) {
     obj[claim] = value;
+  }
   await copy(JSON.stringify(obj, null, 2));
   copiedKey.value = key;
-  setTimeout(() => { copiedKey.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1400);
 }
 
-function copyHeaderJson() { copySection('header', decodedJWT.value.header); }
-function copyPayloadJson() { copySection('payload', decodedJWT.value.payload); }
+function copyHeaderJson() {
+  copySection('header', decodedJWT.value.header);
+}
+function copyPayloadJson() {
+  copySection('payload', decodedJWT.value.payload);
+}
 
 // ── 签名验证 ──────────────────────────────────────────────────────────────
 const secretKey = ref('');
@@ -78,13 +95,17 @@ const showSecret = ref(false);
 type VerifyState = 'idle' | 'valid' | 'invalid' | 'unsupported';
 
 const verifyState = computed<VerifyState>(() => {
-  if (!isDecodeSuccess.value || !secretKey.value.trim()) return 'idle';
+  if (!isDecodeSuccess.value || !secretKey.value.trim()) {
+    return 'idle';
+  }
 
   // 只支持 HS256/HS384/HS512
   const alg = (decodedJWT.value.header.find(h => h.claim === 'alg')?.value ?? '').toUpperCase();
   const algMap: Record<string, string> = { HS256: 'SHA256', HS384: 'SHA384', HS512: 'SHA512' };
   const hashAlg = algMap[alg];
-  if (!hashAlg) return 'unsupported';
+  if (!hashAlg) {
+    return 'unsupported';
+  }
 
   try {
     const signingInput = `${jwtParts.value.header}.${jwtParts.value.payload}`;
@@ -95,7 +116,9 @@ const verifyState = computed<VerifyState>(() => {
             ? CryptoJS.HmacSHA384(signingInput, secretKey.value)
             : CryptoJS.HmacSHA512(signingInput, secretKey.value))
       : null;
-    if (!hmac) return 'unsupported';
+    if (!hmac) {
+      return 'unsupported';
+    }
 
     // Base64URL encode
     const b64 = CryptoJS.enc.Base64.stringify(hmac)
@@ -120,7 +143,7 @@ const COLORS = {
 </script>
 
 <template>
-  <div class="jwt-container tool-wide" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide jwt-container" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ① 输入区 ────────────────────────────────────────────────────── -->
     <c-card mb-4>
       <div class="input-header">
@@ -317,7 +340,7 @@ const COLORS = {
 
           <!-- 验证结果 -->
           <transition name="verify-fade">
-            <div v-if="verifyState === 'valid'" class="verify-result valid">
+            <div v-if="verifyState === 'valid'" class="valid verify-result">
               <icon-mdi-shield-check class="vr-icon" />
               Signature verified — this JWT has not been tampered with
             </div>

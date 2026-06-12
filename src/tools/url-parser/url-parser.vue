@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useStorage, useClipboard } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useStorage } from '@vueuse/core';
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
@@ -13,7 +14,9 @@ const urlToParse = useStorage(
 
 // ── 解析 ──────────────────────────────────────────────────────────────────
 const urlParsed = computed((): URL | null => {
-  try { return new URL(urlToParse.value.trim()); }
+  try {
+    return new URL(urlToParse.value.trim());
+  }
   catch { return null; }
 });
 
@@ -23,25 +26,11 @@ const showError = computed(() =>
 );
 
 // ── 结构字段 ──────────────────────────────────────────────────────────────
-const mainFields = computed(() => {
-  const u = urlParsed.value;
-  if (!u) return [];
-  return [
-    { label: 'Protocol', value: u.protocol, color: '#6366f1', icon: '🔒' },
-    { label: 'Username', value: u.username, color: '#f59e0b', icon: '👤' },
-    { label: 'Password', value: u.password, color: '#f59e0b', icon: '🔑' },
-    { label: 'Hostname', value: u.hostname, color: '#10b981', icon: '🌐' },
-    { label: 'Port', value: u.port || '(default)', color: '#3b82f6', icon: '🔌' },
-    { label: 'Pathname', value: u.pathname, color: '#8b5cf6', icon: '📁' },
-    { label: 'Search', value: u.search, color: '#f97316', icon: '🔗' },
-    { label: 'Hash', value: u.hash, color: '#ec4899', icon: '#️⃣' },
-  ].filter(f => f.value && f.value !== '(default)' || f.label === 'Port' && u.port === '');
-  // 重新过滤：只保留有实际值的字段
-});
-
 const filteredFields = computed(() => {
   const u = urlParsed.value;
-  if (!u) return [];
+  if (!u) {
+    return [];
+  }
   return [
     { label: 'Protocol', value: u.protocol, color: '#6366f1', icon: '🔒' },
     { label: 'Username', value: u.username, color: '#f59e0b', icon: '👤' },
@@ -61,7 +50,9 @@ const queryParams = ref<QueryParam[]>([]);
 
 // URL 解析成功时同步 params
 watch(urlParsed, (u) => {
-  if (!u) return;
+  if (!u) {
+    return;
+  }
   const current = queryParams.value;
   const next = Array.from(u.searchParams.entries()).map(([k, v]) => ({ key: k, value: v }));
   // 只有 URL 主体变化（非由 params 编辑触发）才重置
@@ -73,10 +64,14 @@ watch(urlParsed, (u) => {
 // 编辑 params → 同步回 URL
 function rebuildUrl() {
   const u = urlParsed.value;
-  if (!u) return;
+  if (!u) {
+    return;
+  }
   const sp = new URLSearchParams();
-  queryParams.value.forEach(p => {
-    if (p.key) sp.append(p.key, p.value);
+  queryParams.value.forEach((p) => {
+    if (p.key) {
+      sp.append(p.key, p.value);
+    }
   });
   u.search = sp.toString();
   urlToParse.value = u.toString();
@@ -109,12 +104,14 @@ const copiedKey = ref('');
 async function copyField(key: string, value: string) {
   await copy(value);
   copiedKey.value = key;
-  setTimeout(() => { copiedKey.value = ''; }, 1500);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1500);
 }
 </script>
 
 <template>
-  <div class="url-parser tool-wide" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide url-parser" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ① 输入区 -->
     <c-card mb-4>
       <div class="input-header">

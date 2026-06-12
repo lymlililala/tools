@@ -58,21 +58,27 @@ useResizeObserver(editorContainer, () => {
 
 // 当外部 v-model 变化时同步到 Monaco
 watch(originalContent, (val) => {
-  if (suppressWatch) return;
+  if (suppressWatch) {
+    return;
+  }
   if (originalModel && originalModel.getValue() !== val) {
     originalModel.setValue(val);
   }
 });
 
 watch(modifiedContent, (val) => {
-  if (suppressWatch) return;
+  if (suppressWatch) {
+    return;
+  }
   if (modifiedModel && modifiedModel.getValue() !== val) {
     modifiedModel.setValue(val);
   }
 });
 
 onMounted(async () => {
-  if (!editorContainer.value) return;
+  if (!editorContainer.value) {
+    return;
+  }
 
   monaco = await import('monaco-editor');
 
@@ -102,7 +108,9 @@ onMounted(async () => {
   applyTheme();
 
   // 容器可能在异步加载期间被卸载
-  if (!editorContainer.value) return;
+  if (!editorContainer.value) {
+    return;
+  }
 
   editor = monaco.editor.createDiffEditor(editorContainer.value, {
     originalEditable: true,
@@ -125,13 +133,17 @@ onMounted(async () => {
   originalModel.onDidChangeContent(() => {
     suppressWatch = true;
     originalContent.value = originalModel!.getValue();
-    nextTick(() => { suppressWatch = false; });
+    nextTick(() => {
+      suppressWatch = false;
+    });
   });
 
   modifiedModel.onDidChangeContent(() => {
     suppressWatch = true;
     modifiedContent.value = modifiedModel!.getValue();
-    nextTick(() => { suppressWatch = false; });
+    nextTick(() => {
+      suppressWatch = false;
+    });
   });
 });
 

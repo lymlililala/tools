@@ -17,7 +17,9 @@ interface Result {
 
 const result = computed((): Result => {
   const raw = debouncedJson.value.trim();
-  if (!raw) return { minified: '', error: null };
+  if (!raw) {
+    return { minified: '', error: null };
+  }
 
   try {
     const parsed = JSON5.parse(raw);
@@ -37,7 +39,9 @@ const isInvalid = computed(() => hasInput.value && !!parseError.value);
 
 // ── 格式化（反向操作，便于用户校验）────────────────────────────
 function formatInput() {
-  if (!rawJson.value.trim()) return;
+  if (!rawJson.value.trim()) {
+    return;
+  }
   try {
     const parsed = JSON5.parse(rawJson.value);
     rawJson.value = JSON.stringify(parsed, null, 2);
@@ -57,7 +61,9 @@ const { copy: copyMinified, isJustCopied } = useCopy({
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadMinified() {
-  if (!minifiedJson.value) return;
+  if (!minifiedJson.value) {
+    return;
+  }
   const blob = new Blob([minifiedJson.value], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -69,7 +75,9 @@ function downloadMinified() {
 
 // ── 压缩率 ────────────────────────────────────────────────────
 const compressionRatio = computed(() => {
-  if (!minifiedJson.value || !rawJson.value.trim()) return null;
+  if (!minifiedJson.value || !rawJson.value.trim()) {
+    return null;
+  }
   const orig = new Blob([rawJson.value]).size;
   const mini = new Blob([minifiedJson.value]).size;
   const pct = Math.round((1 - mini / orig) * 100);
@@ -79,14 +87,14 @@ const compressionRatio = computed(() => {
 
 <template>
   <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="json-panes tool-wide">
+  <div class="tool-wide json-panes">
     <!-- 输入面板 -->
     <div class="pane" :class="{ 'pane--error': isInvalid }">
       <div class="pane-header">
         <span class="pane-title">{{ t('tools.json-minify.rawJson') }}</span>
 
         <!-- 验证状态徽章 -->
-          <span v-if="isValid" class="status-badge status-badge--valid">
+        <span v-if="isValid" class="status-badge status-badge--valid">
           <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
           {{ t('tools.json-minify.valid') }}
         </span>

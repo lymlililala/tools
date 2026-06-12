@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useClipboard, useScroll, useWindowScroll } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useWindowScroll } from '@vueuse/core';
 import { codesByCategories } from './http-status-codes.constants';
 import { useFuzzySearch } from '@/composable/fuzzySearch';
 import { useStyleStore } from '@/stores/style.store';
@@ -21,7 +22,9 @@ const { searchResult } = useFuzzySearch({
 });
 
 const codesByCategoryFiltered = computed(() => {
-  if (!search.value) return codesByCategories;
+  if (!search.value) {
+    return codesByCategories;
+  }
   return [{ category: 'Search results', codes: searchResult.value }];
 });
 
@@ -39,7 +42,9 @@ function scrollToTop() {
 // ── 锚点跳转 ──────────────────────────────────────────────────────────────
 function scrollToCategory(categoryId: string) {
   const el = document.getElementById(categoryId);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // 将 "1xx informational response" → "1xx"
@@ -52,7 +57,7 @@ function categoryId(cat: string) {
 }
 
 // ── 状态码颜色分类 ────────────────────────────────────────────────────────
-type ColorScheme = { badge: string; badgeBg: string; cardBorder: string; cardBorderHover: string; cardBg: string }
+interface ColorScheme { badge: string; badgeBg: string; cardBorder: string; cardBorderHover: string; cardBg: string };
 
 function getColorScheme(code: number): ColorScheme {
   if (code < 200) {
@@ -78,10 +83,18 @@ function getColorScheme(code: number): ColorScheme {
 // 分类标题颜色
 function getCategoryColor(cat: string): string {
   const n = Number.parseInt(cat);
-  if (n === 1) return '#2563eb';
-  if (n === 2) return '#16a34a';
-  if (n === 3) return '#d97706';
-  if (n === 4) return '#dc2626';
+  if (n === 1) {
+    return '#2563eb';
+  }
+  if (n === 2) {
+    return '#16a34a';
+  }
+  if (n === 3) {
+    return '#d97706';
+  }
+  if (n === 4) {
+    return '#dc2626';
+  }
   return '#9333ea';
 }
 
@@ -90,7 +103,9 @@ const copiedCode = ref<number | null>(null);
 async function copyCode(code: number, name: string) {
   await copy(`${code} ${name}`);
   copiedCode.value = code;
-  setTimeout(() => { copiedCode.value = null; }, 1400);
+  setTimeout(() => {
+    copiedCode.value = null;
+  }, 1400);
 }
 </script>
 
@@ -136,8 +151,8 @@ async function copyCode(code: number, name: string) {
     <!-- ── 状态码列表 ────────────────────────────────────────────────── -->
     <div
       v-for="{ codes, category } of codesByCategoryFiltered"
-      :key="category"
       :id="categoryId(category)"
+      :key="category"
       class="category-section"
       :class="{ 'category-section--grid': codes.length > 2 }"
     >
@@ -161,41 +176,43 @@ async function copyCode(code: number, name: string) {
 
       <!-- 状态码卡片（双列网格） -->
       <div class="cards-grid">
-      <div
-        v-for="{ code, description, name, type } of codes"
-        :key="code"
-        class="status-card"
-        :style="{
-          borderColor: getColorScheme(code).cardBorder,
-          '--hover-border': getColorScheme(code).cardBorderHover,
-          background: getColorScheme(code).cardBg,
-        }"
-        @click="copyCode(code, name)"
-      >
-        <div class="card-left">
-          <!-- 状态码数字徽章 -->
-          <span
-            class="code-badge"
-            :style="{
-              color: getColorScheme(code).badge,
-              background: getColorScheme(code).badgeBg,
-            }"
-          >{{ code }}</span>
+        <div
+          v-for="{ code, description, name, type } of codes"
+          :key="code"
+          class="status-card"
+          :style="{
+            'borderColor': getColorScheme(code).cardBorder,
+            '--hover-border': getColorScheme(code).cardBorderHover,
+            'background': getColorScheme(code).cardBg,
+          }"
+          @click="copyCode(code, name)"
+        >
+          <div class="card-left">
+            <!-- 状态码数字徽章 -->
+            <span
+              class="code-badge"
+              :style="{
+                color: getColorScheme(code).badge,
+                background: getColorScheme(code).badgeBg,
+              }"
+            >{{ code }}</span>
 
-          <div class="card-info">
-            <div class="card-name">{{ name }}</div>
-            <div class="card-desc">
-              {{ description }}{{ type !== 'HTTP' ? ` · For ${type}.` : '' }}
+            <div class="card-info">
+              <div class="card-name">
+                {{ name }}
+              </div>
+              <div class="card-desc">
+                {{ description }}{{ type !== 'HTTP' ? ` · For ${type}.` : '' }}
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- 复制反馈 -->
-        <div class="card-copy">
-          <icon-mdi-check v-if="copiedCode === code" class="copy-icon success" />
-          <icon-mdi-content-copy v-else class="copy-icon" />
+          <!-- 复制反馈 -->
+          <div class="card-copy">
+            <icon-mdi-check v-if="copiedCode === code" class="copy-icon success" />
+            <icon-mdi-content-copy v-else class="copy-icon" />
+          </div>
         </div>
-      </div>
       </div><!-- /cards-grid -->
     </div>
 

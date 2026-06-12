@@ -8,7 +8,7 @@ import { useCopy } from '@/composable/copy';
 const { t } = useI18n();
 
 const rawStartAddress = useStorage('ipv4-range-expander:startAddress', '192.168.1.1');
-const rawEndAddress   = useStorage('ipv4-range-expander:endAddress',   '192.168.6.255');
+const rawEndAddress = useStorage('ipv4-range-expander:endAddress', '192.168.6.255');
 
 const result = computed(() => calculateCidr({
   startIp: rawStartAddress.value,
@@ -25,15 +25,15 @@ const endIpValidation = useValidation({
   rules: [{ message: computed(() => t('tools.ipv4-range-expander.invalidIpv4')), validator: ip => isValidIpv4({ ip }) }],
 });
 
-const bothValid   = computed(() => startIpValidation.isValid && endIpValidation.isValid);
-const orderError  = computed(() => bothValid.value && result.value === undefined);
-const showResult  = computed(() => bothValid.value && result.value !== undefined);
+const bothValid = computed(() => startIpValidation.isValid && endIpValidation.isValid);
+const orderError = computed(() => bothValid.value && result.value === undefined);
+const showResult = computed(() => bothValid.value && result.value !== undefined);
 
 // ── 结果行定义 ────────────────────────────────────────────────
 interface CalcRow {
   labelKey: string
   getOldValue: (r: Ipv4RangeExpanderResult | undefined) => string
-  getNewValue:  (r: Ipv4RangeExpanderResult | undefined) => string
+  getNewValue: (r: Ipv4RangeExpanderResult | undefined) => string
   isCode?: boolean
   copyNew?: boolean
 }
@@ -95,7 +95,7 @@ const { copy: copyCidr, isJustCopied } = useCopy({
             spellcheck="false"
             autocomplete="off"
             autofocus
-          />
+          >
           <button
             v-if="rawStartAddress"
             class="clear-btn"
@@ -129,7 +129,7 @@ const { copy: copyCidr, isJustCopied } = useCopy({
             :placeholder="t('tools.ipv4-range-expander.endPlaceholder')"
             spellcheck="false"
             autocomplete="off"
-          />
+          >
           <button
             v-if="rawEndAddress"
             class="clear-btn"

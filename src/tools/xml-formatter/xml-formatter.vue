@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { formatXml, isValidXML } from './xml-formatter.service';
 import { refDebounced } from '@vueuse/core';
+import { formatXml, isValidXML } from './xml-formatter.service';
 import { useCopy } from '@/composable/copy';
 
 const { t } = useI18n();
@@ -16,7 +16,9 @@ const debouncedXml = refDebounced(xmlInput, 200);
 // ── 格式化 ────────────────────────────────────────────────────
 const formattedXml = computed(() => {
   const raw = debouncedXml.value.trim();
-  if (!raw) return '';
+  if (!raw) {
+    return '';
+  }
   return formatXml(raw, {
     indentation: ' '.repeat(indentSize.value),
     collapseContent: collapseContent.value,
@@ -27,14 +29,20 @@ const formattedXml = computed(() => {
 // ── 解析错误 ──────────────────────────────────────────────────
 const parseError = computed(() => {
   const raw = debouncedXml.value.trim();
-  if (!raw) return null;
-  if (isValidXML(raw)) return null;
+  if (!raw) {
+    return null;
+  }
+  if (isValidXML(raw)) {
+    return null;
+  }
   // 获取具体错误信息
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(raw, 'application/xml');
     const errEl = doc.querySelector('parsererror');
-    if (errEl) return errEl.textContent?.split('\n')[0]?.trim() ?? t('tools.xml-formatter.invalidXml');
+    if (errEl) {
+      return errEl.textContent?.split('\n')[0]?.trim() ?? t('tools.xml-formatter.invalidXml');
+    }
     return t('tools.xml-formatter.invalidXml');
   }
   catch {
@@ -47,18 +55,26 @@ const isInvalid = computed(() => hasInput.value && parseError.value !== null);
 
 // ── 文件上传 ──────────────────────────────────────────────────
 const fileInputRef = ref<HTMLInputElement | null>(null);
-function triggerUpload() { fileInputRef.value?.click(); }
+function triggerUpload() {
+  fileInputRef.value?.click();
+}
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   const reader = new FileReader();
-  reader.onload = () => { xmlInput.value = reader.result as string; };
+  reader.onload = () => {
+    xmlInput.value = reader.result as string;
+  };
   reader.readAsText(file, 'utf-8');
   (e.target as HTMLInputElement).value = '';
 }
 
 // ── 清空 ──────────────────────────────────────────────────────
-function clearInput() { xmlInput.value = ''; }
+function clearInput() {
+  xmlInput.value = '';
+}
 
 // ── 复制 ──────────────────────────────────────────────────────
 const { copy: copyXml, isJustCopied } = useCopy({
@@ -68,7 +84,9 @@ const { copy: copyXml, isJustCopied } = useCopy({
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadXml() {
-  if (!formattedXml.value) return;
+  if (!formattedXml.value) {
+    return;
+  }
   const blob = new Blob([formattedXml.value], { type: 'application/xml;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -81,119 +99,123 @@ function downloadXml() {
 
 <template>
   <div class="tool-wide">
-  <!-- ── 配置工具栏 ────────────────────────────────────────── -->
-  <div class="toolbar">
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.xml-formatter.collapseContent') }}</span>
-      <n-switch v-model:value="collapseContent" size="small" />
-    </div>
-    <div class="toolbar-divider" />
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.xml-formatter.indentSize') }}</span>
-      <div class="indent-ctrl">
-        <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">−</button>
-        <span class="indent-val">{{ indentSize }}</span>
-        <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">+</button>
+    <!-- ── 配置工具栏 ────────────────────────────────────────── -->
+    <div class="toolbar">
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.xml-formatter.collapseContent') }}</span>
+        <n-switch v-model:value="collapseContent" size="small" />
       </div>
-    </div>
-  </div>
-
-  <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="xml-panes">
-    <!-- 输入面板 -->
-    <div class="pane" :class="{ 'pane--error': isInvalid }">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.xml-formatter.rawXml') }}</span>
-
-        <!-- 状态徽章 -->
-        <span v-if="hasInput && !isInvalid" class="status-badge status-badge--valid">
-          <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          {{ t('tools.xml-formatter.valid') }}
-        </span>
-        <span v-else-if="isInvalid" class="status-badge status-badge--error">
-          <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
-          {{ t('tools.xml-formatter.invalid') }}
-        </span>
-
-        <!-- 操作按钮 -->
-        <div class="action-group">
-          <!-- 上传文件 -->
-          <c-tooltip :tooltip="t('tools.xml-formatter.uploadFile')" position="bottom">
-            <button class="hdr-btn" @click="triggerUpload">
-              <icon-mdi-upload />
-            </button>
-          </c-tooltip>
-          <input
-            ref="fileInputRef"
-            type="file"
-            accept=".xml,text/xml,application/xml"
-            style="display:none"
-            @change="onFileChange"
-          />
-          <!-- 清空 -->
-          <c-tooltip v-if="hasInput" :tooltip="t('tools.xml-formatter.clearInput')" position="bottom">
-            <button class="hdr-btn" @click="clearInput">
-              <icon-mdi-close-circle-outline />
-            </button>
-          </c-tooltip>
+      <div class="toolbar-divider" />
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.xml-formatter.indentSize') }}</span>
+        <div class="indent-ctrl">
+          <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">
+            −
+          </button>
+          <span class="indent-val">{{ indentSize }}</span>
+          <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">
+            +
+          </button>
         </div>
       </div>
-
-      <c-code-input
-        v-model="xmlInput"
-        language="xml"
-        :placeholder="t('tools.xml-formatter.inputPlaceholder')"
-        class="code-editor"
-        :class="{ 'editor--error': isInvalid }"
-      />
-
-      <!-- 错误详情 -->
-      <transition name="slide-down">
-        <div v-if="parseError" class="error-panel">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>{{ parseError }}</span>
-        </div>
-      </transition>
     </div>
 
-    <!-- 输出面板 -->
-    <div class="pane">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.xml-formatter.formattedResult') }}</span>
-        <div class="action-group">
-          <!-- 复制 -->
-          <c-tooltip :tooltip="isJustCopied ? t('tools.xml-formatter.copied') : t('tools.xml-formatter.copyXml')" position="bottom">
-            <button
-              class="hdr-btn"
-              :class="{ 'hdr-btn--success': isJustCopied }"
-              :disabled="!formattedXml"
-              @click="copyXml()"
+    <!-- ── 双面板 ─────────────────────────────────────────────── -->
+    <div class="xml-panes">
+      <!-- 输入面板 -->
+      <div class="pane" :class="{ 'pane--error': isInvalid }">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.xml-formatter.rawXml') }}</span>
+
+          <!-- 状态徽章 -->
+          <span v-if="hasInput && !isInvalid" class="status-badge status-badge--valid">
+            <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
+            {{ t('tools.xml-formatter.valid') }}
+          </span>
+          <span v-else-if="isInvalid" class="status-badge status-badge--error">
+            <svg width="7" height="7" viewBox="0 0 7 7"><circle cx="3.5" cy="3.5" r="3.5" fill="currentColor" /></svg>
+            {{ t('tools.xml-formatter.invalid') }}
+          </span>
+
+          <!-- 操作按钮 -->
+          <div class="action-group">
+            <!-- 上传文件 -->
+            <c-tooltip :tooltip="t('tools.xml-formatter.uploadFile')" position="bottom">
+              <button class="hdr-btn" @click="triggerUpload">
+                <icon-mdi-upload />
+              </button>
+            </c-tooltip>
+            <input
+              ref="fileInputRef"
+              type="file"
+              accept=".xml,text/xml,application/xml"
+              style="display:none"
+              @change="onFileChange"
             >
-              <icon-mdi-check v-if="isJustCopied" />
-              <icon-mdi-content-copy v-else />
-            </button>
-          </c-tooltip>
-          <!-- 下载 -->
-          <c-tooltip :tooltip="t('tools.xml-formatter.downloadFile')" position="bottom">
-            <button class="hdr-btn" :disabled="!formattedXml" @click="downloadXml">
-              <icon-mdi-download />
-            </button>
-          </c-tooltip>
+            <!-- 清空 -->
+            <c-tooltip v-if="hasInput" :tooltip="t('tools.xml-formatter.clearInput')" position="bottom">
+              <button class="hdr-btn" @click="clearInput">
+                <icon-mdi-close-circle-outline />
+              </button>
+            </c-tooltip>
+          </div>
         </div>
+
+        <c-code-input
+          v-model="xmlInput"
+          language="xml"
+          :placeholder="t('tools.xml-formatter.inputPlaceholder')"
+          class="code-editor"
+          :class="{ 'editor--error': isInvalid }"
+        />
+
+        <!-- 错误详情 -->
+        <transition name="slide-down">
+          <div v-if="parseError" class="error-panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ parseError }}</span>
+          </div>
+        </transition>
       </div>
 
-      <c-code-input
-        :model-value="formattedXml"
-        language="xml"
-        :placeholder="t('tools.xml-formatter.outputPlaceholder')"
-        class="code-editor"
-        readonly
-      />
+      <!-- 输出面板 -->
+      <div class="pane">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.xml-formatter.formattedResult') }}</span>
+          <div class="action-group">
+            <!-- 复制 -->
+            <c-tooltip :tooltip="isJustCopied ? t('tools.xml-formatter.copied') : t('tools.xml-formatter.copyXml')" position="bottom">
+              <button
+                class="hdr-btn"
+                :class="{ 'hdr-btn--success': isJustCopied }"
+                :disabled="!formattedXml"
+                @click="copyXml()"
+              >
+                <icon-mdi-check v-if="isJustCopied" />
+                <icon-mdi-content-copy v-else />
+              </button>
+            </c-tooltip>
+            <!-- 下载 -->
+            <c-tooltip :tooltip="t('tools.xml-formatter.downloadFile')" position="bottom">
+              <button class="hdr-btn" :disabled="!formattedXml" @click="downloadXml">
+                <icon-mdi-download />
+              </button>
+            </c-tooltip>
+          </div>
+        </div>
+
+        <c-code-input
+          :model-value="formattedXml"
+          language="xml"
+          :placeholder="t('tools.xml-formatter.outputPlaceholder')"
+          class="code-editor"
+          readonly
+        />
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

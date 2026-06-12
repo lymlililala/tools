@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useClipboard } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useStorage } from '@vueuse/core';
 import { format } from 'prettier';
-
-const { t } = useI18n();
 import htmlParser from 'prettier/plugins/html';
-import { useStorage } from '@vueuse/core';
 import hljs from 'highlight.js/lib/core';
 import xmlHljs from 'highlight.js/lib/languages/xml';
 import Editor from './editor/editor.vue';
 import { useStyleStore } from '@/stores/style.store';
+
+const { t } = useI18n();
 
 hljs.registerLanguage('html', xmlHljs);
 
@@ -21,10 +21,14 @@ const { copy } = useClipboard();
 // 复制反馈
 const copied = ref(false);
 async function copyHtml() {
-  if (!formattedHtml.value) return;
+  if (!formattedHtml.value) {
+    return;
+  }
   await copy(formattedHtml.value);
   copied.value = true;
-  setTimeout(() => { copied.value = false; }, 1400);
+  setTimeout(() => {
+    copied.value = false;
+  }, 1400);
 }
 
 // 清空编辑器
@@ -36,7 +40,9 @@ const hasContent = computed(() => html.value.trim().length > 0);
 
 // 语法高亮渲染
 const highlightedHtml = computed(() => {
-  if (!formattedHtml.value) return '';
+  if (!formattedHtml.value) {
+    return '';
+  }
   try {
     return hljs.highlight(formattedHtml.value, { language: 'html' }).value;
   }
@@ -50,7 +56,7 @@ const highlightedHtml = computed(() => {
 </script>
 
 <template>
-  <div class="wysiwyg-wrap tool-wide" :class="{ dark: styleStore.isDarkTheme }">
+  <div class="tool-wide wysiwyg-wrap" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ── 主编辑区（左右分栏）─────────────────────────────────────── -->
     <div class="editor-grid">
       <!-- 左侧：所见即所得编辑器 -->

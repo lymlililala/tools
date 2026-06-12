@@ -42,7 +42,7 @@ const styleStore = useStyleStore();
         {{ tool.description }}
       </div>
 
-      <!-- Glow 光晕层（hover 时显示）-->
+      <!-- Glow 光晕层（hover 时显示） -->
       <div class="card-glow" />
     </div>
   </router-link>

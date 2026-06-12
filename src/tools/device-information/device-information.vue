@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useWindowSize, useClipboard } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useWindowSize } from '@vueuse/core';
 
 const { width, height } = useWindowSize();
 const { copy } = useClipboard();
@@ -31,10 +32,14 @@ const sections = [
 const copiedLabel = ref('');
 
 async function copyValue(label: string, value: string) {
-  if (!value) return;
+  if (!value) {
+    return;
+  }
   await copy(value);
   copiedLabel.value = label;
-  setTimeout(() => { copiedLabel.value = ''; }, 1800);
+  setTimeout(() => {
+    copiedLabel.value = '';
+  }, 1800);
 }
 </script>
 
@@ -54,7 +59,9 @@ async function copyValue(label: string, value: string) {
               @click="copyValue(label, value ?? '')"
             >
               <!-- 标签行 -->
-              <div class="tile-label">{{ label }}</div>
+              <div class="tile-label">
+                {{ label }}
+              </div>
 
               <!-- 值行 -->
               <div class="tile-value">

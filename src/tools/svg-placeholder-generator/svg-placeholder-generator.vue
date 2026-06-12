@@ -166,11 +166,15 @@ const exactSizeTooltip = computed(() => t('tools.svg-placeholder-generator.exact
         <!-- 代码输出 -->
         <c-card mt-4>
           <div class="output-section">
-            <div class="output-label">{{ t('tools.svg-placeholder-generator.svgCode') }}</div>
+            <div class="output-label">
+              {{ t('tools.svg-placeholder-generator.svgCode') }}
+            </div>
             <TextareaCopyable :value="svgString" language="html" copy-placement="top-right" />
           </div>
           <div class="output-section" mt-4>
-            <div class="output-label">{{ t('tools.svg-placeholder-generator.base64Code') }}</div>
+            <div class="output-label">
+              {{ t('tools.svg-placeholder-generator.base64Code') }}
+            </div>
             <TextareaCopyable :value="base64" copy-placement="top-right" />
           </div>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { useStyleStore } from '@/stores/style.store';
 
@@ -12,21 +13,31 @@ const copiedLabel = ref('');
 // 使用 document 级监听，页面打开直接按键即可
 useEventListener(document, 'keydown', (e) => {
   // 避免劫持 Cmd+K / Ctrl+K 等全局快捷键
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') return;
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    return;
+  }
   event.value = e;
   // 触发波纹动画
   ripple.value = false;
-  nextTick(() => { ripple.value = true; });
+  nextTick(() => {
+    ripple.value = true;
+  });
 });
 
 // 波纹动画清除
 watch(ripple, (v) => {
-  if (v) setTimeout(() => { ripple.value = false; }, 600);
+  if (v) {
+    setTimeout(() => {
+      ripple.value = false;
+    }, 600);
+  }
 });
 
 // ── 字段数据 ──────────────────────────────────────────────────────────────
 const fields = computed(() => {
-  if (!event.value) return [];
+  if (!event.value) {
+    return [];
+  }
   return [
     { label: 'Key', value: event.value.key, icon: '⌨' },
     { label: 'Code', value: event.value.code, icon: '🔤' },
@@ -57,17 +68,32 @@ function locationLabel(loc: number) {
 
 // ── 特殊键显示 ────────────────────────────────────────────────────────────
 const keyEmoji = computed(() => {
-  if (!event.value) return null;
+  if (!event.value) {
+    return null;
+  }
   const map: Record<string, string> = {
-    Enter: '↵', Backspace: '⌫', Tab: '⇥', Escape: 'ESC', ArrowUp: '↑',
-    ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→', ' ': '␣',
-    Delete: 'Del', Home: '↖', End: '↘', PageUp: '⇞', PageDown: '⇟',
+    'Enter': '↵',
+    'Backspace': '⌫',
+    'Tab': '⇥',
+    'Escape': 'ESC',
+    'ArrowUp': '↑',
+    'ArrowDown': '↓',
+    'ArrowLeft': '←',
+    'ArrowRight': '→',
+    ' ': '␣',
+    'Delete': 'Del',
+    'Home': '↖',
+    'End': '↘',
+    'PageUp': '⇞',
+    'PageDown': '⇟',
   };
   return map[event.value.key] ?? null;
 });
 
 const displayKey = computed(() => {
-  if (!event.value) return '';
+  if (!event.value) {
+    return '';
+  }
   return keyEmoji.value ?? (event.value.key.length === 1 ? event.value.key.toUpperCase() : event.value.key);
 });
 
@@ -75,19 +101,27 @@ const displayKey = computed(() => {
 async function copyField(label: string, value: string) {
   await copy(value);
   copiedLabel.value = label;
-  setTimeout(() => { copiedLabel.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedLabel.value = '';
+  }, 1400);
 }
 </script>
 
 <template>
   <div class="keycode-root" :class="{ dark: styleStore.isDarkTheme }">
     <!-- ① 主展示区 ────────────────────────────────────────────────────── -->
-    <div class="key-stage" :class="{ 'has-key': !!event, rippling: ripple }">
+    <div class="key-stage" :class="{ 'has-key': !!event, 'rippling': ripple }">
       <!-- 空状态占位 -->
       <div v-if="!event" class="key-placeholder">
-        <div class="placeholder-icon">⌨️</div>
-        <div class="placeholder-text">Press any key on your keyboard</div>
-        <div class="placeholder-hint">Results appear instantly — no click needed</div>
+        <div class="placeholder-icon">
+          ⌨️
+        </div>
+        <div class="placeholder-text">
+          Press any key on your keyboard
+        </div>
+        <div class="placeholder-hint">
+          Results appear instantly — no click needed
+        </div>
       </div>
 
       <template v-else>
@@ -122,10 +156,16 @@ async function copyField(label: string, value: string) {
         :class="{ copied: copiedLabel === field.label }"
         @click="copyField(field.label, field.value)"
       >
-        <div class="detail-icon">{{ field.icon }}</div>
+        <div class="detail-icon">
+          {{ field.icon }}
+        </div>
         <div class="detail-content">
-          <div class="detail-label">{{ field.label }}</div>
-          <div class="detail-value">{{ field.value }}</div>
+          <div class="detail-label">
+            {{ field.label }}
+          </div>
+          <div class="detail-value">
+            {{ field.value }}
+          </div>
         </div>
         <div class="copy-btn" :title="`Copy ${field.label}`">
           <icon-mdi-check v-if="copiedLabel === field.label" class="copy-icon success" />

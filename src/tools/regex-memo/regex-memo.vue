@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import { useMessage } from 'naive-ui';
 
@@ -159,10 +160,10 @@ const sections: Section[] = [
         head: ['Expression', 'Description'],
         rows: [
           { expr: 'foo|bar', desc: 'match either foo or bar' },
-          { expr: 'foo(?=bar)', desc: "match foo if it's before bar" },
-          { expr: 'foo(?!bar)', desc: "match foo if it's NOT before bar" },
-          { expr: '(?<=bar)foo', desc: "match foo if it's after bar" },
-          { expr: '(?<!bar)foo', desc: "match foo if it's NOT after bar" },
+          { expr: 'foo(?=bar)', desc: 'match foo if it\'s before bar' },
+          { expr: 'foo(?!bar)', desc: 'match foo if it\'s NOT before bar' },
+          { expr: '(?<=bar)foo', desc: 'match foo if it\'s after bar' },
+          { expr: '(?<!bar)foo', desc: 'match foo if it\'s NOT after bar' },
         ],
       },
     ],
@@ -214,7 +215,9 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
   <div class="tool-wide rm-root">
     <!-- ── 右侧固定 TOC ───────────────────────────────────── -->
     <nav class="rm-toc">
-      <p class="toc-heading">{{ t('tools.regex-memo.toc') }}</p>
+      <p class="toc-heading">
+        {{ t('tools.regex-memo.toc') }}
+      </p>
       <ul>
         <li
           v-for="sec in sections"

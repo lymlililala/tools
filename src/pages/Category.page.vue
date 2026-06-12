@@ -1,48 +1,56 @@
 <script setup lang="ts">
-import { useRoute, RouterLink } from 'vue-router'
-import { useHead } from '@vueuse/head'
-import ToolCard from '../components/ToolCard.vue'
-import { toolsWithCategory } from '@/tools'
-import { CATEGORY_META, findCategoryBySlug } from '@/lib/categories'
+import { RouterLink, useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
+import ToolCard from '../components/ToolCard.vue';
+import { toolsWithCategory } from '@/tools';
+import { CATEGORY_META, findCategoryBySlug } from '@/lib/categories';
 
-const route = useRoute()
-const slug = computed(() => route.params.slug as string)
-const category = computed(() => findCategoryBySlug(slug.value))
+const route = useRoute();
+const slug = computed(() => route.params.slug as string);
+const category = computed(() => findCategoryBySlug(slug.value));
 
 const tools = computed(() =>
   category.value ? toolsWithCategory.filter(t => t.category === category.value!.name) : [],
-)
+);
 
 // 该分类下工具对应的相关指南(来自构建时生成的 /tool-guides.json,相关性已过滤)
-interface Guide { slug: string, title: string, description: string }
-const guides = ref<Guide[]>([])
-let _guideMap: Record<string, Guide[]> | null = null
+interface Guide { slug: string; title: string; description: string }
+const guides = ref<Guide[]>([]);
+let _guideMap: Record<string, Guide[]> | null = null;
 async function loadGuides() {
-  if (!category.value) { guides.value = []; return }
+  if (!category.value) {
+    guides.value = [];
+    return;
+  }
   try {
     if (!_guideMap) {
-      const res = await fetch('/tool-guides.json')
-      _guideMap = res.ok ? await res.json() : {}
+      const res = await fetch('/tool-guides.json');
+      _guideMap = res.ok ? await res.json() : {};
     }
-    const seen = new Set<string>()
-    const out: Guide[] = []
+    const seen = new Set<string>();
+    const out: Guide[] = [];
     for (const t of tools.value) {
       for (const g of (_guideMap![t.path] ?? [])) {
-        if (!seen.has(g.slug)) { seen.add(g.slug); out.push(g) }
+        if (!seen.has(g.slug)) {
+          seen.add(g.slug);
+          out.push(g);
+        }
       }
     }
-    guides.value = out.slice(0, 12)
+    guides.value = out.slice(0, 12);
   }
-  catch { guides.value = [] }
+  catch { guides.value = []; }
 }
-onMounted(loadGuides)
-watch(slug, loadGuides)
+onMounted(loadGuides);
+watch(slug, loadGuides);
 
-const otherCategories = computed(() => CATEGORY_META.filter(c => c.slug !== slug.value))
+const otherCategories = computed(() => CATEGORY_META.filter(c => c.slug !== slug.value));
 
-const canonicalUrl = computed(() => `https://myutl.com/c/${slug.value}`)
+const canonicalUrl = computed(() => `https://myutl.com/c/${slug.value}`);
 watchEffect(() => {
-  if (!category.value) return
+  if (!category.value) {
+    return;
+  }
   useHead({
     title: `${category.value.label} — Free Online | MyUtl`,
     meta: [
@@ -52,8 +60,8 @@ watchEffect(() => {
       { property: 'og:url', content: canonicalUrl.value },
     ],
     link: [{ rel: 'canonical', href: canonicalUrl.value }],
-  })
-})
+  });
+});
 </script>
 
 <template>
@@ -83,14 +91,20 @@ watchEffect(() => {
             :to="`/blog/${g.slug}`"
             class="guide-card"
           >
-            <div class="guide-title">{{ g.title }}</div>
-            <div class="guide-desc">{{ g.description }}</div>
+            <div class="guide-title">
+              {{ g.title }}
+            </div>
+            <div class="guide-desc">
+              {{ g.description }}
+            </div>
           </RouterLink>
         </div>
       </section>
 
       <nav class="other-cats" aria-label="Browse other categories">
-        <h2 class="cat-h2">Browse other categories</h2>
+        <h2 class="cat-h2">
+          Browse other categories
+        </h2>
         <div class="other-cats-list">
           <RouterLink
             v-for="c in otherCategories"
@@ -106,7 +120,9 @@ watchEffect(() => {
 
     <div v-else class="not-found">
       <h1>Category not found</h1>
-      <RouterLink to="/" class="back-home">← Back to all tools</RouterLink>
+      <RouterLink to="/" class="back-home">
+        ← Back to all tools
+      </RouterLink>
     </div>
   </div>
 </template>

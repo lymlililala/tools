@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useStyleStore } from '@/stores/style.store';
-import { refDebounced } from '@vueuse/core';
-import { useClipboard } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { refDebounced, useClipboard } from '@vueuse/core';
 import { decodeSafeLinksURL } from './safelink-decoder.service';
+import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
 const inputSafeLinkUrl = ref('');
@@ -11,10 +11,14 @@ const inputDebounced = refDebounced(inputSafeLinkUrl, 300);
 /** 解码结果 */
 const decodeResult = computed<{ success: true; url: string } | { success: false; error: string } | null>(() => {
   const raw = inputDebounced.value.trim();
-  if (!raw) return null;
+  if (!raw) {
+    return null;
+  }
   try {
     const url = decodeSafeLinksURL(raw);
-    if (!url) return { success: false, error: 'Invalid SafeLinks URL provided' };
+    if (!url) {
+      return { success: false, error: 'Invalid SafeLinks URL provided' };
+    }
     return { success: true, url };
   }
   catch (e: any) {
@@ -23,8 +27,12 @@ const decodeResult = computed<{ success: true; url: string } | { success: false;
 });
 
 const outputText = computed(() => {
-  if (!decodeResult.value) return '';
-  if (decodeResult.value.success) return decodeResult.value.url;
+  if (!decodeResult.value) {
+    return '';
+  }
+  if (decodeResult.value.success) {
+    return decodeResult.value.url;
+  }
   return '';
 });
 
@@ -41,7 +49,9 @@ function clearInput() {
 const { copy } = useClipboard({ legacy: true });
 const copied = ref(false);
 async function copyOutput() {
-  if (!outputText.value) return;
+  if (!outputText.value) {
+    return;
+  }
   await copy(outputText.value);
   copied.value = true;
   setTimeout(() => (copied.value = false), 2000);

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref } from 'vue';
 import { useCopy } from '@/composable/copy';
 import {
   getExtensionFromMimeType,
@@ -60,7 +59,9 @@ const previewSrc = ref<string | null>(null);
 const previewError = ref('');
 
 function previewImage() {
-  if (!base64InputValidation.isValid || !base64Input.value) return;
+  if (!base64InputValidation.isValid || !base64Input.value) {
+    return;
+  }
   previewError.value = '';
   try {
     const { mimeType } = getMimeTypeFromBase64({ base64String: base64Input.value });
@@ -79,7 +80,9 @@ function previewImage() {
 }
 
 function downloadFile() {
-  if (!base64InputValidation.isValid || !base64Input.value) return;
+  if (!base64InputValidation.isValid || !base64Input.value) {
+    return;
+  }
   try {
     download();
   }
@@ -100,15 +103,23 @@ const includeDataUri = ref(true); // 是否带 Data URI 头部
 // 截断预览（防止超大字符串直接插入 DOM 卡死）
 const PREVIEW_LIMIT = 800;
 const base64Preview = computed(() => {
-  if (!fullBase64.value) return '';
-  if (fullBase64.value.length <= PREVIEW_LIMIT) return fullBase64.value;
+  if (!fullBase64.value) {
+    return '';
+  }
+  if (fullBase64.value.length <= PREVIEW_LIMIT) {
+    return fullBase64.value;
+  }
   return `${fullBase64.value.slice(0, PREVIEW_LIMIT)}\n\n… [${(fullBase64.value.length / 1024).toFixed(0)} KB total, truncated for display. Click "Copy" to get full content.]`;
 });
 
 // 根据格式切换实际复制内容
 const copySource = computed(() => {
-  if (!fullBase64.value) return '';
-  if (includeDataUri.value) return fullBase64.value;
+  if (!fullBase64.value) {
+    return '';
+  }
+  if (includeDataUri.value) {
+    return fullBase64.value;
+  }
   // 去掉 data:...;base64, 头部
   const raw = fullBase64.value.replace(/^data:[^;]+;base64,/, '');
   return raw;
@@ -156,7 +167,9 @@ const isOverDrop = ref(false);
 const fileInput2 = ref<HTMLInputElement | null>(null);
 
 function triggerInput() {
-  if (isConverting.value) return;
+  if (isConverting.value) {
+    return;
+  }
   fileInput2.value?.click();
 }
 
@@ -164,12 +177,16 @@ function handleDrop(e: DragEvent) {
   e.preventDefault();
   isOverDrop.value = false;
   const f = e.dataTransfer?.files?.[0];
-  if (f) onUpload(f);
+  if (f) {
+    onUpload(f);
+  }
 }
 
 function handleFileInput(e: Event) {
   const f = (e.target as HTMLInputElement).files?.[0];
-  if (f) onUpload(f);
+  if (f) {
+    onUpload(f);
+  }
   (e.target as HTMLInputElement).value = '';
 }
 </script>
@@ -272,26 +289,38 @@ function handleFileInput(e: Event) {
         @dragenter="isOverDrop = true"
         @dragleave="isOverDrop = false"
       >
-        <input ref="fileInput2" type="file" class="hidden-input" @change="handleFileInput" />
+        <input ref="fileInput2" type="file" class="hidden-input" @change="handleFileInput">
 
         <template v-if="isConverting">
           <n-spin size="medium" />
-          <div class="dz-label">Converting…</div>
-          <div class="dz-sublabel">{{ uploadedFile?.name }}</div>
+          <div class="dz-label">
+            Converting…
+          </div>
+          <div class="dz-sublabel">
+            {{ uploadedFile?.name }}
+          </div>
         </template>
         <template v-else-if="uploadedFile && fullBase64">
           <icon-mdi-file-check class="dz-file-icon success-icon" />
-          <div class="dz-label">{{ uploadedFile.name }}</div>
-          <div class="dz-sublabel">{{ (uploadedFile.size / 1024).toFixed(1) }} KB · Click or drag to replace</div>
+          <div class="dz-label">
+            {{ uploadedFile.name }}
+          </div>
+          <div class="dz-sublabel">
+            {{ (uploadedFile.size / 1024).toFixed(1) }} KB · Click or drag to replace
+          </div>
         </template>
         <template v-else>
           <icon-mdi-upload class="dz-file-icon" />
-          <div class="dz-label">Drag &amp; drop a file here</div>
+          <div class="dz-label">
+            Drag &amp; drop a file here
+          </div>
           <c-button type="primary" style="margin-top: 4px" @click.stop="triggerInput">
             <icon-mdi-folder-open-outline style="margin-right:5px" />
             Browse files
           </c-button>
-          <div class="dz-size-hint">Max size: 10 MB</div>
+          <div class="dz-size-hint">
+            Max size: 10 MB
+          </div>
         </template>
       </div>
 
@@ -308,8 +337,12 @@ function handleFileInput(e: Event) {
         <div v-if="fullBase64" class="format-row">
           <span class="format-label">Output format:</span>
           <n-radio-group v-model:value="includeDataUri" size="small">
-            <n-radio :value="true">Data URI (with header)</n-radio>
-            <n-radio :value="false">Raw Base64 only</n-radio>
+            <n-radio :value="true">
+              Data URI (with header)
+            </n-radio>
+            <n-radio :value="false">
+              Raw Base64 only
+            </n-radio>
           </n-radio-group>
         </div>
       </transition>

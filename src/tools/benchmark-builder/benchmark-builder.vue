@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Plus, Trash } from '@vicons/tabler';
+import { Plus } from '@vicons/tabler';
 import { useStorage } from '@vueuse/core';
 import _ from 'lodash';
 
@@ -112,7 +112,7 @@ function resetSuites() {
                 v-model="suite.title"
                 class="suite-title-input"
                 :placeholder="t('tools.benchmark-builder.groupNamePlaceholder')"
-              />
+              >
               <c-tooltip :tooltip="t('tools.benchmark-builder.deleteGroup')">
                 <button
                   class="suite-close-btn"
@@ -152,7 +152,7 @@ function resetSuites() {
             v-model="unit"
             class="unit-input"
             :placeholder="t('tools.benchmark-builder.unitPlaceholder')"
-          />
+          >
         </div>
         <button class="reset-btn" @click="resetSuites">
           {{ t('tools.benchmark-builder.resetAll') }}
@@ -165,11 +165,21 @@ function resetSuites() {
       <table class="results-table">
         <thead>
           <tr>
-            <th class="col-rank">{{ t('tools.benchmark-builder.rank') }}</th>
-            <th class="col-suite">{{ t('tools.benchmark-builder.groupName') }}</th>
-            <th class="col-num">{{ t('tools.benchmark-builder.sampleSize') }}</th>
-            <th class="col-num">{{ t('tools.benchmark-builder.mean') }}</th>
-            <th class="col-num">{{ t('tools.benchmark-builder.variance') }}</th>
+            <th class="col-rank">
+              {{ t('tools.benchmark-builder.rank') }}
+            </th>
+            <th class="col-suite">
+              {{ t('tools.benchmark-builder.groupName') }}
+            </th>
+            <th class="col-num">
+              {{ t('tools.benchmark-builder.sampleSize') }}
+            </th>
+            <th class="col-num">
+              {{ t('tools.benchmark-builder.mean') }}
+            </th>
+            <th class="col-num">
+              {{ t('tools.benchmark-builder.variance') }}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -182,10 +192,18 @@ function resetSuites() {
               <span v-if="row.position === 1" class="badge-best">🥇</span>
               <span v-else>{{ row.position }}</span>
             </td>
-            <td class="col-suite">{{ row.title }}</td>
-            <td class="col-num">{{ row.size }}</td>
-            <td class="col-num">{{ row.mean }}</td>
-            <td class="col-num">{{ row.variance }}</td>
+            <td class="col-suite">
+              {{ row.title }}
+            </td>
+            <td class="col-num">
+              {{ row.size }}
+            </td>
+            <td class="col-num">
+              {{ row.mean }}
+            </td>
+            <td class="col-num">
+              {{ row.variance }}
+            </td>
           </tr>
         </tbody>
       </table>

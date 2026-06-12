@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { t } = useI18n();
 import _ from 'lodash';
-import { useStyleStore } from '@/stores/style.store';
 import { useMediaRecorder } from './useMediaRecorder';
+import { useStyleStore } from '@/stores/style.store';
+
+const { t } = useI18n();
 
 interface Media { type: 'image' | 'video'; value: string; createdAt: Date }
 
@@ -65,7 +66,9 @@ function refreshCurrentDevices() {
 }
 
 function takeScreenshot() {
-  if (!video.value) return;
+  if (!video.value) {
+    return;
+  }
   const canvas = document.createElement('canvas');
   canvas.width = video.value.videoWidth;
   canvas.height = video.value.videoHeight;
@@ -107,15 +110,25 @@ watch(recordingState, (state) => {
     recordTimer = setInterval(() => recordingSeconds.value++, 1000);
   }
   else if (state === 'stopped') {
-    if (recordTimer) { clearInterval(recordTimer); recordTimer = null; }
+    if (recordTimer) {
+      clearInterval(recordTimer);
+      recordTimer = null;
+    }
     recordingSeconds.value = 0;
   }
   else if (state === 'paused') {
-    if (recordTimer) { clearInterval(recordTimer); recordTimer = null; }
+    if (recordTimer) {
+      clearInterval(recordTimer);
+      recordTimer = null;
+    }
   }
 });
 
-onBeforeUnmount(() => { if (recordTimer) clearInterval(recordTimer); });
+onBeforeUnmount(() => {
+  if (recordTimer) {
+    clearInterval(recordTimer);
+  }
+});
 
 function formatTime(sec: number) {
   const m = String(Math.floor(sec / 60)).padStart(2, '0');
@@ -133,8 +146,12 @@ function formatTime(sec: number) {
         <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
       <div>
-        <div class="state-title">{{ t('tools.camera-recorder.notSupported') }}</div>
-        <div class="state-desc">{{ t('tools.camera-recorder.notSupportedDesc') }}</div>
+        <div class="state-title">
+          {{ t('tools.camera-recorder.notSupported') }}
+        </div>
+        <div class="state-desc">
+          {{ t('tools.camera-recorder.notSupportedDesc') }}
+        </div>
       </div>
     </div>
 
@@ -158,7 +175,9 @@ function formatTime(sec: number) {
             <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
           <div>
-            <div style="font-weight:600;margin-bottom:2px">{{ t('tools.camera-recorder.permBlocked') }}</div>
+            <div style="font-weight:600;margin-bottom:2px">
+              {{ t('tools.camera-recorder.permBlocked') }}
+            </div>
             {{ t('tools.camera-recorder.permBlockedDesc') }}
           </div>
         </div>
@@ -170,7 +189,9 @@ function formatTime(sec: number) {
             </svg>
             {{ t('tools.camera-recorder.permRequired') }}
           </div>
-          <p class="perm-desc">{{ t('tools.camera-recorder.permRequiredDesc') }}</p>
+          <p class="perm-desc">
+            {{ t('tools.camera-recorder.permRequiredDesc') }}
+          </p>
           <button class="btn-primary btn-lg" @click="requestPermissions">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />

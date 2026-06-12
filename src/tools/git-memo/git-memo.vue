@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useStyleStore } from '@/stores/style.store';
 import { useWindowScroll } from '@vueuse/core';
+import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
 const { t } = useI18n();
@@ -112,7 +112,7 @@ const sections = computed((): Section[] => [
   },
   {
     id: 'mistakes',
-    title: "I've Made a Mistake",
+    title: 'I\'ve Made a Mistake',
     commands: [
       { description: t('tools.git-memo.cmd.resetKeep'), code: 'git reset HEAD~1' },
       { description: t('tools.git-memo.cmd.resetNKeep'), code: 'git reset HEAD~N' },
@@ -148,16 +148,20 @@ onMounted(() => {
     },
     { rootMargin: '-20% 0px -70% 0px' },
   );
-  sections.value.forEach(s => {
+  sections.value.forEach((s) => {
     const el = document.getElementById(s.id);
-    if (el) observer.observe(el);
+    if (el) {
+      observer.observe(el);
+    }
   });
   onBeforeUnmount(() => observer.disconnect());
 });
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // ── 复制命令 ──────────────────────────────────────────────────

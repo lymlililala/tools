@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
 const { t } = useI18n();
 
 // noindex prevents search engines from indexing soft 404 pages

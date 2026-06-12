@@ -12,14 +12,13 @@ import { formatMsDuration } from './eta-calculator.service';
 const { t } = useI18n();
 
 // ── 状态 ──────────────────────────────────────────────────────
-const unitCount        = ref(186);        // 待处理总任务量
-const unitPerTimeSpan  = ref(3);          // 每时间段完成数
-const timeSpan         = ref(5);          // 时间段长度
-const timeSpanMult     = ref(60000);      // 时间单位（ms）
-const startedAt        = ref(Date.now()); // 开始时间
+const unitCount = ref(186); // 待处理总任务量
+const unitPerTimeSpan = ref(3); // 每时间段完成数
+const timeSpan = ref(5); // 时间段长度
+const timeSpanMult = ref(60000); // 时间单位（ms）
+const startedAt = ref(Date.now()); // 开始时间
 
 // 时间单位选项
-const TIME_UNIT_VALUES = [1, 1000, 60_000, 3_600_000, 86_400_000];
 const TIME_UNITS = computed(() => [
   { label: t('tools.eta-calculator.unitMs'), value: 1 },
   { label: t('tools.eta-calculator.unitSec'), value: 1000 },
@@ -32,11 +31,15 @@ const selectedUnit = ref({ label: '', value: 60_000 }); // 默认分钟
 // 同步标签
 watch(() => TIME_UNITS.value, (units) => {
   const found = units.find(u => u.value === selectedUnit.value.value);
-  if (found) selectedUnit.value = found;
+  if (found) {
+    selectedUnit.value = found;
+  }
 }, { immediate: true });
 
 // 同步 mult
-watch(selectedUnit, u => { timeSpanMult.value = u.value; }, { immediate: true });
+watch(selectedUnit, (u) => {
+  timeSpanMult.value = u.value;
+}, { immediate: true });
 
 // ── 校验 ──────────────────────────────────────────────────────
 const hasError = computed(() =>
@@ -45,7 +48,9 @@ const hasError = computed(() =>
 
 // ── 计算 ──────────────────────────────────────────────────────
 const durationMs = computed((): number => {
-  if (hasError.value) return 0;
+  if (hasError.value) {
+    return 0;
+  }
   const timeSpanMs = timeSpan.value * timeSpanMult.value;
   return unitCount.value / (unitPerTimeSpan.value / timeSpanMs);
 });
@@ -58,42 +63,51 @@ const endAtLabel = computed((): string => {
   const timeStr = format(d, 'HH:mm:ss');
   const dateStr = format(d, 'yyyy-MM-dd');
 
-  if (isToday(d))     return `${t('tools.eta-calculator.today')} ${timeStr}`;
-  if (isTomorrow(d))  return `${t('tools.eta-calculator.tomorrow')} ${timeStr}`;
-  if (isYesterday(d)) return `${t('tools.eta-calculator.yesterday')} ${timeStr}`;
+  if (isToday(d)) {
+    return `${t('tools.eta-calculator.today')} ${timeStr}`;
+  }
+  if (isTomorrow(d)) {
+    return `${t('tools.eta-calculator.tomorrow')} ${timeStr}`;
+  }
+  if (isYesterday(d)) {
+    return `${t('tools.eta-calculator.yesterday')} ${timeStr}`;
+  }
 
   // 超过 7 天用绝对日期
   const diffDays = Math.abs((d.getTime() - Date.now()) / 86400000);
-  if (diffDays > 7) return `${dateStr} ${timeStr}`;
+  if (diffDays > 7) {
+    return `${dateStr} ${timeStr}`;
+  }
 
-  return formatDistance(d, Date.now(), { addSuffix: true }) + ` (${dateStr} ${timeStr})`;
+  return `${formatDistance(d, Date.now(), { addSuffix: true })} (${dateStr} ${timeStr})`;
 });
 
 // 总耗时文本化
 const durationLabel = computed((): string => {
-  if (hasError.value) return t('tools.eta-calculator.cannotCalc');
+  if (hasError.value) {
+    return t('tools.eta-calculator.cannotCalc');
+  }
   return formatMsDuration(durationMs.value);
 });
 
 // ── 使用当前时间 ──────────────────────────────────────────────
-function setNow() { startedAt.value = Date.now(); }
+function setNow() {
+  startedAt.value = Date.now();
+}
 
 // ── 日期选择器 value 辅助 ─────────────────────────────────────
-const startedAtDate = computed({
-  get: () => new Date(startedAt.value),
-  set: (d: Date) => { startedAt.value = d.getTime(); },
-});
-
 function onDateInput(e: Event) {
   const v = (e.target as HTMLInputElement).value;
   const d = new Date(v);
-  if (!isNaN(d.getTime())) startedAt.value = d.getTime();
+  if (!Number.isNaN(d.getTime())) {
+    startedAt.value = d.getTime();
+  }
 }
 
 const startedAtStr = computed(() => {
   const d = new Date(startedAt.value);
   // format for datetime-local input: yyyy-MM-ddTHH:mm
-  return format(d, "yyyy-MM-dd'T'HH:mm");
+  return format(d, 'yyyy-MM-dd\'T\'HH:mm');
 });
 </script>
 
@@ -121,7 +135,7 @@ const startedAtStr = computed(() => {
               type="number"
               min="1"
               @blur="unitCount = Math.max(1, unitCount || 1)"
-            />
+            >
             <button class="num-btn" @click="unitCount++">
               <icon-mdi-plus />
             </button>
@@ -141,7 +155,7 @@ const startedAtStr = computed(() => {
             type="datetime-local"
             :value="startedAtStr"
             @input="onDateInput"
-          />
+          >
         </div>
       </div>
 
@@ -161,7 +175,7 @@ const startedAtStr = computed(() => {
               type="number"
               min="1"
               @blur="timeSpan = Math.max(1, timeSpan || 1)"
-            />
+            >
             <button class="num-btn" @click="timeSpan++">
               <icon-mdi-plus />
             </button>
@@ -191,7 +205,7 @@ const startedAtStr = computed(() => {
               type="number"
               min="1"
               @blur="unitPerTimeSpan = Math.max(1, unitPerTimeSpan || 1)"
-            />
+            >
             <button class="num-btn" @click="unitPerTimeSpan++">
               <icon-mdi-plus />
             </button>
@@ -230,7 +244,7 @@ const startedAtStr = computed(() => {
     <transition name="fade">
       <div v-if="hasError" class="zero-error">
         <icon-mdi-calculator-variant-outline class="zero-icon" />
-          <span>{{ t('tools.eta-calculator.zeroErrorMsg') }}</span>
+        <span>{{ t('tools.eta-calculator.zeroErrorMsg') }}</span>
       </div>
     </transition>
   </div>

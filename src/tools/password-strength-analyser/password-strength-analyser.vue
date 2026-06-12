@@ -14,12 +14,22 @@ const isEmpty = computed(() => password.value === '');
 type StrengthLevel = 'empty' | 'very-weak' | 'weak' | 'fair' | 'good' | 'strong';
 
 const strengthLevel = computed<StrengthLevel>(() => {
-  if (isEmpty.value) return 'empty';
+  if (isEmpty.value) {
+    return 'empty';
+  }
   const s = score.value;
-  if (s < 20) return 'very-weak';
-  if (s < 40) return 'weak';
-  if (s < 60) return 'fair';
-  if (s < 80) return 'good';
+  if (s < 20) {
+    return 'very-weak';
+  }
+  if (s < 40) {
+    return 'weak';
+  }
+  if (s < 60) {
+    return 'fair';
+  }
+  if (s < 80) {
+    return 'good';
+  }
   return 'strong';
 });
 
@@ -37,22 +47,42 @@ const strengthMeta = computed(() => {
 
 // ── 启发式改进建议 ─────────────────────────────────────────────────────────────
 const tips = computed<string[]>(() => {
-  if (isEmpty.value) return [];
+  if (isEmpty.value) {
+    return [];
+  }
   const hints: string[] = [];
   const pw = password.value;
   const len = pw.length;
   const s = score.value;
 
-  if (s >= 80) return [];
+  if (s >= 80) {
+    return [];
+  }
 
-  if (len < 8) hints.push('Use at least 8 characters — longer is stronger.');
-  if (len < 12 && len >= 8) hints.push('Try making it longer (12+ characters recommended).');
-  if (!/[A-Z]/.test(pw)) hints.push('Add uppercase letters (A-Z).');
-  if (!/[a-z]/.test(pw)) hints.push('Add lowercase letters (a-z).');
-  if (!/\d/.test(pw)) hints.push('Include at least one digit (0-9).');
-  if (!/[\W_]/.test(pw)) hints.push('Add special characters (!, @, #, $…).');
-  if (/(.)\1{2,}/.test(pw)) hints.push('Avoid repeating the same character many times.');
-  if (/^(123|abc|qwerty|password|111|000)/i.test(pw)) hints.push('Avoid common patterns like "123" or "password".');
+  if (len < 8) {
+    hints.push('Use at least 8 characters — longer is stronger.');
+  }
+  if (len < 12 && len >= 8) {
+    hints.push('Try making it longer (12+ characters recommended).');
+  }
+  if (!/[A-Z]/.test(pw)) {
+    hints.push('Add uppercase letters (A-Z).');
+  }
+  if (!/[a-z]/.test(pw)) {
+    hints.push('Add lowercase letters (a-z).');
+  }
+  if (!/\d/.test(pw)) {
+    hints.push('Include at least one digit (0-9).');
+  }
+  if (!/[\W_]/.test(pw)) {
+    hints.push('Add special characters (!, @, #, $…).');
+  }
+  if (/(.)\1{2,}/.test(pw)) {
+    hints.push('Avoid repeating the same character many times.');
+  }
+  if (/^(123|abc|qwerty|password|111|000)/i.test(pw)) {
+    hints.push('Avoid common patterns like "123" or "password".');
+  }
 
   return hints.slice(0, 3); // 最多 3 条，不啰嗦
 });
@@ -89,7 +119,7 @@ const details = computed(() => [
         autocomplete="new-password"
         spellcheck="false"
         data-test-id="password-input"
-      />
+      >
       <button
         class="eye-btn"
         :title="showPassword ? 'Hide password' : 'Show password'"
@@ -125,7 +155,9 @@ const details = computed(() => [
     <!-- ③ 破解时间卡（动态颜色 + 空状态占位） -->
     <transition name="slide-down" mode="out-in">
       <c-card v-if="!isEmpty" key="crack" class="crack-card" :style="{ '--accent': strengthMeta.color }">
-        <div class="crack-sub">Duration to crack this password with brute force</div>
+        <div class="crack-sub">
+          Duration to crack this password with brute force
+        </div>
         <div class="crack-duration" :style="{ color: strengthMeta.color }" data-test-id="crack-duration">
           {{ estimation.crackDurationFormatted }}
         </div>

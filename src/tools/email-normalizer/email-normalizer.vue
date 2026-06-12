@@ -65,24 +65,32 @@ const processResult = computed((): ProcessResult => {
 });
 
 const normalizedEmails = computed(() => processResult.value.normalized);
-const hasInput  = computed(() => rawEmails.value.trim().length > 0);
+const hasInput = computed(() => rawEmails.value.trim().length > 0);
 const hasOutput = computed(() => normalizedEmails.value.length > 0);
 
 // ── 文件上传 ──────────────────────────────────────────────────
 const fileInputRef = ref<HTMLInputElement | null>(null);
-function triggerUpload() { fileInputRef.value?.click(); }
+function triggerUpload() {
+  fileInputRef.value?.click();
+}
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   const reader = new FileReader();
-  reader.onload = () => { rawEmails.value = reader.result as string; };
+  reader.onload = () => {
+    rawEmails.value = reader.result as string;
+  };
   reader.readAsText(file, 'utf-8');
   (e.target as HTMLInputElement).value = '';
 }
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadResult() {
-  if (!normalizedEmails.value) return;
+  if (!normalizedEmails.value) {
+    return;
+  }
   const blob = new Blob([normalizedEmails.value], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -101,7 +109,7 @@ const { copy, isJustCopied } = useCopy({
 </script>
 
 <template>
-  <div class="email-root tool-wide">
+  <div class="tool-wide email-root">
     <!-- ── 输入区 ──────────────────────────────────────────── -->
     <div class="section">
       <div class="section-header">
@@ -119,7 +127,7 @@ const { copy, isJustCopied } = useCopy({
             accept=".txt,.csv,text/plain"
             style="display:none"
             @change="onFileChange"
-          />
+          >
           <!-- 清空 -->
           <c-tooltip v-if="hasInput" :tooltip="t('tools.email-normalizer.clearInput')" position="bottom">
             <button class="hdr-btn" @click="rawEmails = ''">
@@ -129,7 +137,7 @@ const { copy, isJustCopied } = useCopy({
         </div>
       </div>
 
-      <div class="textarea-wrap" :class="{ 'focused': true }">
+      <div class="textarea-wrap focused">
         <textarea
           v-model="rawEmails"
           class="email-textarea"
@@ -150,26 +158,34 @@ const { copy, isJustCopied } = useCopy({
           <span class="stat-num">{{ processResult.totalCount }}</span>
           <span class="stat-label">{{ t('tools.email-normalizer.statInput') }}</span>
         </div>
-        <div class="stat-sep">→</div>
+        <div class="stat-sep">
+          →
+        </div>
         <div class="stat-item stat-item--valid">
           <span class="stat-num">{{ processResult.validCount }}</span>
           <span class="stat-label">{{ t('tools.email-normalizer.statValid') }}</span>
         </div>
         <template v-if="processResult.invalidCount > 0">
-          <div class="stat-sep">·</div>
+          <div class="stat-sep">
+            ·
+          </div>
           <div class="stat-item stat-item--invalid">
             <span class="stat-num">{{ processResult.invalidCount }}</span>
             <span class="stat-label">{{ t('tools.email-normalizer.statInvalid') }}</span>
           </div>
         </template>
         <template v-if="processResult.dedupCount > 0">
-          <div class="stat-sep">·</div>
+          <div class="stat-sep">
+            ·
+          </div>
           <div class="stat-item stat-item--dedup">
             <span class="stat-num">-{{ processResult.dedupCount }}</span>
             <span class="stat-label">{{ t('tools.email-normalizer.statDuplicate') }}</span>
           </div>
         </template>
-        <div class="stat-sep">→</div>
+        <div class="stat-sep">
+          →
+        </div>
         <div class="stat-item stat-item--output">
           <span class="stat-num">{{ processResult.outputCount }}</span>
           <span class="stat-label">{{ t('tools.email-normalizer.statOutput') }}</span>

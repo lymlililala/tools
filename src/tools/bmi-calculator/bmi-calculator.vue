@@ -16,7 +16,9 @@ const weightMin = computed(() => unit.value === 'metric' ? 10 : 22);
 const weightMax = computed(() => unit.value === 'metric' ? 500 : 1100);
 
 const bmi = computed(() => {
-  if (!heightCm.value || !weightKg.value || heightCm.value <= 0) return null;
+  if (!heightCm.value || !weightKg.value || heightCm.value <= 0) {
+    return null;
+  }
   const heightM = heightCm.value / 100;
   return weightKg.value / (heightM * heightM);
 });
@@ -39,7 +41,9 @@ const categories: BmiCategory[] = [
 ];
 
 const currentCategory = computed(() => {
-  if (bmi.value === null) return null;
+  if (bmi.value === null) {
+    return null;
+  }
   return categories.find(c => bmi.value! >= c.min && bmi.value! < c.max) ?? null;
 });
 
@@ -57,7 +61,9 @@ const idealWeightMax = computed(() => {
 
 // BMI 指针位置（0%~100% 对应 BMI 10~40），夹住防溢出
 const pointerPercent = computed(() => {
-  if (bmi.value === null) return 0;
+  if (bmi.value === null) {
+    return 0;
+  }
   const clamped = Math.min(Math.max(bmi.value, 10), 40);
   return ((clamped - 10) / 30) * 100;
 });
@@ -125,7 +131,7 @@ function clampWeight() {
             :max="heightMax"
             :placeholder="unit === 'metric' ? '170' : '67'"
             @blur="clampHeight"
-          />
+          >
           <span class="field-unit">{{ unit === 'metric' ? 'cm' : 'in' }}</span>
           <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.decreaseHeight')" @click="stepHeight(-1)" @keydown.enter.prevent="stepHeight(-1)">
             −
@@ -152,7 +158,7 @@ function clampWeight() {
             :step="0.5"
             :placeholder="unit === 'metric' ? '65' : '143'"
             @blur="clampWeight"
-          />
+          >
           <span class="field-unit">{{ unit === 'metric' ? 'kg' : 'lbs' }}</span>
           <button class="stepper-btn" tabindex="0" :aria-label="t('tools.bmi-calculator.decreaseWeight')" @click="stepWeight(-0.5)" @keydown.enter.prevent="stepWeight(-0.5)">
             −
@@ -168,7 +174,9 @@ function clampWeight() {
     <c-card v-if="bmi !== null" class="result-card">
       <!-- 数值 Hero -->
       <div class="result-hero">
-        <div class="result-label">{{ t('tools.bmi-calculator.yourBmi') }}</div>
+        <div class="result-label">
+          {{ t('tools.bmi-calculator.yourBmi') }}
+        </div>
         <div class="result-value" :style="{ color: currentCategory?.color }">
           {{ bmi.toFixed(1) }}
         </div>

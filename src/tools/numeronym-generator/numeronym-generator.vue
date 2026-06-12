@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Copy, Check } from '@vicons/tabler';
+import { Check, Copy } from '@vicons/tabler';
 import { generateNumeronymPhrase } from './numeronym-generator.service';
 import { useCopy } from '@/composable/copy';
 
@@ -18,7 +18,9 @@ const copied = ref(false);
 const { copy } = useCopy({ source: numeronym, text: computed(() => t('tools.numeronym-generator.numeronymCopied')) });
 
 async function handleCopy() {
-  if (!numeronym.value) return;
+  if (!numeronym.value) {
+    return;
+  }
   await copy();
   copied.value = true;
   setTimeout(() => (copied.value = false), 1800);

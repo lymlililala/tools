@@ -20,7 +20,9 @@ interface ResultRow {
 }
 
 const resultRows = computed((): ResultRow[] => {
-  if (!isValid.value) return [];
+  if (!isValid.value) {
+    return [];
+  }
 
   const ipInDecimal = ipv4ToInt({ ip: rawIpAddress.value });
   const hex = convertBase({ fromBase: 10, toBase: 16, value: String(ipInDecimal) }).toUpperCase().padStart(8, '0');
@@ -41,10 +43,14 @@ const copiedLabel = ref('');
 const { copy } = useCopy({ createToast: true, text: computed(() => t('tools.ipv4-address-converter.copied')) });
 
 async function copyRow(label: string, value: string) {
-  if (!value) return;
+  if (!value) {
+    return;
+  }
   await copy(value);
   copiedLabel.value = label;
-  setTimeout(() => { copiedLabel.value = ''; }, 1800);
+  setTimeout(() => {
+    copiedLabel.value = '';
+  }, 1800);
 }
 </script>
 
@@ -61,7 +67,7 @@ async function copyRow(label: string, value: string) {
           spellcheck="false"
           autocomplete="off"
           autofocus
-        />
+        >
       </div>
       <transition name="slide-down">
         <div v-if="showError" class="error-msg">

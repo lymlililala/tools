@@ -19,7 +19,9 @@ function triggerFileUpload() {
 }
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   const reader = new FileReader();
   reader.onload = () => {
     jsonInput.value = reader.result as string;
@@ -30,7 +32,9 @@ function onFileChange(e: Event) {
 
 // ── 格式化 JSON ───────────────────────────────────────────────────────────
 function formatJson() {
-  if (!jsonInput.value.trim()) return;
+  if (!jsonInput.value.trim()) {
+    return;
+  }
   try {
     const parsed = JSON5.parse(jsonInput.value);
     jsonInput.value = JSON.stringify(parsed, null, 2);
@@ -53,7 +57,9 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedJson.value.trim();
-  if (!raw) return { xml: '', error: null };
+  if (!raw) {
+    return { xml: '', error: null };
+  }
 
   try {
     const parsed = JSON5.parse(raw);
@@ -86,7 +92,9 @@ const hasError = computed(() => parseError.value !== null && jsonInput.value.tri
 
 // ── 下载 XML ──────────────────────────────────────────────────────────────
 function downloadXml() {
-  if (!xmlOutput.value) return;
+  if (!xmlOutput.value) {
+    return;
+  }
   const blob = new Blob([xmlOutput.value], { type: 'application/xml;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -99,7 +107,9 @@ function downloadXml() {
 // ── 复制反馈 ─────────────────────────────────────────────────────────────
 const copySuccess = ref(false);
 async function copyXml() {
-  if (!xmlOutput.value) return;
+  if (!xmlOutput.value) {
+    return;
+  }
   await navigator.clipboard.writeText(xmlOutput.value);
   copySuccess.value = true;
   setTimeout(() => (copySuccess.value = false), 1800);
@@ -107,7 +117,7 @@ async function copyXml() {
 </script>
 
 <template>
-  <div class="json-xml-wrap tool-wide">
+  <div class="tool-wide json-xml-wrap">
     <!-- 设置栏 -->
     <div class="settings-bar">
       <label class="setting-item">

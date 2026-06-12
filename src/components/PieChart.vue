@@ -8,60 +8,66 @@ interface Segment {
 const props = defineProps<{
   segments: Segment[]
   size?: number
-}>()
+}>();
 
-const canvas = ref<HTMLCanvasElement | null>(null)
+const canvas = ref<HTMLCanvasElement | null>(null);
 
-const sz = computed(() => props.size ?? 180)
+const sz = computed(() => props.size ?? 180);
 
 function draw() {
-  const el = canvas.value
-  if (!el) return
-  const ctx = el.getContext('2d')
-  if (!ctx) return
+  const el = canvas.value;
+  if (!el) {
+    return;
+  }
+  const ctx = el.getContext('2d');
+  if (!ctx) {
+    return;
+  }
 
-  const dpr = window.devicePixelRatio ?? 1
-  el.width = sz.value * dpr
-  el.height = sz.value * dpr
-  el.style.width = `${sz.value}px`
-  el.style.height = `${sz.value}px`
-  ctx.scale(dpr, dpr)
+  const dpr = window.devicePixelRatio ?? 1;
+  el.width = sz.value * dpr;
+  el.height = sz.value * dpr;
+  el.style.width = `${sz.value}px`;
+  el.style.height = `${sz.value}px`;
+  ctx.scale(dpr, dpr);
 
-  const cx = sz.value / 2
-  const cy = sz.value / 2
-  const r = sz.value / 2 - 8
-  const innerR = r * 0.55
+  const cx = sz.value / 2;
+  const cy = sz.value / 2;
+  const r = sz.value / 2 - 8;
+  const innerR = r * 0.55;
 
-  const total = props.segments.reduce((s, seg) => s + seg.value, 0)
-  if (total <= 0) return
+  const total = props.segments.reduce((s, seg) => s + seg.value, 0);
+  if (total <= 0) {
+    return;
+  }
 
-  let startAngle = -Math.PI / 2
+  let startAngle = -Math.PI / 2;
 
-  ctx.clearRect(0, 0, sz.value, sz.value)
+  ctx.clearRect(0, 0, sz.value, sz.value);
 
   for (const seg of props.segments) {
-    const angle = (seg.value / total) * Math.PI * 2
-    ctx.beginPath()
-    ctx.moveTo(cx, cy)
-    ctx.arc(cx, cy, r, startAngle, startAngle + angle)
-    ctx.closePath()
-    ctx.fillStyle = seg.color
-    ctx.fill()
-    startAngle += angle
+    const angle = (seg.value / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, startAngle + angle);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    startAngle += angle;
   }
 
   // 内圆（donut）
-  ctx.beginPath()
-  ctx.arc(cx, cy, innerR, 0, Math.PI * 2)
-  ctx.fillStyle = 'transparent'
-  ctx.globalCompositeOperation = 'destination-out'
-  ctx.fill()
-  ctx.globalCompositeOperation = 'source-over'
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.fillStyle = 'transparent';
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
 }
 
 watchEffect(() => {
-  nextTick(draw)
-})
+  nextTick(draw);
+});
 </script>
 
 <template>
@@ -72,7 +78,7 @@ watchEffect(() => {
         <span class="legend-dot" :style="{ background: seg.color }" />
         <span class="legend-label">{{ seg.label }}</span>
         <span class="legend-pct">
-          {{ segments.reduce((s,x)=>s+x.value,0) > 0 ? ((seg.value / segments.reduce((s,x)=>s+x.value,0)) * 100).toFixed(1) + '%' : '—' }}
+          {{ segments.reduce((s, x) => s + x.value, 0) > 0 ? `${((seg.value / segments.reduce((s, x) => s + x.value, 0)) * 100).toFixed(1)}%` : '—' }}
         </span>
       </div>
     </div>

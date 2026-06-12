@@ -13,21 +13,33 @@ const regex = useQueryParamOrStorage({ name: 'regex', storageName: 'regex-tester
 const text = ref('');
 
 // 修饰符
-const flagGlobal      = ref(true);
-const flagIgnoreCase  = ref(false);
-const flagMultiline   = ref(false);
-const flagDotAll      = ref(true);
-const flagUnicode     = ref(true);
+const flagGlobal = ref(true);
+const flagIgnoreCase = ref(false);
+const flagMultiline = ref(false);
+const flagDotAll = ref(true);
+const flagUnicode = ref(true);
 const flagUnicodeSets = ref(false);
 
 const flags = computed(() => {
   let f = 'd';
-  if (flagGlobal.value)      f += 'g';
-  if (flagIgnoreCase.value)  f += 'i';
-  if (flagMultiline.value)   f += 'm';
-  if (flagDotAll.value)      f += 's';
-  if (flagUnicode.value)     f += 'u';
-  else if (flagUnicodeSets.value) f += 'v';
+  if (flagGlobal.value) {
+    f += 'g';
+  }
+  if (flagIgnoreCase.value) {
+    f += 'i';
+  }
+  if (flagMultiline.value) {
+    f += 'm';
+  }
+  if (flagDotAll.value) {
+    f += 's';
+  }
+  if (flagUnicode.value) {
+    f += 'u';
+  }
+  else if (flagUnicodeSets.value) {
+    f += 'v';
+  }
   return f;
 });
 
@@ -42,7 +54,9 @@ const FLAG_DEFS = computed(() => [
 
 // ── 正则解析 & 错误 ────────────────────────────────────────────
 const regexError = computed((): string => {
-  if (!regex.value) return '';
+  if (!regex.value) {
+    return '';
+  }
   try {
     // eslint-disable-next-line no-new
     new RegExp(regex.value, flags.value.replace('d', ''));
@@ -54,10 +68,12 @@ const regexError = computed((): string => {
 });
 
 const debouncedRegex = refDebounced(regex, 120);
-const debouncedText  = refDebounced(text, 120);
+const debouncedText = refDebounced(text, 120);
 
 const results = computed(() => {
-  if (!debouncedRegex.value || !debouncedText.value || regexError.value) return [];
+  if (!debouncedRegex.value || !debouncedText.value || regexError.value) {
+    return [];
+  }
   try {
     return matchRegex(debouncedRegex.value, debouncedText.value, flags.value);
   }
@@ -70,8 +86,12 @@ const results = computed(() => {
 const highlightColors = ['rgba(99,102,241,0.22)', 'rgba(16,185,129,0.22)'];
 
 const highlightedText = computed((): string => {
-  if (!debouncedText.value) return '';
-  if (!results.value.length) return escapeHtml(debouncedText.value);
+  if (!debouncedText.value) {
+    return '';
+  }
+  if (!results.value.length) {
+    return escapeHtml(debouncedText.value);
+  }
 
   const raw = debouncedText.value;
   let out = '';
@@ -105,8 +125,8 @@ function escapeHtml(s: string): string {
 }
 
 // ── 状态判断 ──────────────────────────────────────────────────
-const isEmpty   = computed(() => !regex.value && !text.value);
-const hasMatch  = computed(() => results.value.length > 0);
+const isEmpty = computed(() => !regex.value && !text.value);
+const hasMatch = computed(() => results.value.length > 0);
 const matchCount = computed(() => results.value.length);
 
 // ── 示例文本 ──────────────────────────────────────────────────
@@ -126,16 +146,21 @@ watchEffect(async () => {
   const regexValue = regex.value;
   const visualizer = visualizerSVG.value?.shadow_root;
   if (visualizer) {
-    while (visualizer.lastChild) visualizer.removeChild(visualizer.lastChild);
+    while (visualizer.lastChild) {
+      visualizer.removeChild(visualizer.lastChild);
+    }
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    try { await render(regexValue, svg); } catch (_) {}
+    try {
+      await render(regexValue, svg);
+    }
+    catch (_) {}
     visualizer.appendChild(svg);
   }
 });
 </script>
 
 <template>
-  <div class="rt-root tool-wide">
+  <div class="tool-wide rt-root">
     <!-- ── 顶部：正则输入行 ──────────────────────────────── -->
     <div class="regex-row" :class="{ 'regex-row--error': !!regexError }">
       <span class="regex-slash">/</span>
@@ -146,7 +171,7 @@ watchEffect(async () => {
         spellcheck="false"
         autocomplete="off"
         autofocus
-      />
+      >
       <span class="regex-slash">/</span>
 
       <!-- 修饰符 Toggle Chips -->
@@ -274,7 +299,9 @@ watchEffect(async () => {
         <pre class="aux-pre">{{ sample }}</pre>
       </c-card>
       <c-card :title="t('tools.regex-tester.visualization')" style="overflow-x:auto;">
-        <shadow-root ref="visualizerSVG">&#xa0;</shadow-root>
+        <shadow-root ref="visualizerSVG">
+&#xa0;
+        </shadow-root>
       </c-card>
     </div>
   </div>

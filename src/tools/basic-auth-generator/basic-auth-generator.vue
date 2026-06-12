@@ -14,7 +14,9 @@ const header = computed(() => `Authorization: Basic ${token.value}`);
 // ── 复制反馈 ─────────────────────────────────────────────────────────────
 const copySuccess = ref(false);
 async function copyHeader() {
-  if (!hasInput.value) return;
+  if (!hasInput.value) {
+    return;
+  }
   await navigator.clipboard.writeText(header.value);
   copySuccess.value = true;
   setTimeout(() => (copySuccess.value = false), 2000);
@@ -62,7 +64,9 @@ async function copyHeader() {
     <!-- 结果区：仅当有输入时显示 -->
     <transition name="result-slide">
       <div v-if="hasInput" class="result-card">
-        <div class="result-label">Authorization header</div>
+        <div class="result-label">
+          Authorization header
+        </div>
         <div class="result-value">
           <span class="result-prefix">Authorization: Basic </span>
           <span class="result-token">{{ token }}</span>

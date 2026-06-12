@@ -36,7 +36,9 @@ const typeToLabel = computed(() => ({
 } as Record<string, string>));
 
 function formatType(type: string | undefined): string | undefined {
-  if (!type) return undefined;
+  if (!type) {
+    return undefined;
+  }
   return typeToLabel.value[type];
 }
 
@@ -46,17 +48,27 @@ function boolToLabel(val: boolean): string {
 
 // 解析状态：'empty' | 'invalid' | 'parsed'
 const parseState = computed<'empty' | 'invalid' | 'parsed'>(() => {
-  if (!rawPhone.value.trim()) return 'empty';
-  if (!validation.isValid) return 'invalid';
+  if (!rawPhone.value.trim()) {
+    return 'empty';
+  }
+  if (!validation.isValid) {
+    return 'invalid';
+  }
   const parsed = withDefaultOnError(() => parsePhoneNumber(rawPhone.value, defaultCountryCode.value), undefined);
-  if (!parsed) return 'invalid';
+  if (!parsed) {
+    return 'invalid';
+  }
   return 'parsed';
 });
 
 const parsedDetails = computed(() => {
-  if (parseState.value !== 'parsed') return undefined;
+  if (parseState.value !== 'parsed') {
+    return undefined;
+  }
   const parsed = withDefaultOnError(() => parsePhoneNumber(rawPhone.value, defaultCountryCode.value), undefined);
-  if (!parsed) return undefined;
+  if (!parsed) {
+    return undefined;
+  }
 
   return [
     {
@@ -142,13 +154,17 @@ const countriesOptions = getCountries().map(code => ({
 
         <!-- 空状态 -->
         <div v-if="parseState === 'empty'" class="result-empty">
-          <div class="result-empty-icon">📱</div>
+          <div class="result-empty-icon">
+            📱
+          </div>
           <div>{{ t('tools.phone-parser-and-formatter.resultEmpty') }}</div>
         </div>
 
         <!-- 非法状态 -->
         <div v-else-if="parseState === 'invalid'" class="result-invalid">
-          <div class="result-invalid-icon">⚠️</div>
+          <div class="result-invalid-icon">
+            ⚠️
+          </div>
           <div>{{ t('tools.phone-parser-and-formatter.resultInvalid') }}</div>
         </div>
 

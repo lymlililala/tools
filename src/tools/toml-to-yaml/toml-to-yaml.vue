@@ -14,7 +14,9 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedToml.value.trim();
-  if (!raw) return { yaml: '', error: null };
+  if (!raw) {
+    return { yaml: '', error: null };
+  }
 
   try {
     const obj = parseToml(raw);
@@ -35,7 +37,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="toml-yaml-wrap tool-wide">
+  <div class="tool-wide toml-yaml-wrap">
     <div class="editor-grid">
       <!-- 左：TOML 输入 -->
       <div class="pane">

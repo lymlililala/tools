@@ -62,9 +62,13 @@ const displayText = computed(() =>
 const binaryValidationRules = [
   {
     validator: (value: string) => {
-      if (!value.trim()) return true;
+      if (!value.trim()) {
+        return true;
+      }
       // 只允许 0/1 和空格/换行
-      if (/[^01\s]/.test(value)) return false;
+      if (/[^01\s]/.test(value)) {
+        return false;
+      }
       const clean = value.replace(/[^01]/g, '');
       return clean.length === 0 || clean.length % 8 === 0;
     },
@@ -81,7 +85,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
 </script>
 
 <template>
-  <div class="ttb-wrap tool-wide">
+  <div class="tool-wide ttb-wrap">
     <!-- 顶部工具栏：字节分隔符开关 -->
     <div class="toolbar">
       <label class="switch-label">

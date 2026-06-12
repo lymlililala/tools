@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import { types as extensionToMimeType, extensions as mimeTypeToExtension } from 'mime-types';
 
@@ -22,7 +23,9 @@ const copiedTag = ref('');
 async function copyTag(text: string) {
   await copy(text);
   copiedTag.value = text;
-  setTimeout(() => { copiedTag.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedTag.value = '';
+  }, 1400);
 }
 
 // ── 全量列表 + 搜索过滤 ───────────────────────────────────────────────────
@@ -34,7 +37,9 @@ const currentPage = ref(1);
 
 const filteredInfos = computed(() => {
   const q = tableSearch.value.trim().toLowerCase();
-  if (!q) return mimeInfos;
+  if (!q) {
+    return mimeInfos;
+  }
   return mimeInfos.filter(({ mimeType, extensions }) =>
     mimeType.includes(q) || extensions.some(e => e.includes(q)),
   );
@@ -48,7 +53,9 @@ const pagedInfos = computed(() => {
 });
 
 // 搜索时重置到第一页
-watch(tableSearch, () => { currentPage.value = 1; });
+watch(tableSearch, () => {
+  currentPage.value = 1;
+});
 </script>
 
 <template>
@@ -57,15 +64,17 @@ watch(tableSearch, () => { currentPage.value = 1; });
     <div class="cards-grid">
       <!-- Mime → Extension -->
       <c-card class="conv-card">
-        <div class="card-title">Mime type → Extension</div>
+        <div class="card-title">
+          Mime type → Extension
+        </div>
         <div class="card-desc">
           Know which file extensions are associated to a MIME type
         </div>
 
         <c-select
           v-model:value="selectedMimeType"
-          searchable
-          mt-3 mb-3
+
+          searchable mb-3 mt-3
           :options="mimeToExtensionsOptions"
           placeholder="Select a MIME type…  (ex: application/pdf)"
         />
@@ -103,15 +112,17 @@ watch(tableSearch, () => { currentPage.value = 1; });
 
       <!-- Extension → Mime -->
       <c-card class="conv-card">
-        <div class="card-title">Extension → Mime type</div>
+        <div class="card-title">
+          Extension → Mime type
+        </div>
         <div class="card-desc">
           Know which MIME type is associated to a file extension
         </div>
 
         <c-select
           v-model:value="selectedExtension"
-          searchable
-          mt-3 mb-3
+
+          searchable mb-3 mt-3
           :options="extensionToMimeTypeOptions"
           placeholder="Select a file extension…  (ex: .pdf)"
         />
@@ -166,8 +177,12 @@ watch(tableSearch, () => { currentPage.value = 1; });
         <table class="mime-table">
           <thead>
             <tr>
-              <th class="th-mime">MIME Type</th>
-              <th class="th-ext">Extensions</th>
+              <th class="th-mime">
+                MIME Type
+              </th>
+              <th class="th-ext">
+                Extensions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -176,7 +191,9 @@ watch(tableSearch, () => { currentPage.value = 1; });
               :key="mimeType"
               class="table-row"
             >
-              <td class="td-mime">{{ mimeType }}</td>
+              <td class="td-mime">
+                {{ mimeType }}
+              </td>
               <td class="td-ext">
                 <n-tooltip
                   v-for="ext of extensions"

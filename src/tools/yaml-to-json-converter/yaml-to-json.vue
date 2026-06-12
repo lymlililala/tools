@@ -13,11 +13,15 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedYaml.value.trim();
-  if (!raw) return { json: '', error: null };
+  if (!raw) {
+    return { json: '', error: null };
+  }
 
   try {
     const obj = parseYaml(raw, { merge: true });
-    if (obj === null || obj === undefined) return { json: '', error: null };
+    if (obj === null || obj === undefined) {
+      return { json: '', error: null };
+    }
     return { json: JSON.stringify(obj, null, 2), error: null };
   }
   catch (e: any) {
@@ -29,18 +33,6 @@ const result = computed((): ConvertResult => {
 const jsonOutput = computed(() => result.value.json);
 const parseError = computed(() => result.value.error);
 
-// ── 下载 ─────────────────────────────────────────────────────────────────
-function downloadJson() {
-  if (!jsonOutput.value) return;
-  const blob = new Blob([jsonOutput.value], { type: 'application/json;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'output.json';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 // ── 清空 ─────────────────────────────────────────────────────────────────
 function clearInput() {
   yamlInput.value = '';
@@ -48,7 +40,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="yaml-json-wrap tool-wide">
+  <div class="tool-wide yaml-json-wrap">
     <!-- 两栏代码编辑器 -->
     <div class="editor-grid">
       <!-- 左：YAML 输入 -->

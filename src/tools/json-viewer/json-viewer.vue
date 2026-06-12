@@ -2,11 +2,11 @@
 import JSON5 from 'json5';
 import { useStorage } from '@vueuse/core';
 import { formatJson } from './json.models';
-
-const { t } = useI18n();
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
 import { useCopy } from '@/composable/copy';
+
+const { t } = useI18n();
 
 const rawJson = useStorage('json-prettify:raw-json', '{"hello": "world", "foo": "bar"}');
 const indentSize = useStorage('json-prettify:indent-size', 3);
@@ -32,7 +32,9 @@ const isInvalid = computed(() => hasInput.value && !rawJsonValidation.isValid);
 
 // ── 解析错误详情 ──────────────────────────────────────────────
 const parseError = computed(() => {
-  if (!isInvalid.value) return '';
+  if (!isInvalid.value) {
+    return '';
+  }
   try {
     JSON5.parse(rawJson.value);
     return '';
@@ -55,7 +57,9 @@ function clearInput() {
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadJson() {
-  if (!cleanJson.value) return;
+  if (!cleanJson.value) {
+    return;
+  }
   const blob = new Blob([cleanJson.value], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -68,106 +72,110 @@ function downloadJson() {
 
 <template>
   <div class="tool-wide">
-  <!-- ── 配置栏 ────────────────────────────────────────────── -->
-  <div class="toolbar">
-    <div class="toolbar-group">
-      <span class="toolbar-label">{{ t('tools.json-viewer.sortKeys') }}</span>
-      <n-switch v-model:value="sortKeys" size="small" />
-    </div>
-    <div class="toolbar-divider" />
-    <div class="toolbar-group">
-      <span class="toolbar-label">{{ t('tools.json-viewer.indentSize') }}</span>
-      <div class="indent-ctrl">
-        <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">−</button>
-        <span class="indent-val">{{ indentSize }}</span>
-        <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">+</button>
+    <!-- ── 配置栏 ────────────────────────────────────────────── -->
+    <div class="toolbar">
+      <div class="toolbar-group">
+        <span class="toolbar-label">{{ t('tools.json-viewer.sortKeys') }}</span>
+        <n-switch v-model:value="sortKeys" size="small" />
       </div>
-    </div>
-  </div>
-
-  <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="json-panes">
-    <!-- 输入面板 -->
-    <div class="pane" :class="{ 'pane--error': isInvalid, 'pane--valid': isValid }">
-      <div class="pane-header">
-        <span class="pane-title">Raw JSON</span>
-        <!-- 验证徽章 -->
-        <span v-if="isValid" class="status-badge status-badge--valid">
-          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
-          {{ t('tools.json-viewer.valid') }}
-        </span>
-        <span v-else-if="isInvalid" class="status-badge status-badge--error">
-          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
-          {{ t('tools.json-viewer.invalid') }}
-        </span>
-        <!-- 清除按钮（在输入面板） -->
-        <c-tooltip v-if="hasInput" :tooltip="t('tools.json-viewer.clearInput')" position="bottom">
-          <button class="hdr-btn" @click="clearInput">
-            <icon-mdi-close-circle-outline />
+      <div class="toolbar-divider" />
+      <div class="toolbar-group">
+        <span class="toolbar-label">{{ t('tools.json-viewer.indentSize') }}</span>
+        <div class="indent-ctrl">
+          <button class="indent-btn" :disabled="indentSize <= 0" @click="indentSize = Math.max(0, indentSize - 1)">
+            −
           </button>
-        </c-tooltip>
-      </div>
-
-      <c-code-input
-        v-model="rawJson"
-        language="json"
-        :placeholder="t('tools.json-viewer.inputPlaceholder')"
-        class="code-editor"
-        :class="{ 'editor--error': isInvalid }"
-      />
-
-      <!-- 错误详情 -->
-      <transition name="slide-down">
-        <div v-if="parseError" class="error-panel">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>{{ parseError }}</span>
+          <span class="indent-val">{{ indentSize }}</span>
+          <button class="indent-btn" :disabled="indentSize >= 10" @click="indentSize = Math.min(10, indentSize + 1)">
+            +
+          </button>
         </div>
-      </transition>
+      </div>
     </div>
 
-    <!-- 输出面板 -->
-    <div class="pane">
-      <div class="pane-header">
-        <span class="pane-title">Formatted JSON</span>
-        <!-- 操作按钮组 -->
-        <div class="action-group">
-          <!-- 复制 -->
-          <c-tooltip :tooltip="isFormattedCopied ? t('tools.json-viewer.justCopied') : t('tools.json-viewer.copyResult')" position="bottom">
-            <button
-              class="hdr-btn"
-              :class="{ 'hdr-btn--success': isFormattedCopied }"
-              :disabled="!cleanJson"
-              @click="copyFormatted()"
-            >
-              <icon-mdi-check v-if="isFormattedCopied" />
-              <icon-mdi-content-copy v-else />
-            </button>
-          </c-tooltip>
-          <!-- 下载 -->
-          <c-tooltip :tooltip="t('tools.json-viewer.downloadJson')" position="bottom">
-            <button
-              class="hdr-btn"
-              :disabled="!cleanJson"
-              @click="downloadJson"
-            >
-              <icon-mdi-download />
+    <!-- ── 双面板 ─────────────────────────────────────────────── -->
+    <div class="json-panes">
+      <!-- 输入面板 -->
+      <div class="pane" :class="{ 'pane--error': isInvalid, 'pane--valid': isValid }">
+        <div class="pane-header">
+          <span class="pane-title">Raw JSON</span>
+          <!-- 验证徽章 -->
+          <span v-if="isValid" class="status-badge status-badge--valid">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
+            {{ t('tools.json-viewer.valid') }}
+          </span>
+          <span v-else-if="isInvalid" class="status-badge status-badge--error">
+            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor" /></svg>
+            {{ t('tools.json-viewer.invalid') }}
+          </span>
+          <!-- 清除按钮（在输入面板） -->
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.json-viewer.clearInput')" position="bottom">
+            <button class="hdr-btn" @click="clearInput">
+              <icon-mdi-close-circle-outline />
             </button>
           </c-tooltip>
         </div>
+
+        <c-code-input
+          v-model="rawJson"
+          language="json"
+          :placeholder="t('tools.json-viewer.inputPlaceholder')"
+          class="code-editor"
+          :class="{ 'editor--error': isInvalid }"
+        />
+
+        <!-- 错误详情 -->
+        <transition name="slide-down">
+          <div v-if="parseError" class="error-panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ parseError }}</span>
+          </div>
+        </transition>
       </div>
 
-      <c-code-input
-        :model-value="cleanJson"
-        language="json"
-        :placeholder="t('tools.json-viewer.outputPlaceholder')"
-        class="code-editor"
-        readonly
-      />
+      <!-- 输出面板 -->
+      <div class="pane">
+        <div class="pane-header">
+          <span class="pane-title">Formatted JSON</span>
+          <!-- 操作按钮组 -->
+          <div class="action-group">
+            <!-- 复制 -->
+            <c-tooltip :tooltip="isFormattedCopied ? t('tools.json-viewer.justCopied') : t('tools.json-viewer.copyResult')" position="bottom">
+              <button
+                class="hdr-btn"
+                :class="{ 'hdr-btn--success': isFormattedCopied }"
+                :disabled="!cleanJson"
+                @click="copyFormatted()"
+              >
+                <icon-mdi-check v-if="isFormattedCopied" />
+                <icon-mdi-content-copy v-else />
+              </button>
+            </c-tooltip>
+            <!-- 下载 -->
+            <c-tooltip :tooltip="t('tools.json-viewer.downloadJson')" position="bottom">
+              <button
+                class="hdr-btn"
+                :disabled="!cleanJson"
+                @click="downloadJson"
+              >
+                <icon-mdi-download />
+              </button>
+            </c-tooltip>
+          </div>
+        </div>
+
+        <c-code-input
+          :model-value="cleanJson"
+          language="json"
+          :placeholder="t('tools.json-viewer.outputPlaceholder')"
+          class="code-editor"
+          readonly
+        />
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

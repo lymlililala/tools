@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard } from '@vueuse/core';
 import {
   EAPMethods,
   EAPPhase2Methods,
@@ -6,7 +8,6 @@ import {
 } from './useQRCode';
 import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 import { useStyleStore } from '@/stores/style.store';
-import { useClipboard } from '@vueuse/core';
 
 const styleStore = useStyleStore();
 const { t } = useI18n();
@@ -14,8 +15,8 @@ const { t } = useI18n();
 // ── 颜色（只存 6 位 hex，内部拼接 ff 用于 useWifiQRCode） ────────
 const fgHex = ref('#000000');
 const bgHex = ref('#ffffff');
-const foreground = computed(() => fgHex.value + 'ff');
-const background = computed(() => bgHex.value + 'ff');
+const foreground = computed(() => `${fgHex.value}ff`);
+const background = computed(() => `${bgHex.value}ff`);
 
 const ssid = ref('');
 const password = ref('');
@@ -51,7 +52,9 @@ const showPassword = ref(false);
 // ── 复制图片 ──────────────────────────────────────────────────
 const copyFeedback = ref(false);
 async function copyImage() {
-  if (!qrcode.value) return;
+  if (!qrcode.value) {
+    return;
+  }
   try {
     const blob = await (await fetch(qrcode.value)).blob();
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);

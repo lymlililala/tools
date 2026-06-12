@@ -4,16 +4,16 @@ import PieChart from '@/components/PieChart.vue';
 const { t } = useI18n();
 
 // ─── 输入参数 ──────────────────────────────────────────────────────────────────
-const totalPrice = ref<number>(1000000);        // 总房价（元）
-const downPaymentRate = ref<number>(30);         // 首付比例 %
-const loanYears = ref<number>(30);               // 贷款年限
-const annualRate = ref<number>(3.95);            // 年利率 %
+const totalPrice = ref<number>(1000000); // 总房价（元）
+const downPaymentRate = ref<number>(30); // 首付比例 %
+const loanYears = ref<number>(30); // 贷款年限
+const annualRate = ref<number>(3.95); // 年利率 %
 const loanType = ref<'equal-payment' | 'equal-principal'>('equal-payment');
 
 // 组合贷款
 const useCombinedLoan = ref(false);
 const providentFundAmount = ref<number>(500000); // 公积金金额（元）
-const providentFundRate = ref<number>(3.1);      // 公积金利率 %
+const providentFundRate = ref<number>(3.1); // 公积金利率 %
 
 // 还款明细弹窗
 const showSchedule = ref(false);
@@ -39,7 +39,7 @@ function calcEqualPayment(principal: number, mRate: number, months: number) {
   if (principal <= 0 || mRate <= 0 || months <= 0) {
     return { monthly: 0, totalPayment: 0, totalInterest: 0, schedule: [] as { principal: number; interest: number; remaining: number }[] };
   }
-  const monthly = (principal * mRate * Math.pow(1 + mRate, months)) / (Math.pow(1 + mRate, months) - 1);
+  const monthly = (principal * mRate * (1 + mRate) ** months) / ((1 + mRate) ** months - 1);
   const totalPayment = monthly * months;
   const totalInterest = totalPayment - principal;
   const schedule: { principal: number; interest: number; remaining: number }[] = [];
@@ -86,7 +86,9 @@ const commercialResult = computed(() => {
 });
 
 const providentResult = computed(() => {
-  if (!useCombinedLoan.value) return null;
+  if (!useCombinedLoan.value) {
+    return null;
+  }
   const amount = Math.min(providentFundAmount.value, totalLoanAmount.value);
   if (loanType.value === 'equal-payment') {
     return calcEqualPayment(amount, providentMonthlyRate.value, totalMonths.value);
@@ -109,7 +111,9 @@ const firstMonthPayment = computed(() => {
 });
 
 const lastMonthPayment = computed(() => {
-  if (loanType.value !== 'equal-principal') return null;
+  if (loanType.value !== 'equal-principal') {
+    return null;
+  }
   const commercial = (commercialResult.value as any).lastMonthly ?? 0;
   const provident = providentResult.value ? (providentResult.value as any).lastMonthly ?? 0 : 0;
   return commercial + provident;
@@ -157,8 +161,12 @@ function formatMoney(val: number) {
   return val.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function formatMoneyShort(val: number) {
-  if (val >= 1e8) return `${(val / 1e8).toFixed(2)} 亿`;
-  if (val >= 1e4) return `${(val / 1e4).toFixed(2)} 万`;
+  if (val >= 1e8) {
+    return `${(val / 1e8).toFixed(2)} 亿`;
+  }
+  if (val >= 1e4) {
+    return `${(val / 1e4).toFixed(2)} 万`;
+  }
   return val.toFixed(2);
 }
 
@@ -167,7 +175,9 @@ const totalPriceDisplay = computed({
   get: () => totalPrice.value.toLocaleString('zh-CN'),
   set: (v: string) => {
     const n = Number(v.replace(/,/g, ''));
-    if (!Number.isNaN(n) && n >= 0) totalPrice.value = n;
+    if (!Number.isNaN(n) && n >= 0) {
+      totalPrice.value = n;
+    }
   },
 });
 
@@ -182,7 +192,9 @@ const loanTypeOptions = computed(() => [
 
 // 当公积金金额超过总贷款时自动修正
 watch(totalLoanAmount, (v) => {
-  if (providentFundAmount.value > v) providentFundAmount.value = v;
+  if (providentFundAmount.value > v) {
+    providentFundAmount.value = v;
+  }
 });
 </script>
 
@@ -315,7 +327,7 @@ watch(totalLoanAmount, (v) => {
                   placeholder="500000"
                 >
                 <span class="field-suffix">{{ t('tools.mortgage-calculator.yuan') }}</span>
-          </div>
+              </div>
               <div class="field-hint">
                 {{ t('tools.mortgage-calculator.maxLoan') }} {{ formatMoneyShort(totalLoanAmount) }}，{{ t('tools.mortgage-calculator.commercialLoan') }} {{ formatMoneyShort(commercialLoanAmount) }}
               </div>
@@ -349,14 +361,18 @@ watch(totalLoanAmount, (v) => {
         <div class="stat-grid">
           <!-- 首付金额 -->
           <div class="stat-card">
-            <div class="stat-card__label">{{ t('tools.mortgage-calculator.downPayment') }}</div>
+            <div class="stat-card__label">
+              {{ t('tools.mortgage-calculator.downPayment') }}
+            </div>
             <div class="stat-card__value stat-card__value--indigo">
               ¥ {{ formatMoney(downPayment) }}
             </div>
           </div>
           <!-- 贷款总额 -->
           <div class="stat-card">
-            <div class="stat-card__label">{{ t('tools.mortgage-calculator.totalLoan') }}</div>
+            <div class="stat-card__label">
+              {{ t('tools.mortgage-calculator.totalLoan') }}
+            </div>
             <div class="stat-card__value">
               ¥ {{ formatMoney(totalLoanAmount) }}
             </div>
@@ -381,14 +397,18 @@ watch(totalLoanAmount, (v) => {
           </div>
           <!-- 还款总额 -->
           <div class="stat-card">
-            <div class="stat-card__label">{{ t('tools.mortgage-calculator.totalPayment') }}</div>
+            <div class="stat-card__label">
+              {{ t('tools.mortgage-calculator.totalPayment') }}
+            </div>
             <div class="stat-card__value">
               ¥ {{ formatMoney(totalPayment) }}
             </div>
           </div>
           <!-- 总利息 -->
           <div class="stat-card">
-            <div class="stat-card__label">{{ t('tools.mortgage-calculator.totalInterest') }}</div>
+            <div class="stat-card__label">
+              {{ t('tools.mortgage-calculator.totalInterest') }}
+            </div>
             <div class="stat-card__value stat-card__value--red">
               ¥ {{ formatMoney(totalInterest) }}
             </div>

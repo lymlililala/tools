@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useThemeVars } from 'naive-ui';
+import { NIcon, useThemeVars } from 'naive-ui';
 import { RouterLink, useRoute } from 'vue-router';
 import {
-  Star,
-  Lock,
   ArrowsRightLeft,
-  World,
-  Photo,
   Code,
-  Wifi,
-  MathFunction,
-  LetterT,
   Database,
+  LetterT,
+  Lock,
+  MathFunction,
+  Photo,
+  Star,
   Tool as ToolIcon,
+  Wifi,
+  World,
 } from '@vicons/tabler';
-import { NIcon } from 'naive-ui';
 import MenuIconItem from './MenuIconItem.vue';
 import type { Tool, ToolCategory } from '@/tools/tools.types';
 

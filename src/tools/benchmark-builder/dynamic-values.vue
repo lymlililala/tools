@@ -3,11 +3,11 @@ import { Plus, Trash } from '@vicons/tabler';
 import { useTemplateRefsList, useVModel } from '@vueuse/core';
 import { nextTick } from 'vue';
 
-const { t } = useI18n();
-
 const props = defineProps<{ values: (number | null)[] }>();
 
 const emit = defineEmits(['update:values']);
+
+const { t } = useI18n();
 
 const refs = useTemplateRefsList<HTMLInputElement>();
 
@@ -16,7 +16,7 @@ const values = useVModel(props, 'values', emit);
 // 将 input 的字符串值同步到数值数组
 function onInput(index: number, event: Event) {
   const raw = (event.target as HTMLInputElement).value;
-  const num = parseFloat(raw);
+  const num = Number.parseFloat(raw);
   values.value[index] = Number.isFinite(num) ? num : null;
 }
 
@@ -52,7 +52,7 @@ function displayValue(v: number | null) {
           :placeholder="t('tools.benchmark-builder.valuePlaceholder')"
           @input="onInput(index, $event)"
           @keydown.enter="onInputEnter(index)"
-        />
+        >
       </div>
       <c-tooltip :tooltip="t('tools.benchmark-builder.deleteValue')">
         <button class="dv-delete-btn" @click="values.splice(index, 1)">

@@ -19,15 +19,16 @@ const debouncedMac = refDebounced(macAddress, 150);
 // 支持 `:` `-` `.` 分隔符，以及无分隔符（6字节12字符）
 const MAC_RE = /^([0-9A-Fa-f]{2}[:\-.]){5}[0-9A-Fa-f]{2}$|^[0-9A-Fa-f]{12}$/;
 const isValidMac = computed(() => MAC_RE.test(debouncedMac.value.trim()));
-const hasInput   = computed(() => debouncedMac.value.trim().length > 0);
-const showError  = computed(() => hasInput.value && !isValidMac.value);
+const hasInput = computed(() => debouncedMac.value.trim().length > 0);
+const showError = computed(() => hasInput.value && !isValidMac.value);
 
 // 数据库尚未加载完成且输入合法时显示加载态
 const dbLoading = computed(() => isValidMac.value && ouiDb.value === null);
 
 // ── OUI 查询 ──────────────────────────────────────────────────
-const getVendorKey = (addr: string) =>
-  addr.trim().replace(/[.:\-]/g, '').toUpperCase().substring(0, 6);
+function getVendorKey(addr: string) {
+  return addr.trim().replace(/[.:\-]/g, '').toUpperCase().substring(0, 6);
+}
 
 const details = computed<string | undefined>(() =>
   isValidMac.value && ouiDb.value
@@ -65,7 +66,7 @@ const { copy, isJustCopied } = useCopy({
           autocorrect="off"
           autocapitalize="off"
           autofocus
-        />
+        >
         <button
           v-if="macAddress"
           class="clear-btn"
@@ -127,8 +128,12 @@ const { copy, isJustCopied } = useCopy({
       <div v-else-if="isValidMac && !details" key="notfound" class="state-panel state-panel--warn">
         <icon-mdi-help-circle-outline class="state-icon" />
         <div>
-          <p class="state-title">{{ t('tools.mac-address-lookup.notFound') }}</p>
-          <p class="state-sub">{{ t('tools.mac-address-lookup.notFoundSub') }}<code>{{ getVendorKey(macAddress) }}</code>{{ t('tools.mac-address-lookup.notFoundSuffix') }}</p>
+          <p class="state-title">
+            {{ t('tools.mac-address-lookup.notFound') }}
+          </p>
+          <p class="state-sub">
+            {{ t('tools.mac-address-lookup.notFoundSub') }}<code>{{ getVendorKey(macAddress) }}</code>{{ t('tools.mac-address-lookup.notFoundSuffix') }}
+          </p>
         </div>
       </div>
 

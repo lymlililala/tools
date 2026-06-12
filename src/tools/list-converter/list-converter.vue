@@ -50,7 +50,7 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
 </script>
 
 <template>
-  <div class="lc-wrap tool-wide">
+  <div class="tool-wide lc-wrap">
     <!-- 控制面板 -->
     <c-card mb-3>
       <div class="control-grid">

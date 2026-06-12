@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import cronstrue from 'cronstrue';
 import { isValidCron } from 'cron-validator';
-import { format, addMinutes, addHours, addDays, addMonths, addSeconds } from 'date-fns';
+import { addDays, addHours, addMinutes, format } from 'date-fns';
 import { useCopy } from '@/composable/copy';
 import { useStyleStore } from '@/stores/style.store';
 
@@ -52,29 +52,38 @@ function parseCronField(field: string, min: number, max: number): number[] {
   // 处理逗号分隔
   for (const part of field.split(',')) {
     if (part === '*') {
-      for (let i = min; i <= max; i++) results.add(i);
+      for (let i = min; i <= max; i++) {
+        results.add(i);
+      }
     }
     else if (part.includes('/')) {
       const [rangePart, stepStr] = part.split('/');
-      const step = parseInt(stepStr);
+      const step = Number.parseInt(stepStr);
       let start = min;
       let end = max;
       if (rangePart !== '*' && rangePart.includes('-')) {
         const [s, e] = rangePart.split('-').map(Number);
-        start = s; end = e;
+        start = s;
+        end = e;
       }
       else if (rangePart !== '*') {
-        start = parseInt(rangePart);
+        start = Number.parseInt(rangePart);
       }
-      for (let i = start; i <= end; i += step) results.add(i);
+      for (let i = start; i <= end; i += step) {
+        results.add(i);
+      }
     }
     else if (part.includes('-')) {
       const [s, e] = part.split('-').map(Number);
-      for (let i = s; i <= e; i++) results.add(i);
+      for (let i = s; i <= e; i++) {
+        results.add(i);
+      }
     }
     else {
-      const n = parseInt(part);
-      if (!isNaN(n)) results.add(n);
+      const n = Number.parseInt(part);
+      if (!Number.isNaN(n)) {
+        results.add(n);
+      }
     }
   }
 
@@ -96,13 +105,20 @@ function expandAlias(expr: string): string {
 }
 
 function getNextExecutions(cronExpr: string, count = 5): Date[] {
-  if (!isValid.value) return [];
+  if (!isValid.value) {
+    return [];
+  }
 
   const expanded = expandAlias(cronExpr.trim());
   const parts = expanded.split(/\s+/);
 
   // 支持 5 段（分 时 日 月 周）和 6 段（秒 分 时 日 月 周）
-  let secField = '0', minField: string, hourField: string, domField: string, monField: string, dowField: string;
+  let secField = '0';
+  let minField: string;
+  let hourField: string;
+  let domField: string;
+  let monField: string;
+  let dowField: string;
   if (parts.length === 6) {
     [secField, minField, hourField, domField, monField, dowField] = parts;
   }
@@ -149,8 +165,8 @@ function getNextExecutions(cronExpr: string, count = 5): Date[] {
       const dayOk = (domAll && dowAll)
         ? true
         : (!domAll && !dowAll)
-          ? (domOk || dowOk)
-          : (domOk && dowOk);
+            ? (domOk || dowOk)
+            : (domOk && dowOk);
       const hourOk = hours.includes(h);
       const minOk = minutes.includes(min);
 
@@ -187,7 +203,9 @@ function getNextExecutions(cronExpr: string, count = 5): Date[] {
 }
 
 const nextExecutions = computed(() => {
-  if (!isValid.value) return [];
+  if (!isValid.value) {
+    return [];
+  }
   return getNextExecutions(cron.value, 5);
 });
 
@@ -226,7 +244,7 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
         placeholder="* * * * *"
         spellcheck="false"
         autocomplete="off"
-      />
+      >
       <!-- 复制按钮 -->
       <button
         class="copy-btn"

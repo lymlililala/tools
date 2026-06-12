@@ -13,8 +13,8 @@ const counter = ref(0);
 // 分段记录
 interface Lap {
   index: number
-  elapsed: number   // 本段耗时（距上一个 lap）
-  total: number     // 总累计时间
+  elapsed: number // 本段耗时（距上一个 lap）
+  total: number // 总累计时间
 }
 const laps = ref<Lap[]>([]);
 let lastLapTotal = 0;
@@ -60,7 +60,9 @@ function reset() {
 }
 
 function lap() {
-  if (status.value !== 'running') return;
+  if (status.value !== 'running') {
+    return;
+  }
   const elapsed = counter.value - lastLapTotal;
   laps.value.unshift({ index: laps.value.length + 1, elapsed, total: counter.value });
   lastLapTotal = counter.value;
@@ -70,7 +72,11 @@ function lap() {
 function copyLap(index: number, val: string) {
   navigator.clipboard.writeText(val).then(() => {
     copiedIndex.value = index;
-    setTimeout(() => { if (copiedIndex.value === index) copiedIndex.value = null; }, 2000);
+    setTimeout(() => {
+      if (copiedIndex.value === index) {
+        copiedIndex.value = null;
+      }
+    }, 2000);
   });
 }
 

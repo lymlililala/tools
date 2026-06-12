@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useStyleStore } from '@/stores/style.store';
 import { useMessage } from 'naive-ui';
+import { useStyleStore } from '@/stores/style.store';
 
 const { t } = useI18n();
 const styleStore = useStyleStore();
@@ -14,28 +14,35 @@ const hexInputError = ref(false);
 // ── 颜色工具函数 ──────────────────────────────────────────────
 function hexToHsl(hex: string): { h: number; s: number; l: number } | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return null;
-  let r = parseInt(result[1], 16) / 255;
-  let g = parseInt(result[2], 16) / 255;
-  let b = parseInt(result[3], 16) / 255;
+  if (!result) {
+    return null;
+  }
+  const r = Number.parseInt(result[1], 16) / 255;
+  const g = Number.parseInt(result[2], 16) / 255;
+  const b = Number.parseInt(result[3], 16) / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0; let s = 0;
+  let h = 0;
+  let s = 0;
   const l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        break;
+      case g: h = ((b - r) / d + 2) / 6;
+        break;
+      case b: h = ((r - g) / d + 4) / 6;
+        break;
     }
   }
   return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
 function hslToHex(h: number, s: number, l: number): string {
-  s /= 100; l /= 100;
+  s /= 100;
+  l /= 100;
   const a = s * Math.min(l, 1 - l);
   const f = (n: number) => {
     const k = (n + h / 30) % 12;
@@ -47,17 +54,21 @@ function hslToHex(h: number, s: number, l: number): string {
 
 function hexToRgb(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return '';
-  return `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`;
+  if (!result) {
+    return '';
+  }
+  return `rgb(${Number.parseInt(result[1], 16)}, ${Number.parseInt(result[2], 16)}, ${Number.parseInt(result[3], 16)})`;
 }
 
 /** WCAG 相对亮度 → 自动选择白/黑前景色 */
 function textColor(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return '#000';
+  if (!result) {
+    return '#000';
+  }
   const [r, g, b] = [result[1], result[2], result[3]].map((c) => {
-    const v = parseInt(c, 16) / 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    const v = Number.parseInt(c, 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
   });
   const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
   return L > 0.179 ? '#1a1a1a' : '#ffffff';
@@ -97,7 +108,9 @@ function onColorPickerChange(e: Event) {
 // ── 色阶 ──────────────────────────────────────────────────────
 const tints = computed(() => {
   const hsl = hexToHsl(baseColor.value);
-  if (!hsl) return [];
+  if (!hsl) {
+    return [];
+  }
   return [95, 88, 80, 70, 60, 50, 40, 30, 20, 10].map((l, i) => ({
     label: `${(i + 1) * 100}`,
     hex: hslToHex(hsl.h, hsl.s, l),
@@ -107,7 +120,9 @@ const tints = computed(() => {
 // ── 配色方案 ──────────────────────────────────────────────────
 const harmonies = computed(() => {
   const hsl = hexToHsl(baseColor.value);
-  if (!hsl) return [];
+  if (!hsl) {
+    return [];
+  }
   const { h, s, l } = hsl;
   return [
     {
@@ -153,7 +168,9 @@ const harmonies = computed(() => {
 // ── 灰色系 ────────────────────────────────────────────────────
 const grays = computed(() => {
   const hsl = hexToHsl(baseColor.value);
-  if (!hsl) return [];
+  if (!hsl) {
+    return [];
+  }
   return [95, 88, 78, 65, 50, 38, 28, 18, 10, 5].map((l, i) => ({
     label: `${(i + 1) * 100}`,
     hex: hslToHex(hsl.h, 8, l),
@@ -176,7 +193,9 @@ async function copyColor(hex: string) {
   }
   copied.value = hex;
   message.success(t('tools.color-palette-generator.copiedMsg', { hex }), { duration: 1800 });
-  setTimeout(() => { copied.value = ''; }, 1600);
+  setTimeout(() => {
+    copied.value = '';
+  }, 1600);
 }
 
 // ── 导出弹窗 ─────────────────────────────────────────────────
@@ -218,13 +237,6 @@ async function copyExport() {
   await navigator.clipboard.writeText(exportCode.value);
   exportCopied.value = true;
   setTimeout(() => (exportCopied.value = false), 2000);
-}
-
-// 点击色块也同步更新输入
-function selectColor(hex: string) {
-  baseColor.value = hex;
-  hexInput.value = hex;
-  hexInputError.value = false;
 }
 </script>
 
@@ -310,7 +322,7 @@ function selectColor(hex: string) {
           @click="copyColor(s.hex)"
         >
           <span class="shade-label">{{ s.label }}</span>
-          <span class="shade-hex">{{ copied === s.hex ? '✓ ' + t('tools.color-palette-generator.copiedShort') : s.hex }}</span>
+          <span class="shade-hex">{{ copied === s.hex ? `✓ ${t('tools.color-palette-generator.copiedShort')}` : s.hex }}</span>
         </div>
       </div>
     </c-card>
@@ -360,7 +372,7 @@ function selectColor(hex: string) {
           @click="copyColor(s.hex)"
         >
           <span class="shade-label">{{ s.label }}</span>
-          <span class="shade-hex">{{ copied === s.hex ? '✓ ' + t('tools.color-palette-generator.copiedShort') : s.hex }}</span>
+          <span class="shade-hex">{{ copied === s.hex ? `✓ ${t('tools.color-palette-generator.copiedShort')}` : s.hex }}</span>
         </div>
       </div>
       <div class="click-hint">

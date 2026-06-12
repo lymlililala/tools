@@ -18,4 +18,15 @@ module.exports = {
       }],
     }],
   },
+
+  overrides: [
+    {
+      // Generated/DB-maintained article content; bodies embed code blocks
+      // (e.g. Makefiles) where literal tabs are intentional and significant.
+      files: ['src/pages/articles/articles.data.ts'],
+      rules: {
+        'no-tabs': 'off',
+      },
+    },
+  ],
 };

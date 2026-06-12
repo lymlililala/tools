@@ -14,7 +14,9 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedJson.value.trim();
-  if (!raw) return { yaml: '', error: null };
+  if (!raw) {
+    return { yaml: '', error: null };
+  }
 
   try {
     const obj = JSON5.parse(raw);
@@ -29,18 +31,6 @@ const result = computed((): ConvertResult => {
 const yamlOutput = computed(() => result.value.yaml);
 const parseError = computed(() => result.value.error);
 
-// ── 下载 ─────────────────────────────────────────────────────────────────
-function downloadYaml() {
-  if (!yamlOutput.value) return;
-  const blob = new Blob([yamlOutput.value], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'output.yaml';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 // ── 清空 ─────────────────────────────────────────────────────────────────
 function clearInput() {
   jsonInput.value = '';
@@ -48,7 +38,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="json-yaml-wrap tool-wide">
+  <div class="tool-wide json-yaml-wrap">
     <div class="editor-grid">
       <!-- 左：JSON 输入 -->
       <div class="pane">

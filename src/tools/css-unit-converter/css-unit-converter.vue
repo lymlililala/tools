@@ -52,8 +52,10 @@ function fromPx(px: number, unit: string): number {
 
 // 格式化数值：去除多余小数零，最多 6 位有效数字
 function fmt(n: number): string {
-  if (Number.isNaN(n) || !Number.isFinite(n)) return '—';
-  const s = parseFloat(n.toPrecision(6));
+  if (Number.isNaN(n) || !Number.isFinite(n)) {
+    return '—';
+  }
+  const s = Number.parseFloat(n.toPrecision(6));
   // 用 parseFloat 消掉拖尾零，再 toString
   return s.toString();
 }
@@ -61,7 +63,9 @@ function fmt(n: number): string {
 // 主输入框显示值：去除小数拖尾零，blur 后格式化
 const displayValue = computed({
   get() {
-    if (inputValue.value === null || inputValue.value === undefined) return null;
+    if (inputValue.value === null || inputValue.value === undefined) {
+      return null;
+    }
     return inputValue.value;
   },
   set(v: number | null) {
@@ -94,7 +98,9 @@ function setInput(unit: string, rawValue: number) {
 // 复制某结果到剪贴板
 const copiedUnit = ref<string | null>(null);
 async function copyResult(unit: string, value: string) {
-  if (value === '—') return;
+  if (value === '—') {
+    return;
+  }
   const text = `${value}${unit}`;
   await navigator.clipboard.writeText(text);
   copiedUnit.value = unit;
@@ -109,7 +115,7 @@ async function copyResult(unit: string, value: string) {
       <template #title>
         {{ t('tools.css-unit-converter.input') }}
       </template>
-      <div flex gap-3 items-end flex-wrap>
+      <div flex flex-wrap items-end gap-3>
         <n-form-item :label="t('tools.css-unit-converter.value')" style="flex:1; min-width:120px">
           <n-input-number
             v-model:value="displayValue"
@@ -176,9 +182,15 @@ async function copyResult(unit: string, value: string) {
           :class="{ 'is-copied': copiedUnit === r.unit }"
           @click="setInput(r.unit, r.rawValue)"
         >
-          <div class="result-unit">{{ r.unit }}</div>
-          <div class="result-value">{{ r.value }}</div>
-          <div class="result-desc">{{ r.desc }}</div>
+          <div class="result-unit">
+            {{ r.unit }}
+          </div>
+          <div class="result-value">
+            {{ r.value }}
+          </div>
+          <div class="result-desc">
+            {{ r.desc }}
+          </div>
 
           <!-- 悬停时显示复制按钮 -->
           <button

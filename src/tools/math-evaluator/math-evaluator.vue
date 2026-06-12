@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { evaluate } from 'mathjs';
-import { refDebounced } from '@vueuse/core';
+import { refDebounced, useStorage } from '@vueuse/core';
 import { useCopy } from '@/composable/copy';
-import { useStorage } from '@vueuse/core';
 
 const { t } = useI18n();
 
@@ -22,11 +21,15 @@ interface CalcState {
 
 const calcState = computed((): CalcState => {
   const expr = debouncedExpr.value.trim();
-  if (!expr) return { value: '', isError: false, isEmpty: true };
+  if (!expr) {
+    return { value: '', isError: false, isEmpty: true };
+  }
 
   try {
     const raw = evaluate(expr);
-    if (raw === undefined || raw === null) return { value: '', isError: false, isEmpty: true };
+    if (raw === undefined || raw === null) {
+      return { value: '', isError: false, isEmpty: true };
+    }
     const val = typeof raw === 'function' ? t('tools.math-evaluator.functionDefined') : String(raw);
     return { value: val, isError: false, isEmpty: false };
   }
@@ -48,6 +51,8 @@ watch(calcState, (state) => {
 });
 
 // ── 快捷函数面板 ─────────────────────────────────────────────
+const inputRef = ref<HTMLInputElement | null>(null);
+
 const SNIPPETS = [
   'sqrt()', 'abs()', 'sin()', 'cos()', 'tan()',
   'log()', 'log2()', 'exp()', 'pi', 'e',
@@ -55,12 +60,10 @@ const SNIPPETS = [
 
 function insertSnippet(s: string) {
   const needsParen = s.endsWith(')');
-  expression.value += needsParen ? s.slice(0, -1) + ')' : s;
+  expression.value += needsParen ? `${s.slice(0, -1)})` : s;
   // focus
   nextTick(() => inputRef.value?.focus());
 }
-
-const inputRef = ref<HTMLInputElement | null>(null);
 
 // ── 历史记录展开 ──────────────────────────────────────────────
 const showHistory = ref(false);
@@ -95,7 +98,7 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: computed(() =
           autocomplete="off"
           autofocus
           @keydown.enter.prevent="() => {}"
-        />
+        >
         <button
           v-if="expression"
           class="clear-btn"
@@ -184,7 +187,9 @@ const { copy, isJustCopied } = useCopy({ source: resultText, text: computed(() =
       <div v-else-if="calcState.isError" key="error" class="error-card">
         <icon-mdi-alert-circle-outline class="error-icon" />
         <div>
-          <p class="error-title">{{ t('tools.math-evaluator.syntaxError') }}</p>
+          <p class="error-title">
+            {{ t('tools.math-evaluator.syntaxError') }}
+          </p>
           <p class="error-detail">
             {{ calcState.value }}
           </p>

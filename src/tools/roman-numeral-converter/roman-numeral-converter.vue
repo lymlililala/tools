@@ -13,15 +13,25 @@ const inputNumeral = ref<number | null>(42);
 
 const arabicError = computed(() => {
   const v = inputNumeral.value;
-  if (v === null || v === undefined || String(v) === '') return '';
-  if (!Number.isInteger(v)) return 'Please enter a whole number.';
-  if (v < MIN_ARABIC_TO_ROMAN) return `Minimum value is ${MIN_ARABIC_TO_ROMAN}.`;
-  if (v > MAX_ARABIC_TO_ROMAN) return `Maximum value is ${MAX_ARABIC_TO_ROMAN.toLocaleString()} — standard Roman numerals go no higher.`;
+  if (v === null || v === undefined || String(v) === '') {
+    return '';
+  }
+  if (!Number.isInteger(v)) {
+    return 'Please enter a whole number.';
+  }
+  if (v < MIN_ARABIC_TO_ROMAN) {
+    return `Minimum value is ${MIN_ARABIC_TO_ROMAN}.`;
+  }
+  if (v > MAX_ARABIC_TO_ROMAN) {
+    return `Maximum value is ${MAX_ARABIC_TO_ROMAN.toLocaleString()} — standard Roman numerals go no higher.`;
+  }
   return '';
 });
 
 const outputRoman = computed(() => {
-  if (inputNumeral.value === null || arabicError.value) return '';
+  if (inputNumeral.value === null || arabicError.value) {
+    return '';
+  }
   return arabicToRoman(inputNumeral.value);
 });
 
@@ -30,7 +40,9 @@ const inputRoman = ref('XLII');
 
 const romanError = computed(() => {
   const v = inputRoman.value.trim();
-  if (!v) return '';
+  if (!v) {
+    return '';
+  }
   if (!isValidRomanNumber(v)) {
     return 'Invalid Roman numeral. Check for illegal combinations (e.g. IIII, IL, VV).';
   }
@@ -39,7 +51,9 @@ const romanError = computed(() => {
 
 const outputNumeral = computed(() => {
   const v = inputRoman.value.trim();
-  if (!v || romanError.value) return null;
+  if (!v || romanError.value) {
+    return null;
+  }
   return romanToArabic(v);
 });
 
@@ -53,7 +67,9 @@ const { copy: copyArabic, isJustCopied: arabicCopied } = useCopy({ source: arabi
   <div class="rnc-wrap">
     <!-- ① 阿拉伯 → 罗马 ──────────────────────────────────────────────── -->
     <c-card class="conv-card">
-      <div class="card-title">Arabic → Roman</div>
+      <div class="card-title">
+        Arabic → Roman
+      </div>
 
       <div class="conv-row">
         <!-- 输入 -->
@@ -87,7 +103,7 @@ const { copy: copyArabic, isJustCopied: arabicCopied } = useCopy({ source: arabi
             <span v-if="outputRoman" key="result" class="result-text roman-font">
               {{ outputRoman }}
             </span>
-            <span v-else key="empty" class="result-placeholder roman-font">
+            <span v-else key="empty" class="roman-font result-placeholder">
               —
             </span>
           </transition>
@@ -112,7 +128,9 @@ const { copy: copyArabic, isJustCopied: arabicCopied } = useCopy({ source: arabi
 
     <!-- ② 罗马 → 阿拉伯 ──────────────────────────────────────────────── -->
     <c-card class="conv-card" style="margin-top: 16px">
-      <div class="card-title">Roman → Arabic</div>
+      <div class="card-title">
+        Roman → Arabic
+      </div>
 
       <div class="conv-row">
         <!-- 输入 -->

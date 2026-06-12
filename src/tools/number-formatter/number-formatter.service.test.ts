@@ -7,9 +7,9 @@ function formatNumber(
   locale: string,
   style: 'decimal' | 'currency' | 'percent' | 'scientific' | 'engineering' | 'compact',
   options: {
-    currency?: string;
-    decimalPlaces?: number;
-    useGrouping?: boolean;
+    currency?: string
+    decimalPlaces?: number
+    useGrouping?: boolean
   } = {},
 ): string {
   const { currency = 'CNY', decimalPlaces = 2, useGrouping = true } = options;
@@ -131,7 +131,7 @@ describe('Number Formatter', () => {
 
   describe('边界情况', () => {
     it('Infinity 处理', () => {
-      const result = formatNumber(Infinity, 'en-US', 'decimal');
+      const result = formatNumber(Number.POSITIVE_INFINITY, 'en-US', 'decimal');
       expect(typeof result).toBe('string');
     });
 

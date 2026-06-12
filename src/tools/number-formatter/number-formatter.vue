@@ -61,15 +61,21 @@ function clearInput() {
 
 // ─── 小数位步进 ────────────────────────────────────────────────────────────────
 function decDecimals() {
-  if (decimalPlaces.value > 0) decimalPlaces.value--;
+  if (decimalPlaces.value > 0) {
+    decimalPlaces.value--;
+  }
 }
 function incDecimals() {
-  if (decimalPlaces.value < 20) decimalPlaces.value++;
+  if (decimalPlaces.value < 20) {
+    decimalPlaces.value++;
+  }
 }
 
 // ─── 格式化 ────────────────────────────────────────────────────────────────────
 function formatWith(loc: string, opts: Intl.NumberFormatOptions): string {
-  if (numValue.value === null) return '—';
+  if (numValue.value === null) {
+    return '—';
+  }
   try {
     return new Intl.NumberFormat(loc, opts).format(numValue.value);
   }
@@ -79,31 +85,42 @@ function formatWith(loc: string, opts: Intl.NumberFormatOptions): string {
 }
 
 const mainResult = computed(() => {
-  if (numValue.value === null) return '—';
+  if (numValue.value === null) {
+    return '—';
+  }
   const base: Intl.NumberFormatOptions = {
     useGrouping: useGrouping.value,
     minimumFractionDigits: decimalPlaces.value,
     maximumFractionDigits: decimalPlaces.value,
   };
-  if (style.value === 'currency')
+  if (style.value === 'currency') {
     return formatWith(locale.value, { ...base, style: 'currency', currency: currency.value });
-  if (style.value === 'percent')
+  }
+  if (style.value === 'percent') {
     return formatWith(locale.value, { style: 'percent', minimumFractionDigits: decimalPlaces.value, maximumFractionDigits: decimalPlaces.value });
-  if (style.value === 'scientific')
+  }
+  if (style.value === 'scientific') {
     return formatWith(locale.value, { notation: 'scientific', minimumFractionDigits: decimalPlaces.value, maximumFractionDigits: decimalPlaces.value });
-  if (style.value === 'engineering')
+  }
+  if (style.value === 'engineering') {
     return formatWith(locale.value, { notation: 'engineering', minimumFractionDigits: decimalPlaces.value, maximumFractionDigits: decimalPlaces.value });
-  if (style.value === 'compact')
+  }
+  if (style.value === 'compact') {
     return formatWith(locale.value, { notation: 'compact', compactDisplay: 'short' });
+  }
   return formatWith(locale.value, base);
 });
 
 // ─── 复制结果 ──────────────────────────────────────────────────────────────────
 function copyResult() {
-  if (mainResult.value === '—') return;
+  if (mainResult.value === '—') {
+    return;
+  }
   navigator.clipboard.writeText(mainResult.value).then(() => {
     isCopied.value = true;
-    setTimeout(() => { isCopied.value = false; }, 2000);
+    setTimeout(() => {
+      isCopied.value = false;
+    }, 2000);
   });
 }
 
@@ -120,7 +137,9 @@ const COMPARE_LOCALES = [
 ];
 
 const comparisons = computed(() => {
-  if (numValue.value === null) return [];
+  if (numValue.value === null) {
+    return [];
+  }
   return COMPARE_LOCALES.map(({ code, name }) => {
     const formatted = formatWith(code, {
       style: style.value === 'currency' ? 'currency' : 'decimal',
@@ -138,7 +157,11 @@ const copiedLocale = ref<string | null>(null);
 function copyLocale(code: string, val: string) {
   navigator.clipboard.writeText(val).then(() => {
     copiedLocale.value = code;
-    setTimeout(() => { if (copiedLocale.value === code) copiedLocale.value = null; }, 2000);
+    setTimeout(() => {
+      if (copiedLocale.value === code) {
+        copiedLocale.value = null;
+      }
+    }, 2000);
   });
 }
 </script>

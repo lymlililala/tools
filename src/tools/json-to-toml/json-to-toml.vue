@@ -14,7 +14,9 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedJson.value.trim();
-  if (!raw) return { toml: '', error: null };
+  if (!raw) {
+    return { toml: '', error: null };
+  }
 
   try {
     const obj = JSON5.parse(raw);
@@ -36,7 +38,7 @@ function clearInput() {
 </script>
 
 <template>
-  <div class="json-toml-wrap tool-wide">
+  <div class="tool-wide json-toml-wrap">
     <div class="editor-grid">
       <!-- 左：JSON 输入 -->
       <div class="pane">

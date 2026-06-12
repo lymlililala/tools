@@ -4,9 +4,13 @@ import { describe, expect, it } from 'vitest';
 
 function parseTs(ts: string, ms: boolean): Date | null {
   const trimmed = ts.trim();
-  if (trimmed === '') return null;
+  if (trimmed === '') {
+    return null;
+  }
   const n = Number(trimmed);
-  if (Number.isNaN(n)) return null;
+  if (Number.isNaN(n)) {
+    return null;
+  }
   try {
     return ms ? new Date(n) : new Date(n * 1000);
   }
@@ -18,7 +22,9 @@ function parseTs(ts: string, ms: boolean): Date | null {
 function parseDateString(dateStr: string): { unix: number; ms: number } | null {
   try {
     const d = new Date(dateStr);
-    if (Number.isNaN(d.getTime())) return null;
+    if (Number.isNaN(d.getTime())) {
+      return null;
+    }
     return { unix: Math.floor(d.getTime() / 1000), ms: d.getTime() };
   }
   catch {

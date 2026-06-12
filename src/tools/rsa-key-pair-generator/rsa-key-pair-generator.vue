@@ -92,7 +92,7 @@ function downloadPem(content: string, filename: string) {
                 @click="copyPublic()"
               >
                 <transition name="icon-switch" mode="out-in">
-                  <icon-mdi-check v-if="pubCopied" key="check" class="key-icon success" />
+                  <icon-mdi-check v-if="pubCopied" key="check" class="success key-icon" />
                   <icon-mdi-content-copy v-else key="copy" class="key-icon" />
                 </transition>
               </button>

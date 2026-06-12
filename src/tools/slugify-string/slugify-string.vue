@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import slugify from '@sindresorhus/slugify';
 import { withDefaultOnError } from '@/utils/defaults';
@@ -18,10 +19,14 @@ const hasSlug = computed(() => slug.value.length > 0);
 // 复制反馈
 const copied = ref(false);
 async function copySlug() {
-  if (!hasSlug.value) return;
+  if (!hasSlug.value) {
+    return;
+  }
   await copy(slug.value);
   copied.value = true;
-  setTimeout(() => { copied.value = false; }, 1400);
+  setTimeout(() => {
+    copied.value = false;
+  }, 1400);
 }
 
 function clearInput() {
@@ -42,7 +47,7 @@ function clearInput() {
       <textarea
         id="slug-input"
         v-model="input"
-        class="slug-textarea input-area"
+        class="input-area slug-textarea"
         :placeholder="t('tools.slugify-string.inputPlaceholder')"
         rows="3"
         spellcheck="false"

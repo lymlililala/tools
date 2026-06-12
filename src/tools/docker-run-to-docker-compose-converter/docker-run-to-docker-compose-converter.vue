@@ -63,7 +63,7 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
 </script>
 
 <template>
-  <div class="converter-root tool-wide">
+  <div class="tool-wide converter-root">
     <!-- ── 双面板 ───────────────────────────────────────────── -->
     <div class="panes">
       <!-- 输入面板 -->
@@ -149,7 +149,9 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
           {{ t('tools.docker-run-to-docker-compose-converter.conversionError') }}
         </div>
         <ul class="alert-list">
-          <li v-for="(message, i) in errors" :key="i">{{ message }}</li>
+          <li v-for="(message, i) in errors" :key="i">
+            {{ message }}
+          </li>
         </ul>
       </div>
 
@@ -162,7 +164,9 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
           {{ t('tools.docker-run-to-docker-compose-converter.notImplemented') }}
         </div>
         <ul class="alert-list">
-          <li v-for="(message, i) in notImplemented" :key="i">{{ message }}</li>
+          <li v-for="(message, i) in notImplemented" :key="i">
+            {{ message }}
+          </li>
         </ul>
       </div>
 
@@ -175,7 +179,9 @@ const { download } = useDownloadFileFromBase64({ source: dockerComposeBase64, fi
           {{ t('tools.docker-run-to-docker-compose-converter.notComposable') }}
         </div>
         <ul class="alert-list">
-          <li v-for="(message, i) in notComposable" :key="i">{{ message }}</li>
+          <li v-for="(message, i) in notComposable" :key="i">
+            {{ message }}
+          </li>
         </ul>
       </div>
     </div>

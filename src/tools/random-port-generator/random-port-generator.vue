@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { randIntFromInterval } from '@/utils/random';
 import { useStyleStore } from '@/stores/style.store';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const styleStore = useStyleStore();
 
 // ── 配置参数 ──────────────────────────────────────────────────
-const count = ref(1);          // 生成数量 1-10
-const includeWellKnown = ref(false);  // 是否包含知名端口（0-1023）
+const count = ref(1); // 生成数量 1-10
+const includeWellKnown = ref(false); // 是否包含知名端口（0-1023）
 const excludeRegistered = ref(false); // 是否排除注册端口（1024-49151，仅保留动态端口）
 
 // ── 生成逻辑 ──────────────────────────────────────────────────
@@ -44,7 +44,9 @@ watch([count, includeWellKnown, excludeRegistered], () => refresh());
 // ── 复制单个端口 ──────────────────────────────────────────────
 const copiedPort = ref<number | null>(null);
 async function copySingle(p: number) {
-  try { await navigator.clipboard.writeText(String(p)); }
+  try {
+    await navigator.clipboard.writeText(String(p));
+  }
   catch { /* ignore */ }
   copiedPort.value = p;
   setTimeout(() => (copiedPort.value = null), 2000);
@@ -54,7 +56,9 @@ async function copySingle(p: number) {
 const allCopied = ref(false);
 async function copyAll() {
   const text = ports.value.join('\n');
-  try { await navigator.clipboard.writeText(text); }
+  try {
+    await navigator.clipboard.writeText(text);
+  }
   catch { /* ignore */ }
   allCopied.value = true;
   setTimeout(() => (allCopied.value = false), 2000);
@@ -62,8 +66,12 @@ async function copyAll() {
 
 // ── 范围说明 ─────────────────────────────────────────────────
 const rangeLabel = computed(() => {
-  if (includeWellKnown.value && !excludeRegistered.value) return `0 – 65535（${t('tools.random-port-generator.rangeAll')}）`;
-  if (!includeWellKnown.value && excludeRegistered.value) return `49152 – 65535（${t('tools.random-port-generator.rangeDynamic')}）`;
+  if (includeWellKnown.value && !excludeRegistered.value) {
+    return `0 – 65535（${t('tools.random-port-generator.rangeAll')}）`;
+  }
+  if (!includeWellKnown.value && excludeRegistered.value) {
+    return `49152 – 65535（${t('tools.random-port-generator.rangeDynamic')}）`;
+  }
   return `1024 – 65535（${t('tools.random-port-generator.rangeNonWell')}）`;
 });
 </script>
@@ -78,9 +86,13 @@ const rangeLabel = computed(() => {
         <div class="setting-item">
           <label class="setting-label">{{ t('tools.random-port-generator.countLabel') }}</label>
           <div class="count-ctrl">
-            <button class="count-btn" :disabled="count <= 1" @click="count = Math.max(1, count - 1)">−</button>
+            <button class="count-btn" :disabled="count <= 1" @click="count = Math.max(1, count - 1)">
+              −
+            </button>
             <span class="count-val">{{ count }}</span>
-            <button class="count-btn" :disabled="count >= 10" @click="count = Math.min(10, count + 1)">+</button>
+            <button class="count-btn" :disabled="count >= 10" @click="count = Math.min(10, count + 1)">
+              +
+            </button>
           </div>
         </div>
 

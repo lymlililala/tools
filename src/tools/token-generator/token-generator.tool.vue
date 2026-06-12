@@ -23,7 +23,6 @@ function guard(key: 'uppercase' | 'lowercase' | 'numbers' | 'symbols') {
     if (!anyEnabled) {
       // 恢复
       states[key].value = true;
-      return;
     }
   }
   else {
@@ -42,7 +41,7 @@ const lengthInput = computed({
   get: () => length.value,
   set: (v: number) => {
     const n = Math.round(Number(v));
-    if (!isNaN(n)) {
+    if (!Number.isNaN(n)) {
       length.value = Math.min(512, Math.max(1, n));
     }
   },
@@ -111,7 +110,7 @@ const { copy, isJustCopied } = useCopy({ source: token, text: t('tools.token-gen
       />
 
       <!-- ④ 按钮区：Primary 复制 + 图标刷新 -->
-      <div mt-5 flex justify-center gap-3 items-center>
+      <div mt-5 flex items-center justify-center gap-3>
         <!-- 复制按钮：Primary 蓝色，带图标切换反馈 -->
         <c-button type="primary" class="btn-copy" @click="copy()">
           <transition name="icon-switch" mode="out-in">

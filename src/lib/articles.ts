@@ -21,35 +21,36 @@ export interface DbArticle {
 }
 
 async function getJson(url: string) {
-  const res = await fetch(url)
+  const res = await fetch(url);
   if (!res.ok) {
-    let message = `Request failed (${res.status})`
+    let message = `Request failed (${res.status})`;
     try {
-      const body = await res.json()
-      if (body?.error)
-        message = body.error
+      const body = await res.json();
+      if (body?.error) {
+        message = body.error;
+      }
     }
     catch { /* ignore non-JSON error bodies */ }
-    const err = new Error(message) as Error & { status?: number }
-    err.status = res.status
-    throw err
+    const err = new Error(message) as Error & { status?: number };
+    err.status = res.status;
+    throw err;
   }
-  return res.json()
+  return res.json();
 }
 
 /** Fetch the full article list (lightweight columns), newest first. */
 export async function fetchArticleList(): Promise<DbArticle[]> {
-  const data = await getJson('/api/articles')
-  return (data?.articles ?? []) as DbArticle[]
+  const data = await getJson('/api/articles');
+  return (data?.articles ?? []) as DbArticle[];
 }
 
 /** Fetch a single article plus related articles. Throws with status 404 if not found. */
 export async function fetchArticleDetail(
   slug: string,
-): Promise<{ article: DbArticle, related: DbArticle[] }> {
-  const data = await getJson(`/api/articles?slug=${encodeURIComponent(slug)}`)
+): Promise<{ article: DbArticle; related: DbArticle[] }> {
+  const data = await getJson(`/api/articles?slug=${encodeURIComponent(slug)}`);
   return {
     article: data.article as DbArticle,
     related: (data?.related ?? []) as DbArticle[],
-  }
+  };
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Copy, Check } from '@vicons/tabler';
+import { Check, Copy } from '@vicons/tabler';
 import { useObfuscateString } from './string-obfuscator.model';
 import { useCopy } from '@/composable/copy';
 
@@ -31,27 +31,37 @@ async function handleCopy() {
 function stepKeepFirst(delta: number) {
   const next = Math.max(0, (keepFirst.value ?? 0) + delta);
   // 增加时：若加上后超过字符串长度则不继续增加
-  if (delta > 0 && str.value.length > 0 && next + (keepLast.value ?? 0) >= strLen.value) return;
+  if (delta > 0 && str.value.length > 0 && next + (keepLast.value ?? 0) >= strLen.value) {
+    return;
+  }
   keepFirst.value = next;
 }
 function stepKeepLast(delta: number) {
   const next = Math.max(0, (keepLast.value ?? 0) + delta);
-  if (delta > 0 && str.value.length > 0 && (keepFirst.value ?? 0) + next >= strLen.value) return;
+  if (delta > 0 && str.value.length > 0 && (keepFirst.value ?? 0) + next >= strLen.value) {
+    return;
+  }
   keepLast.value = next;
 }
 
 function onKeepFirstBlur() {
-  if (!Number.isFinite(keepFirst.value) || keepFirst.value < 0) keepFirst.value = 0;
+  if (!Number.isFinite(keepFirst.value) || keepFirst.value < 0) {
+    keepFirst.value = 0;
+  }
 }
 function onKeepLastBlur() {
-  if (!Number.isFinite(keepLast.value) || keepLast.value < 0) keepLast.value = 0;
+  if (!Number.isFinite(keepLast.value) || keepLast.value < 0) {
+    keepLast.value = 0;
+  }
 }
 </script>
 
 <template>
-  <div class="so-wrapper tool-wide">
+  <div class="tool-wide so-wrapper">
     <!-- 输入区 -->
-    <div class="section-label">{{ t('tools.string-obfuscator.inputLabel') }}</div>
+    <div class="section-label">
+      {{ t('tools.string-obfuscator.inputLabel') }}
+    </div>
     <c-input-text
       v-model:value="str"
       raw-text
@@ -65,7 +75,9 @@ function onKeepLastBlur() {
     <div class="controls-row">
       <!-- 保留前几位 -->
       <div class="control-group">
-        <div class="control-label">{{ t('tools.string-obfuscator.keepFirst') }}</div>
+        <div class="control-label">
+          {{ t('tools.string-obfuscator.keepFirst') }}
+        </div>
         <div class="stepper">
           <button
             class="stepper-btn"
@@ -81,7 +93,7 @@ function onKeepLastBlur() {
             type="number"
             min="0"
             @blur="onKeepFirstBlur"
-          />
+          >
           <button
             class="stepper-btn"
             :disabled="isOverLimit"
@@ -95,7 +107,9 @@ function onKeepLastBlur() {
 
       <!-- 保留后几位 -->
       <div class="control-group">
-        <div class="control-label">{{ t('tools.string-obfuscator.keepLast') }}</div>
+        <div class="control-label">
+          {{ t('tools.string-obfuscator.keepLast') }}
+        </div>
         <div class="stepper">
           <button
             class="stepper-btn"
@@ -111,7 +125,7 @@ function onKeepLastBlur() {
             type="number"
             min="0"
             @blur="onKeepLastBlur"
-          />
+          >
           <button
             class="stepper-btn"
             :disabled="isOverLimit"
@@ -125,7 +139,9 @@ function onKeepLastBlur() {
 
       <!-- 保留空格 -->
       <div class="control-group control-group--switch">
-        <div class="control-label">{{ t('tools.string-obfuscator.keepSpaces') }}</div>
+        <div class="control-label">
+          {{ t('tools.string-obfuscator.keepSpaces') }}
+        </div>
         <n-switch v-model:value="keepSpace" />
       </div>
     </div>

@@ -9,7 +9,7 @@ const safeAmount = computed({
   get: () => amount.value,
   set: (v: number) => {
     const n = Math.round(Number(v));
-    amount.value = isNaN(n) ? 1 : Math.min(500, Math.max(1, n));
+    amount.value = Number.isNaN(n) ? 1 : Math.min(500, Math.max(1, n));
   },
 });
 
@@ -100,7 +100,7 @@ const { copy, isJustCopied } = useCopy({ source: ulids, text: 'ULIDs copied to t
     </transition>
 
     <!-- ⑤ 按钮：Refresh 左、Copy Primary 右 -->
-    <div mt-4 flex justify-center gap-3 items-center>
+    <div mt-4 flex items-center justify-center gap-3>
       <c-button data-test-id="refresh" @click="handleRefresh()">
         <icon-mdi-refresh class="btn-icon" />
         Refresh

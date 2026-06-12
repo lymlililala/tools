@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import { UAParser } from 'ua-parser-js';
 import { Adjustments, Browser, Cpu, Devices, Engine } from '@vicons/tabler';
@@ -27,7 +28,9 @@ const hasResult = computed(() => ua.value.trim().length > 0 && userAgentInfo.val
 // ── 一键复制全部解析结果 JSON ──────────────────────────────────────────────
 const copiedAll = ref(false);
 async function copyAllJson() {
-  if (!userAgentInfo.value) return;
+  if (!userAgentInfo.value) {
+    return;
+  }
   const result = {
     browser: userAgentInfo.value.browser,
     engine: userAgentInfo.value.engine,
@@ -37,7 +40,9 @@ async function copyAllJson() {
   };
   await copy(JSON.stringify(result, null, 2));
   copiedAll.value = true;
-  setTimeout(() => { copiedAll.value = false; }, 1400);
+  setTimeout(() => {
+    copiedAll.value = false;
+  }, 1400);
 }
 
 const sections: UserAgentResultSection[] = [

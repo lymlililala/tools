@@ -191,7 +191,7 @@ const isLiveMode = computed(() => !inputDate.value);
 <template>
   <div>
     <!-- 输入区：加 Input format 标签 + 实时时钟标识 -->
-    <div flex gap-2 items-center>
+    <div flex items-center gap-2>
       <div style="flex: 1; position: relative">
         <c-input-text
           v-model:value="inputDate"

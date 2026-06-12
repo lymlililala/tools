@@ -49,7 +49,7 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the
 </script>
 
 <template>
-  <div class="hmac-wrap tool-wide">
+  <div class="tool-wide hmac-wrap">
     <!-- ① Plain text：多行 + 清空 -->
     <c-input-text
       v-model:value="plainText"

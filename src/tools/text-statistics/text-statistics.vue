@@ -13,9 +13,11 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const charCount = computed(() => [...text.value].length); // 正确处理 Emoji 多码点
 
 const wordCount = computed(() => {
-  if (!text.value.trim()) return 0;
+  if (!text.value.trim()) {
+    return 0;
+  }
   // 支持中文（每个汉字算一词）、英文单词、数字
-  const matches = text.value.match(/[\u4e00-\u9fa5]|[a-zA-Z0-9]+(?:[-'][a-zA-Z0-9]+)*/g);
+  const matches = text.value.match(/[\u4E00-\u9FA5]|[a-zA-Z0-9]+(?:[-'][a-zA-Z0-9]+)*/g);
   return matches ? matches.length : 0;
 });
 
@@ -29,7 +31,9 @@ const byteSize = computed(() => formatBytes(getStringSizeInBytes(text.value)));
 watch(text, async () => {
   await nextTick();
   const el = textareaRef.value;
-  if (!el) return;
+  if (!el) {
+    return;
+  }
   el.style.height = 'auto';
   el.style.height = `${Math.max(el.scrollHeight, 120)}px`;
 });
@@ -118,7 +122,9 @@ const hasContent = computed(() => text.value.length > 0);
           class="stat-item"
           :class="{ 'has-content': hasContent }"
         >
-          <div class="stat-label">{{ stat.label }}</div>
+          <div class="stat-label">
+            {{ stat.label }}
+          </div>
           <div class="stat-value">
             {{ stat.value }}
           </div>

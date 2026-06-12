@@ -18,7 +18,9 @@ const alpha = ref(1); // 1 = 完全不透明
 
 // 应用 alpha 到 Colord 对象
 function applyAlpha(c: Colord): Colord {
-  if (alpha.value >= 1) return c;
+  if (alpha.value >= 1) {
+    return c;
+  }
   const { r, g, b } = c.toRgb();
   return colord({ r, g, b, a: alpha.value });
 }
@@ -92,8 +94,12 @@ const formats = {
 updateColorValue(colord('#1ea54c'));
 
 function updateColorValue(value: Colord | undefined, omitLabel?: string) {
-  if (value === undefined) return;
-  if (!value.isValid()) return;
+  if (value === undefined) {
+    return;
+  }
+  if (!value.isValid()) {
+    return;
+  }
   _.forEach(formats, ({ value: valueRef, format }, key) => {
     if (key !== omitLabel) {
       valueRef.value = format(value);
@@ -104,7 +110,9 @@ function updateColorValue(value: Colord | undefined, omitLabel?: string) {
 // alpha 变化时重新格式化
 watch(alpha, () => {
   const hex = formats.hex.value.value;
-  if (!hex) return;
+  if (!hex) {
+    return;
+  }
   // 取纯色部分（前6/7位）
   const pureHex = hex.length >= 7 ? hex.slice(0, 7) : hex;
   const c = colord(pureHex);
@@ -116,7 +124,9 @@ watch(alpha, () => {
 // ── WCAG 对比度 ────────────────────────────────────────────────────────────
 const currentColord = computed(() => {
   const hex = formats.hex.value.value;
-  if (!hex) return null;
+  if (!hex) {
+    return null;
+  }
   // 取 6 位纯色（WCAG 不计算透明度）
   const pureHex = hex.length >= 7 ? hex.slice(0, 7) : hex;
   const c = colord(pureHex);
@@ -127,7 +137,7 @@ function relativeLuminance(c: Colord): number {
   const { r, g, b } = c.toRgb();
   const toLinear = (v: number) => {
     const n = v / 255;
-    return n <= 0.03928 ? n / 12.92 : Math.pow((n + 0.055) / 1.055, 2.4);
+    return n <= 0.03928 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4;
   };
   return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
 }
@@ -150,9 +160,15 @@ type WcagLevel = 'AAA' | 'AA' | 'AA Large' | 'Fail';
 interface WcagRating { level: WcagLevel; color: string; score: number }
 
 function wcagRating(ratio: number): WcagRating {
-  if (ratio >= 7) return { level: 'AAA', color: '#22c55e', score: 4 };
-  if (ratio >= 4.5) return { level: 'AA', color: '#10b981', score: 3 };
-  if (ratio >= 3) return { level: 'AA Large', color: '#f59e0b', score: 2 };
+  if (ratio >= 7) {
+    return { level: 'AAA', color: '#22c55e', score: 4 };
+  }
+  if (ratio >= 4.5) {
+    return { level: 'AA', color: '#10b981', score: 3 };
+  }
+  if (ratio >= 3) {
+    return { level: 'AA Large', color: '#f59e0b', score: 2 };
+  }
   return { level: 'Fail', color: '#ef4444', score: 1 };
 }
 
@@ -165,8 +181,12 @@ const isDark = computed(() => currentColord.value ? currentColord.value.isDark()
 // 预览颜色（带 alpha）
 const previewColor = computed(() => {
   const hex = formats.hex.value.value;
-  if (!hex) return '#cccccc';
-  if (alpha.value >= 1) return hex.length >= 7 ? hex.slice(0, 7) : hex;
+  if (!hex) {
+    return '#cccccc';
+  }
+  if (alpha.value >= 1) {
+    return hex.length >= 7 ? hex.slice(0, 7) : hex;
+  }
   const pure = hex.length >= 7 ? hex.slice(0, 7) : hex;
   const alphaHex = Math.round(alpha.value * 255).toString(16).padStart(2, '0');
   return `${pure}${alphaHex}`;
@@ -236,7 +256,7 @@ const alphaPercent = computed({
                 <div
                   class="alpha-track-fill"
                   :style="{
-                    background: `linear-gradient(to right, transparent, ${(formats.hex.value.value || '#000').slice(0,7)})`,
+                    background: `linear-gradient(to right, transparent, ${(formats.hex.value.value || '#000').slice(0, 7)})`,
                   }"
                 />
               </div>
@@ -284,7 +304,7 @@ const alphaPercent = computed({
           <!-- vs White -->
           <div class="wcag-row">
             <div class="wcag-swatch-wrap">
-              <div class="wcag-swatch" :style="{ background: (formats.hex.value.value || '#ccc').slice(0,7) }" />
+              <div class="wcag-swatch" :style="{ background: (formats.hex.value.value || '#ccc').slice(0, 7) }" />
               <div class="wcag-on" style="background: #fff; color: #000;">
                 A
               </div>
@@ -307,7 +327,7 @@ const alphaPercent = computed({
           <!-- vs Black -->
           <div class="wcag-row">
             <div class="wcag-swatch-wrap">
-              <div class="wcag-swatch" :style="{ background: (formats.hex.value.value || '#ccc').slice(0,7) }" />
+              <div class="wcag-swatch" :style="{ background: (formats.hex.value.value || '#ccc').slice(0, 7) }" />
               <div class="wcag-on" style="background: #000; color: #fff;">
                 A
               </div>

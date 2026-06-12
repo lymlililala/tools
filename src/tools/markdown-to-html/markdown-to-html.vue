@@ -35,9 +35,13 @@ function clearInput() {
 
 // ── 打印为 PDF ────────────────────────────────────────────────────────────
 function printHtml() {
-  if (!hasOutput.value) return;
+  if (!hasOutput.value) {
+    return;
+  }
   const w = window.open();
-  if (w === null) return;
+  if (w === null) {
+    return;
+  }
   w.document.body.innerHTML = outputHtml.value;
   w.print();
 }
@@ -45,7 +49,9 @@ function printHtml() {
 // ── 复制反馈 ─────────────────────────────────────────────────────────────
 const copySuccess = ref(false);
 async function copyHtml() {
-  if (!hasOutput.value) return;
+  if (!hasOutput.value) {
+    return;
+  }
   await navigator.clipboard.writeText(outputHtml.value);
   copySuccess.value = true;
   setTimeout(() => (copySuccess.value = false), 1800);
@@ -53,7 +59,7 @@ async function copyHtml() {
 </script>
 
 <template>
-  <div class="md-html-wrap tool-wide">
+  <div class="tool-wide md-html-wrap">
     <!-- 选项栏 -->
     <div class="settings-bar">
       <label class="setting-item">

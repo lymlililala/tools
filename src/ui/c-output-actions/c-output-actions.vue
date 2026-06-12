@@ -1,17 +1,18 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import { useStyleStore } from '@/stores/style.store';
 
 const props = withDefaults(defineProps<{
   /** 要复制/下载的文本内容 */
   value?: string
-  /** 是否显示清除按钮（emits clear 事件）*/
+  /** 是否显示清除按钮（emits clear 事件） */
   clearable?: boolean
   /** 是否显示下载按钮 */
   downloadable?: boolean
-  /** 下载的文件名（含扩展名）*/
+  /** 下载的文件名（含扩展名） */
   downloadFilename?: string
-  /** 紧凑模式（只有图标，无文字标签）*/
+  /** 紧凑模式（只有图标，无文字标签） */
   compact?: boolean
 }>(), {
   value: '',

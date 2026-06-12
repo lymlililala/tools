@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {
+  type UnicodeFormat,
   convertTextToUnicode,
   convertUnicodeToText,
   unicodeFormatOptions,
-  type UnicodeFormat,
 } from './text-to-unicode.service';
 import { useCopy } from '@/composable/copy';
 import { withDefaultOnError } from '@/utils/defaults';
@@ -62,7 +62,9 @@ watch(selectedFormat, () => {
 const unicodeValidationRules = [
   {
     validator: (value: string) => {
-      if (!value.trim()) return true;
+      if (!value.trim()) {
+        return true;
+      }
       // 允许合法的 Unicode 转义序列 + 普通文本 + 空白
       // 如果包含 \u 但格式不完整则报错
       const hasInvalidEscape = /\\u(?![0-9a-fA-F]{4}|\{[0-9a-fA-F]{1,6}\})/.test(value);
@@ -78,7 +80,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
 </script>
 
 <template>
-  <div class="ttu-wrap tool-wide">
+  <div class="tool-wide ttu-wrap">
     <!-- 工具栏：格式选择 -->
     <div class="toolbar">
       <span class="toolbar-label">Output format:</span>

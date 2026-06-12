@@ -38,7 +38,9 @@ function codePointToFormat(cp: number, format: UnicodeFormat): string {
 
 // ── 文本 → Unicode（使用 codePointAt 正确处理 Emoji/超 BMP 字符） ────────
 export function convertTextToUnicode(text: string, format: UnicodeFormat = 'js'): string {
-  if (!text) return '';
+  if (!text) {
+    return '';
+  }
   const result: string[] = [];
   // for...of 迭代器按完整码点迭代（不会拆开代理对）
   for (const char of text) {
@@ -54,7 +56,9 @@ export function convertTextToUnicode(text: string, format: UnicodeFormat = 'js')
 
 // ── Unicode → 文本（多格式智能解析） ─────────────────────────────────────
 export function convertUnicodeToText(input: string): string {
-  if (!input.trim()) return '';
+  if (!input.trim()) {
+    return '';
+  }
 
   let result = input;
 

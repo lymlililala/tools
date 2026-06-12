@@ -54,7 +54,9 @@ interface Result {
 
 const result = computed((): Result => {
   const raw = debouncedSQL.value.trim();
-  if (!raw) return { sql: '', error: null };
+  if (!raw) {
+    return { sql: '', error: null };
+  }
 
   try {
     const formatted = formatSQL(raw, config);
@@ -84,7 +86,9 @@ const { copy: copySQL, isJustCopied } = useCopy({
 
 // ── 下载 ──────────────────────────────────────────────────────
 function downloadSQL() {
-  if (!prettySQL.value) return;
+  if (!prettySQL.value) {
+    return;
+  }
   const blob = new Blob([prettySQL.value], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -97,102 +101,102 @@ function downloadSQL() {
 
 <template>
   <div class="tool-wide">
-  <!-- ── 配置栏 ────────────────────────────────────────────── -->
-  <div class="toolbar">
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.sql-prettify.dialect') }}</span>
-      <c-select
-        v-model:value="config.language"
-        :options="dialectOptions"
-        style="min-width: 160px"
-      />
-    </div>
-    <div class="toolbar-divider" />
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.sql-prettify.keywordCase') }}</span>
-      <c-select
-        v-model:value="config.keywordCase"
-        :options="keywordCaseOptions"
-        style="min-width: 130px"
-      />
-    </div>
-    <div class="toolbar-divider" />
-    <div class="toolbar-item">
-      <span class="toolbar-label">{{ t('tools.sql-prettify.indentStyle') }}</span>
-      <c-select
-        v-model:value="config.indentStyle"
-        :options="indentStyleOptions"
-        style="min-width: 130px"
-      />
-    </div>
-  </div>
-
-  <!-- ── 双面板 ─────────────────────────────────────────────── -->
-  <div class="sql-panes">
-    <!-- 输入面板 -->
-    <div class="pane" :class="{ 'pane--error': hasError }">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.sql-prettify.sqlQuery') }}</span>
-        <c-tooltip v-if="hasInput" :tooltip="t('tools.sql-prettify.clearInput')" position="bottom">
-          <button class="hdr-btn" @click="clearInput">
-            <icon-mdi-close-circle-outline />
-          </button>
-        </c-tooltip>
+    <!-- ── 配置栏 ────────────────────────────────────────────── -->
+    <div class="toolbar">
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.sql-prettify.dialect') }}</span>
+        <c-select
+          v-model:value="config.language"
+          :options="dialectOptions"
+          style="min-width: 160px"
+        />
       </div>
-
-      <c-code-input
-        v-model="rawSQL"
-        language="sql"
-        :placeholder="t('tools.sql-prettify.inputPlaceholder')"
-        class="code-editor"
-        :class="{ 'editor--error': hasError }"
-      />
-
-      <!-- 错误面板 -->
-      <transition name="slide-down">
-        <div v-if="parseError" class="error-panel">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <span>{{ parseError }}</span>
-        </div>
-      </transition>
+      <div class="toolbar-divider" />
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.sql-prettify.keywordCase') }}</span>
+        <c-select
+          v-model:value="config.keywordCase"
+          :options="keywordCaseOptions"
+          style="min-width: 130px"
+        />
+      </div>
+      <div class="toolbar-divider" />
+      <div class="toolbar-item">
+        <span class="toolbar-label">{{ t('tools.sql-prettify.indentStyle') }}</span>
+        <c-select
+          v-model:value="config.indentStyle"
+          :options="indentStyleOptions"
+          style="min-width: 130px"
+        />
+      </div>
     </div>
 
-    <!-- 输出面板 -->
-    <div class="pane">
-      <div class="pane-header">
-        <span class="pane-title">{{ t('tools.sql-prettify.formattedResult') }}</span>
-        <div class="action-group">
-          <c-tooltip :tooltip="isJustCopied ? t('tools.sql-prettify.copied') : t('tools.sql-prettify.copySql')" position="bottom">
-            <button
-              class="hdr-btn"
-              :class="{ 'hdr-btn--success': isJustCopied }"
-              :disabled="!prettySQL"
-              @click="copySQL()"
-            >
-              <icon-mdi-check v-if="isJustCopied" />
-              <icon-mdi-content-copy v-else />
-            </button>
-          </c-tooltip>
-          <c-tooltip :tooltip="t('tools.sql-prettify.downloadFile')" position="bottom">
-            <button class="hdr-btn" :disabled="!prettySQL" @click="downloadSQL">
-              <icon-mdi-download />
+    <!-- ── 双面板 ─────────────────────────────────────────────── -->
+    <div class="sql-panes">
+      <!-- 输入面板 -->
+      <div class="pane" :class="{ 'pane--error': hasError }">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.sql-prettify.sqlQuery') }}</span>
+          <c-tooltip v-if="hasInput" :tooltip="t('tools.sql-prettify.clearInput')" position="bottom">
+            <button class="hdr-btn" @click="clearInput">
+              <icon-mdi-close-circle-outline />
             </button>
           </c-tooltip>
         </div>
+
+        <c-code-input
+          v-model="rawSQL"
+          language="sql"
+          :placeholder="t('tools.sql-prettify.inputPlaceholder')"
+          class="code-editor"
+          :class="{ 'editor--error': hasError }"
+        />
+
+        <!-- 错误面板 -->
+        <transition name="slide-down">
+          <div v-if="parseError" class="error-panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ parseError }}</span>
+          </div>
+        </transition>
       </div>
 
-      <c-code-input
-        :model-value="prettySQL"
-        language="sql"
-        :placeholder="t('tools.sql-prettify.outputPlaceholder')"
-        class="code-editor"
-        readonly
-      />
+      <!-- 输出面板 -->
+      <div class="pane">
+        <div class="pane-header">
+          <span class="pane-title">{{ t('tools.sql-prettify.formattedResult') }}</span>
+          <div class="action-group">
+            <c-tooltip :tooltip="isJustCopied ? t('tools.sql-prettify.copied') : t('tools.sql-prettify.copySql')" position="bottom">
+              <button
+                class="hdr-btn"
+                :class="{ 'hdr-btn--success': isJustCopied }"
+                :disabled="!prettySQL"
+                @click="copySQL()"
+              >
+                <icon-mdi-check v-if="isJustCopied" />
+                <icon-mdi-content-copy v-else />
+              </button>
+            </c-tooltip>
+            <c-tooltip :tooltip="t('tools.sql-prettify.downloadFile')" position="bottom">
+              <button class="hdr-btn" :disabled="!prettySQL" @click="downloadSQL">
+                <icon-mdi-download />
+              </button>
+            </c-tooltip>
+          </div>
+        </div>
+
+        <c-code-input
+          :model-value="prettySQL"
+          language="sql"
+          :placeholder="t('tools.sql-prettify.outputPlaceholder')"
+          class="code-editor"
+          readonly
+        />
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

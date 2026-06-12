@@ -22,7 +22,9 @@ const base64Input = ref('');
 
 const decodeError = computed(() => {
   const val = base64Input.value.trim();
-  if (!val) return '';
+  if (!val) {
+    return '';
+  }
   if (!isValidBase64(val, { makeUrlSafe: decodeUrlSafe.value })) {
     return 'Invalid Base64 string. Please check for illegal characters or incorrect padding.';
   }
@@ -31,7 +33,9 @@ const decodeError = computed(() => {
 
 const textOutput = computed(() => {
   const val = base64Input.value.trim();
-  if (!val || decodeError.value) return '';
+  if (!val || decodeError.value) {
+    return '';
+  }
   return withDefaultOnError(() => base64ToText(val, { makeUrlSafe: decodeUrlSafe.value }), '');
 });
 
@@ -43,7 +47,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 </script>
 
 <template>
-  <div class="b64-layout tool-wide">
+  <div class="tool-wide b64-layout">
     <!-- ① 左侧：编码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" title="String → Base64">
       <!-- URL Safe 开关 -->

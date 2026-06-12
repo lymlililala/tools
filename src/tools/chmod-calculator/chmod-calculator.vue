@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
-import { useCopy } from '@/composable/copy';
 import type { Group, Scope } from './chmod-calculator.types';
+import { useCopy } from '@/composable/copy';
 
 const { t } = useI18n();
 
 // ── 权限矩阵定义 ──────────────────────────────────────────────
 const scopes: { scope: Scope; label: string; value: number }[] = [
-  { scope: 'read',    label: 'Read',    value: 4 },
-  { scope: 'write',   label: 'Write',   value: 2 },
+  { scope: 'read', label: 'Read', value: 4 },
+  { scope: 'write', label: 'Write', value: 2 },
   { scope: 'execute', label: 'Execute', value: 1 },
 ];
 
 const groups: { group: Group; label: string; short: string }[] = [
-  { group: 'owner',  label: 'Owner',  short: 'u' },
-  { group: 'group',  label: 'Group',  short: 'g' },
+  { group: 'owner', label: 'Owner', short: 'u' },
+  { group: 'group', label: 'Group', short: 'g' },
   { group: 'public', label: 'Public', short: 'o' },
 ];
 
 // ── 权限状态 ──────────────────────────────────────────────────
 const permissions = ref({
-  owner:  { read: false, write: false, execute: false },
-  group:  { read: false, write: false, execute: false },
+  owner: { read: false, write: false, execute: false },
+  group: { read: false, write: false, execute: false },
   public: { read: false, write: false, execute: false },
 });
 
@@ -38,8 +38,8 @@ function applyPreset(octal: string) {
   const groupKeys: Group[] = ['owner', 'group', 'public'];
   groupKeys.forEach((g, i) => {
     const d = digits[i] ?? 0;
-    permissions.value[g].read    = (d & 4) !== 0;
-    permissions.value[g].write   = (d & 2) !== 0;
+    permissions.value[g].read = (d & 4) !== 0;
+    permissions.value[g].write = (d & 2) !== 0;
     permissions.value[g].execute = (d & 1) !== 0;
   });
 }
@@ -47,12 +47,16 @@ function applyPreset(octal: string) {
 // ── 列/行 全选 ────────────────────────────────────────────────
 function toggleGroup(group: Group) {
   const cur = scopes.every(s => permissions.value[group][s.scope]);
-  scopes.forEach(s => { permissions.value[group][s.scope] = !cur; });
+  scopes.forEach((s) => {
+    permissions.value[group][s.scope] = !cur;
+  });
 }
 
 function toggleScope(scope: Scope) {
   const cur = groups.every(g => permissions.value[g.group][scope]);
-  groups.forEach(g => { permissions.value[g.group][scope] = !cur; });
+  groups.forEach((g) => {
+    permissions.value[g.group][scope] = !cur;
+  });
 }
 
 function isGroupAllChecked(group: Group) {
@@ -64,7 +68,7 @@ function isScopeAllChecked(scope: Scope) {
 }
 
 // ── 计算结果 ──────────────────────────────────────────────────
-const octal    = computed(() => computeChmodOctalRepresentation({ permissions: permissions.value }));
+const octal = computed(() => computeChmodOctalRepresentation({ permissions: permissions.value }));
 const symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions: permissions.value }));
 
 // ── 可编辑文件名 ──────────────────────────────────────────────
@@ -205,7 +209,7 @@ const symbolicGroups = computed(() => {
             placeholder="path"
             spellcheck="false"
             autocomplete="off"
-          />
+          >
         </div>
         <button
           class="copy-btn"

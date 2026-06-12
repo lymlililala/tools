@@ -14,13 +14,17 @@ const debouncedEscaped = refDebounced(escapedText, 120);
 
 // 上方（明文）编辑 → 下方（转义）实时更新
 watch(debouncedPlain, (val) => {
-  if (activePane.value !== 'plain') return;
+  if (activePane.value !== 'plain') {
+    return;
+  }
   escapedText.value = escape(val);
 });
 
 // 下方（转义）编辑 → 上方（明文）实时更新
 watch(debouncedEscaped, (val) => {
-  if (activePane.value !== 'escaped') return;
+  if (activePane.value !== 'escaped') {
+    return;
+  }
   plainText.value = unescape(val);
 });
 
@@ -47,14 +51,18 @@ const copyPlainSuccess = ref(false);
 const copyEscapedSuccess = ref(false);
 
 async function copyPlain() {
-  if (!plainText.value) return;
+  if (!plainText.value) {
+    return;
+  }
   await navigator.clipboard.writeText(plainText.value);
   copyPlainSuccess.value = true;
   setTimeout(() => (copyPlainSuccess.value = false), 1600);
 }
 
 async function copyEscaped() {
-  if (!escapedText.value) return;
+  if (!escapedText.value) {
+    return;
+  }
   await navigator.clipboard.writeText(escapedText.value);
   copyEscapedSuccess.value = true;
   setTimeout(() => (copyEscapedSuccess.value = false), 1600);
