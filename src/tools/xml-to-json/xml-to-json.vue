@@ -19,7 +19,9 @@ function triggerFileUpload() {
 }
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   const reader = new FileReader();
   reader.onload = () => {
     xmlInput.value = reader.result as string;
@@ -31,7 +33,9 @@ function onFileChange(e: Event) {
 
 // ── 格式化 XML ────────────────────────────────────────────────────────────
 function formatXml() {
-  if (!xmlInput.value.trim()) return;
+  if (!xmlInput.value.trim()) {
+    return;
+  }
   try {
     xmlInput.value = xmlFormat(xmlInput.value.trim(), {
       indentation: '  ',
@@ -57,12 +61,13 @@ interface ConvertResult {
 
 const result = computed((): ConvertResult => {
   const raw = debouncedXml.value.trim();
-  if (!raw) return { json: '', error: null };
+  if (!raw) {
+    return { json: '', error: null };
+  }
 
   try {
     const options: convert.Options.XML2JS = {
       compact: compactMode.value,
-      spaces: 2,
     };
 
     if (ignoreAttributes.value) {
@@ -85,7 +90,9 @@ const result = computed((): ConvertResult => {
 
 // 递归将纯数字字符串转为 Number
 function convertNumericStrings(obj: any): void {
-  if (typeof obj !== 'object' || obj === null) return;
+  if (typeof obj !== 'object' || obj === null) {
+    return;
+  }
   for (const key of Object.keys(obj)) {
     const val = obj[key];
     if (typeof val === 'string' && val.trim() !== '' && !Number.isNaN(Number(val))) {
@@ -103,7 +110,9 @@ const hasError = computed(() => parseError.value !== null && xmlInput.value.trim
 
 // ── 下载 JSON ─────────────────────────────────────────────────────────────
 function downloadJson() {
-  if (!jsonOutput.value) return;
+  if (!jsonOutput.value) {
+    return;
+  }
   const blob = new Blob([jsonOutput.value], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -116,7 +125,9 @@ function downloadJson() {
 // ── 复制反馈 ─────────────────────────────────────────────────────────────
 const copySuccess = ref(false);
 async function copyJson() {
-  if (!jsonOutput.value) return;
+  if (!jsonOutput.value) {
+    return;
+  }
   await navigator.clipboard.writeText(jsonOutput.value);
   copySuccess.value = true;
   setTimeout(() => (copySuccess.value = false), 1800);
@@ -124,7 +135,7 @@ async function copyJson() {
 </script>
 
 <template>
-  <div class="xml-json-wrap tool-wide">
+  <div class="tool-wide xml-json-wrap">
     <!-- 设置栏 -->
     <div class="settings-bar">
       <label class="setting-item">

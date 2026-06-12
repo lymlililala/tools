@@ -121,7 +121,9 @@ const howToSteps = computed(() => {
   const steps = [];
   for (let i = 1; i <= 5; i++) {
     const key = `tools.${toolKey}.step${i}`;
-    if (hasKey(key)) steps.push(t(key));
+    if (hasKey(key)) {
+      steps.push(t(key));
+    }
   }
   return steps;
 });
@@ -138,7 +140,7 @@ async function loadRelatedGuides() {
       const res = await fetch('/tool-guides.json');
       _guideMap = res.ok ? await res.json() : {};
     }
-    relatedGuides.value = (_guideMap[route.path] ?? []).slice(0, 6);
+    relatedGuides.value = (_guideMap?.[route.path] ?? []).slice(0, 6);
   }
   catch {
     relatedGuides.value = [];
@@ -147,7 +149,6 @@ async function loadRelatedGuides() {
 
 onMounted(loadRelatedGuides);
 watch(() => route.path, loadRelatedGuides);
-
 </script>
 
 <template>

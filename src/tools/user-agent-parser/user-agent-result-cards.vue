@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line no-restricted-imports
 import { useClipboard } from '@vueuse/core';
 import type { UAParser } from 'ua-parser-js';
 import type { UserAgentResultSection } from './user-agent-parser.types';
@@ -18,18 +19,24 @@ const copiedHeading = ref('');
 async function copyCard(heading: string, content: UserAgentResultSection['content']) {
   const obj: Record<string, string> = {};
   for (const { label, getValue } of content) {
-    const v = getValue(userAgentInfo.value);
-    if (v) obj[label] = v;
+    const v = getValue(props.userAgentInfo);
+    if (v) {
+      obj[label] = v;
+    }
   }
-  if (Object.keys(obj).length === 0) return;
+  if (Object.keys(obj).length === 0) {
+    return;
+  }
   await copy(JSON.stringify(obj, null, 2));
   copiedHeading.value = heading;
-  setTimeout(() => { copiedHeading.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedHeading.value = '';
+  }, 1400);
 }
 
 // 判断某卡片是否全部为空
 function cardHasData(content: UserAgentResultSection['content']): boolean {
-  return content.some(({ getValue }) => getValue(userAgentInfo.value) !== undefined);
+  return content.some(({ getValue }) => getValue(props.userAgentInfo) !== undefined);
 }
 </script>
 

@@ -1,12 +1,19 @@
 export interface Article {
   slug: string
-  toolPath: string
   title: string
   description: string
-  keywords: string[]
-  category: string
   publishedAt: string
   content: string
+  // Article shapes diverge across the tool-cluster set and the two
+  // DB-maintained blog sets (one uses `category`, another `categories`;
+  // one uses `keywords`, another `tags`). All such fields are optional;
+  // runtime consumers already guard them.
+  category?: string
+  categories?: string[]
+  toolPath?: string
+  keywords?: string[]
+  tags?: string[]
+  readingTime?: number
 }
 
 export const articles: Article[] = [
@@ -10525,7 +10532,7 @@ Use it for converting API responses from legacy SOAP or XML services, transformi
     toolPath: '/sql-format',
     title: 'How to Format SQL Queries for Better Readability',
     description: 'Learn SQL formatting best practices, indentation rules, and keyword casing. Use our online formatter to clean up messy queries instantly — supports MySQL, PostgreSQL, SQLite, and more.',
-    keywords: ["SQL formatter","SQL prettify","format SQL online","SQL beautifier","SQL code formatter","SQL indentation"],
+    keywords: ['SQL formatter', 'SQL prettify', 'format SQL online', 'SQL beautifier', 'SQL code formatter', 'SQL indentation'],
     category: 'Development',
     publishedAt: '2025-07-11',
     content: `## What Is SQL Formatting?
@@ -10655,7 +10662,7 @@ Use it for improving readability of complex queries before committing to version
     toolPath: '/jwt-parser',
     title: 'JWT Explained: How to Read and Validate JSON Web Tokens',
     description: 'Decode and inspect any JWT token. Learn about header, payload, signature, expiry, and common security mistakes.',
-    keywords: ["JWT parser","decode JWT","JSON web token","JWT security","JWT expiry"],
+    keywords: ['JWT parser', 'decode JWT', 'JSON web token', 'JWT security', 'JWT expiry'],
     category: 'Crypto',
     publishedAt: '2025-06-05',
     content: `## What Is a JWT?
@@ -10769,7 +10776,7 @@ Use it for debugging authentication issues, understanding JWT contents during de
     toolPath: '/base64-string-converter',
     title: 'Base64 Encoding Explained: What It Is and When to Use It',
     description: 'Learn what Base64 encoding is, how the algorithm works, common use cases in web development (data URIs, JWT), and how to encode/decode strings and files online.',
-    keywords: ["base64 encode","base64 decode","base64 online","base64 string converter","encoding"],
+    keywords: ['base64 encode', 'base64 decode', 'base64 online', 'base64 string converter', 'encoding'],
     category: 'Converter',
     publishedAt: '2025-06-15',
     content: `## What Is Base64 Encoding?
@@ -10892,7 +10899,7 @@ Use it for generating data URLs, debugging JWT contents, encoding API credential
     toolPath: '/uuid-generator',
     title: 'UUID vs ULID: Which Unique ID Should You Use?',
     description: 'Compare UUID and ULID for unique identifier generation. Learn when to use each and how they differ in sortability and database performance.',
-    keywords: ["UUID generator","ULID generator","unique ID","UUID vs ULID","sortable ID"],
+    keywords: ['UUID generator', 'ULID generator', 'unique ID', 'UUID vs ULID', 'sortable ID'],
     category: 'Crypto',
     publishedAt: '2025-06-04',
     content: `## UUID vs. ULID: Choosing the Right Unique Identifier
@@ -10995,7 +11002,7 @@ Use it for testing, seeding databases, generating unique identifiers for mock da
     toolPath: '/json-to-yaml-converter',
     title: 'JSON to YAML Converter: When and Why to Use YAML',
     description: 'Convert JSON to YAML and understand the differences. Learn when YAML is better than JSON for configuration files.',
-    keywords: ["JSON to YAML","convert JSON YAML","YAML vs JSON","YAML formatter","JSON converter"],
+    keywords: ['JSON to YAML', 'convert JSON YAML', 'YAML vs JSON', 'YAML formatter', 'JSON converter'],
     category: 'Converter',
     publishedAt: '2025-06-16',
     content: `## JSON and YAML: Two Faces of Structured Data
@@ -11189,7 +11196,7 @@ Use it for configuration file conversion, API documentation formatting, and inte
     toolPath: '/color-converter',
     title: 'Color Formats Explained: HEX, RGB, HSL, and How to Convert Between Them',
     description: 'Learn about web color formats: HEX, RGB, RGBA, HSL, HSLA — and how to convert between them instantly with our free online color converter tool.',
-    keywords: ["color converter","hex to rgb","rgb to hsl","color formats","CSS colors"],
+    keywords: ['color converter', 'hex to rgb', 'rgb to hsl', 'color formats', 'CSS colors'],
     category: 'Converter',
     publishedAt: '2025-06-18',
     content: `## Color Models and Why We Convert Between Them
@@ -11287,7 +11294,7 @@ Use it for converting between design tool and CSS representations, preparing col
     toolPath: '/url-encoder',
     title: 'URL Encoding Explained: Why Special Characters Must Be Escaped',
     description: 'Learn why URLs need encoding, what percent-encoding is, and how to encode/decode URLs correctly using our free online URL encoder and decoder tool.',
-    keywords: ["URL encoding","percent encoding","URL encode decode","encodeURIComponent","URL special characters"],
+    keywords: ['URL encoding', 'percent encoding', 'URL encode decode', 'encodeURIComponent', 'URL special characters'],
     category: 'Web',
     publishedAt: '2025-06-28',
     content: `## What Is URL Encoding?
@@ -11392,7 +11399,7 @@ Use it for building API URLs with special characters, debugging URL encoding iss
     toolPath: '/http-status-codes',
     title: 'HTTP Status Codes: The Complete Developer Reference',
     description: 'A comprehensive guide to all HTTP status codes: 1xx informational, 2xx success, 3xx redirection, 4xx client errors, 5xx server errors — with real-world examples.',
-    keywords: ["HTTP status codes","404 not found","500 server error","HTTP 301 redirect","status code reference"],
+    keywords: ['HTTP status codes', '404 not found', '500 server error', 'HTTP 301 redirect', 'status code reference'],
     category: 'Web',
     publishedAt: '2025-06-29',
     content: `## Understanding HTTP Status Codes
@@ -11498,7 +11505,7 @@ Keep it handy as a reference when designing APIs, debugging HTTP responses, and 
     toolPath: '/docker-run-to-docker-compose-converter',
     title: 'Convert docker run to docker-compose: A Practical Guide',
     description: 'Convert docker run commands to docker-compose.yml. Understand volumes, ports, environment variables.',
-    keywords: ["docker run to compose","docker-compose converter","docker compose yml","docker migration","convert docker run","docker-compose generator"],
+    keywords: ['docker run to compose', 'docker-compose converter', 'docker compose yml', 'docker migration', 'convert docker run', 'docker-compose generator'],
     category: 'Development',
     publishedAt: '2025-07-10',
     content: `## What Is Docker Compose?
@@ -11638,7 +11645,7 @@ Use it when migrating from manual Docker commands to a managed Compose workflow,
     toolPath: '/json-format',
     title: 'How to Format and Validate JSON: A Developer\'s Guide',
     description: 'Learn to format, validate, and debug JSON with our free online tool. Understand common JSON syntax errors, encoding pitfalls, and best practices for developers.',
-    keywords: ["JSON formatter","JSON validator","format JSON online","JSON pretty print","JSON syntax error"],
+    keywords: ['JSON formatter', 'JSON validator', 'format JSON online', 'JSON pretty print', 'JSON syntax error'],
     category: 'Development',
     publishedAt: '2025-07-08',
     content: `## What Is JSON Formatting?
@@ -11744,7 +11751,7 @@ Use it for reading API responses, debugging JSON data, formatting configuration 
     toolPath: '/git-memo',
     title: 'Git Command Cheat Sheet: The Most Useful Commands Explained',
     description: 'A comprehensive Git reference covering everyday commands, branching, undo operations, and advanced workflows.',
-    keywords: ["git cheat sheet","git commands","git memo","git reference","git workflow"],
+    keywords: ['git cheat sheet', 'git commands', 'git memo', 'git reference', 'git workflow'],
     category: 'Development',
     publishedAt: '2025-07-12',
     content: `## Git: The Essential Version Control System
@@ -35181,7 +35188,7 @@ The App Router has a steep learning curve, but once the Server/Client Component 
     slug: 'react-server-components-deep-dive',
     toolPath: '/json-viewer',
     title: 'React Server Components Deep Dive: How RSC Actually Works Under the Hood',
-    description: "Understand React Server Components from first principles: the RSC payload, module graph, hydration, Suspense integration, and why RSC changes how we think about React's rendering model.",
+    description: 'Understand React Server Components from first principles: the RSC payload, module graph, hydration, Suspense integration, and why RSC changes how we think about React\'s rendering model.',
     keywords: ['react server components', 'rsc', 'react server components tutorial', 'rsc payload', 'react streaming ssr', 'nextjs server components', 'react 19'],
     category: 'Frontend',
     publishedAt: '2026-05-28',
@@ -38541,8 +38548,8 @@ Go's concurrency model rewards thinking in terms of communication and ownership 
   {
     slug: 'rust-ownership-borrowing-beginners-guide',
     toolPath: '/string-obfuscator',
-    title: "Rust Ownership and Borrowing: A Practical Guide for Developers from Other Languages",
-    description: "Understand Rust's ownership system from scratch: ownership rules, borrowing, lifetimes, the borrow checker, and how to translate common patterns from JavaScript/Python/Go into Rust.",
+    title: 'Rust Ownership and Borrowing: A Practical Guide for Developers from Other Languages',
+    description: 'Understand Rust\'s ownership system from scratch: ownership rules, borrowing, lifetimes, the borrow checker, and how to translate common patterns from JavaScript/Python/Go into Rust.',
     keywords: ['rust ownership', 'rust borrowing', 'rust lifetimes', 'rust borrow checker', 'rust tutorial', 'learn rust', 'rust for javascript developers'],
     category: 'Backend',
     publishedAt: '2026-06-01',
@@ -42604,7 +42611,7 @@ Build optimization is an investment that pays dividends on every page load for t
     slug: 'typescript-strict-mode-guide',
     toolPath: '/text-statistics',
     title: 'TypeScript Strict Mode: What It Does and How to Enable It Without Breaking Everything',
-    description: "Complete guide to TypeScript strict mode: what each strict option enables, how to migrate incrementally, common patterns for satisfying the type checker, and why strict mode catches real bugs.",
+    description: 'Complete guide to TypeScript strict mode: what each strict option enables, how to migrate incrementally, common patterns for satisfying the type checker, and why strict mode catches real bugs.',
     keywords: ['typescript strict mode', 'typescript strict', 'noImplicitAny', 'strictNullChecks', 'typescript migration', 'typescript tsconfig', 'typescript strict options'],
     category: 'Frontend',
     publishedAt: '2026-06-06',
@@ -62528,7 +62535,6 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3) {
 → Generate secure API key tokens with the [Token Generator](/token-generator).`,
   },
 
-
   {
     slug: 'vue3-composition-api-complete-guide',
     title: 'Vue 3 Composition API: Complete Guide with Real-World Patterns',
@@ -77230,7 +77236,7 @@ function verifyToken(token) {
     title: 'HTTPS, TLS Configuration, and Certificate Management with cert-manager',
     description: 'Master HTTPS and TLS for production. Configure TLS 1.3, mutual TLS, certificate automation with cert-manager and Let\'s Encrypt, and HTTP security headers.',
     category: 'Security',
-    tags: ['HTTPS', 'TLS', 'SSL', 'cert-manager', "Let's Encrypt"],
+    tags: ['HTTPS', 'TLS', 'SSL', 'cert-manager', 'Let\'s Encrypt'],
     publishedAt: '2026-01-30',
     readingTime: 12,
     content: `# HTTPS and TLS Certificate Management

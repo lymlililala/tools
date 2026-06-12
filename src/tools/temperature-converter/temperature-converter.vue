@@ -28,16 +28,16 @@ const units = reactive<
     toKelvin: (v: number) => number
     fromKelvin: (v: number) => number
   }>
->({
-  kelvin: { title: 'Kelvin', unit: 'K', ref: 0, toKelvin: _.identity, fromKelvin: _.identity },
-  celsius: { title: 'Celsius', unit: '°C', ref: -273.15, toKelvin: convertCelsiusToKelvin, fromKelvin: convertKelvinToCelsius },
-  fahrenheit: { title: 'Fahrenheit', unit: '°F', ref: -459.67, toKelvin: convertFahrenheitToKelvin, fromKelvin: convertKelvinToFahrenheit },
-  rankine: { title: 'Rankine', unit: '°R', ref: 0, toKelvin: convertRankineToKelvin, fromKelvin: convertKelvinToRankine },
-  delisle: { title: 'Delisle', unit: '°De', ref: 559.73, toKelvin: convertDelisleToKelvin, fromKelvin: convertKelvinToDelisle },
-  newton: { title: 'Newton', unit: '°N', ref: -90.14, toKelvin: convertNewtonToKelvin, fromKelvin: convertKelvinToNewton },
-  reaumur: { title: 'Réaumur', unit: '°Ré', ref: -218.52, toKelvin: convertReaumurToKelvin, fromKelvin: convertKelvinToReaumur },
-  romer: { title: 'Rømer', unit: '°Rø', ref: -135.91, toKelvin: convertRomerToKelvin, fromKelvin: convertKelvinToRomer },
-});
+      >({
+        kelvin: { title: 'Kelvin', unit: 'K', ref: 0, toKelvin: _.identity, fromKelvin: _.identity },
+        celsius: { title: 'Celsius', unit: '°C', ref: -273.15, toKelvin: convertCelsiusToKelvin, fromKelvin: convertKelvinToCelsius },
+        fahrenheit: { title: 'Fahrenheit', unit: '°F', ref: -459.67, toKelvin: convertFahrenheitToKelvin, fromKelvin: convertKelvinToFahrenheit },
+        rankine: { title: 'Rankine', unit: '°R', ref: 0, toKelvin: convertRankineToKelvin, fromKelvin: convertKelvinToRankine },
+        delisle: { title: 'Delisle', unit: '°De', ref: 559.73, toKelvin: convertDelisleToKelvin, fromKelvin: convertKelvinToDelisle },
+        newton: { title: 'Newton', unit: '°N', ref: -90.14, toKelvin: convertNewtonToKelvin, fromKelvin: convertKelvinToNewton },
+        reaumur: { title: 'Réaumur', unit: '°Ré', ref: -218.52, toKelvin: convertReaumurToKelvin, fromKelvin: convertKelvinToReaumur },
+        romer: { title: 'Rømer', unit: '°Rø', ref: -135.91, toKelvin: convertRomerToKelvin, fromKelvin: convertKelvinToRomer },
+      });
 
 // ─── 绝对零度校验 ──────────────────────────────────────────────────────────────
 const ABSOLUTE_ZERO_K = 0;
@@ -58,14 +58,16 @@ const anyBelowZero = computed(() => Object.values(belowAbsoluteZero.value).some(
 
 // ─── 格式化结果（防超长溢出） ──────────────────────────────────────────────────
 function formatValue(v: number): string {
-  if (!Number.isFinite(v)) return '—';
+  if (!Number.isFinite(v)) {
+    return '—';
+  }
   // 超过 12 位整数部分时用科学计数法
   const abs = Math.abs(v);
   if (abs >= 1e12 || (abs < 1e-6 && abs > 0)) {
     return v.toExponential(4);
   }
   // 最多保留 6 位小数，去尾零
-  return parseFloat(v.toFixed(6)).toString();
+  return Number.parseFloat(v.toFixed(6)).toString();
 }
 
 // ─── 更新联动 ──────────────────────────────────────────────────────────────────
@@ -73,7 +75,7 @@ function update(key: TemperatureScale) {
   const kelvins = units[key].toKelvin(units[key].ref) ?? 0;
   _.chain(units)
     .omit(key)
-    .forEach(({ fromKelvin }, idx) => {
+    .forEach(({ fromKelvin }: { fromKelvin: (k: number) => number }, idx) => {
       const raw = fromKelvin(kelvins) ?? 0;
       (units as any)[idx].ref = Math.round(raw * 1e6) / 1e6;
     })

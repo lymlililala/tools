@@ -8,7 +8,7 @@ type GetErrorMessageReturnType = string;
 export interface UseValidationRule<T> {
   validator: (value: T) => ValidatorReturnType
   getErrorMessage?: (value: T) => GetErrorMessageReturnType
-  message: string
+  message: MaybeRef<string>
 }
 
 export function isFalsyOrHasThrown(cb: () => ValidatorReturnType): boolean {
@@ -74,10 +74,10 @@ export function useValidation<T>({
         if (isFalsyOrHasThrown(() => rule.validator(source.value))) {
           if (rule.getErrorMessage) {
             const getErrorMessage = rule.getErrorMessage;
-            state.message = rule.message.replace('{0}', getErrorMessageOrThrown(() => getErrorMessage(source.value)));
+            state.message = get(rule.message).replace('{0}', getErrorMessageOrThrown(() => getErrorMessage(source.value)));
           }
           else {
-            state.message = rule.message;
+            state.message = get(rule.message);
           }
           state.status = 'error';
         }

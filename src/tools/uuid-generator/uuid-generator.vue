@@ -19,7 +19,7 @@ const NAMESPACE_PRESETS = {
   X500: '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
 } as const;
 
-const v35Args = ref({ namespace: NAMESPACE_PRESETS.URL, name: '' });
+const v35Args = ref<{ namespace: string; name: string }>({ namespace: NAMESPACE_PRESETS.URL, name: '' });
 
 // 当前选中的预设快捷按钮
 const selectedPreset = computed(() => {
@@ -50,7 +50,7 @@ const safeCount = computed({
   get: () => count.value,
   set: (v: number) => {
     const n = Math.round(Number(v));
-    count.value = isNaN(n) ? 1 : Math.min(1000, Math.max(1, n));
+    count.value = Number.isNaN(n) ? 1 : Math.min(1000, Math.max(1, n));
   },
 });
 
@@ -105,7 +105,7 @@ watch(version, () => {
         </div>
 
         <!-- Namespace 快捷预设 -->
-        <div mb-2 flex items-center gap-2 flex-wrap>
+        <div mb-2 flex flex-wrap items-center gap-2>
           <span class="field-label">{{ t('tools.uuid-generator.namespace') }}</span>
           <div class="preset-row">
             <button
@@ -162,7 +162,7 @@ watch(version, () => {
     />
 
     <!-- ⑤ 按钮：Primary 复制 + 次级刷新 -->
-    <div flex justify-center gap-3 items-center>
+    <div flex items-center justify-center gap-3>
       <c-button type="primary" class="btn-copy" @click="copy()">
         <transition name="icon-switch" mode="out-in">
           <icon-mdi-check v-if="isJustCopied" key="check" class="btn-icon" />

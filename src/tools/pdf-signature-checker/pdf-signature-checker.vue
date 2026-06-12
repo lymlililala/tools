@@ -11,8 +11,12 @@ const file = ref<File | null>(null);
 const isOverDrop = ref(false);
 
 // 拖拽悬浮处理（通过在 dropzone 容器上监听事件）
-function onDragEnter() { isOverDrop.value = true; }
-function onDragLeave() { isOverDrop.value = false; }
+function onDragEnter() {
+  isOverDrop.value = true;
+}
+function onDragLeave() {
+  isOverDrop.value = false;
+}
 
 async function onFileSelected(uploadedFile: File) {
   isOverDrop.value = false;
@@ -55,12 +59,16 @@ async function onFileSelected(uploadedFile: File) {
 // 手动文件输入
 const fileInput = ref<HTMLInputElement | null>(null);
 function triggerInput() {
-  if (status.value === 'loading') return;
+  if (status.value === 'loading') {
+    return;
+  }
   fileInput.value?.click();
 }
 function handleInput(e: Event) {
   const f = (e.target as HTMLInputElement).files?.[0];
-  if (f) onFileSelected(f);
+  if (f) {
+    onFileSelected(f);
+  }
   // 重置 input 以允许选同一文件再次触发
   (e.target as HTMLInputElement).value = '';
 }
@@ -68,7 +76,9 @@ function handleDrop(e: DragEvent) {
   e.preventDefault();
   isOverDrop.value = false;
   const f = e.dataTransfer?.files?.[0];
-  if (f) onFileSelected(f);
+  if (f) {
+    onFileSelected(f);
+  }
 }
 
 function reset() {
@@ -96,25 +106,33 @@ function reset() {
         accept=".pdf,application/pdf"
         class="hidden-input"
         @change="handleInput"
-      />
+      >
 
       <!-- Loading 中 -->
       <template v-if="status === 'loading'">
         <n-spin size="medium" />
-        <div class="dz-title">Analysing signatures…</div>
-        <div class="dz-filename">{{ file?.name }}</div>
+        <div class="dz-title">
+          Analysing signatures…
+        </div>
+        <div class="dz-filename">
+          {{ file?.name }}
+        </div>
       </template>
 
       <!-- 空闲/重新上传 -->
       <template v-else>
         <icon-mdi-file-pdf-box class="dz-pdf-icon" />
-        <div class="dz-title">Drag &amp; drop a PDF here</div>
-        <c-button type="primary" class="dz-btn" :disabled="status === 'loading'" @click.stop="triggerInput">
+        <div class="dz-title">
+          Drag &amp; drop a PDF here
+        </div>
+        <c-button type="primary" class="dz-btn" @click.stop="triggerInput">
           <icon-mdi-folder-open-outline style="margin-right:5px" />
           Browse files
         </c-button>
         <!-- 格式/大小提示 -->
-        <div class="dz-hint">Supported: .pdf &nbsp;·&nbsp; Max size: 50 MB</div>
+        <div class="dz-hint">
+          Supported: .pdf &nbsp;·&nbsp; Max size: 50 MB
+        </div>
       </template>
     </div>
 
@@ -144,7 +162,9 @@ function reset() {
     <transition name="fade">
       <div v-if="status === 'no-signature'" class="state-card no-sig">
         <icon-mdi-file-document-outline class="state-icon" />
-        <div class="state-title">No digital signatures found</div>
+        <div class="state-title">
+          No digital signatures found
+        </div>
         <div class="state-sub">
           <strong>{{ file?.name }}</strong> does not contain any embedded digital signatures.
         </div>
@@ -159,8 +179,12 @@ function reset() {
     <transition name="fade">
       <div v-if="status === 'error'" class="state-card error-state">
         <icon-mdi-alert-circle class="state-icon error-icon" />
-        <div class="state-title">Failed to parse PDF</div>
-        <div class="state-sub">The file may be corrupted or in an unsupported format.</div>
+        <div class="state-title">
+          Failed to parse PDF
+        </div>
+        <div class="state-sub">
+          The file may be corrupted or in an unsupported format.
+        </div>
         <c-button class="retry-btn" @click="reset">
           <icon-mdi-refresh style="margin-right:5px" />
           Try another file
