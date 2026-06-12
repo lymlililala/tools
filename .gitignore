@@ -31,6 +31,8 @@ coverage
 /test-results/
 /playwright-report/
 /playwright/.cache/
+# UI-audit runtime output (screenshots + report); regenerated on each run
+/shots/
 # Webkit with playwright creates a salt file
 salt
 .vercel

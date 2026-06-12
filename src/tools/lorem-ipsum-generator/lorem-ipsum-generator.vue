@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Copy, Refresh } from '@vicons/tabler';
 import { generateLoremIpsum } from './lorem-ipsum-generator.service';
-
-const { t } = useI18n();
 import { useCopy } from '@/composable/copy';
 import { randIntFromInterval } from '@/utils/random';
 import { computedRefreshable } from '@/composable/computedRefreshable';
+
+const { t } = useI18n();
 
 const paragraphs = ref(1);
 const sentences = ref([3, 8]);
@@ -261,6 +261,12 @@ async function handleCopy() {
   .params-grid {
     grid-template-columns: 120px 1fr;
     row-gap: 14px;
+  }
+
+  /* 窄屏标签允许换行，避免文字溢出到滑块上 */
+  .param-label {
+    white-space: normal;
+    line-height: 1.25;
   }
 
   .lorem-card {

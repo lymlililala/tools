@@ -108,7 +108,8 @@ export default defineConfig({
     'import.meta.env.PACKAGE_VERSION': JSON.stringify(process.env.npm_package_version),
   },
   test: {
-    exclude: [...configDefaults.exclude, '**/*.e2e.spec.ts'],
+    // ui-audit.spec.ts is a Playwright (not Vitest) spec; run via playwright.audit.config.ts.
+    exclude: [...configDefaults.exclude, '**/*.e2e.spec.ts', '**/ui-audit.spec.ts'],
   },
   build: {
     target: 'esnext',

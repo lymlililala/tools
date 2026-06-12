@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import _ from 'lodash';
 import { generateRandomMacAddress } from './mac-adress-generator.models';
-
-const { t } = useI18n();
 import { computedRefreshable } from '@/composable/computedRefreshable';
 import { useCopy } from '@/composable/copy';
 import { usePartialMacAddressValidation } from '@/utils/macAddress';
+
+const { t } = useI18n();
 
 // ── 配置 ──────────────────────────────────────────────────────
 const amount = useStorage('mac-address-generator-amount', 1);
@@ -31,7 +31,9 @@ const separator = useStorage('mac-address-generator-separator', ':');
 
 // ── 生成 ──────────────────────────────────────────────────────
 const [macAddresses, refreshMacAddresses] = computedRefreshable(() => {
-  if (!prefixValidation.isValid) return '';
+  if (!prefixValidation.isValid) {
+    return '';
+  }
   const safeAmount = Math.min(Math.max(1, amount.value), 100);
   return _.times(safeAmount, () =>
     caseTransformer.value(generateRandomMacAddress({
@@ -47,11 +49,21 @@ const { copy, isJustCopied } = useCopy({ source: macAddresses, text: computed(()
 // ── 数量控制 ──────────────────────────────────────────────────
 const MIN = 1;
 const MAX = 100;
-function decAmount() { if (amount.value > MIN) amount.value--; }
-function incAmount() { if (amount.value < MAX) amount.value++; }
+function decAmount() {
+  if (amount.value > MIN) {
+    amount.value--;
+  }
+}
+function incAmount() {
+  if (amount.value < MAX) {
+    amount.value++;
+  }
+}
 function onAmountInput(e: Event) {
   const v = Number((e.target as HTMLInputElement).value);
-  if (!Number.isNaN(v)) amount.value = Math.min(MAX, Math.max(MIN, Math.floor(v)));
+  if (!Number.isNaN(v)) {
+    amount.value = Math.min(MAX, Math.max(MIN, Math.floor(v)));
+  }
 }
 </script>
 
@@ -73,7 +85,7 @@ function onAmountInput(e: Event) {
             :min="MIN"
             :max="MAX"
             @change="onAmountInput"
-          />
+          >
           <button class="qty-btn" :disabled="amount >= MAX" @click="incAmount">
             <icon-mdi-plus />
           </button>
@@ -94,7 +106,7 @@ function onAmountInput(e: Event) {
             :placeholder="t('tools.mac-address-generator.prefixPlaceholder')"
             spellcheck="false"
             autocomplete="off"
-          />
+          >
           <button
             v-if="macAddressPrefix"
             class="prefix-clear"
@@ -116,7 +128,7 @@ function onAmountInput(e: Event) {
         <span class="config-label">{{ t('tools.mac-address-generator.letterCase') }}</span>
         <div class="toggle-group">
           <button
-            v-for="opt in caseOptions.value"
+            v-for="opt in caseOptions"
             :key="opt.key"
             class="toggle-btn"
             :class="{ 'toggle-btn--on': selectedCase === opt.key }"
@@ -132,7 +144,7 @@ function onAmountInput(e: Event) {
         <span class="config-label">{{ t('tools.mac-address-generator.separator') }}</span>
         <div class="toggle-group">
           <button
-            v-for="sep in separators.value"
+            v-for="sep in separators"
             :key="sep.value"
             class="toggle-btn"
             :class="{ 'toggle-btn--on': separator === sep.value }"
@@ -215,7 +227,7 @@ function onAmountInput(e: Event) {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #64748b;
-  width: 60px;
+  width: 80px;
   flex-shrink: 0;
   .dark & { color: #94a3b8; }
 }
@@ -230,7 +242,7 @@ function onAmountInput(e: Event) {
   font-size: 11.5px;
   color: #ef4444;
   width: 100%;
-  padding-left: 70px;
+  padding-left: 90px;
   .dark & { color: #f87171; }
 }
 
