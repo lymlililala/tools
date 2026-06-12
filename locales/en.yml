@@ -151,6 +151,8 @@ tools:
       copy: Copy
       refresh: Refresh
   percentage-calculator:
+    copyResult: Copy result
+    copied: Copied!
     step1: 'Step 1: Select the type of percentage calculation you need.'
     step2: 'Step 2: Enter the required values in the input fields.'
     step3: 'Step 3: The result updates instantly.'
@@ -184,6 +186,30 @@ tools:
     zeroFrom: Starting value cannot be zero (cannot compute percentage change)
 
   svg-placeholder-generator:
+    settingsTitle: Settings
+    resetTitle: Reset to defaults
+    reset: Reset
+    widthLabel: Width
+    widthPlaceholder: e.g. 300
+    heightLabel: Height
+    heightPlaceholder: e.g. 150
+    bgColor: Background color
+    fgColor: Text color
+    fontSizeLabel: Font size
+    fontSizePlaceholder: Auto
+    fontSizeUnit: px
+    customText: Custom text
+    customTextPlaceholder: 'e.g. {w}×{h}'
+    exactSize: Exact size
+    exactSizeLabel: Exact size
+    exactSizeOn: 'On'
+    exactSizeOff: 'Off'
+    exactSizeTooltip: When on, the SVG uses fixed width and height attributes; when off, it scales responsively to its container.
+    responsiveLabel: Responsive
+    svgCode: SVG code
+    base64Code: Data URI (Base64)
+    downloadSvg: Download SVG
+    livePreview: Live preview
     step1: 'Step 1: Set the desired width and height for the placeholder image.'
     step2: 'Step 2: Choose background and text colors.'
     step3: 'Step 3: Optionally customize the label text.'
@@ -437,6 +463,11 @@ tools:
     backToTop: Back to top
 
   sql-prettify:
+    inputPlaceholder: Paste your SQL statement...
+    outputPlaceholder: The formatted SQL will appear here...
+    copied: Copied!
+    clearInput: Clear input
+    downloadFile: Download file
     step1: 'Step 1: Paste your SQL query into the input editor.'
     step2: 'Step 2: Select the SQL dialect (MySQL, PostgreSQL, etc.) from the dropdown.'
     step3: 'Step 3: The formatted query appears in the output panel instantly.'
@@ -571,6 +602,15 @@ tools:
       deleteLocalTag: Delete a local tag
 
   slugify-string:
+    inputLabel: Input text
+    inputPlaceholder: 'e.g. Hello World! This is a test'
+    outputLabel: Slug result
+    placeholder: The slug will appear here...
+    hint: Special characters and accents are converted automatically.
+    charCount: '{count} characters'
+    copyResult: Copy result
+    justCopied: Copied!
+    clear: Clear
     step1: 'Step 1: Enter the text you want to convert into a slug.'
     step2: 'Step 2: The slug updates in real-time as you type.'
     step3: 'Step 3: Click Copy to copy the result.'
@@ -661,6 +701,28 @@ tools:
     description: Format and validate YAML code online with proper indentation and syntax highlighting. Instantly checks YAML syntax errors and produces clean, readable output for configuration files.
 
   eta-calculator:
+    example: 'Example: you have 186 items to process and complete 3 of them every 5 minutes — this tool estimates when you will finish.'
+    totalTasks: Total tasks
+    startTime: Start time
+    useNow: Use current time
+    now: Now
+    speed: Processing speed
+    per: Every
+    complete: complete
+    unit: task(s)
+    unitMs: Millisecond
+    unitSec: Second
+    unitMin: Minute
+    unitHour: Hour
+    unitDay: Day
+    totalDuration: Total duration
+    estimatedEnd: Estimated completion
+    today: Today
+    tomorrow: Tomorrow
+    yesterday: Yesterday
+    cannotCalc: Cannot calculate
+    allPositive: All values must be greater than zero.
+    zeroErrorMsg: Enter values greater than zero to see the estimate.
     step1: 'Step 1: Enter the total number of items to process.'
     step2: 'Step 2: Enter how many have been completed so far.'
     step3: 'Step 3: Enter the time elapsed.'
@@ -915,6 +977,12 @@ tools:
     copiedTooltip: Copied to clipboard
 
   numeronym-generator:
+    inputLabel: Word or phrase
+    inputPlaceholder: e.g. internationalization
+    outputLabel: Numeronym
+    placeholder: The numeronym will appear here...
+    copyResult: Copy result
+    justCopied: Copied!
     step1: 'Step 1: Enter a word or phrase.'
     step2: 'Step 2: The numeronym is generated instantly.'
     step3: 'Step 3: Copy the result.'
@@ -1131,6 +1199,14 @@ tools:
     description: Create WiFi QR codes that let guests join your network instantly by scanning. Supports WPA2, WPA3, WEP, and open networks. Customize colors and download as PNG for printing or sharing.
 
   xml-formatter:
+    inputPlaceholder: Paste your XML content here…
+    outputPlaceholder: The formatted XML will appear here…
+    indentSize: Indent size
+    valid: Valid
+    invalid: Invalid
+    copied: Copied!
+    clearInput: Clear input
+    downloadFile: Download XML file
     step1: 'Step 1: Paste your XML content into the input editor.'
     step2: 'Step 2: The formatted and indented XML appears on the right.'
     step3: 'Step 3: Copy or download the formatted XML.'
@@ -1209,6 +1285,8 @@ tools:
     description: Generate RSA public/private key pairs online for encryption, digital signatures, and SSL certificates. Supports 1024, 2048, and 4096-bit key sizes. Download PEM-formatted keys instantly for use in SSH, TLS, and JWT signing.
 
   html-wysiwyg-editor:
+    emptyHint: Type content in the editor on the left, and the HTML source will appear here.
+    justCopied: Copied!
     title: HTML WYSIWYG Editor
     description: Online rich text editor with live HTML preview. Format content visually using toolbar buttons and export clean, minified HTML code for emails and CMS.
     step1: 'Step 1: Type or paste content into the WYSIWYG editor.'
@@ -1574,6 +1652,13 @@ tools:
     description: Generate ULIDs (Universally Unique Lexicographically Sortable Identifiers) online. ULIDs are 128-bit identifiers that are URL-safe, sortable by time, and compatible with UUID. Ideal as database primary keys.
 
   string-obfuscator:
+    inputLabel: Input string
+    inputPlaceholder: Enter the string to obfuscate...
+    outputPlaceholder: The obfuscated result will appear here...
+    copyResult: Copy obfuscated result
+    copied: Copied!
+    copiedMsg: Obfuscated string copied!
+    overLimit: 'Kept {kept} characters, which exceeds the total length {total} — nothing left to obfuscate.'
     step1: 'Step 1: Enter the string you want to obfuscate (e.g. API key, IBAN, token).'
     step2: 'Step 2: Set how many characters to keep visible at the start and end.'
     step3: 'Step 3: The obfuscated string is shown - safe to share in screenshots or logs.'
@@ -1845,6 +1930,8 @@ tools:
     description: Convert text to ASCII binary representation (0s and 1s) and decode binary strings back to text. Supports custom separators and shows hex/decimal equivalents. Great for learning and data encoding.
 
   mortgage-calculator:
+    period: 'Month {n}'
+    scheduleMeta: '{months} payments · principal ¥{principal} · total interest ¥{interest}'
     title: Mortgage Monthly Payment Calculator
     description: Calculate mortgage monthly payments, total interest, and repayment plans online. Supports equal payment and equal principal methods, as well as combined commercial and provident fund loans.
     params: Loan Parameters
@@ -2079,6 +2166,11 @@ tools:
     faq4a: "The Y2K38 problem: a signed 32-bit integer's maximum value is 2,147,483,647, corresponding to 2038-01-19 03:14:07 UTC. Beyond that moment, the 32-bit integer overflows to a negative value, causing systems to interpret the time as 1901. Solutions: use 64-bit integers to store timestamps (Linux kernel 5.6+ supports 64-bit time_t on 32-bit systems); upgrade legacy systems and embedded devices using 32-bit timestamps; check database TIMESTAMP field types."
 
   number-formatter:
+    decimalPlaces: '{count} decimal places'
+    clickToCopy: Click to copy
+    copy: Copy
+    justCopied: Copied!
+    clear: Clear
     title: Number Formatter
     description: Format numbers with different locales, styles (decimal, currency, percent, scientific), and separators.
     input: Input

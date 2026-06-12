@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { extractIBAN, friendlyFormatIBAN, isQRIBAN, validateIBAN, ValidationErrorsIBAN } from 'ibantools';
+import { ValidationErrorsIBAN, extractIBAN, friendlyFormatIBAN, isQRIBAN, validateIBAN } from 'ibantools';
+import { useCopy } from '@/composable/copy';
 
 const { t } = useI18n();
 
@@ -12,7 +13,9 @@ const normalizedIban = computed(() => rawIban.value.toUpperCase().replace(/[\s-]
 type ParseState = 'empty' | 'valid' | 'invalid';
 
 const parseState = computed<ParseState>(() => {
-  if (!normalizedIban.value) return 'empty';
+  if (!normalizedIban.value) {
+    return 'empty';
+  }
   const { valid } = validateIBAN(normalizedIban.value);
   return valid ? 'valid' : 'invalid';
 });
@@ -39,7 +42,9 @@ interface IbanRow {
 
 const ibanRows = computed<IbanRow[]>(() => {
   const iban = normalizedIban.value;
-  if (!iban) return [];
+  if (!iban) {
+    return [];
+  }
 
   const { valid, errorCodes } = validateIBAN(iban);
   const { countryCode, bban } = extractIBAN(iban);
@@ -155,7 +160,9 @@ const { copy } = useCopy();
 
       <!-- 空状态 -->
       <div v-if="parseState === 'empty'" class="result-empty">
-        <div class="result-empty-icon">🏦</div>
+        <div class="result-empty-icon">
+          🏦
+        </div>
         <div>{{ t('tools.iban-validator-and-parser.resultEmpty') }}</div>
       </div>
 

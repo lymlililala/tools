@@ -12,7 +12,26 @@ const errored = ref(false);
 const errorReason = ref('');
 const processing = ref(false);
 
-figlet.defaults({ fontPath: '//unpkg.com/figlet@1.6.0/fonts/' });
+// 本地按需加载字体（importable-fonts 默认导出为 .flf 字符串），避免依赖网络
+const fontLoaders = import.meta.glob('/node_modules/figlet/importable-fonts/*.js', { import: 'default' }) as Record<string, () => Promise<string>>;
+const fontLoaderByName: Record<string, () => Promise<string>> = {};
+for (const path in fontLoaders) {
+  const name = path.split('/').pop()!.replace(/\.js$/, '');
+  fontLoaderByName[name] = fontLoaders[path];
+}
+const parsedFonts = new Set<string>();
+async function ensureFont(name: string): Promise<boolean> {
+  if (parsedFonts.has(name)) {
+    return true;
+  }
+  const loader = fontLoaderByName[name];
+  if (!loader) {
+    return false;
+  }
+  figlet.parseFont(name, await loader());
+  parsedFonts.add(name);
+  return true;
+}
 
 // 宽度边界值：10 ~ 500
 const WIDTH_MIN = 10;
@@ -22,8 +41,12 @@ function stepWidth(delta: number) {
   width.value = Math.min(Math.max((width.value ?? WIDTH_MIN) + delta, WIDTH_MIN), WIDTH_MAX);
 }
 function onWidthBlur() {
-  if (!Number.isFinite(width.value) || width.value < WIDTH_MIN) width.value = WIDTH_MIN;
-  if (width.value > WIDTH_MAX) width.value = WIDTH_MAX;
+  if (!Number.isFinite(width.value) || width.value < WIDTH_MIN) {
+    width.value = WIDTH_MIN;
+  }
+  if (width.value > WIDTH_MAX) {
+    width.value = WIDTH_MAX;
+  }
 }
 
 watchEffect(async () => {
@@ -37,18 +60,20 @@ watchEffect(async () => {
   }
 
   processing.value = true;
+  // 在 await 之前读取响应式依赖，确保 watchEffect 正确追踪
+  const text = input.value;
+  const fontName = font.value;
+  const maxWidth = width.value;
   try {
-    const options: figlet.Options = {
-      font: font.value as figlet.Fonts,
-      width: width.value,
+    const loaded = await ensureFont(fontName);
+    if (!loaded) {
+      throw new Error(`font not found: ${fontName}`);
+    }
+    output.value = figlet.textSync(text, {
+      font: fontName as figlet.Fonts,
+      width: maxWidth,
       whitespaceBreak: true,
-    };
-    output.value = await (new Promise<string>((resolve, reject) =>
-      figlet.text(input.value, options,
-        (err, text) => {
-          if (err) { reject(err); return; }
-          resolve(text ?? '');
-        })));
+    });
     errored.value = false;
     errorReason.value = '';
   }
@@ -135,7 +160,7 @@ const fonts = ['1Row', '3-D', '3D Diagonal', '3D-ASCII', '3x5', '4Max', '5 Line 
               :max="WIDTH_MAX"
               placeholder="80"
               @blur="onWidthBlur"
-            />
+            >
             <button
               class="stepper-btn"
               :disabled="(width ?? 0) >= WIDTH_MAX"

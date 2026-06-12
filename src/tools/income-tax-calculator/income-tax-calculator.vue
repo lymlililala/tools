@@ -105,7 +105,7 @@ const TAX_BRACKETS: TaxBracket[] = [
   { min: 25000, max: 35000, rate: 0.25, quick: 2660 },
   { min: 35000, max: 55000, rate: 0.30, quick: 4410 },
   { min: 55000, max: 80000, rate: 0.35, quick: 7160 },
-  { min: 80000, max: Infinity, rate: 0.45, quick: 15160 },
+  { min: 80000, max: Number.POSITIVE_INFINITY, rate: 0.45, quick: 15160 },
 ];
 
 const taxResult = computed(() => {
@@ -119,7 +119,9 @@ const taxResult = computed(() => {
 // ─── 实发工资 & 综合税率 ───────────────────────────────────────────────────────
 const netSalary = computed(() => grossSalary.value - socialInsurance.value.total - taxResult.value.tax);
 const effectiveTaxRate = computed(() => {
-  if (grossSalary.value <= 0) return 0;
+  if (grossSalary.value <= 0) {
+    return 0;
+  }
   return (taxResult.value.tax + socialInsurance.value.total) / grossSalary.value * 100;
 });
 
@@ -145,12 +147,24 @@ function fmt(v: number) {
 }
 
 function bracketColor(rate: number) {
-  if (rate <= 0.03) return '#16a34a';
-  if (rate <= 0.10) return '#2563eb';
-  if (rate <= 0.20) return '#d97706';
-  if (rate <= 0.25) return '#ea580c';
-  if (rate <= 0.30) return '#dc2626';
-  if (rate <= 0.35) return '#b91c1c';
+  if (rate <= 0.03) {
+    return '#16a34a';
+  }
+  if (rate <= 0.10) {
+    return '#2563eb';
+  }
+  if (rate <= 0.20) {
+    return '#d97706';
+  }
+  if (rate <= 0.25) {
+    return '#ea580c';
+  }
+  if (rate <= 0.30) {
+    return '#dc2626';
+  }
+  if (rate <= 0.35) {
+    return '#b91c1c';
+  }
   return '#7f1d1d';
 }
 
@@ -486,11 +500,11 @@ const salaryChartSegments = computed(() => [
 
 /* ── 字段 ──────────────────────────────────────────────────── */
 .field {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 12px;
 
   &:last-child { margin-bottom: 0; }
 }
@@ -499,8 +513,9 @@ const salaryChartSegments = computed(() => [
   font-size: 13px;
   font-weight: 500;
   color: var(--n-text-color-2, #444);
-  text-align: right;
-  white-space: nowrap;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
   user-select: none;
 }
 
@@ -810,9 +825,5 @@ const salaryChartSegments = computed(() => [
   .col-input  { order: 1; }
 
   .hero-val { font-size: 26px; }
-
-  .field {
-    grid-template-columns: 90px 1fr;
-  }
 }
 </style>

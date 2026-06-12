@@ -72,7 +72,7 @@ function handleGlobalKey(e: KeyboardEvent) {
   }
 }
 
-const isSearching = computed(() => searchQuery.trim().length > 0);
+const isSearching = computed(() => searchQuery.value.trim().length > 0);
 </script>
 
 <template>
@@ -104,7 +104,7 @@ const isSearching = computed(() => searchQuery.trim().length > 0);
           :placeholder="t('tools.emoji-picker.searchPlaceholder')"
           autocomplete="off"
           spellcheck="false"
-        />
+        >
         <button
           v-if="searchQuery"
           class="search-clear"
@@ -119,9 +119,15 @@ const isSearching = computed(() => searchQuery.trim().length > 0);
     <!-- 搜索结果 -->
     <div v-if="isSearching">
       <div v-if="searchResult.length === 0" class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <div class="empty-title">{{ t('tools.emoji-picker.noResults') }}</div>
-        <div class="empty-hint">{{ t('tools.emoji-picker.noResultsHint') }}</div>
+        <div class="empty-icon">
+          🔍
+        </div>
+        <div class="empty-title">
+          {{ t('tools.emoji-picker.noResults') }}
+        </div>
+        <div class="empty-hint">
+          {{ t('tools.emoji-picker.noResultsHint') }}
+        </div>
       </div>
 
       <div v-else>

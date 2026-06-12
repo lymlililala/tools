@@ -25,25 +25,31 @@ function generateUla(): UlaResult {
     .substring(30);
   const ula = `fd${hex40bit.substring(0, 2)}:${hex40bit.substring(2, 6)}:${hex40bit.substring(6)}`;
   return {
-    ula48:   `${ula}::/48`,
+    ula48: `${ula}::/48`,
     first64: `${ula}:0::/64`,
-    last64:  `${ula}:ffff::/64`,
+    last64: `${ula}:ffff::/64`,
   };
 }
 
 // 首次自动生成（有有效默认值时）
 onMounted(() => {
-  if (addressValidation.isValid) result.value = generateUla();
+  if (addressValidation.isValid) {
+    result.value = generateUla();
+  }
 });
 
 // MAC 变化且合法时自动更新结果
 watch(() => addressValidation.isValid, (valid) => {
-  if (valid) result.value = generateUla();
-  else result.value = null;
+  if (valid) {
+    result.value = generateUla();
+  }
+  else { result.value = null; }
 });
 
 function onGenerate() {
-  if (!addressValidation.isValid) return;
+  if (!addressValidation.isValid) {
+    return;
+  }
   result.value = generateUla();
 }
 
@@ -54,15 +60,17 @@ const { copy: copyText } = useCopy({ createToast: true, text: computed(() => t('
 async function copyRow(key: string, value: string) {
   await copyText(value);
   copiedKey.value = key;
-  setTimeout(() => { copiedKey.value = ''; }, 1800);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1800);
 }
 
 // ── 结果行定义 ────────────────────────────────────────────────
 const resultRows = computed(() => result.value
   ? [
-      { key: 'ula48',   label: 'IPv6 ULA',                                               value: result.value.ula48 },
-      { key: 'first64', label: t('tools.ipv6-ula-generator.firstRoutable'),              value: result.value.first64 },
-      { key: 'last64',  label: t('tools.ipv6-ula-generator.lastRoutable'),               value: result.value.last64 },
+      { key: 'ula48', label: 'IPv6 ULA', value: result.value.ula48 },
+      { key: 'first64', label: t('tools.ipv6-ula-generator.firstRoutable'), value: result.value.first64 },
+      { key: 'last64', label: t('tools.ipv6-ula-generator.lastRoutable'), value: result.value.last64 },
     ]
   : [],
 );
@@ -96,7 +104,7 @@ const resultRows = computed(() => result.value
             autocorrect="off"
             autocapitalize="off"
             autofocus
-          />
+          >
           <button
             v-if="macAddress"
             class="clear-btn"
@@ -352,8 +360,10 @@ const resultRows = computed(() => result.value
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #64748b;
-  white-space: nowrap;
-  width: 110px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+  width: 140px;
   flex-shrink: 0;
   .dark & { color: #6b7280; }
 }

@@ -4,7 +4,7 @@ import type { Component } from 'vue';
 const props = defineProps<{ icon: Component; title: string; action: () => void; isActive?: () => boolean }>();
 const { icon, title, action, isActive } = toRefs(props);
 
-const active = computed(() => isActive?.() ?? false);
+const active = computed(() => isActive?.value?.() ?? false);
 </script>
 
 <template>

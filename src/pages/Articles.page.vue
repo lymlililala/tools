@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useHead } from '@vueuse/head'
-import { RouterLink } from 'vue-router'
-import { fetchArticleList } from '../lib/articles'
-import type { DbArticle } from '../lib/articles'
+import { useHead } from '@vueuse/head';
+import { RouterLink } from 'vue-router';
+import { fetchArticleList } from '../lib/articles';
+import type { DbArticle } from '../lib/articles';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 useHead(computed(() => ({
   title: t('blog.metaTitle'),
@@ -18,69 +18,72 @@ useHead(computed(() => ({
   link: [
     { rel: 'canonical', href: 'https://myutl.com/blog' },
   ],
-})))
+})));
 
 // ─── State ────────────────────────────────────────────────────────────────────
-const articles = ref<DbArticle[]>([])
-const loading = ref(true)
-const error = ref<string | null>(null)
-const activeCategory = ref('All')
-const searchQuery = ref('')
-const currentPage = ref(1)
-const PAGE_SIZE = 10
+const articles = ref<DbArticle[]>([]);
+const loading = ref(true);
+const error = ref<string | null>(null);
+const activeCategory = ref('All');
+const searchQuery = ref('');
+const currentPage = ref(1);
+const PAGE_SIZE = 10;
 
 // ─── Fetch from Supabase ──────────────────────────────────────────────────────
 async function fetchArticles() {
-  loading.value = true
-  error.value = null
+  loading.value = true;
+  error.value = null;
 
   try {
-    articles.value = await fetchArticleList()
+    articles.value = await fetchArticleList();
   }
   catch (e: any) {
-    error.value = e?.message ?? '加载失败，请稍后重试'
+    error.value = e?.message ?? '加载失败，请稍后重试';
   }
   finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
-onMounted(fetchArticles)
+onMounted(fetchArticles);
 
 // ─── Computed ─────────────────────────────────────────────────────────────────
 const categories = computed(() => {
   const cats = [...new Set(articles.value.map(a => a.category))]
-  return cats.sort()
-})
+    .filter(c => c != null && String(c).trim() !== '');
+  return cats.sort();
+});
 
 const filteredArticles = computed(() => {
-  if (activeCategory.value === 'All')
-    return articles.value
-  return articles.value.filter(a => a.category === activeCategory.value)
-})
+  if (activeCategory.value === 'All') {
+    return articles.value;
+  }
+  return articles.value.filter(a => a.category === activeCategory.value);
+});
 
 const searchedArticles = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase()
-  if (!q)
-    return filteredArticles.value
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) {
+    return filteredArticles.value;
+  }
   return filteredArticles.value.filter(a =>
     a.title.toLowerCase().includes(q)
     || a.description.toLowerCase().includes(q)
     || (a.keywords ?? []).some((k: string) => k.toLowerCase().includes(q)),
-  )
-})
+  );
+});
 
-const totalPages = computed(() => Math.ceil(searchedArticles.value.length / PAGE_SIZE))
+const totalPages = computed(() => Math.ceil(searchedArticles.value.length / PAGE_SIZE));
 
 const displayedArticles = computed(() => {
-  const start = (currentPage.value - 1) * PAGE_SIZE
-  return searchedArticles.value.slice(start, start + PAGE_SIZE)
-})
+  const start = (currentPage.value - 1) * PAGE_SIZE;
+  return searchedArticles.value.slice(start, start + PAGE_SIZE);
+});
 
 // Reset to page 1 when filter/search changes
 watch([activeCategory, searchQuery], () => {
-  currentPage.value = 1
-})
+  currentPage.value = 1;
+});
 </script>
 
 <template>

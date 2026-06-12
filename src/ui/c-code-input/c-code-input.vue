@@ -12,17 +12,10 @@ import jsonLang from 'highlight.js/lib/languages/json';
 import sqlLang from 'highlight.js/lib/languages/sql';
 import xmlLang from 'highlight.js/lib/languages/xml';
 import yamlLang from 'highlight.js/lib/languages/yaml';
+
 import iniLang from 'highlight.js/lib/languages/ini'; // toml
 import markdownLang from 'highlight.js/lib/languages/markdown';
 import { useStyleStore } from '@/stores/style.store';
-
-hljs.registerLanguage('json', jsonLang);
-hljs.registerLanguage('sql', sqlLang);
-hljs.registerLanguage('xml', xmlLang);
-hljs.registerLanguage('html', xmlLang);
-hljs.registerLanguage('yaml', yamlLang);
-hljs.registerLanguage('toml', iniLang);
-hljs.registerLanguage('markdown', markdownLang);
 
 const props = withDefaults(defineProps<{
   modelValue?: string
@@ -31,6 +24,7 @@ const props = withDefaults(defineProps<{
   minHeight?: string
   readonly?: boolean
   label?: string
+  wrap?: boolean
 }>(), {
   modelValue: '',
   language: 'json',
@@ -38,11 +32,18 @@ const props = withDefaults(defineProps<{
   minHeight: '200px',
   readonly: false,
   label: '',
+  wrap: false,
 });
-
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>();
+hljs.registerLanguage('json', jsonLang);
+hljs.registerLanguage('sql', sqlLang);
+hljs.registerLanguage('xml', xmlLang);
+hljs.registerLanguage('html', xmlLang);
+hljs.registerLanguage('yaml', yamlLang);
+hljs.registerLanguage('toml', iniLang);
+hljs.registerLanguage('markdown', markdownLang);
 
 const styleStore = useStyleStore();
 const textarea = ref<HTMLTextAreaElement | null>(null);
@@ -50,7 +51,9 @@ const scrollTop = ref(0);
 
 const highlighted = computed(() => {
   const raw = props.modelValue ?? '';
-  if (!raw.trim()) return '';
+  if (!raw.trim()) {
+    return '';
+  }
   try {
     return hljs.highlight(raw, { language: props.language }).value;
   }
@@ -80,7 +83,7 @@ const lineNumbers = computed(() => Array.from({ length: lineCount.value }, (_, i
 </script>
 
 <template>
-  <div class="c-code-input" :class="{ dark: styleStore.isDarkTheme, readonly }">
+  <div class="c-code-input" :class="{ dark: styleStore.isDarkTheme, readonly, wrap }">
     <div v-if="label" class="code-label">
       {{ label }}
       <span class="lang-badge">{{ language }}</span>
@@ -89,7 +92,9 @@ const lineNumbers = computed(() => Array.from({ length: lineCount.value }, (_, i
     <div class="editor-wrap" :style="{ minHeight }">
       <!-- 行号 -->
       <div class="line-numbers" :style="{ transform: `translateY(-${scrollTop}px)` }">
-        <div v-for="n in lineNumbers" :key="n" class="line-num">{{ n }}</div>
+        <div v-for="n in lineNumbers" :key="n" class="line-num">
+          {{ n }}
+        </div>
       </div>
 
       <!-- 语法高亮层（底层，只读） -->
@@ -282,6 +287,27 @@ const lineNumbers = computed(() => Array.from({ length: lineCount.value }, (_, i
 .readonly .code-textarea {
   cursor: default;
   user-select: text;
+}
+
+/* ── wrap 模式：长行换行,内容全可见(只读输出场景)。
+   换行会破坏行号对齐,故隐藏行号,让高亮层与 textarea 同宽同换行点 → 对齐不破。 */
+.c-code-input.wrap {
+  .line-numbers {
+    display: none;
+  }
+
+  .highlight-layer {
+    left: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .code-textarea {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
 }
 
 /* ── 移动端适配：长行换行显示，避免代码结果被裁切且无法横向滚动 ──

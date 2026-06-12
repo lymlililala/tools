@@ -12,7 +12,6 @@ import {
   sentenceCase,
   snakeCase,
 } from 'change-case';
-import { useCopy } from '@/composable/copy';
 
 const input = ref('lorem ipsum dolor sit amet');
 
@@ -64,7 +63,9 @@ async function copyFormat(label: string, value: string) {
     document.body.removeChild(ta);
   });
   copiedLabel.value = label;
-  setTimeout(() => { copiedLabel.value = null; }, 1500);
+  setTimeout(() => {
+    copiedLabel.value = null;
+  }, 1500);
 }
 </script>
 
@@ -182,6 +183,7 @@ async function copyFormat(label: string, value: string) {
 .results-col {
   display: flex;
   flex-direction: column;
+  min-width: 0; // 允许列收缩到 1fr 份额，避免值溢出被裁切
 }
 
 .col-label {

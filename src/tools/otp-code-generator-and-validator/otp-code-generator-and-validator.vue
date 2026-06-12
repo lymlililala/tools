@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useTimestamp, useClipboard } from '@vueuse/core';
+// eslint-disable-next-line no-restricted-imports
+import { useClipboard, useTimestamp } from '@vueuse/core';
 import { useQRCode } from '../qr-code-generator/useQRCode';
 import { base32toHex, buildKeyUri, generateSecret, generateTOTP, getCounterFromTime } from './otp.service';
 import { useStyleStore } from '@/stores/style.store';
@@ -17,7 +18,9 @@ const secretValidationRules = [
   { message: 'Secret must be a Base32 string (A–Z, 2–7)', validator: (v: string) => /^[A-Z2-7]+$/i.test(v) },
 ];
 
-function refreshSecret() { secret.value = generateSecret(); }
+function refreshSecret() {
+  secret.value = generateSecret();
+}
 
 // ── Tokens ────────────────────────────────────────────────────────────────
 const [tokens] = computedRefreshable(() => ({
@@ -48,7 +51,9 @@ const copiedKey = ref('');
 async function copyValue(key: string, value: string) {
   await copy(value);
   copiedKey.value = key;
-  setTimeout(() => { copiedKey.value = ''; }, 1600);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1600);
 }
 
 // ── 高级信息折叠 ──────────────────────────────────────────────────────────
@@ -88,38 +93,44 @@ const showAdvanced = ref(false);
       <!-- 三段数值 -->
       <div class="otp-tokens">
         <!-- Previous -->
-        <c-tooltip :tooltip="copiedKey === 'prev' ? 'Copied!' : 'Copy Previous OTP'" position="bottom">
-          <button
-            class="otp-token side-token"
-            :class="{ copied: copiedKey === 'prev' }"
-            @click="copyValue('prev', tokens.previous)"
-          >
-            {{ tokens.previous }}
-          </button>
-        </c-tooltip>
+        <div class="otp-cell">
+          <c-tooltip w-full :tooltip="copiedKey === 'prev' ? 'Copied!' : 'Copy Previous OTP'" position="bottom">
+            <button
+              class="otp-token side-token"
+              :class="{ copied: copiedKey === 'prev' }"
+              @click="copyValue('prev', tokens.previous)"
+            >
+              {{ tokens.previous }}
+            </button>
+          </c-tooltip>
+        </div>
 
         <!-- Current -->
-        <c-tooltip :tooltip="copiedKey === 'cur' ? 'Copied!' : 'Copy Current OTP'" position="bottom">
-          <button
-            class="otp-token current-token"
-            :class="{ copied: copiedKey === 'cur' }"
-            @click="copyValue('cur', tokens.current)"
-          >
-            {{ tokens.current }}
-            <icon-mdi-check v-if="copiedKey === 'cur'" class="cur-check" />
-          </button>
-        </c-tooltip>
+        <div class="otp-cell otp-cell--cur">
+          <c-tooltip w-full :tooltip="copiedKey === 'cur' ? 'Copied!' : 'Copy Current OTP'" position="bottom">
+            <button
+              class="otp-token current-token"
+              :class="{ copied: copiedKey === 'cur' }"
+              @click="copyValue('cur', tokens.current)"
+            >
+              {{ tokens.current }}
+              <icon-mdi-check v-if="copiedKey === 'cur'" class="cur-check" />
+            </button>
+          </c-tooltip>
+        </div>
 
         <!-- Next -->
-        <c-tooltip :tooltip="copiedKey === 'next' ? 'Copied!' : 'Copy Next OTP'" position="bottom">
-          <button
-            class="otp-token side-token"
-            :class="{ copied: copiedKey === 'next' }"
-            @click="copyValue('next', tokens.next)"
-          >
-            {{ tokens.next }}
-          </button>
-        </c-tooltip>
+        <div class="otp-cell">
+          <c-tooltip w-full :tooltip="copiedKey === 'next' ? 'Copied!' : 'Copy Next OTP'" position="bottom">
+            <button
+              class="otp-token side-token"
+              :class="{ copied: copiedKey === 'next' }"
+              @click="copyValue('next', tokens.next)"
+            >
+              {{ tokens.next }}
+            </button>
+          </c-tooltip>
+        </div>
       </div>
 
       <!-- 进度条 -->
@@ -264,16 +275,25 @@ const showAdvanced = ref(false);
   :global(.dark) & { border-color: rgba(255, 255, 255, 0.08); }
 }
 
+/* 每段（c-tooltip 包裹）等分；当前段稍宽。c-tooltip(w-full) 填满 cell，按钮填满 tooltip */
+.otp-cell {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+
+  &--cur { flex: 1.4 1 0; }
+}
+
 .otp-token {
   border: none;
   cursor: pointer;
+  width: 100%;
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-variant-numeric: tabular-nums;
   transition: background 0.15s, color 0.15s;
   user-select: none;
 
   &.side-token {
-    flex: 1;
     padding: 14px 0;
     font-size: 16px;
     font-weight: 500;
@@ -288,7 +308,6 @@ const showAdvanced = ref(false);
   }
 
   &.current-token {
-    flex: 1.4;
     padding: 14px 0;
     font-size: 24px;
     font-weight: 700;

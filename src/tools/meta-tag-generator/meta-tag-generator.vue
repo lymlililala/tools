@@ -14,15 +14,21 @@ watch(
   () => ref(metadata.value.type),
   (_ignored, prevSection) => {
     const section = ogSchemas[prevSection.value];
-    if (!section) return;
-    section.elements.forEach(({ key }) => { metadata.value[key] = ''; });
+    if (!section) {
+      return;
+    }
+    section.elements.forEach(({
+      key,
+    }) => { metadata.value[key] = ''; });
   },
 );
 
 const sections = computed((): OGSchemaType[] => {
   const secs: OGSchemaType[] = [website, image, twitter];
   const additionalSchema = ogSchemas[metadata.value.type];
-  if (additionalSchema) secs.push(additionalSchema);
+  if (additionalSchema) {
+    secs.push(additionalSchema);
+  }
   return secs;
 });
 
@@ -39,7 +45,9 @@ const metaTags = computed(() => {
 // ── 复制反馈 ─────────────────────────────────────────────────────────────
 const copySuccess = ref(false);
 async function copyMeta() {
-  if (!metaTags.value) return;
+  if (!metaTags.value) {
+    return;
+  }
   await navigator.clipboard.writeText(metaTags.value);
   copySuccess.value = true;
   setTimeout(() => (copySuccess.value = false), 2000);
@@ -126,7 +134,8 @@ async function copyMeta() {
             language="xml"
             placeholder="Meta tags will appear here…"
             min-height="320px"
-            readonly
+
+            readonly wrap
           />
         </div>
       </div>
