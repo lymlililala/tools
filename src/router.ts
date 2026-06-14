@@ -35,6 +35,21 @@ const router = createRouter({
       component: () => import('./pages/About.vue'),
     },
     {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('./pages/Contact.vue'),
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('./pages/Privacy.vue'),
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('./pages/Terms.vue'),
+    },
+    {
       path: '/blog',
       name: 'blog',
       component: ArticlesPage,

@@ -53,8 +53,24 @@ const tools = computed<ToolCategory[]>(() => [
 
       <!-- 底部版权 -->
       <div class="sider-footer">
-        <span>© {{ new Date().getFullYear() }} MyUtl</span>
-        <span v-if="version" style="opacity:0.3"> · v{{ version }}</span>
+        <nav class="sider-footer-links">
+          <RouterLink to="/about">
+            {{ $t('footer.about') }}
+          </RouterLink>
+          <RouterLink to="/contact">
+            {{ $t('footer.contact') }}
+          </RouterLink>
+          <RouterLink to="/privacy">
+            {{ $t('footer.privacy') }}
+          </RouterLink>
+          <RouterLink to="/terms">
+            {{ $t('footer.terms') }}
+          </RouterLink>
+        </nav>
+        <div class="sider-footer-copy">
+          <span>© {{ new Date().getFullYear() }} MyUtl</span>
+          <span v-if="version" style="opacity:0.3"> · v{{ version }}</span>
+        </div>
       </div>
     </template>
 
@@ -189,10 +205,32 @@ const tools = computed<ToolCategory[]>(() => [
 .sider-footer {
   padding: 10px 14px;
   font-size: 11px;
-  opacity: 0.35;
   border-top: 1px solid v-bind('themeVars.dividerColor');
   text-align: center;
   flex-shrink: 0;
+}
+
+.sider-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 10px;
+  margin-bottom: 6px;
+
+  a {
+    color: v-bind('themeVars.textColor2');
+    text-decoration: none;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.sider-footer-copy {
+  opacity: 0.35;
 }
 
 // ─── Topbar ──────────────────────────────────────────────────

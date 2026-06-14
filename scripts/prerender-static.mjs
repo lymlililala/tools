@@ -112,12 +112,13 @@ const catHubSlug = name => String(name).toLowerCase().replace(/\s+/g, '-')
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml')
 const sitemapXml = fs.readFileSync(sitemapPath, 'utf-8')
 const urlRegex = /<loc>https:\/\/myutl\.com\/([^/<]+)\/?<\/loc>/g
+// 顶级非工具页面（首页由空字符串匹配，blog 单独处理，以下信息页也需排除）
+const nonToolTopLevel = new Set(['blog', 'about', 'contact', 'privacy', 'terms'])
 const toolSlugs = []
 let m
 while ((m = urlRegex.exec(sitemapXml)) !== null) {
   const slug = m[1]
-  // 排除顶级已知页面（首页由空字符串匹配，blog/about 单独处理）
-  if (slug && slug !== 'blog' && slug !== 'about') {
+  if (slug && !nonToolTopLevel.has(slug)) {
     toolSlugs.push(slug)
   }
 }
@@ -182,6 +183,107 @@ const staticRoutes = [
       '@type': 'Blog',
       name: `${SITE_NAME} Blog`,
       url: `${SITE}/blog`,
+      publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+    },
+  },
+  {
+    path: '/about',
+    title: `About ${SITE_NAME} — Free Privacy-First Online Toolbox`,
+    description: `Learn about ${SITE_NAME}, a free collection of 90+ online developer tools that run entirely in your browser. No sign-up, no uploads — your data never leaves your device.`,
+    h1: `About ${SITE_NAME}`,
+    keywords: 'about myutl, free online tools, privacy first tools, browser tools, open source tools',
+    seoContent: [
+      `      <p><strong>${SITE_NAME}</strong> is a free online toolbox that brings together 90+ handy utilities for developers and everyday tasks — JSON formatting, Base64 encoding, encryption, URL tools, QR code generation, hashing, and much more. Every tool runs entirely in your browser, with no sign-up and no uploads.</p>`,
+      `      <h2>Privacy first</h2>`,
+      `      <p>All processing happens locally on your device, so you can work with sensitive content without it ever touching a server. See our <a href="/privacy">Privacy Policy</a> for details.</p>`,
+      `      <h2>Open source</h2>`,
+      `      <p>${SITE_NAME} is built on the open-source <a href="https://github.com/CorentinTh/it-tools" rel="nofollow">it-tools</a> project, created by Corentin Thomasset and licensed under GPL-3.0. We are grateful to the original author and the open-source community.</p>`,
+      `      <h2>Get in touch</h2>`,
+      `      <p>Found a bug or need a new tool? Visit our <a href="/contact">Contact page</a> or email <a href="mailto:contact@myutl.com">contact@myutl.com</a>.</p>`,
+    ].join('\n'),
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'AboutPage',
+      name: `About ${SITE_NAME}`,
+      url: `${SITE}/about`,
+      publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE, email: 'contact@myutl.com' },
+    },
+  },
+  {
+    path: '/contact',
+    title: `Contact ${SITE_NAME} — Support, Feedback & Requests`,
+    description: `Get in touch with the ${SITE_NAME} team. Report a bug, request a new tool, or ask a question — email contact@myutl.com and we will reply within 1–2 business days.`,
+    h1: `Contact ${SITE_NAME}`,
+    keywords: 'contact myutl, myutl support, report bug, request tool, feedback',
+    seoContent: [
+      `      <p>We'd love to hear from you. Whether you've found a bug, want to request a new tool, have a partnership idea, or just want to say hello — get in touch.</p>`,
+      `      <p><strong>Email:</strong> <a href="mailto:contact@myutl.com">contact@myutl.com</a></p>`,
+      `      <p>We typically reply within 1–2 business days.</p>`,
+      `      <h2>How we can help</h2>`,
+      `      <ul>`,
+      `        <li><strong>Bug reports</strong> — tell us the tool name, what you expected, and what happened.</li>`,
+      `        <li><strong>Feature requests</strong> — describe the tool you need and how you'd use it.</li>`,
+      `        <li><strong>Feedback</strong> — ideas to make ${SITE_NAME} faster, clearer, or more useful.</li>`,
+      `        <li><strong>Business &amp; partnerships</strong> — reach out at the same address.</li>`,
+      `      </ul>`,
+    ].join('\n'),
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      name: `Contact ${SITE_NAME}`,
+      url: `${SITE}/contact`,
+      mainEntity: { '@type': 'Organization', name: SITE_NAME, url: SITE, email: 'contact@myutl.com' },
+    },
+  },
+  {
+    path: '/privacy',
+    title: `Privacy Policy — ${SITE_NAME}`,
+    description: `How ${SITE_NAME} handles your data: our tools run locally in your browser, and we disclose the cookies and third-party advertising (Google) we use.`,
+    h1: 'Privacy Policy',
+    keywords: 'myutl privacy policy, privacy, data protection, cookies, advertising',
+    seoContent: [
+      `      <p><em>Last updated: June 14, 2026</em></p>`,
+      `      <p>${SITE_NAME} respects your privacy. This policy explains how our tools work and what information may be collected when you visit our site.</p>`,
+      `      <h2>Local-first tools</h2>`,
+      `      <p>All of our tools run entirely in your browser. The text, files, and data you enter into a tool are processed on your own device and are never transmitted to or stored on our servers.</p>`,
+      `      <h2>Cookies and similar technologies</h2>`,
+      `      <p>This website uses cookies and similar technologies. Preferences such as your theme and favorite tools are kept in your browser's local storage, while advertising cookies are set by the third parties described below.</p>`,
+      `      <h2>Advertising</h2>`,
+      `      <p>We use third-party advertising companies, including Google, to serve ads. Google and its partners may use cookies (including the DoubleClick / DART cookie) to serve ads based on your prior visits to this and other websites. You can opt out of personalized advertising via <a href="https://www.google.com/settings/ads" rel="nofollow">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices" rel="nofollow">www.aboutads.info/choices</a>.</p>`,
+      `      <h2>Contact</h2>`,
+      `      <p>Questions? Email <a href="mailto:contact@myutl.com">contact@myutl.com</a>.</p>`,
+    ].join('\n'),
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: `Privacy Policy — ${SITE_NAME}`,
+      url: `${SITE}/privacy`,
+      publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+    },
+  },
+  {
+    path: '/terms',
+    title: `Terms of Service — ${SITE_NAME}`,
+    description: `The terms governing your use of ${SITE_NAME}, a free online toolbox. By using the service you agree to these terms.`,
+    h1: 'Terms of Service',
+    keywords: 'myutl terms of service, terms, conditions of use',
+    seoContent: [
+      `      <p><em>Last updated: June 14, 2026</em></p>`,
+      `      <p>By accessing or using ${SITE_NAME} (the "Service"), you agree to these Terms of Service. If you do not agree, please do not use the Service.</p>`,
+      `      <h2>Use of the Service</h2>`,
+      `      <p>${SITE_NAME} provides a collection of free online utilities for personal and commercial use, offered at no cost.</p>`,
+      `      <h2>No warranty</h2>`,
+      `      <p>The Service is provided "as is" and "as available", without warranties of any kind. Always verify critical results independently.</p>`,
+      `      <h2>Limitation of liability</h2>`,
+      `      <p>To the fullest extent permitted by law, ${SITE_NAME} and its contributors shall not be liable for any damages arising from your use of, or inability to use, the Service.</p>`,
+      `      <h2>Contact</h2>`,
+      `      <p>Questions about these terms? Email <a href="mailto:contact@myutl.com">contact@myutl.com</a>.</p>`,
+    ].join('\n'),
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: `Terms of Service — ${SITE_NAME}`,
+      url: `${SITE}/terms`,
       publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
     },
   },
@@ -941,6 +1043,12 @@ const newSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Static pages -->
+  <url><loc>${SITE}/about</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>${SITE}/contact</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>${SITE}/privacy</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>${SITE}/terms</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 
   <!-- Category Hubs -->
 ${categoryHubSlugs.map(s => `  <url><loc>${SITE}/c/${s}</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`).join('\n')}

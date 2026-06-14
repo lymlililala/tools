@@ -14,9 +14,25 @@
   to = "/index.html"
   status = 200
 
+# 信息页：使用预渲染版本（含唯一 SEO meta）
 [[redirects]]
   from = "/about"
-  to = "/index.html"
+  to = "/about/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms/index.html"
   status = 200
 
 # 工具页：优先尝试预渲染文件，不存在则 SPA fallback（200）
