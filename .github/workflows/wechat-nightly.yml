@@ -8,8 +8,16 @@ on:
     - cron: '37 18 * * *' # UTC 18:37 ≈ 北京时间 02:37（避开整点，减轻 API 峰值）
   workflow_dispatch:
     inputs:
+      line:
+        description: '内容线：tool=工具科普(默认) / blog=开发者博客'
+        required: false
+        default: 'tool'
+      search_args:
+        description: '工具线采集参数（默认 --queries 40 --pages 1；首跑攒池可加 --pages 2）'
+        required: false
+        default: ''
       crawl_args:
-        description: '采集参数（留空=日常 --today；首跑攒池子可填：--since 2026-06-07 --max-pages 3）'
+        description: '博客线采集参数（仅 line=blog 用；留空=--today）'
         required: false
         default: ''
 
@@ -50,7 +58,11 @@ jobs:
           # 可选配图（未配则合成不插图、发布全走兜底）
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          # 可选：入库后触发 Vercel 重建（刷新预渲染页 + sitemap.xml）
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
           # 流水线参数（可按需调整）
+          LINE: ${{ github.event.inputs.line }}
+          SEARCH_ARGS: ${{ github.event.inputs.search_args }}
           CRAWL_ARGS: ${{ github.event.inputs.crawl_args }}
           DAYS: '14'
           MAX_CLUSTERS: '8'

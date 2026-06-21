@@ -195,3 +195,17 @@ if (!DRY) console.log(`记录写入 ${OUT}`)
 console.log('DeepSeek 用量:', ds.costEstimate())
 if (finder.enabled) console.log('配图来源:', finder.stats)
 console.log('提示：入库后站内经 /api/articles 即可读到（边缘缓存 s-maxage=300，约 5 分钟生效）。')
+
+// 触发 Vercel 重建：入库后重跑 prerender-static.mjs，使新文章进预渲染页 + sitemap.xml。
+// 需在 Vercel Project → Settings → Git → Deploy Hooks 建一个 URL，存为 secret VERCEL_DEPLOY_HOOK_URL。
+const HOOK = process.env.VERCEL_DEPLOY_HOOK_URL
+if (!DRY && pub > 0 && HOOK) {
+  try {
+    const r = await fetch(HOOK, { method: 'POST' })
+    console.log(r.ok ? `🚀 已触发 Vercel 重建（sitemap 将随构建刷新）。` : `⚠️ Deploy Hook 返回 ${r.status}`)
+  } catch (e) {
+    console.log(`⚠️ 触发 Vercel 重建失败（不影响入库）：${e.message}`)
+  }
+} else if (!DRY && pub > 0 && !HOOK) {
+  console.log('ℹ️ 未配置 VERCEL_DEPLOY_HOOK_URL，跳过自动重建（新文章需下次构建才进 sitemap）。')
+}

@@ -424,6 +424,44 @@ const blogArticles = fs.existsSync(articlesJsonPath)
   ? JSON.parse(fs.readFileSync(articlesJsonPath, 'utf-8'))
   : []
 
+// ── 合并 Supabase tools_articles 中「仅存在于库、尚未进 articles.data.ts」的文章 ──
+//    （自动发布管线只 upsert 进库 → 这里并入，使其同样获得预渲染页 + sitemap 收录）。
+//    尽力而为：无 SUPABASE_SECRET_KEY（本地构建）则跳过，保持原行为不变。
+const SUPA_URL = process.env.SUPABASE_URL || 'https://tixgzezefjjsyuzgdhcd.supabase.co'
+const SUPA_KEY = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
+if (SUPA_KEY) {
+  try {
+    const haveSlugs = new Set(blogArticles.map((a) => a.slug))
+    const { createClient } = await import('@supabase/supabase-js')
+    const supa = createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } })
+    const { data, error } = await supa
+      .from('tools_articles')
+      .select('slug, tool_path, title, description, keywords, category, published_at, content')
+      .order('published_at', { ascending: false })
+    if (error) throw new Error(error.message)
+    let added = 0
+    for (const r of data || []) {
+      if (!r.slug || haveSlugs.has(r.slug) || !r.content) continue
+      haveSlugs.add(r.slug)
+      blogArticles.push({
+        slug: r.slug,
+        toolPath: r.tool_path ?? null,
+        title: r.title || r.slug,
+        description: r.description || '',
+        keywords: Array.isArray(r.keywords) ? r.keywords : [],
+        category: r.category || 'Blog',
+        publishedAt: r.published_at || '',
+        content: r.content,
+      })
+      added++
+    }
+    console.log(`🗄️  合并库内新增博客 ${added} 篇（DB-only），博客总数 ${blogArticles.length}`)
+  }
+  catch (e) {
+    console.warn('⚠️  合并 Supabase 文章失败（跳过，不影响构建）：', e.message)
+  }
+}
+
 // ── 内链索引：toolPath → 文章列表（用于相关文章 / 工具页反向链接）────────────
 const articlesByTool = {}
 for (const a of blogArticles) (articlesByTool[a.toolPath] ||= []).push(a)

@@ -43,10 +43,11 @@ async function selectAll(builder, pageSize = 1000) {
 
 // ── 公共接口 ─────────────────────────────────────────────────────────────────
 
-/** 取库中已有的全部 sn（采集前去重，避免重复拉正文花钱）。 */
+/** 取库中**已拿到正文**的 sn（采集前去重，避免重复拉正文花钱）。
+ *  仅含正文的才算"已采"：body 为空的行（--no-body 或上次拉正文失败）下次会被重新补正文。 */
 export async function existingSns() {
-  if (!USE_DB) return new Set(readAll().map(r => r.sn))
-  const rows = await selectAll(sb => sb.from(TABLE).select('sn'))
+  if (!USE_DB) return new Set(readAll().filter(r => r.body_text).map(r => r.sn))
+  const rows = await selectAll(sb => sb.from(TABLE).select('sn').neq('body_text', ''))
   return new Set(rows.map(r => r.sn))
 }
 
