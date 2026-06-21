@@ -336,6 +336,14 @@ watchEffect(() => {
     &:hover { text-decoration: underline; }
   }
 
+  :deep(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 20px auto;
+  }
+
   :deep(ul), :deep(ol) {
     padding-left: 24px;
     margin: 12px 0;
