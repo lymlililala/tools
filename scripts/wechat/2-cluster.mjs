@@ -69,7 +69,8 @@ Requirements:
 1. Each cluster: 2-6 related source ids informing an article about ONE tool's topic.
 2. tool_path MUST be copied verbatim from the catalog (e.g. /json-format, /regex-tester, /hash-text).
 3. Exclude time-sensitive news, ads, recruitment. Skip topics with no matching tool.
-4. At most ${MAX_CLUSTERS} clusters. Do not map two clusters to the same tool_path.
+4. Each tool already has ONE intro article on the site, so AIM FOR A DISTINCT, DEEPER ANGLE — e.g. security & pitfalls, performance, real-world workflow, edge cases, "X vs Y", a worked end-to-end example. You MAY map up to TWO clusters to the same tool_path ONLY if they take clearly different, non-overlapping angles; otherwise prefer breadth across tools.
+5. At most ${MAX_CLUSTERS} clusters. Each cluster's "angle" must state the specific lens (not a generic intro).
 
 Return ONLY JSON:
 {"clusters":[{
@@ -77,7 +78,7 @@ Return ONLY JSON:
   "tool_path":"/exact-path-from-catalog",
   "topic":"short English topic name",
   "working_title":"proposed English article title",
-  "angle":"one sentence",
+  "angle":"the specific lens, one sentence",
   "source_ids":[ints],
   "suggested_category":"short English category",
   "suggested_keywords":["english lowercase keywords"]
@@ -94,7 +95,7 @@ const out = await ds.chatJSON(
   { maxTokens: 4000 },
 )
 
-const seenTool = new Set()
+const seenTool = new Map() // tool_path -> 本次已产簇数（同工具最多 2 个不同角度）
 const clusters = []
 for (const c of (out.clusters || [])) {
   if (!Array.isArray(c.source_ids) || c.source_ids.length < 2) continue
@@ -102,8 +103,8 @@ for (const c of (out.clusters || [])) {
   if (MODE === 'tool') {
     const tp = normalizeToolPath(c.tool_path, catalog)
     if (!tp) { console.log(`  ⊘ 丢弃：tool_path 无效 "${c.tool_path}"  (${c.working_title})`); continue }
-    if (seenTool.has(tp)) { console.log(`  ⊘ 丢弃：同工具页重复 ${tp}`); continue }
-    seenTool.add(tp)
+    if ((seenTool.get(tp) || 0) >= 2) { console.log(`  ⊘ 丢弃：同工具页已 2 簇 ${tp}`); continue }
+    seenTool.set(tp, (seenTool.get(tp) || 0) + 1)
     c.tool_path = tp
   } else {
     c.tool_path = null

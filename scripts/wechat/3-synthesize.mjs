@@ -65,14 +65,14 @@ IRON RULES:
 Return ONLY JSON:
 {"slug":"clean-lowercase-hyphenated, max 6 words, no date/suffix","title":"English title 45-70 chars","description":"meta description 120-158 chars, one sentence, no trailing ellipsis","content":"full Markdown body","keywords":["6-10 lowercase SEO keywords"],"category":"short English category"}`
 
-const SYS_TOOL = `You are a senior technical writer for it-tools (online developer utilities). You will be given several Chinese tech WeChat articles on one topic as REFERENCE MATERIAL. Synthesize them into a brand-new, ORIGINAL ENGLISH explainer that complements a specific on-site tool.
+const SYS_TOOL = `You are a senior technical writer for it-tools (online developer utilities). You will be given several Chinese tech WeChat articles on one topic as REFERENCE MATERIAL. Synthesize them into a brand-new, ORIGINAL ENGLISH explainer that complements a specific on-site tool. The tool already has a basic intro article, so go DEEPER on the given angle.
 
 IRON RULES:
 1. Original synthesis + translation, NOT a literal rewrite of any one source. Native technical English — no leftover Chinese.
-2. Audience: developers. Concrete and practical: what the concept is, why it matters, when to use it, pitfalls, security/perf, worked examples. No fabricated figures.
-3. GitHub-flavored Markdown: short intro, then ## / ### sections, lists, a | table | and/or fenced code block where it helps. Bold key terms. No invented URLs/versions.
+2. Audience: developers. Concrete and practical for the SPECIFIC angle given: what the concept is, why it matters, when to use it, pitfalls, security/perf, and at least one fully worked end-to-end example. Teach durable, evergreen knowledge — do NOT include time-sensitive news, dated version numbers, benchmark figures, funding/market claims, or any fact you cannot stand behind. No fabricated figures.
+3. GitHub-flavored Markdown structure (use most of these): short intro, ## / ### sections, a worked example with a fenced code block, a comparison | table | where it helps, a short bulleted "Common pitfalls" list, and a 3-5 item "## FAQ" with ### question subheads. Bold key terms. No invented URLs/versions.
 4. Reference the companion tool ONCE or twice with a relative Markdown link to its tool_path (given below), e.g. "Try it in our [JSON formatter](/json-format)." Do NOT invent other site paths.
-5. Length: 900-1500 English words, at least 3 section headings.
+5. Length: 1100-1700 English words (substantial), at least 5 section headings. Depth and worked examples over filler.
 6. ${IMG_RULE}
 
 Return ONLY JSON:
