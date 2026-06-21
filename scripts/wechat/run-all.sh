@@ -11,8 +11,10 @@ MAX_CLUSTERS="${MAX_CLUSTERS:-8}"
 THRESHOLD="${THRESHOLD:-80}"
 MAX_PUBLISH="${MAX_PUBLISH:-6}"
 
-echo "==[1/4] 采集（当天新文）=="
-node scripts/wechat/1-crawl.mjs --today --max-pages 2
+echo "==[1/4] 采集 =="
+# 采集参数可由 CRAWL_ARGS 覆盖：日常用 --today；首次/补量可传 "--since 2026-06-14 --max-pages 3"
+CRAWL_ARGS="${CRAWL_ARGS:---today --max-pages 2}"
+node scripts/wechat/1-crawl.mjs $CRAWL_ARGS
 
 echo "==[2/4] 工具感知聚类（最近 ${DAYS} 天，≤${MAX_CLUSTERS} 簇）=="
 node scripts/wechat/2-cluster.mjs --days "$DAYS" --max-clusters "$MAX_CLUSTERS"

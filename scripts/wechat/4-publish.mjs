@@ -63,8 +63,15 @@ async function resolveImages(content, slug, finder) {
 
 const DRAFTS = join(DATA_DIR, 'drafts.json')
 const OUT = join(DATA_DIR, 'published.json')
-if (!existsSync(DRAFTS)) { console.error('缺少 drafts.json，先跑 3-synthesize.mjs'); process.exit(1) }
+if (!existsSync(DRAFTS)) {
+  console.log('没有 drafts.json（本轮无草稿），跳过发布。这是正常情况（今日无可锚定工具的常青选题）。')
+  process.exit(0)
+}
 const drafts = JSON.parse(readFileSync(DRAFTS, 'utf8'))
+if (!drafts.length) {
+  console.log('drafts.json 为空（本轮 0 草稿），跳过发布。')
+  process.exit(0)
+}
 
 const ds = new DeepSeek()
 const finder = new ImageFinder()

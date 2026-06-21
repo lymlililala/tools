@@ -120,5 +120,7 @@ for (const c of clusters) {
 }
 
 console.log(`\n已写入 ${OUT}（共 ${drafts.length} 篇草稿，本次判重跳过 ${skippedDup}）`)
+// 无条件落盘一次：即使本轮 0 簇/0 草稿，也保证 drafts.json 存在，让 4-publish 平稳处理。
+writeFileSync(OUT, JSON.stringify(drafts, null, 2))
 console.log('用量:', ds.costEstimate())
 console.log('⚠️  抽查 drafts.json 1-2 篇（原创度/英文质量/toolPath/字数/代码块），再跑 4-publish.mjs')
