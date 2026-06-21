@@ -112,7 +112,7 @@ for (const d of drafts) {
     try {
       score = await ds.chatJSON(
         [{ role: 'system', content: SCORE_SYS }, { role: 'user', content: `Title: ${d.title}\nTool: ${d.toolPath}\n\n${d.content}` }],
-        { maxTokens: 600 },
+        { maxTokens: 1500 },
       )
     } catch (e) {
       score = { overall: 0, issues: ['评分失败:' + e.message] }
