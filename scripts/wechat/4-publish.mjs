@@ -23,6 +23,7 @@ function arg(name, def) {
 const DRY = arg('--dry-run', false) === true
 const THRESHOLD = Number(arg('--threshold', 80))
 const MAX_PUBLISH = Number(arg('--max-publish', 6)) // 单次最多入库几篇（防一晚灌水伤 SEO）
+const ACCURACY_FLOOR = Number(arg('--accuracy-floor', 85)) // accuracy 低于此值一律 hold（防虚构事实）
 
 // ── 配图（可选）─────────────────────────────────────────────────────────────
 // 仅当正文含 ![alt](IMG: kw) 占位时才生效（synthesize 加 --images 才会产出）。
@@ -81,7 +82,10 @@ const SCORE_SYS = `You are a strict content quality reviewer for an English deve
 - depth (useful, specific, technically accurate for a developer)
 - accuracy (no obvious errors / fabricated facts, figures, or APIs)
 - readability (native technical English, clear structure, good code/tables)
-Return ONLY JSON: {"originality":int,"depth":int,"accuracy":int,"readability":int,"overall":int,"issues":["short issue"]}`
+
+CRITICAL — fabrication check: A developer blog must not assert specific events, acquisitions, funding rounds, partnerships, version releases, benchmark numbers, percentages, prices, dates, or quotes that you cannot reasonably believe are true. WeChat tech articles often contain rumours, exaggeration, or speculation presented as fact; the synthesis may have amplified these. List every such unverifiable hard claim in "fabricated_claims" (empty array if none). Set "fabrication": true if ANY concrete factual assertion is likely false or unverifiable — when unsure about a specific number/event, treat it as fabricated. Do NOT flag general, evergreen statements ("LLMs can generate code", "Rust is memory-safe").
+
+Return ONLY JSON: {"originality":int,"depth":int,"accuracy":int,"readability":int,"overall":int,"fabrication":bool,"fabricated_claims":["the specific claim, verbatim or paraphrased"],"issues":["short issue"]}`
 
 const results = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : []
 const donePub = new Set(results.filter(r => r.action && r.action !== 'error').map(r => r.slug))
@@ -115,6 +119,17 @@ for (const d of drafts) {
     }
     decision = (score.overall ?? 0) >= THRESHOLD ? 'publish' : 'hold'
     reasonText = `overall=${score.overall} (阈值${THRESHOLD}) len=${q.len} headings=${q.headings} img=${q.images}`
+
+    // 硬否决：虚构事实 / accuracy 低于地板 —— 即使 overall 过线也一律暂留（自动发布最怕带假事实）。
+    const fabClaims = Array.isArray(score.fabricated_claims) ? score.fabricated_claims : []
+    if (decision === 'publish' && (score.fabrication === true || fabClaims.length > 0)) {
+      decision = 'hold'
+      reasonText += ` | 否决:疑似虚构事实×${fabClaims.length}`
+    }
+    if (decision === 'publish' && Number(score.accuracy ?? 0) < ACCURACY_FLOOR) {
+      decision = 'hold'
+      reasonText += ` | 否决:accuracy ${score.accuracy}<${ACCURACY_FLOOR}`
+    }
   }
 
   // 单次发布上限：已达上限的，过线也转 hold，留待后续放行
@@ -125,6 +140,7 @@ for (const d of drafts) {
 
   console.log(`${decision === 'publish' ? '🟢 入库' : '🟡 暂留'}  ${d.slug}  → ${d.toolPath}`)
   console.log(`     ${reasonText}`)
+  if (score?.fabricated_claims?.length) console.log(`     ⚠️ 虚构: ${score.fabricated_claims.join(' | ')}`)
   if (score?.issues?.length) console.log(`     问题: ${score.issues.join('; ')}`)
 
   // 解析正文配图占位（无占位则原样返回）
@@ -165,6 +181,8 @@ for (const d of drafts) {
     decision,
     action,
     score: score?.overall ?? null,
+    accuracy: score?.accuracy ?? null,
+    fabricated_claims: score?.fabricated_claims ?? [],
     quality: q.reasons,
     sources: d._sources?.map(s => s.url),
   })

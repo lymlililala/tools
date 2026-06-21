@@ -31,8 +31,8 @@ export function checkQuality(draft, opts = {}) {
   if (desc.length < 50) reasons.push('DESC:too-short')
   if (desc.length > 165) reasons.push(`DESC:too-long:${desc.length}`)
 
-  // 必须锚定真实工具页（tools_articles.tool_path 非空）
-  if (!draft.toolPath) reasons.push('NO-TOOL-PATH')
+  // tool 类必须锚定真实工具页；blog 类（开发者主题博客）不要求，tool_path 留空
+  if (draft.kind !== 'blog' && !draft.toolPath) reasons.push('NO-TOOL-PATH')
 
   // 结构：至少 3 个二级/三级标题（站内文均为分节讲解）
   const headings = (content.match(/^#{2,3}\s+\S/gm) || []).length
