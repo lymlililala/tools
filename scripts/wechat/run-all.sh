@@ -15,6 +15,7 @@ DAYS="${DAYS:-14}"
 MAX_CLUSTERS="${MAX_CLUSTERS:-8}"
 THRESHOLD="${THRESHOLD:-80}"
 MAX_PUBLISH="${MAX_PUBLISH:-6}"
+IMAGES="${IMAGES:-1}"   # 1=合成插配图占位(由 4-publish 解析为真实图/兜底图)；0=纯文字
 
 echo "==[1/4] 采集（line=${LINE}）=="
 if [ "$LINE" = "blog" ]; then
@@ -33,7 +34,8 @@ echo "==[2/4] 聚类（mode=${CLUSTER_MODE}，最近 ${DAYS} 天，≤${MAX_CLUS
 node scripts/wechat/2-cluster.mjs --mode "$CLUSTER_MODE" --days "$DAYS" --max-clusters "$MAX_CLUSTERS"
 
 echo "==[3/4] 合成英文文章=="
-node scripts/wechat/3-synthesize.mjs --days "$DAYS"
+IMG_FLAG=""; [ "$IMAGES" = "1" ] && IMG_FLAG="--images"
+node scripts/wechat/3-synthesize.mjs --days "$DAYS" $IMG_FLAG
 
 echo "==[4/4] 质量闸门 + 虚构否决 + 入库（阈值 ${THRESHOLD}，单次≤${MAX_PUBLISH}）=="
 node scripts/wechat/4-publish.mjs --threshold "$THRESHOLD" --max-publish "$MAX_PUBLISH"

@@ -20,6 +20,10 @@ on:
         description: '博客线采集参数（仅 line=blog 用；留空=--today）'
         required: false
         default: ''
+      images:
+        description: '配图：1=开启(默认，需 PEXELS/UNSPLASH key) / 0=纯文字'
+        required: false
+        default: '1'
 
 concurrency:
   group: wechat-nightly
@@ -64,6 +68,7 @@ jobs:
           LINE: ${{ github.event.inputs.line }}
           SEARCH_ARGS: ${{ github.event.inputs.search_args }}
           CRAWL_ARGS: ${{ github.event.inputs.crawl_args }}
+          IMAGES: ${{ github.event.inputs.images }}
           DAYS: '14'
           MAX_CLUSTERS: '8'
           THRESHOLD: '80'

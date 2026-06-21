@@ -49,7 +49,7 @@ const existingSlugs = new Set((existingPosts || []).map(p => p.slug))
 console.log(`站内现有 ${existingSlugs.size} 篇文章。开始合成 ${clusters.length} 篇 …\n`)
 
 const IMG_RULE = WANT_IMAGES
-  ? `Insert 2-4 inline images at natural points using EXACTLY this placeholder (real URLs filled in later): ![descriptive alt](IMG: concrete photographable keywords). Avoid abstract concepts; no images inside tables.`
+  ? `Images: use EXACTLY this placeholder (real URLs filled in later): ![descriptive alt](IMG: concrete photographable keywords). Place ONE near the top right after the intro paragraph (a cover), and optionally 1-2 more at natural section breaks. The keywords MUST name a concrete, photographable subject (e.g. "qr code on phone screen", "mechanical keyboard keys", "server racks") — NOT an abstract concept. If the topic has no real photographable subject (e.g. text escaping, hashing, encoding), insert NO images rather than forcing generic stock filler. Never put images inside tables.`
   : `Do NOT insert any images. Text + code + tables only.`
 
 // ── 两套 system prompt ───────────────────────────────────────────────────────
