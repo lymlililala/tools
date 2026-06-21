@@ -1,0 +1,254 @@
+[
+  {
+    "name": "HelloGitHub",
+    "nickname": "HelloGitHub",
+    "wxid": "gh_4fb030b35bb4",
+    "biz": "MzA5MzYyNzQ0MQ==",
+    "description": "分享 GitHub 上有趣、入门级的开源项目。"
+  },
+  {
+    "name": "GitHubDaily",
+    "nickname": "GitHubDaily",
+    "wxid": "gh_f799dc9611f2",
+    "biz": "MzAxOTcxNTIwNQ==",
+    "description": "追踪优质 GitHub 开源项目，挖掘 AI 生产力工具"
+  },
+  {
+    "name": "开源前哨",
+    "nickname": "开源前哨",
+    "wxid": "gh_ea867a042ca6",
+    "biz": "MzAxMDM0MzQ4Mg==",
+    "description": "点击获取10万+ star的开发资源库。 日常分享热门、有趣和实用的开源项目～"
+  },
+  {
+    "name": "开源中国",
+    "nickname": "OSC开源社区",
+    "wxid": "gh_430521f7587e",
+    "biz": "MjM5NzM0MjcyMQ==",
+    "description": "OSCHINA，只关注开源圈、AI技术圈的硬核内容，与嬉笑怒骂。\n👇🏻推荐OSC视频号，帮你发现实用科技工具、值得关注的AI趋势。"
+  },
+  {
+    "name": "稀土掘金技术社区",
+    "nickname": "稀土掘金技术社区",
+    "wxid": "gh_728136eff9e2",
+    "biz": "MzU2NjU3Nzg2Mg==",
+    "description": "掘金，一个帮助开发者成长的技术社区"
+  },
+  {
+    "name": "小众软件",
+    "nickname": "小众软件",
+    "wxid": "gh_cae83b625e1e",
+    "biz": "MjM5NDMwMTI2MA==",
+    "description": "推荐有灵魂的电脑软件、手机应用。"
+  },
+  {
+    "name": "少数派",
+    "nickname": "少数派",
+    "wxid": "gh_ebbda8592f25",
+    "biz": "MzU4Mjg3MDAyMQ==",
+    "description": "少数派帮你更好地运用数字产品，提升工作效率和生活品质。"
+  },
+  {
+    "name": "AppSo",
+    "nickname": "APPSO",
+    "wxid": "gh_80d2528f3dcd",
+    "biz": "MjM5MjAyNDUyMA==",
+    "description": "AI 第一新媒体，「超级个体」的灵感指南。 #AIGC #智能设备 #独特应用 #Generative AI"
+  },
+  {
+    "name": "异次元软件世界",
+    "nickname": "软件异次元世界",
+    "wxid": "gh_f7b1e446f201",
+    "biz": "MjM5NjExODEyMA==",
+    "description": "iPlaySoft.com —— 软件改变生活！"
+  },
+  {
+    "name": "高效率工具搜罗",
+    "nickname": "高效率工具搜罗",
+    "wxid": "gh_a77b3fdb1171",
+    "biz": "MzU0ODYyMjUxMw==",
+    "description": "关于好用的工具，网站，App"
+  },
+  {
+    "name": "利器",
+    "nickname": "利器",
+    "wxid": "gh_3009184d4758",
+    "biz": "MzA3NTgzNzU2NQ==",
+    "description": "创造者和他们的工具。"
+  },
+  {
+    "name": "程序员的那些事",
+    "nickname": "程序员的那些事",
+    "wxid": "gh_5d6cf33a4901",
+    "biz": "MjM5OTA1MDUyMA==",
+    "description": "关注程序员和互联网相关，还分享减压的 IT 趣图~"
+  },
+  {
+    "name": "码农翻身",
+    "nickname": "码农翻身",
+    "wxid": "gh_463af1d02f3b",
+    "biz": "MzAxOTc0NzExNg==",
+    "description": "一个技术和职场的宝藏博主"
+  },
+  {
+    "name": "极客时间",
+    "nickname": "极客时间",
+    "wxid": "gh_a4dbefba05a2",
+    "biz": "MzI4MTY5NTk4Ng==",
+    "description": "极客时间服务号"
+  },
+  {
+    "name": "InfoQ",
+    "nickname": "InfoQ",
+    "wxid": "gh_b443474846ae",
+    "biz": "MjM5MDE0Mjc4MA==",
+    "description": "为一线互联网公司核心技术人员提供优质内容。科技圈的观察者，前沿技术的传播者。"
+  },
+  {
+    "name": "CSDN",
+    "nickname": "CSDN",
+    "wxid": "gh_961aaed61288",
+    "biz": "MzkzMDY1NDgyOQ==",
+    "description": "成就一亿技术人"
+  },
+  {
+    "name": "非著名程序员",
+    "nickname": "非著名程序员",
+    "wxid": "gh_f926f0011273",
+    "biz": "MjM5NDkxMTgyNw==",
+    "description": "关注我，一个带领程序员开阔眼界，提升认知，突破圈层，实现个体崛起的公众号。"
+  },
+  {
+    "name": "stormzhang",
+    "nickname": "stormzhang",
+    "wxid": "gh_8e217150b0ec",
+    "biz": "MzA4NTQwNDcyMA==",
+    "description": "15 年互联网技术&产品人，现 AI Builder。\n专注 AI 领域技术、产品、商业分享。"
+  },
+  {
+    "name": "阮一峰的网络日志",
+    "nickname": "阮一峰的网络日志",
+    "wxid": "gh_2f5c59ad6e1e",
+    "biz": "MzI4NjAxNjY4Nw==",
+    "description": "互联网开发，个人生活随感"
+  },
+  {
+    "name": "前端大全",
+    "nickname": "前端大全",
+    "wxid": "gh_1828302cb1b3",
+    "biz": "MzAxODE2MjM1MA==",
+    "description": "点击获取精选前端开发资源。「前端大全」日常分享 Web 前端相关的技术文章、实用案例、工具资源、精选课程、热点资讯。"
+  },
+  {
+    "name": "前端早读课",
+    "nickname": "前端早读课",
+    "wxid": "gh_780d1f7a7e67",
+    "biz": "MjM5MTA1MjAxMQ==",
+    "description": "探索前端技术，体验产品的情感， 项目思考的指引，塑造独立开发者的未来。"
+  },
+  {
+    "name": "张鑫旭-鑫空间-鑫生活",
+    "nickname": "鑫空间鑫生活",
+    "wxid": "gh_fafc045d7cd4",
+    "biz": "MzI5MTA4ODA3NQ==",
+    "description": "推送高质量的原创技术与人文类的文章，成长共勉！"
+  },
+  {
+    "name": "前端之巅",
+    "nickname": "前端之巅",
+    "wxid": "gh_001f9d8a99b5",
+    "biz": "MzUxMzcxMzE5Ng==",
+    "description": "InfoQ大前端技术社群：囊括前端、移动、Node全栈一线技术，紧跟业界发展步伐。"
+  },
+  {
+    "name": "奇舞周刊",
+    "nickname": "奇舞精选",
+    "wxid": "gh_4ef2f1ed6b20",
+    "biz": "Mzg4MTYwMzY1Mw==",
+    "description": "《奇舞精选》是由奇舞团维护的前端技术公众号。除周五外，每天向大家推荐一篇前端相关技术文章，每周五向大家推送汇总周刊内容。"
+  },
+  {
+    "name": "Java知音",
+    "nickname": "Java知音",
+    "wxid": "gh_114a06b58d37",
+    "biz": "MzI4Njc5NjM1NQ==",
+    "description": "一个开始拥抱AI的Java公众号，两手都要抓，两手都要硬！"
+  },
+  {
+    "name": "ImportNew",
+    "nickname": "ImportNew",
+    "wxid": "gh_3c32f6f70c8f",
+    "biz": "MjM5NzMyMjAwMA==",
+    "description": "ImportNew 专注Java 技术分享，包括Java基础技术、进阶技能、架构设计和Java技术领域动态等"
+  },
+  {
+    "name": "后端技术指南针",
+    "nickname": "技术指南针",
+    "wxid": "gh_6dfd18147d3f",
+    "biz": "Mzk0NDg3OTg4Mw==",
+    "description": "技术指南针是一个专注于前沿技术和编程实践的公众号。致力于为开发者提供最新的技术资讯、实用的编程技巧和深入的技术分析。无论你是初学者还是资深开发者，这里都有你需要的资源和灵感。关注我，一起探索技术的无限可能！"
+  },
+  {
+    "name": "程序猿DD",
+    "nickname": "程序猿DD",
+    "wxid": "gh_ee62f85a5486",
+    "biz": "MzAxODcyNjEzNQ==",
+    "description": "爱折腾的程序员，《Spring Cloud微服务实战》作者"
+  },
+  {
+    "name": "鸿洋",
+    "nickname": "鸿洋",
+    "wxid": "gh_2165d75dd538",
+    "biz": "MzAxMTI4MTkwNQ==",
+    "description": "你好，欢迎关注鸿洋的公众号，每天为您推送高质量AI领域、Android技术文章，让你每天都能涨知识。此外，本公众号支持投稿，如果你有原创的文章，希望通过本公众号发布，欢迎投稿。"
+  },
+  {
+    "name": "郭霖",
+    "nickname": "郭霖",
+    "wxid": "gh_15d5aef889d8",
+    "biz": "MzA5MzI3NjE2MA==",
+    "description": "微软资深开发工程师，Google认证开发者专家。 本公众号是一个Android技术分享平台，不定期推送原创技术文章分享给大家。"
+  },
+  {
+    "name": "量子位",
+    "nickname": "量子位",
+    "wxid": "gh_114e76fd6e5d",
+    "biz": "MzIzNjc1NzUzMw==",
+    "description": "追踪人工智能新趋势，关注科技行业新突破"
+  },
+  {
+    "name": "机器之心",
+    "nickname": "机器之心",
+    "wxid": "gh_dbc0a5474692",
+    "biz": "MzA3MzI4MjgzMw==",
+    "description": "专业的人工智能媒体和产业服务平台"
+  },
+  {
+    "name": "新智元",
+    "nickname": "新智元",
+    "wxid": "gh_108f2a2a27f4",
+    "biz": "MzI3MTA0MTk1MA==",
+    "description": "智能+中国主平台，致力于推动中国从互联网+迈向智能+新纪元。重点关注人工智能、机器人等前沿领域发展，关注人机融合、人工智能和机器人革命对人类社会与文明进化的影响，领航中国新智能时代。"
+  },
+  {
+    "name": "夕小瑶科技说",
+    "nickname": "夕小瑶科技说",
+    "wxid": "gh_9bd170629475",
+    "biz": "MzIwNzc2NTk0NQ==",
+    "description": "低负担解码AI世界，硬核也可爱！"
+  },
+  {
+    "name": "Datawhale",
+    "nickname": "Datawhale",
+    "wxid": "gh_7e08dd400559",
+    "biz": "MzIyNjM2MzQyNg==",
+    "description": "一个专注于AI领域的开源组织，汇聚了众多优秀学习者，使命-for the learner，和学习者一起成长。"
+  },
+  {
+    "name": "AI前线",
+    "nickname": "AI前线",
+    "wxid": "gh_b7682654f4a3",
+    "biz": "MzU1NDA4NjU2MA==",
+    "description": "面向AI爱好者、开发者和科学家，提供大模型最新资讯、AI技术分享干货、一线业界实践案例，助你全面拥抱AIGC。"
+  }
+]

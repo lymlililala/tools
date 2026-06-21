@@ -1,0 +1,65 @@
+name: WeChat content pipeline (nightly)
+
+# 公众号采集 → 工具感知聚类 → 英文合成 → 质量闸门入库 tools_articles。
+# 触发：每天定时 + 手动。注：fork 仓库的 schedule 默认禁用，需到 Actions 页点 Enable；
+#       且 60 天无 push 会自动停。
+on:
+  schedule:
+    - cron: '37 18 * * *' # UTC 18:37 ≈ 北京时间 02:37（避开整点，减轻 API 峰值）
+  workflow_dispatch: {} # 支持在 Actions 页手动触发
+
+concurrency:
+  group: wechat-nightly
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # 前置依赖：accounts.json 必须已在仓库（先本地跑 accounts.mjs 生成并提交）
+      - name: Check accounts.json
+        run: |
+          if [ ! -s scripts/wechat/accounts.json ]; then
+            echo "::error::缺少 scripts/wechat/accounts.json —— 请先本地运行 node scripts/wechat/accounts.mjs，核对后提交。"
+            exit 1
+          fi
+
+      - name: Run pipeline
+        env:
+          CIMIDATA_APP_ID: ${{ secrets.CIMIDATA_APP_ID }}
+          CIMIDATA_APP_SECRET: ${{ secrets.CIMIDATA_APP_SECRET }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          # 可选配图（未配则合成不插图、发布全走兜底）
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          # 流水线参数（可按需调整）
+          DAYS: '14'
+          MAX_CLUSTERS: '8'
+          THRESHOLD: '80'
+          MAX_PUBLISH: '6'
+        run: bash scripts/wechat/run-all.sh
+
+      # 留存运行产物便于排查（clusters/drafts/published.json），保留 7 天
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wechat-data
+          path: scripts/wechat/data/
+          retention-days: 7
+          if-no-files-found: ignore

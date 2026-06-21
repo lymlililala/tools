@@ -1,0 +1,6 @@
+# 本地凭证，勿提交
+cimidata/.env
+.env
+
+# 采集产物（accounts.json 除外，需提交供复核）
+data/
