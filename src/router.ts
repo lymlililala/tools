@@ -2,12 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { layouts } from './layouts/index';
 import HomePage from './pages/Home.page.vue';
 import NotFound from './pages/404.page.vue';
-import ArticlesPage from './pages/Articles.page.vue';
-import ArticleDetailPage from './pages/ArticleDetail.page.vue';
 import CategoryPage from './pages/Category.page.vue';
 import { tools } from './tools';
 import { config } from './config';
 import { routes as demoRoutes } from './ui/demo/demo.routes';
+
+// 博客两个页面懒加载：把 marked/dompurify 等移出主包，减小首屏 JS。
+// 列表页 hover 时会一并预取详情 chunk（见 Articles.page.vue），故点击不额外等 JS。
+const ArticlesPage = () => import('./pages/Articles.page.vue');
+const ArticleDetailPage = () => import('./pages/ArticleDetail.page.vue');
 
 const toolsRoutes = tools.map(({ path, name, component, ...config }) => ({
   path,

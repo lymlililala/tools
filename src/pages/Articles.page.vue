@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
 import { RouterLink } from 'vue-router';
-import { fetchArticleList } from '../lib/articles';
+import { fetchArticleList, prefetchArticleDetail } from '../lib/articles';
 import type { DbArticle } from '../lib/articles';
+
+// hover 一篇文章时：① 预取它的数据 ② 预取详情页 chunk（懒加载组件），
+// 这样点击进去基本秒开，且懒加载不会给首次点击额外加一次 JS 拉取。
+let detailChunkWarmed = false;
+function prefetchOnHover(slug: string) {
+  prefetchArticleDetail(slug);
+  if (!detailChunkWarmed) {
+    detailChunkWarmed = true;
+    void import('./ArticleDetail.page.vue');
+  }
+}
 
 const { t } = useI18n();
 
@@ -154,6 +165,8 @@ watch([activeCategory, searchQuery], () => {
           :key="article.slug"
           :to="`/blog/${article.slug}`"
           class="article-card"
+          @pointerenter="prefetchOnHover(article.slug)"
+          @touchstart.passive="prefetchOnHover(article.slug)"
         >
           <div class="article-cat">
             {{ article.category }}

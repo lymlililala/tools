@@ -54,3 +54,32 @@ export async function fetchArticleDetail(
     related: (data?.related ?? []) as DbArticle[],
   };
 }
+
+// ─── Client-side detail cache ──────────────────────────────────────────────────
+// 点击文章走 SPA 客户端导航，每次都现拉 /api/articles?slug= 才能渲染；国内访问
+// Vercel 源站延迟会被放大成「好几秒」。这里把请求按 slug 缓存（缓存 Promise，使
+// hover 预取与随后的点击自动去重到同一次请求），并提供 hover 预取入口。
+const detailCache = new Map<string, Promise<{ article: DbArticle; related: DbArticle[] }>>();
+
+/** Cached single-article fetch — repeat views in a session are instant. */
+export function getArticleDetailCached(
+  slug: string,
+): Promise<{ article: DbArticle; related: DbArticle[] }> {
+  let p = detailCache.get(slug);
+  if (!p) {
+    p = fetchArticleDetail(slug);
+    detailCache.set(slug, p);
+    // 失败时移出缓存，允许下次重试（否则会永久缓存一个 rejected promise）
+    p.catch(() => detailCache.delete(slug));
+  }
+  return p;
+}
+
+/** Warm the cache ahead of a click (e.g. on hover/focus). Fire-and-forget. */
+export function prefetchArticleDetail(slug: string): void {
+  if (!slug || detailCache.has(slug)) {
+    return;
+  }
+  void getArticleDetailCached(slug).catch(() => {});
+}
+

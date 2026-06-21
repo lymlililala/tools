@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
-import { fetchArticleDetail } from '../lib/articles';
+import { getArticleDetailCached, prefetchArticleDetail } from '../lib/articles';
 import type { DbArticle } from '../lib/articles';
 
 const route = useRoute();
@@ -30,7 +30,7 @@ async function fetchArticle(s: string) {
   relatedArticles.value = [];
 
   try {
-    const { article: data, related } = await fetchArticleDetail(s);
+    const { article: data, related } = await getArticleDetailCached(s);
     article.value = data;
     relatedArticles.value = related;
   }
@@ -162,6 +162,8 @@ watchEffect(() => {
             :key="rel.slug"
             :to="`/blog/${rel.slug}`"
             class="related-card"
+            @pointerenter="prefetchArticleDetail(rel.slug)"
+            @touchstart.passive="prefetchArticleDetail(rel.slug)"
           >
             <div class="related-card-title">
               {{ rel.title }}
