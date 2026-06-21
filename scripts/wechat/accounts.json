@@ -28,11 +28,37 @@
     "description": "OSCHINA，只关注开源圈、AI技术圈的硬核内容，与嬉笑怒骂。\n👇🏻推荐OSC视频号，帮你发现实用科技工具、值得关注的AI趋势。"
   },
   {
-    "name": "稀土掘金技术社区",
-    "nickname": "稀土掘金技术社区",
-    "wxid": "gh_728136eff9e2",
-    "biz": "MzU2NjU3Nzg2Mg==",
-    "description": "掘金，一个帮助开发者成长的技术社区"
+    "name": "Linux中国",
+    "nickname": "Linux开源社区",
+    "wxid": "gh_ddb49e488763",
+    "description": "[Linux中国](https://linux.cn/)开源社区官方公众号。专注于开源技术研究、开源思想传播。",
+    "candidates": [
+      {
+        "nickname": "Linux中文社区",
+        "wxid": "gh_2e5a41940453",
+        "description": "号主来自世界500强，主要分享Linux干货、数据库等，一起学习成长！"
+      },
+      {
+        "nickname": "Linux爱好者",
+        "wxid": "gh_9f1efcd6f4ab",
+        "description": "点击获取《每天一个Linux命令》系列和精选Linux技术资源。「Linux爱好者」日常分享 Linux/Unix 相关内容，包括：工具资源、使用技巧、课程书籍等。"
+      },
+      {
+        "nickname": "Linux就该这样学",
+        "wxid": "gh_ee2cae6e834c",
+        "description": "Linux就该这样学是 Linux 爱好者的聚集地，不仅有各种硬核干货文章和新奇内容推荐，还有Git、数据库等方面技术知识。加入我们大家庭，一起成长进步吧！"
+      },
+      {
+        "nickname": "Linux开源社区",
+        "wxid": "gh_ddb49e488763",
+        "description": "[Linux中国](https://linux.cn/)开源社区官方公众号。专注于开源技术研究、开源思想传播。"
+      },
+      {
+        "nickname": "Linux",
+        "wxid": "gh_5a2fec59215a",
+        "description": "Linux 技术专题订阅号，每日一篇，涵盖 Linux 学习、桌面使用技巧、系统运维、软件开发等内容。 【日拱一卒，功不唐捐】"
+      }
+    ]
   },
   {
     "name": "小众软件",
@@ -77,11 +103,33 @@
     "description": "创造者和他们的工具。"
   },
   {
-    "name": "程序员的那些事",
-    "nickname": "程序员的那些事",
-    "wxid": "gh_5d6cf33a4901",
-    "biz": "MjM5OTA1MDUyMA==",
-    "description": "关注程序员和互联网相关，还分享减压的 IT 趣图~"
+    "name": "MacTalk",
+    "nickname": "MacTalk",
+    "wxid": "gh_672f4fa64015",
+    "biz": "MjM5ODQ2MDIyMA==",
+    "description": "墨问创始人，极客时间创始人。专注分享 AI 产品和科技创业，也写随笔和故事。笃信长期主义，用文字与你同行。著有《MacTalk·人生元编程》",
+    "candidates": [
+      {
+        "nickname": "MacTalk",
+        "wxid": "gh_672f4fa64015",
+        "description": "墨问创始人，极客时间创始人。专注分享 AI 产品和科技创业，也写随笔和故事。笃信长期主义，用文字与你同行。著有《MacTalk·人生元编程》"
+      },
+      {
+        "nickname": "叶子情报",
+        "wxid": "gh_aee2627711d4",
+        "description": "解决您一切Mac上的使用问题！"
+      },
+      {
+        "nickname": "EmacsTalk",
+        "wxid": "gh_99e59c0dd5fd",
+        "description": "EmacsTalk 是一档专注在 Emacs 社区的程序员闲聊节目。干货不能不要，湿货不能没有。  官方网站：https://emacstalk.github.io/"
+      },
+      {
+        "nickname": "TALKIENS西语课",
+        "wxid": "gh_653661296f65",
+        "description": "线上西班牙语课程，跟西班牙老师在家1对1学习，A1-C1水平，免费申请试听课。"
+      }
+    ]
   },
   {
     "name": "码农翻身",
@@ -91,39 +139,113 @@
     "description": "一个技术和职场的宝藏博主"
   },
   {
-    "name": "极客时间",
-    "nickname": "极客时间",
-    "wxid": "gh_a4dbefba05a2",
-    "biz": "MzI4MTY5NTk4Ng==",
-    "description": "极客时间服务号"
+    "name": "稀土掘金技术社区",
+    "nickname": "稀土掘金技术社区",
+    "wxid": "gh_728136eff9e2",
+    "biz": "MzU2NjU3Nzg2Mg==",
+    "description": "掘金，一个帮助开发者成长的技术社区"
   },
   {
-    "name": "InfoQ",
-    "nickname": "InfoQ",
-    "wxid": "gh_b443474846ae",
-    "biz": "MjM5MDE0Mjc4MA==",
-    "description": "为一线互联网公司核心技术人员提供优质内容。科技圈的观察者，前沿技术的传播者。"
+    "name": "小林coding",
+    "nickname": "小林coding",
+    "wxid": "gh_fc46cf2353fc",
+    "biz": "MzUxODAzNDg4NQ==",
+    "description": "专注图解计算机基础，让天下没有难懂的八股文！刷题网站：xiaolincoding.com",
+    "candidates": [
+      {
+        "nickname": "小林coding",
+        "wxid": "gh_fc46cf2353fc",
+        "description": "专注图解计算机基础，让天下没有难懂的八股文！刷题网站：xiaolincoding.com"
+      },
+      {
+        "nickname": "小黎带中老年练肌肉",
+        "wxid": "gh_29912c6b0e1e",
+        "description": "⭐每天早上8点直播 ⭐国家级社会体育指导员"
+      },
+      {
+        "nickname": "小林",
+        "wxid": "gh_2c2f43e7b683",
+        "description": "小林的摄影-画画-书法-文字"
+      },
+      {
+        "nickname": "漫画家小林",
+        "wxid": "gh_ca9e76191689",
+        "description": "小林漫画：爱漫画、爱生活"
+      },
+      {
+        "nickname": "小林情头",
+        "wxid": "gh_02a3dafd1c37",
+        "description": "关注，即可拿所有原图！（已Ai超清修复）"
+      }
+    ]
   },
   {
-    "name": "CSDN",
-    "nickname": "CSDN",
-    "wxid": "gh_961aaed61288",
-    "biz": "MzkzMDY1NDgyOQ==",
-    "description": "成就一亿技术人"
+    "name": "JavaGuide",
+    "nickname": "JavaGuide",
+    "wxid": "gh_6a845dad3f42",
+    "biz": "Mzg2OTA0Njk0OA==",
+    "description": "后端技术指南 + AI 工程实践，覆盖计算机基础、数据库、分布式、高并发与系统设计，以及 AI Agent 与大模型工程实践。",
+    "candidates": [
+      {
+        "nickname": "JavaGuide",
+        "wxid": "gh_6a845dad3f42",
+        "description": "后端技术指南 + AI 工程实践，覆盖计算机基础、数据库、分布式、高并发与系统设计，以及 AI Agent 与大模型工程实践。"
+      },
+      {
+        "nickname": "Java专栏",
+        "wxid": "gh_32223845c29f",
+        "description": "一个Java、数据库、中间件、业内资讯、面试、学习资源等干货的知识分享社区。每天中午12：20准时推送。"
+      },
+      {
+        "nickname": "Java精选",
+        "wxid": "gh_b4e765c7772e",
+        "description": "专注分享前沿资讯，BATJ 大厂面试题解读，架构技术干货，微服务、高可用等架构设计，10年开发老兵帮你少走弯路，欢迎各领域程序员交流学习！"
+      },
+      {
+        "nickname": "Java团长",
+        "wxid": "gh_a05dc9bf554a",
+        "description": "专注Java相关技术：SSM、Spring全家桶、微服务、MySQL、MyCat、集群、分布式、中间件、Linux、网络、多线程，偶尔讲点运维Jenkins、Nexus、Docker、ELK，偶尔分享些技术干货，致力于Java全栈开发！"
+      },
+      {
+        "nickname": "Java技术栈",
+        "wxid": "gh_637d4d86f4fd",
+        "description": "专注分享Java核心技术、MySQL、Spring Boot、Spring Cloud、Redis、Kafka、Elasticsearch、Nacos、微服务、架构设计、设计模式、消息队列、缓存、面试题、面试辅导。"
+      }
+    ]
   },
   {
-    "name": "非著名程序员",
-    "nickname": "非著名程序员",
-    "wxid": "gh_f926f0011273",
-    "biz": "MjM5NDkxMTgyNw==",
-    "description": "关注我，一个带领程序员开阔眼界，提升认知，突破圈层，实现个体崛起的公众号。"
-  },
-  {
-    "name": "stormzhang",
-    "nickname": "stormzhang",
-    "wxid": "gh_8e217150b0ec",
-    "biz": "MzA4NTQwNDcyMA==",
-    "description": "15 年互联网技术&产品人，现 AI Builder。\n专注 AI 领域技术、产品、商业分享。"
+    "name": "芋道源码",
+    "nickname": "芋道源码",
+    "wxid": "gh_f4580c01069c",
+    "biz": "MzUzMTA2NTU2Ng==",
+    "description": "纯 Java 源码分享公众号，目前有「Dubbo」「SpringCloud」「Java 并发」「RocketMQ」「Sharding-JDBC」「MyCAT」「Elastic-Job」「SkyWalking」「Spring」等等",
+    "candidates": [
+      {
+        "nickname": "芋道源码",
+        "wxid": "gh_f4580c01069c",
+        "description": "纯 Java 源码分享公众号，目前有「Dubbo」「SpringCloud」「Java 并发」「RocketMQ」「Sharding-JDBC」「MyCAT」「Elastic-Job」「SkyWalking」「Spring」等等"
+      },
+      {
+        "nickname": "渠道码",
+        "wxid": "gh_8092d646249c",
+        "description": "保险知识科普，市场行情分享，业务渠道推荐，为保险人提供贴心服务！"
+      },
+      {
+        "nickname": "道源",
+        "wxid": "gh_9a31866f5fb5",
+        "description": "继承和发扬中国中医按摩川派詹黄张道源按摩文化，综合运用，让按摩学可以普罗大众，为每个家庭的身心健康做出些许的贡献。"
+      },
+      {
+        "nickname": "芋源有道",
+        "wxid": "gh_81dc86f75317",
+        "description": "每日分享有用、有趣、有温度的内容。 陪你读懂生活，收获知识与快乐，不错过每一份精彩。"
+      },
+      {
+        "nickname": "问道源码",
+        "wxid": "gh_29ca2dc7e40f",
+        "description": "精选全网优质站长亲测源码，一站式解决源码获取与搭建"
+      }
+    ]
   },
   {
     "name": "阮一峰的网络日志",
@@ -154,13 +276,6 @@
     "description": "推送高质量的原创技术与人文类的文章，成长共勉！"
   },
   {
-    "name": "前端之巅",
-    "nickname": "前端之巅",
-    "wxid": "gh_001f9d8a99b5",
-    "biz": "MzUxMzcxMzE5Ng==",
-    "description": "InfoQ大前端技术社群：囊括前端、移动、Node全栈一线技术，紧跟业界发展步伐。"
-  },
-  {
     "name": "奇舞周刊",
     "nickname": "奇舞精选",
     "wxid": "gh_4ef2f1ed6b20",
@@ -168,11 +283,38 @@
     "description": "《奇舞精选》是由奇舞团维护的前端技术公众号。除周五外，每天向大家推荐一篇前端相关技术文章，每周五向大家推送汇总周刊内容。"
   },
   {
-    "name": "Java知音",
-    "nickname": "Java知音",
-    "wxid": "gh_114a06b58d37",
-    "biz": "MzI4Njc5NjM1NQ==",
-    "description": "一个开始拥抱AI的Java公众号，两手都要抓，两手都要硬！"
+    "name": "前端充电宝",
+    "nickname": "前端充电宝",
+    "wxid": "gh_c160b24c3196",
+    "biz": "MzU2MTIyNDUwMA==",
+    "description": "聚焦前端开发，探索AI新浪潮：宝藏工具×前沿动态×实战技巧，解锁前端新可能！",
+    "candidates": [
+      {
+        "nickname": "前端充电宝",
+        "wxid": "gh_c160b24c3196",
+        "description": "聚焦前端开发，探索AI新浪潮：宝藏工具×前沿动态×实战技巧，解锁前端新可能！"
+      },
+      {
+        "nickname": "搜电充电",
+        "wxid": "gh_ba9ae3e2ee36",
+        "description": "专业充电更安全！搜电充电官方号「福利+服务」，日常有惊喜！"
+      },
+      {
+        "nickname": "美团充电宝",
+        "wxid": "gh_f2fb107957ba",
+        "description": "美团充电宝官方服务号。免押金租借，插入即归还，方便快捷。精彩生活，永不断电~"
+      },
+      {
+        "nickname": "汇电共享充电宝",
+        "wxid": "gh_5f1ebbc7c6d5",
+        "description": "汇电共享充电官方服务号。共享充电，共享生活！客服热线：400-069-9898"
+      },
+      {
+        "nickname": "充小宝充电",
+        "wxid": "gh_6c9edaa46c69",
+        "description": "充小宝官方服务号。共享充电，共享生活！客服热线：400-069-9898"
+      }
+    ]
   },
   {
     "name": "ImportNew",
@@ -210,32 +352,106 @@
     "description": "微软资深开发工程师，Google认证开发者专家。 本公众号是一个Android技术分享平台，不定期推送原创技术文章分享给大家。"
   },
   {
-    "name": "量子位",
-    "nickname": "量子位",
-    "wxid": "gh_114e76fd6e5d",
-    "biz": "MzIzNjc1NzUzMw==",
-    "description": "追踪人工智能新趋势，关注科技行业新突破"
+    "name": "美团技术团队",
+    "nickname": "美团技术团队",
+    "wxid": "gh_96d37a04e9bf",
+    "biz": "MjM5NjQ5MTI5OA==",
+    "description": "这里是美团、大众点评、美团无人机、美团无人车等技术团队对外技术交流的窗口，我们会定期分享在AI领域的探索与实践、研发技能和技术招聘信息，希望跟大家一起交流学习，拥抱未来。",
+    "candidates": [
+      {
+        "nickname": "美团技术团队",
+        "wxid": "gh_96d37a04e9bf",
+        "description": "这里是美团、大众点评、美团无人机、美团无人车等技术团队对外技术交流的窗口，我们会定期分享在AI领域的探索与实践、研发技能和技术招聘信息，希望跟大家一起交流学习，拥抱未来。"
+      },
+      {
+        "nickname": "美团",
+        "wxid": "wxid_6853388533711",
+        "description": "美团服务号，吃喝玩乐全都有。精选优质商家就等你来，大额红包福利就等你抢。餐厅美食、外卖、电影购票、酒店旅游、休闲娱乐，还有什么吗？关注我们就知道了！"
+      },
+      {
+        "nickname": "美团充电宝合伙人",
+        "wxid": "gh_037bcd6e14c7",
+        "description": "Hello！这里是美团充电宝合伙人官方服务号！美团充电宝——美团实力项目，无需行业经验，海量商户资源，总部全程扶持，个人团队均可做！共享充电宝合作找美团充电宝，和美团一起共享百亿蓝海市场！"
+      },
+      {
+        "nickname": "美团外卖吃喝玩乐",
+        "wxid": "gh_3a1a3142bdfe",
+        "description": "✅【官方正版入口】无限量关注✅大额外卖红包天天免费领💯关注官方号开启省钱之旅~"
+      },
+      {
+        "nickname": "美团外卖省钱宝",
+        "wxid": "gh_1a07b63b75a2",
+        "description": "✅【官方正版入口】无限量关注✅大额外卖红包天天免费领💯关注官方号开启省钱之旅~"
+      }
+    ]
   },
   {
-    "name": "机器之心",
-    "nickname": "机器之心",
-    "wxid": "gh_dbc0a5474692",
-    "biz": "MzA3MzI4MjgzMw==",
-    "description": "专业的人工智能媒体和产业服务平台"
+    "name": "阿里云开发者",
+    "nickname": "阿里云开发者",
+    "wxid": "gh_7fc9311f04ad",
+    "biz": "MzIzOTU0NTQ0MA==",
+    "description": "阿里巴巴官方技术号，关于阿里的技术创新均呈现于此。",
+    "candidates": [
+      {
+        "nickname": "阿里云开发者",
+        "wxid": "gh_7fc9311f04ad",
+        "description": "阿里巴巴官方技术号，关于阿里的技术创新均呈现于此。"
+      },
+      {
+        "nickname": "阿里云",
+        "wxid": "gh_df8e91cf9944",
+        "description": "计算，为了无法计算的价值"
+      },
+      {
+        "nickname": "阿里云云原生",
+        "wxid": "gh_1b4550954911",
+        "description": "发布云原生技术资讯、汇集云原生技术详细内容，定期举办云原生活动、直播，阿里产品及用户实战发布。与你并肩探索云原生技术点滴，分享你需要的云原生内容。"
+      },
+      {
+        "nickname": "阿里云云栖号",
+        "wxid": "gh_015af649354b",
+        "description": "云栖官方内容平台，汇聚云栖365优质内容。"
+      },
+      {
+        "nickname": "阿里云大数据AI平台",
+        "wxid": "gh_1947dc03b7dc",
+        "description": "阿里云大数据AI平台依托阿里领先的云基础设施、大数据和AI工程能力、场景算法技术和多年行业实践，一站式地为企业和开发者提供云原生的大数据和AI能力体系。帮助提升AI应用开发效率，促进AI在产业中规模化落地，激发业务价值。"
+      }
+    ]
   },
   {
-    "name": "新智元",
-    "nickname": "新智元",
-    "wxid": "gh_108f2a2a27f4",
-    "biz": "MzI3MTA0MTk1MA==",
-    "description": "智能+中国主平台，致力于推动中国从互联网+迈向智能+新纪元。重点关注人工智能、机器人等前沿领域发展，关注人机融合、人工智能和机器人革命对人类社会与文明进化的影响，领航中国新智能时代。"
-  },
-  {
-    "name": "夕小瑶科技说",
-    "nickname": "夕小瑶科技说",
-    "wxid": "gh_9bd170629475",
-    "biz": "MzIwNzc2NTk0NQ==",
-    "description": "低负担解码AI世界，硬核也可爱！"
+    "name": "腾讯技术工程",
+    "nickname": "腾讯技术工程",
+    "wxid": "gh_d14465b5ce6c",
+    "biz": "MjM5ODYwMjI2MA==",
+    "description": "腾讯技术官方号。腾讯技术创新、前沿领域发布解读平台。",
+    "candidates": [
+      {
+        "nickname": "腾讯技术工程",
+        "wxid": "gh_d14465b5ce6c",
+        "description": "腾讯技术官方号。腾讯技术创新、前沿领域发布解读平台。"
+      },
+      {
+        "nickname": "腾讯云开发者",
+        "wxid": "gh_dac78eabad6f",
+        "description": "腾讯云官方社区公众号，汇聚技术开发者群体，分享技术干货，打造技术影响力交流社区。"
+      },
+      {
+        "nickname": "腾讯技术",
+        "wxid": "gh_6866e1848f15",
+        "description": "分享腾讯有料的技术，做有趣的技术人"
+      },
+      {
+        "nickname": "腾讯科技",
+        "wxid": "qqtech",
+        "description": "腾讯新闻旗下腾讯科技官方账号，在这里读懂科技！"
+      },
+      {
+        "nickname": "腾讯IT技术",
+        "wxid": "gh_171db523ccd2",
+        "description": "腾讯IT技术官方号，探索企业安全、云原生等前沿领域技术，分享腾讯在IT管理等方面的实践经验"
+      }
+    ]
   },
   {
     "name": "Datawhale",
@@ -245,10 +461,37 @@
     "description": "一个专注于AI领域的开源组织，汇聚了众多优秀学习者，使命-for the learner，和学习者一起成长。"
   },
   {
-    "name": "AI前线",
-    "nickname": "AI前线",
-    "wxid": "gh_b7682654f4a3",
-    "biz": "MzU1NDA4NjU2MA==",
-    "description": "面向AI爱好者、开发者和科学家，提供大模型最新资讯、AI技术分享干货、一线业界实践案例，助你全面拥抱AIGC。"
+    "name": "Python猫",
+    "nickname": "Python猫",
+    "wxid": "gh_dace31af0e37",
+    "biz": "MzUyOTk2MTcwNg==",
+    "description": "分享Python进阶、Python哲学、文章翻译、资源工具等内容",
+    "candidates": [
+      {
+        "nickname": "Python猫",
+        "wxid": "gh_dace31af0e37",
+        "description": "分享Python进阶、Python哲学、文章翻译、资源工具等内容"
+      },
+      {
+        "nickname": "python",
+        "wxid": "gh_c9f45ba5bbb7",
+        "description": "每天10分钟，零基础学会Python，回复「666」领取 Python学习资料，涉及后端，爬虫开发，AI，数据分析，运维测试等等。"
+      },
+      {
+        "nickname": "Python初级入门到精通",
+        "wxid": "gh_2c025f017c9c",
+        "description": "Python初级入门到精通是面向零基础新手学习Python编程的课程，在这里，你能够学到关于Python编程的基础知识，能够从一个小白成长到独立接项目的能力"
+      },
+      {
+        "nickname": "Python爱好者社区",
+        "wxid": "gh_119d9e89b19e",
+        "description": "人生苦短，我用Python。分享Python相关的技术文章、工具资源、精选课程、视频教程、热点资讯、学习资料等。每天自动更新和推送。"
+      },
+      {
+        "nickname": "Python爬虫",
+        "wxid": "gh_498bf54a1a5f",
+        "description": "分享python技术和各类资源"
+      }
+    ]
   }
 ]
