@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { LOCALES, localized, splitLocale } from '@/lib/locales';
-import { markLocaleSwitch } from '@/router';
+import { LOCALES, localized, markLocaleSwitch, splitLocale } from '@/lib/locales';
 
 const { locale } = useI18n();
 const route = useRoute();

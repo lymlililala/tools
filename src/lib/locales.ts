@@ -76,3 +76,19 @@ export function localized(basePath: string, code: string): string {
   }
   return `${l.prefix}${clean}`;
 }
+
+// ── 语言切换「放行」标志 ──────────────────────────────────────────────────────
+// 放在这个无应用依赖的模块里（而非 router.ts），避免 locale-selector 组件
+// 反向 import router.ts 造成循环依赖（router→layouts→navbar→selector→router）。
+// 语言切换器切到根语言(en)前调 markLocaleSwitch() 放行一次路由粘性守卫。
+let _localeSwitch = false;
+export function markLocaleSwitch(): void {
+  _localeSwitch = true;
+}
+/** 守卫读取并复位标志：本次是否由语言切换触发。 */
+export function consumeLocaleSwitch(): boolean {
+  const v = _localeSwitch;
+  _localeSwitch = false;
+  return v;
+}
+

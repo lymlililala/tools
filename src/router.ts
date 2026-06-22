@@ -7,7 +7,7 @@ import CategoryPage from './pages/Category.page.vue';
 import { tools } from './tools';
 import { config } from './config';
 import { routes as demoRoutes } from './ui/demo/demo.routes';
-import { PREFIXED_CODES, splitLocale } from './lib/locales';
+import { PREFIXED_CODES, consumeLocaleSwitch, splitLocale } from './lib/locales';
 
 // 博客两个页面懒加载：把 marked/dompurify 等移出主包，减小首屏 JS。
 // 列表页 hover 时会一并预取详情 chunk（见 Articles.page.vue），故点击不额外等 JS。
@@ -117,15 +117,10 @@ const router = createRouter({
 // ── 语言「粘性」守卫 ─────────────────────────────────────────────────────────
 // 现有 16+13 处 <router-link> 都指向无前缀路径（如 /about）。当用户已在 /zh 下，
 // 点这些内部链接应自动留在中文（补 /zh 前缀），免去逐个改链接。
-// 语言切换器主动切到根语言（en）时会先调 markLocaleSwitch() 放行一次，避免被这里弹回。
-let _localeSwitch = false;
-export function markLocaleSwitch() {
-  _localeSwitch = true;
-}
-
+// 语言切换器主动切到根语言（en）时会先调 markLocaleSwitch()（在 lib/locales）放行
+// 一次，避免被这里弹回。标志放在 lib/locales 而非本模块，以免组件反向 import 成环。
 router.beforeEach((to, from) => {
-  if (_localeSwitch) {
-    _localeSwitch = false;
+  if (consumeLocaleSwitch()) {
     return true;
   }
   const fromLoc = splitLocale(from.path).locale;
