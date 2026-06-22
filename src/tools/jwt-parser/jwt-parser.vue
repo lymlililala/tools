@@ -8,6 +8,7 @@ import { useStyleStore } from '@/stores/style.store';
 
 const { copy } = useClipboard();
 const styleStore = useStyleStore();
+const { t } = useI18n();
 
 // ── JWT 输入 ──────────────────────────────────────────────────────────────
 const rawJwt = useStorage(
@@ -147,7 +148,7 @@ const COLORS = {
     <!-- ① 输入区 ────────────────────────────────────────────────────── -->
     <c-card mb-4>
       <div class="input-header">
-        <span class="jwt-input-label">JWT Token</span>
+        <span class="jwt-input-label">{{ t('tools.jwt-parser.jwtToken') }}</span>
         <div class="input-actions">
           <n-tooltip v-if="rawJwt" trigger="hover" placement="top">
             <template #trigger>
@@ -160,7 +161,7 @@ const COLORS = {
                 <icon-mdi-content-copy v-else class="btn-icon" />
               </button>
             </template>
-            {{ copiedKey === 'token' ? 'Copied!' : 'Copy token' }}
+            {{ copiedKey === 'token' ? t('tools.jwt-parser.copied') : t('tools.jwt-parser.copyToken') }}
           </n-tooltip>
           <n-tooltip v-if="rawJwt" trigger="hover" placement="top">
             <template #trigger>
@@ -168,7 +169,7 @@ const COLORS = {
                 <icon-mdi-close class="btn-icon" />
               </button>
             </template>
-            Clear
+            {{ t('tools.jwt-parser.clear') }}
           </n-tooltip>
         </div>
       </div>
@@ -177,7 +178,7 @@ const COLORS = {
         v-model="rawJwt"
         class="jwt-textarea"
         :class="{ 'has-error': !isEmpty && !isDecodeSuccess }"
-        placeholder="Paste your JWT here…&#10;e.g. eyJhbGci…"
+        :placeholder="t('tools.jwt-parser.textareaPlaceholder')"
         rows="5"
         spellcheck="false"
         autocomplete="off"
@@ -187,7 +188,7 @@ const COLORS = {
       <transition name="err-slide">
         <div v-if="!isEmpty && !isDecodeSuccess" class="error-inline">
           <icon-mdi-alert-circle-outline class="ei-icon" />
-          <span>Invalid JWT — must have 3 Base64URL-encoded segments separated by dots</span>
+          <span>{{ t('tools.jwt-parser.invalidJwt') }}</span>
         </div>
       </transition>
 
@@ -204,15 +205,15 @@ const COLORS = {
       <div v-if="isDecodeSuccess" class="jwt-legend">
         <span class="legend-item" style="color: #ef4444">
           <span class="legend-dot" style="background:#ef4444" />
-          Header
+          {{ t('tools.jwt-parser.header') }}
         </span>
         <span class="legend-item" style="color: #a855f7">
           <span class="legend-dot" style="background:#a855f7" />
-          Payload
+          {{ t('tools.jwt-parser.payload') }}
         </span>
         <span class="legend-item" style="color: #16a34a">
           <span class="legend-dot" style="background:#16a34a" />
-          Signature
+          {{ t('tools.jwt-parser.signature') }}
         </span>
       </div>
     </c-card>
@@ -220,7 +221,7 @@ const COLORS = {
     <!-- ② 空状态 ──────────────────────────────────────────────────────── -->
     <div v-if="isEmpty" class="empty-state">
       <icon-mdi-shield-key-outline class="es-icon" />
-      <span class="es-text">Paste a JWT token above to decode and inspect it</span>
+      <span class="es-text">{{ t('tools.jwt-parser.emptyHint') }}</span>
     </div>
 
     <!-- ③ 解析结果 ────────────────────────────────────────────────────── -->
@@ -229,7 +230,7 @@ const COLORS = {
       <div class="jwt-section" :style="{ background: COLORS.header.bg, borderColor: COLORS.header.border }">
         <div class="section-header" :style="{ color: COLORS.header.text }">
           <span class="section-badge" :style="{ background: COLORS.header.badge }">H</span>
-          Header
+          {{ t('tools.jwt-parser.header') }}
           <div class="section-actions">
             <n-tooltip trigger="hover" placement="top">
               <template #trigger>
@@ -242,7 +243,7 @@ const COLORS = {
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copiedKey === 'header' ? 'Copied!' : 'Copy as JSON' }}
+              {{ copiedKey === 'header' ? t('tools.jwt-parser.copied') : t('tools.jwt-parser.copyAsJson') }}
             </n-tooltip>
           </div>
         </div>
@@ -268,7 +269,7 @@ const COLORS = {
       <div class="jwt-section" :style="{ background: COLORS.payload.bg, borderColor: COLORS.payload.border }">
         <div class="section-header" :style="{ color: COLORS.payload.text }">
           <span class="section-badge" :style="{ background: COLORS.payload.badge }">P</span>
-          Payload
+          {{ t('tools.jwt-parser.payload') }}
           <div class="section-actions">
             <n-tooltip trigger="hover" placement="top">
               <template #trigger>
@@ -281,7 +282,7 @@ const COLORS = {
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copiedKey === 'payload' ? 'Copied!' : 'Copy as JSON' }}
+              {{ copiedKey === 'payload' ? t('tools.jwt-parser.copied') : t('tools.jwt-parser.copyAsJson') }}
             </n-tooltip>
           </div>
         </div>
@@ -307,7 +308,7 @@ const COLORS = {
       <div class="jwt-section" :style="{ background: COLORS.signature.bg, borderColor: COLORS.signature.border }">
         <div class="section-header" :style="{ color: COLORS.signature.text }">
           <span class="section-badge" :style="{ background: COLORS.signature.badge }">S</span>
-          Signature
+          {{ t('tools.jwt-parser.signature') }}
         </div>
 
         <div class="kv-sig">
@@ -318,7 +319,7 @@ const COLORS = {
         <div class="verify-section">
           <div class="verify-label">
             <icon-mdi-shield-check-outline class="verify-icon" />
-            Verify Signature
+            {{ t('tools.jwt-parser.verifySignature') }}
             <span class="verify-hint">(HS256 / HS384 / HS512)</span>
           </div>
           <div class="verify-input-row">
@@ -327,11 +328,11 @@ const COLORS = {
                 v-model="secretKey"
                 class="verify-input"
                 :type="showSecret ? 'text' : 'password'"
-                placeholder="Enter your HMAC secret key to verify…"
+                :placeholder="t('tools.jwt-parser.secretPlaceholder')"
                 spellcheck="false"
                 autocomplete="off"
               >
-              <button class="eye-btn" :title="showSecret ? 'Hide' : 'Show'" @click="showSecret = !showSecret">
+              <button class="eye-btn" :title="showSecret ? t('tools.jwt-parser.hide') : t('tools.jwt-parser.show')" @click="showSecret = !showSecret">
                 <icon-mdi-eye-off-outline v-if="showSecret" class="eye-icon" />
                 <icon-mdi-eye-outline v-else class="eye-icon" />
               </button>
@@ -342,15 +343,15 @@ const COLORS = {
           <transition name="verify-fade">
             <div v-if="verifyState === 'valid'" class="valid verify-result">
               <icon-mdi-shield-check class="vr-icon" />
-              Signature verified — this JWT has not been tampered with
+              {{ t('tools.jwt-parser.verifyValid') }}
             </div>
             <div v-else-if="verifyState === 'invalid'" class="verify-result invalid">
               <icon-mdi-shield-alert class="vr-icon" />
-              Invalid signature — the secret key is wrong or the token has been modified
+              {{ t('tools.jwt-parser.verifyInvalid') }}
             </div>
             <div v-else-if="verifyState === 'unsupported'" class="verify-result unsupported">
               <icon-mdi-information-outline class="vr-icon" />
-              Signature verification is only supported for HS256 / HS384 / HS512 algorithms
+              {{ t('tools.jwt-parser.verifyUnsupported') }}
             </div>
           </transition>
         </div>

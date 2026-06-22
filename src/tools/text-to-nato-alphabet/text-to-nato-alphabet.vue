@@ -2,6 +2,8 @@
 import { textToNatoWords } from './text-to-nato-alphabet.service';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const input = ref('');
 
 // 分词结构用于排版
@@ -24,12 +26,12 @@ const hasOutput = computed(() => natoGroups.value.length > 0);
     <!-- 输入区 -->
     <c-card mb-3>
       <div class="section-label">
-        Input
+        {{ t('tools.text-to-nato-alphabet.input') }}
       </div>
       <div class="input-row">
         <c-input-text
           v-model:value="input"
-          placeholder="Put your text here… e.g. SOS"
+          :placeholder="t('tools.text-to-nato-alphabet.inputPlaceholder')"
           raw-text
           multiline
           autosize
@@ -42,7 +44,7 @@ const hasOutput = computed(() => natoGroups.value.length > 0);
           circle
           size="small"
           class="clear-btn"
-          title="Clear"
+          :title="t('tools.text-to-nato-alphabet.clear')"
           @click="input = ''"
         >
           <icon-mdi-close />
@@ -54,7 +56,7 @@ const hasOutput = computed(() => natoGroups.value.length > 0);
     <c-card class="output-card">
       <div class="output-header">
         <div class="section-label">
-          NATO Phonetic Alphabet
+          {{ t('tools.text-to-nato-alphabet.title') }}
         </div>
         <c-button
           v-if="hasOutput"
@@ -68,14 +70,14 @@ const hasOutput = computed(() => natoGroups.value.length > 0);
             <icon-mdi-check v-if="isJustCopied" key="check" class="icon-check" />
             <icon-mdi-content-copy v-else key="copy" />
           </transition>
-          {{ isJustCopied ? 'Copied!' : 'Copy' }}
+          {{ isJustCopied ? t('tools.text-to-nato-alphabet.copied') : t('tools.text-to-nato-alphabet.copy') }}
         </c-button>
       </div>
 
       <!-- 空状态占位 -->
       <div v-if="!hasOutput" class="empty-state">
         <span class="empty-preview">Alfa · Bravo · Charlie · Delta · Echo…</span>
-        <span class="empty-hint">Results will appear here as you type</span>
+        <span class="empty-hint">{{ t('tools.text-to-nato-alphabet.emptyHint') }}</span>
       </div>
 
       <!-- 分组结果 -->

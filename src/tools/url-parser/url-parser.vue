@@ -5,6 +5,7 @@ import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
 const { copy } = useClipboard();
+const { t } = useI18n();
 
 // ── 输入 ──────────────────────────────────────────────────────────────────
 const urlToParse = useStorage(
@@ -32,14 +33,14 @@ const filteredFields = computed(() => {
     return [];
   }
   return [
-    { label: 'Protocol', value: u.protocol, color: '#6366f1', icon: '🔒' },
-    { label: 'Username', value: u.username, color: '#f59e0b', icon: '👤' },
-    { label: 'Password', value: u.password, color: '#f59e0b', icon: '🔑' },
-    { label: 'Hostname', value: u.hostname, color: '#10b981', icon: '🌐' },
-    { label: 'Port', value: u.port, color: '#3b82f6', icon: '🔌' },
-    { label: 'Pathname', value: u.pathname, color: '#8b5cf6', icon: '📁' },
-    { label: 'Search', value: u.search, color: '#f97316', icon: '🔗' },
-    { label: 'Hash', value: u.hash, color: '#ec4899', icon: '#️⃣' },
+    { key: 'protocol', label: t('tools.url-parser.protocol'), value: u.protocol, color: '#6366f1', icon: '🔒' },
+    { key: 'username', label: t('tools.url-parser.username'), value: u.username, color: '#f59e0b', icon: '👤' },
+    { key: 'password', label: t('tools.url-parser.password'), value: u.password, color: '#f59e0b', icon: '🔑' },
+    { key: 'hostname', label: t('tools.url-parser.hostname'), value: u.hostname, color: '#10b981', icon: '🌐' },
+    { key: 'port', label: t('tools.url-parser.port'), value: u.port, color: '#3b82f6', icon: '🔌' },
+    { key: 'pathname', label: t('tools.url-parser.pathname'), value: u.pathname, color: '#8b5cf6', icon: '📁' },
+    { key: 'search', label: t('tools.url-parser.search'), value: u.search, color: '#f97316', icon: '🔗' },
+    { key: 'hash', label: t('tools.url-parser.hash'), value: u.hash, color: '#ec4899', icon: '#️⃣' },
   ].filter(f => f.value !== '' && f.value !== null);
 });
 
@@ -115,14 +116,14 @@ async function copyField(key: string, value: string) {
     <!-- ① 输入区 -->
     <c-card mb-4>
       <div class="input-header">
-        <span class="input-label">URL to parse</span>
+        <span class="input-label">{{ t('tools.url-parser.urlToParse') }}</span>
         <n-tooltip v-if="urlToParse" trigger="hover" placement="top">
           <template #trigger>
             <button class="icon-btn icon-btn-danger" @click="clearUrl">
               <icon-mdi-close class="btn-icon" />
             </button>
           </template>
-          Clear
+          {{ t('tools.url-parser.clear') }}
         </n-tooltip>
       </div>
 
@@ -141,7 +142,7 @@ async function copyField(key: string, value: string) {
       <transition name="err-slide">
         <div v-if="showError" class="error-inline">
           <icon-mdi-alert-circle-outline class="ei-icon" />
-          <span>Invalid URL — make sure the protocol (https://) is included</span>
+          <span>{{ t('tools.url-parser.invalidUrl') }}</span>
         </div>
       </transition>
     </c-card>
@@ -151,7 +152,7 @@ async function copyField(key: string, value: string) {
       <!-- ② URL Structure -->
       <c-card mb-3>
         <div class="section-title">
-          <span>🌳</span> URL Structure
+          <span>🌳</span> {{ t('tools.url-parser.urlStructure') }}
         </div>
 
         <!-- 彩色预览 -->
@@ -176,7 +177,7 @@ async function copyField(key: string, value: string) {
         <div class="field-tree">
           <div
             v-for="(field, i) in filteredFields"
-            :key="field.label"
+            :key="field.key"
             class="tree-node"
             :class="{ last: i === filteredFields.length - 1 }"
           >
@@ -190,11 +191,11 @@ async function copyField(key: string, value: string) {
               <span class="node-value">{{ field.value }}</span>
               <button
                 class="node-copy"
-                :class="{ copied: copiedKey === field.label }"
-                :title="`Copy ${field.label}`"
-                @click="copyField(field.label, field.value)"
+                :class="{ copied: copiedKey === field.key }"
+                :title="t('tools.url-parser.copyField', { field: field.label })"
+                @click="copyField(field.key, field.value)"
               >
-                <icon-mdi-check v-if="copiedKey === field.label" class="copy-icon success" />
+                <icon-mdi-check v-if="copiedKey === field.key" class="copy-icon success" />
                 <icon-mdi-content-copy v-else class="copy-icon" />
               </button>
             </div>
@@ -206,16 +207,16 @@ async function copyField(key: string, value: string) {
       <c-card>
         <div class="section-title">
           <span>🔍</span>
-          Query Parameters
+          {{ t('tools.url-parser.queryParameters') }}
           <span class="param-count">{{ queryParams.length }}</span>
-          <button class="add-param-btn" title="Add parameter" @click="addParam">
+          <button class="add-param-btn" :title="t('tools.url-parser.addParameter')" @click="addParam">
             <icon-mdi-plus class="btn-icon" />
-            Add
+            {{ t('tools.url-parser.add') }}
           </button>
         </div>
 
         <div v-if="queryParams.length === 0" class="empty-params">
-          No query parameters — click Add to insert one
+          {{ t('tools.url-parser.noParams') }}
         </div>
 
         <div v-else class="param-grid">
@@ -228,7 +229,7 @@ async function copyField(key: string, value: string) {
             <input
               class="param-input param-key"
               :value="param.key"
-              placeholder="key"
+              :placeholder="t('tools.url-parser.keyPlaceholder')"
               spellcheck="false"
               @input="updateParamKey(idx, ($event.target as HTMLInputElement).value)"
             >
@@ -237,7 +238,7 @@ async function copyField(key: string, value: string) {
             <input
               class="param-input param-value-input"
               :value="param.value"
-              placeholder="value"
+              :placeholder="t('tools.url-parser.valuePlaceholder')"
               spellcheck="false"
               @input="updateParamValue(idx, ($event.target as HTMLInputElement).value)"
             >
@@ -245,14 +246,14 @@ async function copyField(key: string, value: string) {
             <button
               class="node-copy"
               :class="{ copied: copiedKey === `param-${idx}` }"
-              :title="`Copy value: ${param.value}`"
+              :title="t('tools.url-parser.copyValue', { value: param.value })"
               @click="copyField(`param-${idx}`, param.value)"
             >
               <icon-mdi-check v-if="copiedKey === `param-${idx}`" class="copy-icon success" />
               <icon-mdi-content-copy v-else class="copy-icon" />
             </button>
             <!-- 删除 -->
-            <button class="node-copy remove-btn" :title="`Remove ${param.key}`" @click="removeParam(idx)">
+            <button class="node-copy remove-btn" :title="t('tools.url-parser.removeParam', { key: param.key })" @click="removeParam(idx)">
               <icon-mdi-close class="copy-icon" />
             </button>
           </div>
@@ -263,7 +264,7 @@ async function copyField(key: string, value: string) {
     <!-- 空状态 -->
     <div v-else-if="!showError && urlToParse.trim() === ''" class="empty-state">
       <span class="es-icon">🔗</span>
-      <span>Paste a URL above to start parsing</span>
+      <span>{{ t('tools.url-parser.emptyState') }}</span>
     </div>
   </div>
 </template>

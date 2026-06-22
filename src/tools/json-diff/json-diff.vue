@@ -6,6 +6,8 @@ import { withDefaultOnError } from '@/utils/defaults';
 import { isNotThrowing } from '@/utils/boolean';
 import { useStyleStore } from '@/stores/style.store';
 
+const { t } = useI18n();
+
 const styleStore = useStyleStore();
 
 const rawLeftJson = ref('');
@@ -23,13 +25,13 @@ const leftError = computed(() => {
   if (!rawLeftJson.value.trim()) {
     return '';
   }
-  return isNotThrowing(() => JSON5.parse(rawLeftJson.value)) ? '' : 'Invalid JSON format';
+  return isNotThrowing(() => JSON5.parse(rawLeftJson.value)) ? '' : t('tools.json-diff.invalidJson');
 });
 const rightError = computed(() => {
   if (!rawRightJson.value.trim()) {
     return '';
   }
-  return isNotThrowing(() => JSON5.parse(rawRightJson.value)) ? '' : 'Invalid JSON format';
+  return isNotThrowing(() => JSON5.parse(rawRightJson.value)) ? '' : t('tools.json-diff.invalidJson');
 });
 
 // ── 格式化 ────────────────────────────────────────────────────────────────
@@ -78,19 +80,19 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
           <template #trigger>
             <button class="tool-btn" :disabled="!rawLeftJson || !!leftError" @click="formatLeft">
               <icon-mdi-code-json class="tb-icon" />
-              Format Left
+              {{ t('tools.json-diff.formatLeft') }}
             </button>
           </template>
-          Prettify left JSON
+          {{ t('tools.json-diff.prettifyLeft') }}
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
             <button class="tool-btn" :disabled="!rawLeftJson" @click="clearLeft">
               <icon-mdi-close class="tb-icon" />
-              Clear Left
+              {{ t('tools.json-diff.clearLeft') }}
             </button>
           </template>
-          Clear left panel
+          {{ t('tools.json-diff.clearLeftPanel') }}
         </n-tooltip>
       </div>
 
@@ -101,16 +103,16 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
               <icon-mdi-swap-horizontal class="swap-icon" />
             </button>
           </template>
-          Swap left ↔ right
+          {{ t('tools.json-diff.swap') }}
         </n-tooltip>
         <n-tooltip v-if="hasContent" trigger="hover" placement="top">
           <template #trigger>
             <button class="tool-btn tool-btn--danger" @click="clearAll">
               <icon-mdi-delete-outline class="tb-icon" />
-              Clear All
+              {{ t('tools.json-diff.clearAll') }}
             </button>
           </template>
-          Clear both panels
+          {{ t('tools.json-diff.clearBothPanels') }}
         </n-tooltip>
       </div>
 
@@ -119,19 +121,19 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
           <template #trigger>
             <button class="tool-btn" :disabled="!rawRightJson || !!rightError" @click="formatRight">
               <icon-mdi-code-json class="tb-icon" />
-              Format Right
+              {{ t('tools.json-diff.formatRight') }}
             </button>
           </template>
-          Prettify right JSON
+          {{ t('tools.json-diff.prettifyRight') }}
         </n-tooltip>
         <n-tooltip trigger="hover" placement="top">
           <template #trigger>
             <button class="tool-btn" :disabled="!rawRightJson" @click="clearRight">
               <icon-mdi-close class="tb-icon" />
-              Clear Right
+              {{ t('tools.json-diff.clearRight') }}
             </button>
           </template>
-          Clear right panel
+          {{ t('tools.json-diff.clearRightPanel') }}
         </n-tooltip>
       </div>
     </div>
@@ -143,16 +145,16 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
         <div class="pane-header">
           <span class="pane-label">
             <icon-mdi-numeric-1-circle-outline class="pane-num" />
-            First JSON
+            {{ t('tools.json-diff.firstJson') }}
           </span>
           <span v-if="rawLeftJson && !leftError" class="valid pane-status">
-            <icon-mdi-check-circle-outline class="ps-icon" />Valid
+            <icon-mdi-check-circle-outline class="ps-icon" />{{ t('tools.json-diff.valid') }}
           </span>
         </div>
         <c-code-input
           v-model="rawLeftJson"
           language="json"
-          placeholder="Paste your first JSON here…&#10;&#10;{&#10;  &quot;name&quot;: &quot;Tom&quot;,&#10;  &quot;age&quot;: 25&#10;}"
+          :placeholder="t('tools.json-diff.firstPlaceholder')"
           :class="{ 'input-error-ring': !!leftError }"
           min-height="calc(100vh - 218px)"
         />
@@ -169,16 +171,16 @@ const hasContent = computed(() => rawLeftJson.value.trim() || rawRightJson.value
         <div class="pane-header">
           <span class="pane-label">
             <icon-mdi-numeric-2-circle-outline class="pane-num" />
-            JSON to Compare
+            {{ t('tools.json-diff.jsonToCompare') }}
           </span>
           <span v-if="rawRightJson && !rightError" class="pane-status valid">
-            <icon-mdi-check-circle-outline class="ps-icon" />Valid
+            <icon-mdi-check-circle-outline class="ps-icon" />{{ t('tools.json-diff.valid') }}
           </span>
         </div>
         <c-code-input
           v-model="rawRightJson"
           language="json"
-          placeholder="Paste the JSON to compare here…&#10;&#10;{&#10;  &quot;name&quot;: &quot;Tom&quot;,&#10;  &quot;age&quot;: 26&#10;}"
+          :placeholder="t('tools.json-diff.comparePlaceholder')"
           :class="{ 'input-error-ring': !!rightError }"
           min-height="calc(100vh - 218px)"
         />

@@ -3,6 +3,8 @@ import convert from 'xml-js';
 import xmlFormat from 'xml-formatter';
 import { refDebounced } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 转换选项 ─────────────────────────────────────────────────────────────
 const ignoreAttributes = ref(false);
 const convertNumbers = ref(false);
@@ -140,15 +142,15 @@ async function copyJson() {
     <div class="settings-bar">
       <label class="setting-item">
         <n-switch v-model:value="ignoreAttributes" size="small" />
-        <span class="setting-label">Ignore attributes</span>
+        <span class="setting-label">{{ t('tools.xml-to-json.ignoreAttributes') }}</span>
       </label>
       <label class="setting-item">
         <n-switch v-model:value="convertNumbers" size="small" />
-        <span class="setting-label">Auto-convert numbers</span>
+        <span class="setting-label">{{ t('tools.xml-to-json.autoConvertNumbers') }}</span>
       </label>
       <label class="setting-item">
         <n-switch v-model:value="compactMode" size="small" />
-        <span class="setting-label">Compact mode</span>
+        <span class="setting-label">{{ t('tools.xml-to-json.compactMode') }}</span>
       </label>
     </div>
 
@@ -157,34 +159,34 @@ async function copyJson() {
       <!-- 左：XML 输入 -->
       <div class="pane" :class="{ 'pane-error': hasError }">
         <div class="pane-header">
-          <span class="pane-title">XML Input</span>
+          <span class="pane-title">{{ t('tools.xml-to-json.xmlInput') }}</span>
           <div class="pane-actions">
             <!-- 上传文件 -->
             <n-tooltip trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Upload .xml file" @click="triggerFileUpload">
+                <button class="icon-btn" :title="t('tools.xml-to-json.uploadXml')" @click="triggerFileUpload">
                   <icon-mdi-upload class="btn-icon" />
                 </button>
               </template>
-              Upload .xml file
+              {{ t('tools.xml-to-json.uploadXml') }}
             </n-tooltip>
             <!-- 格式化 -->
             <n-tooltip v-if="xmlInput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Format XML" @click="formatXml">
+                <button class="icon-btn" :title="t('tools.xml-to-json.formatXml')" @click="formatXml">
                   <icon-mdi-code-tags class="btn-icon" />
                 </button>
               </template>
-              Format XML
+              {{ t('tools.xml-to-json.formatXml') }}
             </n-tooltip>
             <!-- 清空 -->
             <n-tooltip v-if="xmlInput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn icon-btn-danger" title="Clear" @click="clearInput">
+                <button class="icon-btn icon-btn-danger" :title="t('tools.xml-to-json.clear')" @click="clearInput">
                   <icon-mdi-close class="btn-icon" />
                 </button>
               </template>
-              Clear
+              {{ t('tools.xml-to-json.clear') }}
             </n-tooltip>
           </div>
         </div>
@@ -192,7 +194,7 @@ async function copyJson() {
         <c-code-input
           v-model="xmlInput"
           language="xml"
-          placeholder="Paste your XML here…  e.g. <root><name>John</name></root>"
+          :placeholder="t('tools.xml-to-json.xmlPlaceholder')"
           min-height="calc(100vh - 218px)"
           :class="{ 'input-error-ring': hasError }"
         />
@@ -209,26 +211,26 @@ async function copyJson() {
       <!-- 右：JSON 输出 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">JSON Output</span>
+          <span class="pane-title">{{ t('tools.xml-to-json.jsonOutput') }}</span>
           <div class="pane-actions">
             <!-- 复制 -->
             <n-tooltip v-if="jsonOutput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" :class="{ 'icon-btn-success': copySuccess }" title="Copy JSON" @click="copyJson">
+                <button class="icon-btn" :class="{ 'icon-btn-success': copySuccess }" :title="t('tools.xml-to-json.copyJson')" @click="copyJson">
                   <icon-mdi-check v-if="copySuccess" class="btn-icon" />
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copySuccess ? 'Copied!' : 'Copy JSON' }}
+              {{ copySuccess ? t('tools.xml-to-json.copied') : t('tools.xml-to-json.copyJson') }}
             </n-tooltip>
             <!-- 下载 -->
             <n-tooltip v-if="jsonOutput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Download .json" @click="downloadJson">
+                <button class="icon-btn" :title="t('tools.xml-to-json.downloadJson')" @click="downloadJson">
                   <icon-mdi-download class="btn-icon" />
                 </button>
               </template>
-              Download .json
+              {{ t('tools.xml-to-json.downloadJson') }}
             </n-tooltip>
           </div>
         </div>
@@ -238,7 +240,7 @@ async function copyJson() {
           v-if="!hasError"
           :model-value="jsonOutput"
           language="json"
-          placeholder="Converted JSON will appear here…"
+          :placeholder="t('tools.xml-to-json.jsonPlaceholder')"
           min-height="calc(100vh - 218px)"
           readonly
         />
@@ -249,11 +251,11 @@ async function copyJson() {
             <icon-mdi-alert-circle-outline class="error-icon" />
           </div>
           <div class="error-title">
-            Parse Error
+            {{ t('tools.xml-to-json.parseError') }}
           </div>
           <pre class="error-message">{{ parseError }}</pre>
           <div class="error-tip">
-            Check that your XML is well-formed — every tag must be properly closed.
+            {{ t('tools.xml-to-json.errorTip') }}
           </div>
         </div>
       </div>

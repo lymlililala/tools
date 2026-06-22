@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getPasswordCrackTimeEstimation } from './password-strength-analyser.service';
 
+const { t } = useI18n();
+
 const password = ref('');
 const showPassword = ref(false);
 
@@ -36,11 +38,11 @@ const strengthLevel = computed<StrengthLevel>(() => {
 const strengthMeta = computed(() => {
   const map: Record<StrengthLevel, { label: string; color: string; bars: number }> = {
     'empty': { label: '', color: 'transparent', bars: 0 },
-    'very-weak': { label: 'Very Weak', color: '#ef4444', bars: 1 },
-    'weak': { label: 'Weak', color: '#f97316', bars: 2 },
-    'fair': { label: 'Fair', color: '#eab308', bars: 3 },
-    'good': { label: 'Good', color: '#22c55e', bars: 4 },
-    'strong': { label: 'Strong', color: '#16a34a', bars: 5 },
+    'very-weak': { label: t('tools.password-strength-analyser.veryWeak'), color: '#ef4444', bars: 1 },
+    'weak': { label: t('tools.password-strength-analyser.weak'), color: '#f97316', bars: 2 },
+    'fair': { label: t('tools.password-strength-analyser.fair'), color: '#eab308', bars: 3 },
+    'good': { label: t('tools.password-strength-analyser.good'), color: '#22c55e', bars: 4 },
+    'strong': { label: t('tools.password-strength-analyser.strong'), color: '#16a34a', bars: 5 },
   };
   return map[strengthLevel.value];
 });
@@ -60,28 +62,28 @@ const tips = computed<string[]>(() => {
   }
 
   if (len < 8) {
-    hints.push('Use at least 8 characters — longer is stronger.');
+    hints.push(t('tools.password-strength-analyser.tipMinLength'));
   }
   if (len < 12 && len >= 8) {
-    hints.push('Try making it longer (12+ characters recommended).');
+    hints.push(t('tools.password-strength-analyser.tipLonger'));
   }
   if (!/[A-Z]/.test(pw)) {
-    hints.push('Add uppercase letters (A-Z).');
+    hints.push(t('tools.password-strength-analyser.tipUppercase'));
   }
   if (!/[a-z]/.test(pw)) {
-    hints.push('Add lowercase letters (a-z).');
+    hints.push(t('tools.password-strength-analyser.tipLowercase'));
   }
   if (!/\d/.test(pw)) {
-    hints.push('Include at least one digit (0-9).');
+    hints.push(t('tools.password-strength-analyser.tipDigit'));
   }
   if (!/[\W_]/.test(pw)) {
-    hints.push('Add special characters (!, @, #, $…).');
+    hints.push(t('tools.password-strength-analyser.tipSpecial'));
   }
   if (/(.)\1{2,}/.test(pw)) {
-    hints.push('Avoid repeating the same character many times.');
+    hints.push(t('tools.password-strength-analyser.tipRepeat'));
   }
   if (/^(123|abc|qwerty|password|111|000)/i.test(pw)) {
-    hints.push('Avoid common patterns like "123" or "password".');
+    hints.push(t('tools.password-strength-analyser.tipCommon'));
   }
 
   return hints.slice(0, 3); // 最多 3 条，不啰嗦
@@ -96,10 +98,10 @@ const entropyTooltip = computed(() => {
 });
 
 const details = computed(() => [
-  { label: 'Password length:', value: estimation.value.passwordLength, tooltip: null },
-  { label: 'Entropy:', value: `${Math.round(estimation.value.entropy * 100) / 100} bits`, tooltip: entropyTooltip.value },
-  { label: 'Character set size:', value: estimation.value.charsetLength, tooltip: 'Number of unique characters in the detected charset (lowercase, uppercase, digits, symbols)' },
-  { label: 'Score:', value: `${score.value} / 100`, tooltip: 'Score = min(entropy / 128, 1) × 100' },
+  { label: t('tools.password-strength-analyser.passwordLength'), value: estimation.value.passwordLength, tooltip: null },
+  { label: t('tools.password-strength-analyser.entropy'), value: `${Math.round(estimation.value.entropy * 100) / 100} bits`, tooltip: entropyTooltip.value },
+  { label: t('tools.password-strength-analyser.charsetSize'), value: estimation.value.charsetLength, tooltip: t('tools.password-strength-analyser.charsetTooltip') },
+  { label: t('tools.password-strength-analyser.scoreLabel'), value: `${score.value} / 100`, tooltip: t('tools.password-strength-analyser.scoreTooltip') },
 ]);
 </script>
 
@@ -115,14 +117,14 @@ const details = computed(() => [
         v-model="password"
         class="pw-input"
         :type="showPassword ? 'text' : 'password'"
-        placeholder="Enter a password…"
+        :placeholder="t('tools.password-strength-analyser.inputPlaceholder')"
         autocomplete="new-password"
         spellcheck="false"
         data-test-id="password-input"
       >
       <button
         class="eye-btn"
-        :title="showPassword ? 'Hide password' : 'Show password'"
+        :title="showPassword ? t('tools.password-strength-analyser.hidePassword') : t('tools.password-strength-analyser.showPassword')"
         @click="showPassword = !showPassword"
       >
         <icon-mdi-eye v-if="!showPassword" />
@@ -156,7 +158,7 @@ const details = computed(() => [
     <transition name="slide-down" mode="out-in">
       <c-card v-if="!isEmpty" key="crack" class="crack-card" :style="{ '--accent': strengthMeta.color }">
         <div class="crack-sub">
-          Duration to crack this password with brute force
+          {{ t('tools.password-strength-analyser.crackSubtitle') }}
         </div>
         <div class="crack-duration" :style="{ color: strengthMeta.color }" data-test-id="crack-duration">
           {{ estimation.crackDurationFormatted }}
@@ -164,7 +166,7 @@ const details = computed(() => [
       </c-card>
       <div v-else key="empty" class="empty-hint">
         <icon-mdi-lock-outline class="empty-icon" />
-        <span>Enter a password above to start the analysis…</span>
+        <span>{{ t('tools.password-strength-analyser.emptyHint') }}</span>
       </div>
     </transition>
 
@@ -190,7 +192,7 @@ const details = computed(() => [
       <div v-if="tips.length > 0" class="tips-card">
         <div class="tips-title">
           <icon-mdi-lightbulb-outline class="tips-icon" />
-          Suggestions to strengthen your password:
+          {{ t('tools.password-strength-analyser.suggestionsTitle') }}
         </div>
         <ul class="tips-list">
           <li v-for="tip in tips" :key="tip">
@@ -202,8 +204,8 @@ const details = computed(() => [
 
     <!-- ⑥ 免责声明 -->
     <div class="note">
-      <span class="note-bold">Note: </span>
-      The computed strength is based on the time it would take to crack the password using a brute force approach. It does not account for dictionary attacks or leaked password databases.
+      <span class="note-bold">{{ t('tools.password-strength-analyser.noteLabel') }} </span>
+      {{ t('tools.password-strength-analyser.noteBody') }}
     </div>
   </div>
 </template>

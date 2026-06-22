@@ -3,6 +3,8 @@ import { generateKeyPair } from './rsa-key-pair-generator.service';
 import { useCopy } from '@/composable/copy';
 import { useValidation } from '@/composable/validation';
 
+const { t } = useI18n();
+
 const bits = ref(2048);
 
 // ── 位数校验 ───────────────────────────────────────────────────────────────────
@@ -10,7 +12,7 @@ const { attrs: bitsValidationAttrs } = useValidation({
   source: bits,
   rules: [
     {
-      message: 'Bits should be 256 ≤ bits ≤ 16384 and be a multiple of 8',
+      message: t('tools.rsa-key-pair-generator.bitsRule'),
       validator: value => value >= 256 && value <= 16384 && value % 8 === 0,
     },
   ],
@@ -46,8 +48,8 @@ async function generate() {
 generate();
 
 // ── 复制 ──────────────────────────────────────────────────────────────────────
-const { copy: copyPublic, isJustCopied: pubCopied } = useCopy({ source: publicKeyPem, text: 'Public key copied' });
-const { copy: copyPrivate, isJustCopied: privCopied } = useCopy({ source: privateKeyPem, text: 'Private key copied' });
+const { copy: copyPublic, isJustCopied: pubCopied } = useCopy({ source: publicKeyPem, text: t('tools.rsa-key-pair-generator.publicKeyCopied') });
+const { copy: copyPrivate, isJustCopied: privCopied } = useCopy({ source: privateKeyPem, text: t('tools.rsa-key-pair-generator.privateKeyCopied') });
 
 // ── 下载 .pem ─────────────────────────────────────────────────────────────────
 function downloadPem(content: string, filename: string) {
@@ -65,14 +67,14 @@ function downloadPem(content: string, filename: string) {
   <div class="rsa-wrap">
     <!-- ① 控制栏 -->
     <div class="controls">
-      <n-form-item label="Bits:" v-bind="bitsValidationAttrs as any" label-placement="left" label-width="60" :show-feedback="false">
+      <n-form-item :label="t('tools.rsa-key-pair-generator.bitsLabel')" v-bind="bitsValidationAttrs as any" label-placement="left" label-width="60" :show-feedback="false">
         <n-input-number v-model:value="bits" :min="256" :max="16384" :step="8" style="width: 140px" />
       </n-form-item>
 
       <c-button :disabled="isGenerating" @click="generate()">
         <n-spin v-if="isGenerating" size="small" class="btn-spin" />
         <icon-mdi-refresh v-else class="btn-icon" />
-        {{ isGenerating ? 'Generating…' : 'Refresh key-pair' }}
+        {{ isGenerating ? t('tools.rsa-key-pair-generator.generating') : t('tools.rsa-key-pair-generator.refreshKeyPair') }}
       </c-button>
     </div>
 
@@ -81,10 +83,10 @@ function downloadPem(content: string, filename: string) {
       <!-- 公钥 -->
       <div class="key-card">
         <div class="key-header">
-          <span class="key-title">Public key</span>
+          <span class="key-title">{{ t('tools.rsa-key-pair-generator.publicKey') }}</span>
           <div class="key-actions">
             <!-- 复制 -->
-            <c-tooltip :tooltip="pubCopied ? 'Copied!' : 'Copy public key'" position="top">
+            <c-tooltip :tooltip="pubCopied ? t('tools.rsa-key-pair-generator.copied') : t('tools.rsa-key-pair-generator.copyPublicKey')" position="top">
               <button
                 class="key-btn"
                 :class="{ copied: pubCopied }"
@@ -98,7 +100,7 @@ function downloadPem(content: string, filename: string) {
               </button>
             </c-tooltip>
             <!-- 下载 -->
-            <c-tooltip tooltip="Download public.pem" position="top">
+            <c-tooltip :tooltip="t('tools.rsa-key-pair-generator.downloadPublicPem')" position="top">
               <button
                 class="key-btn"
                 :disabled="isGenerating || !publicKeyPem"
@@ -117,10 +119,10 @@ function downloadPem(content: string, filename: string) {
       <!-- 私钥 -->
       <div class="key-card">
         <div class="key-header">
-          <span class="key-title">Private key</span>
+          <span class="key-title">{{ t('tools.rsa-key-pair-generator.privateKey') }}</span>
           <div class="key-actions">
             <!-- 复制 -->
-            <c-tooltip :tooltip="privCopied ? 'Copied!' : 'Copy private key'" position="top">
+            <c-tooltip :tooltip="privCopied ? t('tools.rsa-key-pair-generator.copied') : t('tools.rsa-key-pair-generator.copyPrivateKey')" position="top">
               <button
                 class="key-btn"
                 :class="{ copied: privCopied }"
@@ -134,7 +136,7 @@ function downloadPem(content: string, filename: string) {
               </button>
             </c-tooltip>
             <!-- 下载 -->
-            <c-tooltip tooltip="Download private.pem" position="top">
+            <c-tooltip :tooltip="t('tools.rsa-key-pair-generator.downloadPrivatePem')" position="top">
               <button
                 class="key-btn"
                 :disabled="isGenerating || !privateKeyPem"
@@ -155,7 +157,7 @@ function downloadPem(content: string, filename: string) {
     <transition name="fade">
       <div v-if="isGenerating" class="generating-hint">
         <n-spin size="small" />
-        <span>Generating RSA {{ bits }}-bit key pair… This may take a few seconds for large key sizes.</span>
+        <span>{{ t('tools.rsa-key-pair-generator.generatingHint', { bits }) }}</span>
       </div>
     </transition>
   </div>

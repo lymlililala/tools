@@ -4,11 +4,13 @@ import { convert } from './list-converter.models';
 import type { ConvertOptions } from './list-converter.types';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 排序选项 ─────────────────────────────────────────────────────────────
-const sortOrderOptions = [
-  { label: 'Sort ascending', value: 'asc' },
-  { label: 'Sort descending', value: 'desc' },
-];
+const sortOrderOptions = computed(() => [
+  { label: t('tools.list-converter.sortAscending'), value: 'asc' },
+  { label: t('tools.list-converter.sortDescending'), value: 'desc' },
+]);
 
 // ── 持久化配置 ────────────────────────────────────────────────────────────
 const conversionConfig = useStorage<ConvertOptions>('list-converter:conversionConfig', {
@@ -57,19 +59,19 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
         <!-- 开关列 -->
         <div class="switches-col">
           <div class="switch-row">
-            <span class="switch-label">Trim list items</span>
+            <span class="switch-label">{{ t('tools.list-converter.trimItems') }}</span>
             <n-switch v-model:value="conversionConfig.trimItems" size="small" />
           </div>
           <div class="switch-row">
-            <span class="switch-label">Remove duplicates</span>
+            <span class="switch-label">{{ t('tools.list-converter.removeDuplicates') }}</span>
             <n-switch v-model:value="conversionConfig.removeDuplicates" size="small" data-test-id="removeDuplicates" />
           </div>
           <div class="switch-row">
-            <span class="switch-label">Convert to lowercase</span>
+            <span class="switch-label">{{ t('tools.list-converter.toLowercase') }}</span>
             <n-switch v-model:value="conversionConfig.lowerCase" size="small" />
           </div>
           <div class="switch-row">
-            <span class="switch-label">Keep line breaks</span>
+            <span class="switch-label">{{ t('tools.list-converter.keepLineBreaks') }}</span>
             <n-switch v-model:value="conversionConfig.keepLineBreaks" size="small" />
           </div>
         </div>
@@ -81,12 +83,12 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
         <div class="options-col">
           <!-- Sort list -->
           <div class="option-row">
-            <span class="option-label">Sort list</span>
+            <span class="option-label">{{ t('tools.list-converter.sortList') }}</span>
             <c-select
               v-model:value="conversionConfig.sortList"
               :options="sortOrderOptions"
               :disabled="conversionConfig.reverseList"
-              placeholder="No sorting"
+              :placeholder="t('tools.list-converter.noSorting')"
               data-test-id="sortList"
               class="option-input"
             />
@@ -94,7 +96,7 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
 
           <!-- Separator -->
           <div class="option-row">
-            <span class="option-label">Separator</span>
+            <span class="option-label">{{ t('tools.list-converter.separator') }}</span>
             <c-input-text
               v-model:value="conversionConfig.separator"
               placeholder=", "
@@ -104,16 +106,16 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
 
           <!-- Wrap item -->
           <div class="option-row">
-            <span class="option-label">Wrap item</span>
+            <span class="option-label">{{ t('tools.list-converter.wrapItem') }}</span>
             <div class="dual-input">
               <c-input-text
                 v-model:value="conversionConfig.itemPrefix"
-                placeholder="Prefix"
+                :placeholder="t('tools.list-converter.prefix')"
                 test-id="itemPrefix"
               />
               <c-input-text
                 v-model:value="conversionConfig.itemSuffix"
-                placeholder="Suffix"
+                :placeholder="t('tools.list-converter.suffix')"
                 test-id="itemSuffix"
               />
             </div>
@@ -121,16 +123,16 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
 
           <!-- Wrap list -->
           <div class="option-row">
-            <span class="option-label">Wrap list</span>
+            <span class="option-label">{{ t('tools.list-converter.wrapList') }}</span>
             <div class="dual-input">
               <c-input-text
                 v-model:value="conversionConfig.listPrefix"
-                placeholder="Prefix"
+                :placeholder="t('tools.list-converter.prefix')"
                 test-id="listPrefix"
               />
               <c-input-text
                 v-model:value="conversionConfig.listSuffix"
-                placeholder="Suffix"
+                :placeholder="t('tools.list-converter.suffix')"
                 test-id="listSuffix"
               />
             </div>
@@ -144,15 +146,15 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
       <!-- 左：输入 -->
       <div class="io-pane">
         <div class="io-header">
-          <span class="io-title">Input data</span>
+          <span class="io-title">{{ t('tools.list-converter.inputData') }}</span>
           <div class="io-actions">
-            <span v-if="inputLineCount" class="stat-badge">{{ inputLineCount }} items</span>
+            <span v-if="inputLineCount" class="stat-badge">{{ inputLineCount }} {{ t('tools.list-converter.items') }}</span>
             <c-button
               v-if="inputData"
               variant="text"
               size="small"
               class="act-btn"
-              title="Clear"
+              :title="t('tools.list-converter.clear')"
               @click="clearInput"
             >
               <icon-mdi-close />
@@ -162,7 +164,7 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
         <textarea
           v-model="inputData"
           class="io-textarea"
-          placeholder="Paste your input data here..."
+          :placeholder="t('tools.list-converter.inputPlaceholder')"
           spellcheck="false"
           data-test-id="input"
         />
@@ -171,16 +173,16 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
       <!-- 右：输出 -->
       <div class="io-pane">
         <div class="io-header">
-          <span class="io-title">Transformed data</span>
+          <span class="io-title">{{ t('tools.list-converter.transformedData') }}</span>
           <div class="io-actions">
-            <span v-if="outputLineCount" class="stat-badge">{{ outputLineCount }} items</span>
+            <span v-if="outputLineCount" class="stat-badge">{{ outputLineCount }} {{ t('tools.list-converter.items') }}</span>
             <c-button
               v-if="outputData"
               variant="text"
               size="small"
               class="act-btn"
               :class="{ copied: isJustCopied }"
-              title="Copy"
+              :title="t('tools.list-converter.copy')"
               @click="copy()"
             >
               <transition name="icon-fade" mode="out-in">
@@ -193,7 +195,7 @@ const { copy, isJustCopied } = useCopy({ source: outputData, createToast: false 
         <textarea
           class="io-textarea readonly"
           :value="outputData"
-          placeholder="Transformed data will appear here…"
+          :placeholder="t('tools.list-converter.outputPlaceholder')"
           readonly
           spellcheck="false"
           data-test-id="output"

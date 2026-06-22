@@ -13,6 +13,8 @@ import {
   snakeCase,
 } from 'change-case';
 
+const { t } = useI18n();
+
 const input = ref('lorem ipsum dolor sit amet');
 
 // ── 防抖处理（大文本不卡顿）──────────────────────────────────────────────
@@ -23,21 +25,21 @@ const baseConfig = {
 };
 
 const formats = computed(() => [
-  { label: 'Lowercase', group: 'text', value: debouncedInput.value.toLocaleLowerCase() },
-  { label: 'Uppercase', group: 'text', value: debouncedInput.value.toLocaleUpperCase() },
-  { label: 'Sentence case', group: 'text', value: sentenceCase(debouncedInput.value, baseConfig) },
-  { label: 'Capital case', group: 'text', value: capitalCase(debouncedInput.value, baseConfig) },
-  { label: 'Camel case', group: 'code', value: camelCase(debouncedInput.value, baseConfig) },
-  { label: 'Pascal case', group: 'code', value: pascalCase(debouncedInput.value, baseConfig) },
-  { label: 'Snake case', group: 'code', value: snakeCase(debouncedInput.value, baseConfig) },
-  { label: 'Constant case', group: 'code', value: constantCase(debouncedInput.value, baseConfig) },
-  { label: 'Kebab case', group: 'code', value: paramCase(debouncedInput.value, baseConfig) },
-  { label: 'Header case', group: 'code', value: headerCase(debouncedInput.value, baseConfig) },
-  { label: 'Dot case', group: 'code', value: dotCase(debouncedInput.value, baseConfig) },
-  { label: 'Path case', group: 'code', value: pathCase(debouncedInput.value, baseConfig) },
-  { label: 'No case', group: 'text', value: noCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.lowercase'), group: 'text', value: debouncedInput.value.toLocaleLowerCase() },
+  { label: t('tools.case-converter.uppercase'), group: 'text', value: debouncedInput.value.toLocaleUpperCase() },
+  { label: t('tools.case-converter.sentenceCase'), group: 'text', value: sentenceCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.capitalCase'), group: 'text', value: capitalCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.camelCase'), group: 'code', value: camelCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.pascalCase'), group: 'code', value: pascalCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.snakeCase'), group: 'code', value: snakeCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.constantCase'), group: 'code', value: constantCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.kebabCase'), group: 'code', value: paramCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.headerCase'), group: 'code', value: headerCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.dotCase'), group: 'code', value: dotCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.pathCase'), group: 'code', value: pathCase(debouncedInput.value, baseConfig) },
+  { label: t('tools.case-converter.noCase'), group: 'text', value: noCase(debouncedInput.value, baseConfig) },
   {
-    label: 'Mocking case',
+    label: t('tools.case-converter.mockingCase'),
     group: 'text',
     value: debouncedInput.value
       .split('')
@@ -75,8 +77,8 @@ async function copyFormat(label: string, value: string) {
     <div class="input-wrap">
       <c-input-text
         v-model:value="input"
-        label="Your string:"
-        placeholder="Paste or type your text here…"
+        :label="t('tools.case-converter.yourString')"
+        :placeholder="t('tools.case-converter.inputPlaceholder')"
         label-position="left"
         label-width="120px"
         label-align="right"
@@ -91,7 +93,7 @@ async function copyFormat(label: string, value: string) {
         variant="text"
         circle
         size="small"
-        title="Clear"
+        :title="t('tools.case-converter.clear')"
         @click="input = ''"
       >
         <icon-mdi-close />
@@ -105,7 +107,7 @@ async function copyFormat(label: string, value: string) {
       <!-- 左列：编程格式 -->
       <div class="results-col">
         <div class="col-label">
-          Code Formats
+          {{ t('tools.case-converter.codeFormats') }}
         </div>
         <div
           v-for="fmt in codeFormats"
@@ -128,7 +130,7 @@ async function copyFormat(label: string, value: string) {
       <!-- 右列：文本格式 -->
       <div class="results-col">
         <div class="col-label">
-          Text Formats
+          {{ t('tools.case-converter.textFormats') }}
         </div>
         <div
           v-for="fmt in textFormats"

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { textToBase64 } from '@/utils/base64';
 
+const { t } = useI18n();
+
 const username = ref('');
 const password = ref('');
 const showPassword = ref(false);
@@ -27,12 +29,12 @@ async function copyHeader() {
   <div class="basic-auth-wrap">
     <!-- Username -->
     <div class="field-group">
-      <label class="field-label">Username</label>
+      <label class="field-label">{{ t('tools.basic-auth-generator.username') }}</label>
       <input
         v-model="username"
         class="text-input"
         type="text"
-        placeholder="Your username…"
+        :placeholder="t('tools.basic-auth-generator.usernamePlaceholder')"
         autocomplete="off"
         spellcheck="false"
       >
@@ -40,19 +42,19 @@ async function copyHeader() {
 
     <!-- Password -->
     <div class="field-group">
-      <label class="field-label">Password</label>
+      <label class="field-label">{{ t('tools.basic-auth-generator.password') }}</label>
       <div class="password-wrap">
         <input
           v-model="password"
           class="text-input"
           :type="showPassword ? 'text' : 'password'"
-          placeholder="Your password…"
+          :placeholder="t('tools.basic-auth-generator.passwordPlaceholder')"
           autocomplete="off"
           spellcheck="false"
         >
         <button
           class="eye-btn"
-          :title="showPassword ? 'Hide password' : 'Show password'"
+          :title="showPassword ? t('tools.basic-auth-generator.hidePassword') : t('tools.basic-auth-generator.showPassword')"
           @click="showPassword = !showPassword"
         >
           <icon-mdi-eye-off-outline v-if="showPassword" class="eye-icon" />
@@ -65,7 +67,7 @@ async function copyHeader() {
     <transition name="result-slide">
       <div v-if="hasInput" class="result-card">
         <div class="result-label">
-          Authorization header
+          {{ t('tools.basic-auth-generator.authorizationHeader') }}
         </div>
         <div class="result-value">
           <span class="result-prefix">Authorization: Basic </span>
@@ -78,7 +80,7 @@ async function copyHeader() {
     <transition name="result-slide">
       <div v-if="!hasInput" class="empty-state">
         <icon-mdi-shield-key-outline class="es-icon" />
-        <span>Enter username and password above to generate the header</span>
+        <span>{{ t('tools.basic-auth-generator.emptyHint') }}</span>
       </div>
     </transition>
 
@@ -92,7 +94,7 @@ async function copyHeader() {
       >
         <icon-mdi-check v-if="copySuccess" class="btn-icon" />
         <icon-mdi-content-copy v-else class="btn-icon" />
-        <span>{{ copySuccess ? 'Copied!' : 'Copy header' }}</span>
+        <span>{{ copySuccess ? t('tools.basic-auth-generator.copied') : t('tools.basic-auth-generator.copyHeader') }}</span>
       </button>
     </div>
   </div>

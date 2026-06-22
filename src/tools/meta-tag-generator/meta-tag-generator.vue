@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { image, ogSchemas, twitter, website } from './og-schemas';
 import type { OGSchemaType, OGSchemaTypeElementSelect } from './OGSchemaType.type';
 
+const { t } = useI18n();
+
 // ── 元数据状态 ─────────────────────────────────────────────────────────────
 const metadata = ref<{ type: string; [k: string]: any }>({
   'type': 'website',
@@ -112,7 +114,7 @@ async function copyMeta() {
       <div class="output-col">
         <div class="output-sticky">
           <div class="output-header">
-            <span class="output-title">Your meta tags</span>
+            <span class="output-title">{{ t('tools.meta-tag-generator.outputTitle') }}</span>
             <n-tooltip trigger="hover" placement="top">
               <template #trigger>
                 <button
@@ -122,17 +124,17 @@ async function copyMeta() {
                 >
                   <icon-mdi-check v-if="copySuccess" class="copy-icon" />
                   <icon-mdi-content-copy v-else class="copy-icon" />
-                  <span>{{ copySuccess ? 'Copied!' : 'Copy' }}</span>
+                  <span>{{ copySuccess ? t('tools.meta-tag-generator.copied') : t('tools.meta-tag-generator.copy') }}</span>
                 </button>
               </template>
-              Copy all meta tags to clipboard
+              {{ t('tools.meta-tag-generator.copyAllTooltip') }}
             </n-tooltip>
           </div>
 
           <c-code-input
             :model-value="metaTags"
             language="xml"
-            placeholder="Meta tags will appear here…"
+            :placeholder="t('tools.meta-tag-generator.outputPlaceholder')"
             min-height="320px"
 
             readonly wrap

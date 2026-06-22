@@ -2,6 +2,8 @@
 import { escape, unescape } from 'lodash';
 import { refDebounced } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 双向绑定状态 ──────────────────────────────────────────────────────────
 type ActivePane = 'plain' | 'escaped';
 const activePane = ref<ActivePane>('plain');
@@ -79,7 +81,7 @@ const escapedCharCount = computed(() => escapedText.value.length);
     <div class="toolbar">
       <div class="direction-hint">
         <icon-mdi-arrow-up-down class="dir-icon" />
-        <span>Edit either box — they auto-translate in real time</span>
+        <span>{{ t('tools.html-entities.directionHint') }}</span>
       </div>
       <n-tooltip v-if="plainText || escapedText" trigger="hover" placement="top">
         <template #trigger>
@@ -87,16 +89,16 @@ const escapedCharCount = computed(() => escapedText.value.length);
             <icon-mdi-close class="btn-icon" />
           </button>
         </template>
-        Clear all
+        {{ t('tools.html-entities.clearAll') }}
       </n-tooltip>
     </div>
 
     <!-- 上：明文区 -->
     <div class="pane" :class="{ 'pane-active': activePane === 'plain' }">
       <div class="pane-header">
-        <span class="pane-title">Plain HTML</span>
+        <span class="pane-title">{{ t('tools.html-entities.plainHtml') }}</span>
         <div class="pane-right">
-          <span class="char-count">{{ plainCharCount }} chars</span>
+          <span class="char-count">{{ plainCharCount }} {{ t('tools.html-entities.chars') }}</span>
           <n-tooltip v-if="plainText" trigger="hover" placement="top">
             <template #trigger>
               <button
@@ -108,7 +110,7 @@ const escapedCharCount = computed(() => escapedText.value.length);
                 <icon-mdi-content-copy v-else class="btn-icon" />
               </button>
             </template>
-            {{ copyPlainSuccess ? 'Copied!' : 'Copy plain HTML' }}
+            {{ copyPlainSuccess ? t('tools.html-entities.copied') : t('tools.html-entities.copyPlainHtml') }}
           </n-tooltip>
         </div>
       </div>
@@ -117,7 +119,7 @@ const escapedCharCount = computed(() => escapedText.value.length);
         class="io-textarea"
         :class="{ 'is-active': activePane === 'plain' }"
         :value="plainText"
-        placeholder="Type or paste raw HTML here…  e.g. <title>IT Tool</title>"
+        :placeholder="t('tools.html-entities.plainPlaceholder')"
         rows="6"
         spellcheck="false"
         @input="onPlainInput"
@@ -145,9 +147,9 @@ const escapedCharCount = computed(() => escapedText.value.length);
     <!-- 下：转义区 -->
     <div class="pane" :class="{ 'pane-active': activePane === 'escaped' }">
       <div class="pane-header">
-        <span class="pane-title">Escaped Entities</span>
+        <span class="pane-title">{{ t('tools.html-entities.escapedEntities') }}</span>
         <div class="pane-right">
-          <span class="char-count">{{ escapedCharCount }} chars</span>
+          <span class="char-count">{{ escapedCharCount }} {{ t('tools.html-entities.chars') }}</span>
           <n-tooltip v-if="escapedText" trigger="hover" placement="top">
             <template #trigger>
               <button
@@ -159,7 +161,7 @@ const escapedCharCount = computed(() => escapedText.value.length);
                 <icon-mdi-content-copy v-else class="btn-icon" />
               </button>
             </template>
-            {{ copyEscapedSuccess ? 'Copied!' : 'Copy escaped string' }}
+            {{ copyEscapedSuccess ? t('tools.html-entities.copied') : t('tools.html-entities.copyEscaped') }}
           </n-tooltip>
         </div>
       </div>
@@ -168,7 +170,7 @@ const escapedCharCount = computed(() => escapedText.value.length);
         class="io-textarea"
         :class="{ 'is-active': activePane === 'escaped' }"
         :value="escapedText"
-        placeholder="Or paste HTML entities here…  e.g. &lt;title&gt;IT Tool&lt;/title&gt;"
+        :placeholder="t('tools.html-entities.escapedPlaceholder')"
         rows="6"
         spellcheck="false"
         @input="onEscapedInput"

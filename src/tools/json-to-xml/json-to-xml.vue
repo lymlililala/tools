@@ -4,6 +4,8 @@ import JSON5 from 'json5';
 import xmlFormat from 'xml-formatter';
 import { refDebounced } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 转换选项 ─────────────────────────────────────────────────────────────
 const prettyXml = ref(true);
 const compactMode = ref(true); // compact (用 _attributes) vs full
@@ -122,11 +124,11 @@ async function copyXml() {
     <div class="settings-bar">
       <label class="setting-item">
         <n-switch v-model:value="prettyXml" size="small" />
-        <span class="setting-label">Pretty print XML</span>
+        <span class="setting-label">{{ t('tools.json-to-xml.prettyPrint') }}</span>
       </label>
       <label class="setting-item">
         <n-switch v-model:value="compactMode" size="small" />
-        <span class="setting-label">Compact mode</span>
+        <span class="setting-label">{{ t('tools.json-to-xml.compactMode') }}</span>
       </label>
     </div>
 
@@ -135,34 +137,34 @@ async function copyXml() {
       <!-- 左：JSON 输入 -->
       <div class="pane" :class="{ 'pane-error': hasError }">
         <div class="pane-header">
-          <span class="pane-title">JSON Input</span>
+          <span class="pane-title">{{ t('tools.json-to-xml.jsonInput') }}</span>
           <div class="pane-actions">
             <!-- 上传文件 -->
             <n-tooltip trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Upload .json file" @click="triggerFileUpload">
+                <button class="icon-btn" :title="t('tools.json-to-xml.uploadJson')" @click="triggerFileUpload">
                   <icon-mdi-upload class="btn-icon" />
                 </button>
               </template>
-              Upload .json file
+              {{ t('tools.json-to-xml.uploadJson') }}
             </n-tooltip>
             <!-- 格式化 JSON -->
             <n-tooltip v-if="jsonInput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Format JSON" @click="formatJson">
+                <button class="icon-btn" :title="t('tools.json-to-xml.formatJson')" @click="formatJson">
                   <icon-mdi-code-braces class="btn-icon" />
                 </button>
               </template>
-              Format JSON
+              {{ t('tools.json-to-xml.formatJson') }}
             </n-tooltip>
             <!-- 清空 -->
             <n-tooltip v-if="jsonInput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn icon-btn-danger" title="Clear" @click="clearInput">
+                <button class="icon-btn icon-btn-danger" :title="t('tools.json-to-xml.clear')" @click="clearInput">
                   <icon-mdi-close class="btn-icon" />
                 </button>
               </template>
-              Clear
+              {{ t('tools.json-to-xml.clear') }}
             </n-tooltip>
           </div>
         </div>
@@ -170,7 +172,7 @@ async function copyXml() {
         <c-code-input
           v-model="jsonInput"
           language="json"
-          placeholder="Paste your JSON here…  e.g. {&quot;name&quot;: &quot;Tom&quot;}"
+          :placeholder="t('tools.json-to-xml.jsonPlaceholder')"
           min-height="calc(100vh - 218px)"
           :class="{ 'input-error-ring': hasError }"
         />
@@ -187,7 +189,7 @@ async function copyXml() {
       <!-- 右：XML 输出 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">XML Output</span>
+          <span class="pane-title">{{ t('tools.json-to-xml.xmlOutput') }}</span>
           <div class="pane-actions">
             <!-- 复制 -->
             <n-tooltip v-if="xmlOutput" trigger="hover" placement="top">
@@ -195,23 +197,23 @@ async function copyXml() {
                 <button
                   class="icon-btn"
                   :class="{ 'icon-btn-success': copySuccess }"
-                  title="Copy XML"
+                  :title="t('tools.json-to-xml.copyXml')"
                   @click="copyXml"
                 >
                   <icon-mdi-check v-if="copySuccess" class="btn-icon" />
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copySuccess ? 'Copied!' : 'Copy XML' }}
+              {{ copySuccess ? t('tools.json-to-xml.copied') : t('tools.json-to-xml.copyXml') }}
             </n-tooltip>
             <!-- 下载 -->
             <n-tooltip v-if="xmlOutput" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn" title="Download .xml" @click="downloadXml">
+                <button class="icon-btn" :title="t('tools.json-to-xml.downloadXml')" @click="downloadXml">
                   <icon-mdi-download class="btn-icon" />
                 </button>
               </template>
-              Download .xml
+              {{ t('tools.json-to-xml.downloadXml') }}
             </n-tooltip>
           </div>
         </div>
@@ -221,7 +223,7 @@ async function copyXml() {
           v-if="!hasError"
           :model-value="xmlOutput"
           language="xml"
-          placeholder="Converted XML will appear here…"
+          :placeholder="t('tools.json-to-xml.xmlPlaceholder')"
           min-height="calc(100vh - 218px)"
           readonly
         />
@@ -232,11 +234,11 @@ async function copyXml() {
             <icon-mdi-alert-circle-outline class="error-icon" />
           </div>
           <div class="error-title">
-            Parse Error
+            {{ t('tools.json-to-xml.parseError') }}
           </div>
           <pre class="error-message">{{ parseError }}</pre>
           <div class="error-tip">
-            Check your JSON syntax — keys must be quoted and all brackets must be balanced.
+            {{ t('tools.json-to-xml.errorTip') }}
           </div>
         </div>
       </div>

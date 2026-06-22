@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { refDebounced } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 双向绑定状态 ──────────────────────────────────────────────────────────
 // 标记最近一次是哪个框在编辑，防止循环更新
 type ActivePane = 'plain' | 'encoded';
@@ -101,7 +103,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
     <div class="toolbar">
       <div class="direction-hint">
         <icon-mdi-arrow-up-down class="dir-icon" />
-        <span>Edit either box — they auto-translate in real time</span>
+        <span>{{ t('tools.url-encoder.directionHint') }}</span>
       </div>
       <n-tooltip v-if="plainText || encodedText" trigger="hover" placement="top">
         <template #trigger>
@@ -109,16 +111,16 @@ const encodedCharCount = computed(() => encodedText.value.length);
             <icon-mdi-close class="btn-icon" />
           </button>
         </template>
-        Clear all
+        {{ t('tools.url-encoder.clearAll') }}
       </n-tooltip>
     </div>
 
     <!-- 上：明文区 -->
     <div class="pane" :class="{ 'pane-active': activePane === 'plain' }">
       <div class="pane-header">
-        <span class="pane-title">Plain Text</span>
+        <span class="pane-title">{{ t('tools.url-encoder.plainText') }}</span>
         <div class="pane-right">
-          <span class="char-count">{{ plainCharCount }} chars</span>
+          <span class="char-count">{{ plainCharCount }} {{ t('tools.url-encoder.chars') }}</span>
           <n-tooltip v-if="plainText" trigger="hover" placement="top">
             <template #trigger>
               <button
@@ -130,7 +132,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
                 <icon-mdi-content-copy v-else class="btn-icon" />
               </button>
             </template>
-            {{ copyPlainSuccess ? 'Copied!' : 'Copy plain text' }}
+            {{ copyPlainSuccess ? t('tools.url-encoder.copied') : t('tools.url-encoder.copyPlain') }}
           </n-tooltip>
         </div>
       </div>
@@ -139,7 +141,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
         class="io-textarea"
         :class="{ 'is-active': activePane === 'plain' }"
         :value="plainText"
-        placeholder="Type or paste plain text here…  e.g. Hello world :)"
+        :placeholder="t('tools.url-encoder.plainPlaceholder')"
         rows="5"
         spellcheck="false"
         @input="onPlainInput(($event.target as HTMLTextAreaElement).value)"
@@ -174,9 +176,9 @@ const encodedCharCount = computed(() => encodedText.value.length);
     <!-- 下：编码区 -->
     <div class="pane" :class="{ 'pane-active': activePane === 'encoded' }">
       <div class="pane-header">
-        <span class="pane-title">URL Encoded</span>
+        <span class="pane-title">{{ t('tools.url-encoder.urlEncoded') }}</span>
         <div class="pane-right">
-          <span class="char-count">{{ encodedCharCount }} chars</span>
+          <span class="char-count">{{ encodedCharCount }} {{ t('tools.url-encoder.chars') }}</span>
           <n-tooltip v-if="encodedText" trigger="hover" placement="top">
             <template #trigger>
               <button
@@ -188,7 +190,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
                 <icon-mdi-content-copy v-else class="btn-icon" />
               </button>
             </template>
-            {{ copyEncodedSuccess ? 'Copied!' : 'Copy encoded string' }}
+            {{ copyEncodedSuccess ? t('tools.url-encoder.copied') : t('tools.url-encoder.copyEncoded') }}
           </n-tooltip>
         </div>
       </div>
@@ -197,7 +199,7 @@ const encodedCharCount = computed(() => encodedText.value.length);
         class="io-textarea"
         :class="{ 'is-active': activePane === 'encoded', 'has-error': !!decodeError }"
         :value="encodedText"
-        placeholder="Or paste a percent-encoded string here…  e.g. Hello%20world%20%3A)"
+        :placeholder="t('tools.url-encoder.encodedPlaceholder')"
         rows="5"
         spellcheck="false"
         @input="onEncodedInput(($event.target as HTMLTextAreaElement).value)"

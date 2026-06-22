@@ -9,6 +9,8 @@ import {
 import { useValidation } from '@/composable/validation';
 import { isValidBase64 } from '@/utils/base64';
 
+const { t } = useI18n();
+
 // ─── 文件大小限制 ──────────────────────────────────────────────────────────
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -199,18 +201,18 @@ function handleFileInput(e: Event) {
     <c-card class="b64f-card" title="Base64 → File">
       <!-- 文件名 + 扩展名 -->
       <div class="filename-row">
-        <n-form-item label="File name" :show-feedback="false" label-placement="top" style="flex: 2">
-          <n-input v-model:value="fileName" placeholder="e.g. document" />
+        <n-form-item :label="t('tools.base64-file-converter.fileName')" :show-feedback="false" label-placement="top" style="flex: 2">
+          <n-input v-model:value="fileName" :placeholder="t('tools.base64-file-converter.fileNamePlaceholder')" />
         </n-form-item>
-        <n-form-item label="Extension" :show-feedback="false" label-placement="top" style="flex: 1">
+        <n-form-item :label="t('tools.base64-file-converter.extension')" :show-feedback="false" label-placement="top" style="flex: 1">
           <n-input
             v-model:value="fileExtension"
-            placeholder="e.g. png"
+            :placeholder="t('tools.base64-file-converter.extensionPlaceholder')"
             :disabled="extensionAutoDetected"
-            :title="extensionAutoDetected ? 'Auto-detected from Data URI' : ''"
+            :title="extensionAutoDetected ? t('tools.base64-file-converter.autoDetected') : ''"
           >
             <template v-if="extensionAutoDetected" #suffix>
-              <c-tooltip tooltip="Auto-detected from Data URI header" position="left">
+              <c-tooltip :tooltip="t('tools.base64-file-converter.autoDetectedTip')" position="left">
                 <icon-mdi-auto-fix class="auto-icon" />
               </c-tooltip>
             </template>
@@ -221,14 +223,14 @@ function handleFileInput(e: Event) {
       <!-- Base64 输入框 -->
       <n-form-item
         :validation-status="base64Input && !base64InputValidation.isValid ? 'error' : undefined"
-        :feedback="base64Input && !base64InputValidation.isValid ? 'Invalid Base64 string' : undefined"
+        :feedback="base64Input && !base64InputValidation.isValid ? t('tools.base64-file-converter.invalidBase64') : undefined"
         :show-label="false"
         style="margin-bottom: 0"
       >
         <n-input
           v-model:value="base64Input"
           type="textarea"
-          placeholder="Paste your Base64 or Data URI string here…"
+          :placeholder="t('tools.base64-file-converter.base64Placeholder')"
           :autosize="{ minRows: 5, maxRows: 8 }"
           clearable
           :status="base64Input && !base64InputValidation.isValid ? 'error' : undefined"
@@ -240,7 +242,7 @@ function handleFileInput(e: Event) {
       <transition name="fade">
         <div v-if="extensionAutoDetected" class="auto-hint">
           <icon-mdi-information-outline class="hint-icon" />
-          Extension auto-detected from Data URI header: <strong>.{{ fileExtension }}</strong>
+          {{ t('tools.base64-file-converter.autoDetectedHint') }} <strong>.{{ fileExtension }}</strong>
         </div>
       </transition>
 
@@ -252,7 +254,7 @@ function handleFileInput(e: Event) {
           @click="previewImage()"
         >
           <icon-mdi-image-outline style="margin-right:4px" />
-          Preview image
+          {{ t('tools.base64-file-converter.previewImage') }}
         </c-button>
         <c-button
           type="primary"
@@ -260,7 +262,7 @@ function handleFileInput(e: Event) {
           @click="downloadFile()"
         >
           <icon-mdi-download style="margin-right:4px" />
-          Download file
+          {{ t('tools.base64-file-converter.downloadFile') }}
         </c-button>
       </div>
 
@@ -294,7 +296,7 @@ function handleFileInput(e: Event) {
         <template v-if="isConverting">
           <n-spin size="medium" />
           <div class="dz-label">
-            Converting…
+            {{ t('tools.base64-file-converter.converting') }}
           </div>
           <div class="dz-sublabel">
             {{ uploadedFile?.name }}
@@ -306,20 +308,20 @@ function handleFileInput(e: Event) {
             {{ uploadedFile.name }}
           </div>
           <div class="dz-sublabel">
-            {{ (uploadedFile.size / 1024).toFixed(1) }} KB · Click or drag to replace
+            {{ (uploadedFile.size / 1024).toFixed(1) }} KB · {{ t('tools.base64-file-converter.clickToReplace') }}
           </div>
         </template>
         <template v-else>
           <icon-mdi-upload class="dz-file-icon" />
           <div class="dz-label">
-            Drag &amp; drop a file here
+            {{ t('tools.base64-file-converter.dragDrop') }}
           </div>
           <c-button type="primary" style="margin-top: 4px" @click.stop="triggerInput">
             <icon-mdi-folder-open-outline style="margin-right:5px" />
-            Browse files
+            {{ t('tools.base64-file-converter.browseFiles') }}
           </c-button>
           <div class="dz-size-hint">
-            Max size: 10 MB
+            {{ t('tools.base64-file-converter.maxSize') }}
           </div>
         </template>
       </div>
@@ -335,13 +337,13 @@ function handleFileInput(e: Event) {
       <!-- 格式切换 -->
       <transition name="fade">
         <div v-if="fullBase64" class="format-row">
-          <span class="format-label">Output format:</span>
+          <span class="format-label">{{ t('tools.base64-file-converter.outputFormat') }}</span>
           <n-radio-group v-model:value="includeDataUri" size="small">
             <n-radio :value="true">
-              Data URI (with header)
+              {{ t('tools.base64-file-converter.dataUriWithHeader') }}
             </n-radio>
             <n-radio :value="false">
-              Raw Base64 only
+              {{ t('tools.base64-file-converter.rawBase64Only') }}
             </n-radio>
           </n-radio-group>
         </div>
@@ -350,8 +352,8 @@ function handleFileInput(e: Event) {
       <!-- 输出框（截断预览） -->
       <div v-if="fullBase64" class="output-wrap">
         <div class="output-label">
-          Base64 output
-          <c-tooltip :tooltip="base64Copied ? 'Copied!' : 'Copy full Base64'" position="right">
+          {{ t('tools.base64-file-converter.base64OutputLabel') }}
+          <c-tooltip :tooltip="base64Copied ? t('tools.base64-file-converter.copied') : t('tools.base64-file-converter.copyFullBase64')" position="right">
             <button
               class="copy-btn"
               :class="{ copied: base64Copied }"
@@ -361,7 +363,7 @@ function handleFileInput(e: Event) {
                 <icon-mdi-check v-if="base64Copied" key="check" class="copy-icon success" />
                 <icon-mdi-content-copy v-else key="copy" class="copy-icon" />
               </transition>
-              {{ base64Copied ? 'Copied!' : 'Copy' }}
+              {{ base64Copied ? t('tools.base64-file-converter.copied') : t('tools.base64-file-converter.copy') }}
             </button>
           </c-tooltip>
         </div>
@@ -373,7 +375,7 @@ function handleFileInput(e: Event) {
         />
         <div v-if="fullBase64.length > PREVIEW_LIMIT" class="truncate-hint">
           <icon-mdi-information-outline class="hint-icon" />
-          Preview truncated to {{ PREVIEW_LIMIT }} chars to avoid browser freeze. Full content ({{ (fullBase64.length / 1024).toFixed(0) }} KB) is copied to clipboard.
+          {{ t('tools.base64-file-converter.truncatePrefix') }} {{ PREVIEW_LIMIT }} {{ t('tools.base64-file-converter.truncateMiddle') }} ({{ (fullBase64.length / 1024).toFixed(0) }} KB) {{ t('tools.base64-file-converter.truncateSuffix') }}
         </div>
       </div>
     </c-card>

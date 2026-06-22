@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { convertBase } from './integer-base-converter.model';
 
+const { t } = useI18n();
+
 // ── 合法字符集（与 convertBase 保持一致） ─────────────────────────────────
 const RANGE = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/';
 
@@ -36,12 +38,12 @@ function safeConvert(toBase: number): string {
 }
 
 // ── 固定进制列表 ───────────────────────────────────────────────────────────
-const FIXED_BASES = [
-  { label: 'Binary', base: 2 },
-  { label: 'Octal', base: 8 },
-  { label: 'Decimal', base: 10 },
-  { label: 'Hexadecimal', base: 16 },
-];
+const FIXED_BASES = computed(() => [
+  { label: t('tools.integer-base-converter.binary'), base: 2 },
+  { label: t('tools.integer-base-converter.octal'), base: 8 },
+  { label: t('tools.integer-base-converter.decimal'), base: 10 },
+  { label: t('tools.integer-base-converter.hexadecimal'), base: 16 },
+]);
 
 // ── Custom 进制 ─────────────────────────────────────────────────────────────
 const customBase = ref(42);
@@ -180,7 +182,7 @@ async function copyValue(base: number) {
       <!-- ① 顶部 Input number + base ──────────────────────── -->
       <div class="top-row">
         <n-form-item
-          label="Input number"
+          :label="t('tools.integer-base-converter.inputNumber')"
           label-placement="left"
           label-width="120"
           :validation-status="topError ? 'error' : undefined"
@@ -196,7 +198,7 @@ async function copyValue(base: number) {
           />
         </n-form-item>
 
-        <n-form-item label="Base" label-placement="left" label-width="45" :show-feedback="false" class="base-item">
+        <n-form-item :label="t('tools.integer-base-converter.base')" label-placement="left" label-width="45" :show-feedback="false" class="base-item">
           <n-input-number
             v-model:value="topBase"
             :min="2"
@@ -211,7 +213,7 @@ async function copyValue(base: number) {
       <transition name="fade">
         <div v-if="isBigInt" class="bigint-hint">
           <icon-mdi-information-outline class="hint-icon" />
-          Large number detected — precision is guaranteed via BigInt (no loss).
+          {{ t('tools.integer-base-converter.bigIntHint') }}
         </div>
       </transition>
 
@@ -242,7 +244,7 @@ async function copyValue(base: number) {
             </div>
           </div>
           <!-- 复制按钮 -->
-          <c-tooltip :tooltip="copiedKey === `base-${base}` ? 'Copied!' : 'Copy'" position="left">
+          <c-tooltip :tooltip="copiedKey === `base-${base}` ? t('tools.integer-base-converter.copied') : t('tools.integer-base-converter.copy')" position="left">
             <button
               class="copy-btn"
               :class="{ copied: copiedKey === `base-${base}` }"
@@ -260,7 +262,7 @@ async function copyValue(base: number) {
         <!-- ③ Custom 行 ────────────────────────────────────── -->
         <div class="conv-row custom-row" :class="{ active: activeBase === customBase }">
           <label class="row-label">
-            Custom:
+            {{ t('tools.integer-base-converter.custom') }}
             <n-input-number
               v-model:value="customBase"
               :min="2"
@@ -283,7 +285,7 @@ async function copyValue(base: number) {
               {{ getRowError(customBase) }}
             </div>
           </div>
-          <c-tooltip :tooltip="copiedKey === `base-${customBase}` ? 'Copied!' : 'Copy'" position="left">
+          <c-tooltip :tooltip="copiedKey === `base-${customBase}` ? t('tools.integer-base-converter.copied') : t('tools.integer-base-converter.copy')" position="left">
             <button
               class="copy-btn"
               :class="{ copied: copiedKey === `base-${customBase}` }"

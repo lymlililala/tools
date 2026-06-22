@@ -3,6 +3,8 @@ import { useCopy } from '@/composable/copy';
 import { base64ToText, isValidBase64, textToBase64 } from '@/utils/base64';
 import { withDefaultOnError } from '@/utils/defaults';
 
+const { t } = useI18n();
+
 const encodeUrlSafe = useStorage('base64-string-converter--encode-url-safe', false);
 const decodeUrlSafe = useStorage('base64-string-converter--decode-url-safe', false);
 
@@ -51,8 +53,8 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
     <!-- ① 左侧：编码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" title="String → Base64">
       <!-- URL Safe 开关 -->
-      <n-form-item label="Encode URL safe" label-placement="left" :show-feedback="false" class="switch-row">
-        <c-tooltip tooltip="Replaces + with - and / with _ for safe use in URLs" position="right">
+      <n-form-item :label="t('tools.base64-string-converter.encodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
+        <c-tooltip :tooltip="t('tools.base64-string-converter.encodeUrlSafeTip')" position="right">
           <n-switch v-model:value="encodeUrlSafe" />
         </c-tooltip>
       </n-form-item>
@@ -60,11 +62,11 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
       <!-- 输入框 -->
       <div class="area-wrap">
         <div class="area-label">
-          String to encode
+          {{ t('tools.base64-string-converter.stringToEncode') }}
           <button
             v-if="textInput"
             class="area-clear-btn"
-            title="Clear input"
+            :title="t('tools.base64-string-converter.clearInput')"
             @click="textInput = ''"
           >
             <icon-mdi-close-circle class="clear-icon" />
@@ -73,7 +75,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
         <textarea
           v-model="textInput"
           class="b64-textarea input-area"
-          placeholder="Put your string here…"
+          :placeholder="t('tools.base64-string-converter.stringPlaceholder')"
           spellcheck="false"
           autocomplete="off"
         />
@@ -82,8 +84,8 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
       <!-- 输出框（只读） -->
       <div class="area-wrap mt-12px">
         <div class="area-label">
-          Base64 output
-          <c-tooltip :tooltip="b64Copied ? 'Copied!' : 'Copy Base64'" position="right">
+          {{ t('tools.base64-string-converter.base64Output') }}
+          <c-tooltip :tooltip="b64Copied ? t('tools.base64-string-converter.copied') : t('tools.base64-string-converter.copyBase64')" position="right">
             <button
               class="area-copy-btn"
               :class="{ copied: b64Copied }"
@@ -101,7 +103,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
           <textarea
             class="b64-textarea output-area"
             :value="base64Output"
-            placeholder="Base64 output will appear here…"
+            :placeholder="t('tools.base64-string-converter.base64OutputPlaceholder')"
             readonly
             spellcheck="false"
           />
@@ -112,8 +114,8 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
     <!-- ② 右侧：解码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" title="Base64 → String">
       <!-- URL Safe 开关 -->
-      <n-form-item label="Decode URL safe" label-placement="left" :show-feedback="false" class="switch-row">
-        <c-tooltip tooltip="Treats - as + and _ as / when decoding URL-safe Base64" position="right">
+      <n-form-item :label="t('tools.base64-string-converter.decodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
+        <c-tooltip :tooltip="t('tools.base64-string-converter.decodeUrlSafeTip')" position="right">
           <n-switch v-model:value="decodeUrlSafe" />
         </c-tooltip>
       </n-form-item>
@@ -121,11 +123,11 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
       <!-- 输入框 -->
       <div class="area-wrap">
         <div class="area-label">
-          Base64 string to decode
+          {{ t('tools.base64-string-converter.base64ToDecode') }}
           <button
             v-if="base64Input"
             class="area-clear-btn"
-            title="Clear input"
+            :title="t('tools.base64-string-converter.clearInput')"
             @click="base64Input = ''"
           >
             <icon-mdi-close-circle class="clear-icon" />
@@ -135,7 +137,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
           v-model="base64Input"
           class="b64-textarea input-area"
           :class="{ 'input-error': decodeError }"
-          placeholder="Paste your Base64 string here…"
+          :placeholder="t('tools.base64-string-converter.base64InputPlaceholder')"
           spellcheck="false"
           autocomplete="off"
         />
@@ -151,8 +153,8 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
       <!-- 输出框（只读） -->
       <div class="area-wrap mt-12px">
         <div class="area-label">
-          Decoded string
-          <c-tooltip :tooltip="textCopied ? 'Copied!' : 'Copy decoded string'" position="right">
+          {{ t('tools.base64-string-converter.decodedString') }}
+          <c-tooltip :tooltip="textCopied ? t('tools.base64-string-converter.copied') : t('tools.base64-string-converter.copyDecoded')" position="right">
             <button
               class="area-copy-btn"
               :class="{ copied: textCopied }"
@@ -170,7 +172,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
           <textarea
             class="b64-textarea output-area"
             :value="textOutput"
-            placeholder="Decoded string will appear here…"
+            :placeholder="t('tools.base64-string-converter.decodedPlaceholder')"
             readonly
             spellcheck="false"
           />

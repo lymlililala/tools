@@ -3,6 +3,8 @@ import verifyPDF from 'pdf-signature-reader';
 import type { SignatureInfo } from './pdf-signature-checker.types';
 import { formatBytes } from '@/utils/convert';
 
+const { t } = useI18n();
+
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 const signatures = ref<SignatureInfo[]>([]);
@@ -112,7 +114,7 @@ function reset() {
       <template v-if="status === 'loading'">
         <n-spin size="medium" />
         <div class="dz-title">
-          Analysing signatures…
+          {{ t('tools.pdf-signature-checker.analysing') }}
         </div>
         <div class="dz-filename">
           {{ file?.name }}
@@ -123,15 +125,15 @@ function reset() {
       <template v-else>
         <icon-mdi-file-pdf-box class="dz-pdf-icon" />
         <div class="dz-title">
-          Drag &amp; drop a PDF here
+          {{ t('tools.pdf-signature-checker.dragDrop') }}
         </div>
         <c-button type="primary" class="dz-btn" @click.stop="triggerInput">
           <icon-mdi-folder-open-outline style="margin-right:5px" />
-          Browse files
+          {{ t('tools.pdf-signature-checker.browseFiles') }}
         </c-button>
         <!-- 格式/大小提示 -->
         <div class="dz-hint">
-          Supported: .pdf &nbsp;·&nbsp; Max size: 50 MB
+          {{ t('tools.pdf-signature-checker.formatHint') }}
         </div>
       </template>
     </div>
@@ -139,14 +141,14 @@ function reset() {
     <!-- ② 隐私锁标识（始终可见，增强信任感） -->
     <div class="privacy-badge">
       <icon-mdi-lock class="lock-icon" />
-      <span>100% local processing — your file is never uploaded to any server</span>
+      <span>{{ t('tools.pdf-signature-checker.privacyNote') }}</span>
     </div>
 
     <!-- ③ 错误提示：类型错误 -->
     <transition name="fade">
       <c-alert v-if="status === 'type-error'" type="error" class="alert-msg">
         <icon-mdi-alert-circle-outline style="margin-right:6px" />
-        Only PDF files are supported. Please select a <strong>.pdf</strong> file.
+        {{ t('tools.pdf-signature-checker.typeError') }}
       </c-alert>
     </transition>
 
@@ -154,7 +156,7 @@ function reset() {
     <transition name="fade">
       <c-alert v-if="status === 'size-error'" type="error" class="alert-msg">
         <icon-mdi-alert-circle-outline style="margin-right:6px" />
-        File is too large (max 50 MB). Please use a smaller PDF.
+        {{ t('tools.pdf-signature-checker.sizeError') }}
       </c-alert>
     </transition>
 
@@ -163,14 +165,14 @@ function reset() {
       <div v-if="status === 'no-signature'" class="state-card no-sig">
         <icon-mdi-file-document-outline class="state-icon" />
         <div class="state-title">
-          No digital signatures found
+          {{ t('tools.pdf-signature-checker.noSignatureTitle') }}
         </div>
         <div class="state-sub">
-          <strong>{{ file?.name }}</strong> does not contain any embedded digital signatures.
+          {{ t('tools.pdf-signature-checker.noSignatureSub', { name: file?.name }) }}
         </div>
         <c-button class="retry-btn" @click="reset">
           <icon-mdi-refresh style="margin-right:5px" />
-          Try another file
+          {{ t('tools.pdf-signature-checker.tryAnother') }}
         </c-button>
       </div>
     </transition>
@@ -180,14 +182,14 @@ function reset() {
       <div v-if="status === 'error'" class="state-card error-state">
         <icon-mdi-alert-circle class="state-icon error-icon" />
         <div class="state-title">
-          Failed to parse PDF
+          {{ t('tools.pdf-signature-checker.parseFailTitle') }}
         </div>
         <div class="state-sub">
-          The file may be corrupted or in an unsupported format.
+          {{ t('tools.pdf-signature-checker.parseFailSub') }}
         </div>
         <c-button class="retry-btn" @click="reset">
           <icon-mdi-refresh style="margin-right:5px" />
-          Try another file
+          {{ t('tools.pdf-signature-checker.tryAnother') }}
         </c-button>
       </div>
     </transition>
@@ -200,7 +202,7 @@ function reset() {
           <icon-mdi-file-pdf-box class="file-bar-icon" />
           <span class="file-bar-name">{{ file?.name }}</span>
           <span class="file-bar-size">{{ formatBytes(file!.size) }}</span>
-          <button class="file-bar-reset" title="Analyse another file" @click="reset">
+          <button class="file-bar-reset" :title="t('tools.pdf-signature-checker.analyseAnother')" @click="reset">
             <icon-mdi-close />
           </button>
         </div>
@@ -208,7 +210,7 @@ function reset() {
         <div v-for="(signature, index) of signatures" :key="index" class="sig-block">
           <!-- 签名状态头部 -->
           <div class="sig-header">
-            <span class="sig-title">Signature {{ index + 1 }}</span>
+            <span class="sig-title">{{ t('tools.pdf-signature-checker.signature', { index: index + 1 }) }}</span>
             <div class="sig-badges">
               <!-- verified -->
               <span
@@ -217,7 +219,7 @@ function reset() {
               >
                 <icon-mdi-check-circle v-if="signature.verified" />
                 <icon-mdi-close-circle v-else />
-                {{ signature.verified ? 'Verified' : 'Not Verified' }}
+                {{ signature.verified ? t('tools.pdf-signature-checker.verified') : t('tools.pdf-signature-checker.notVerified') }}
               </span>
               <!-- integrity -->
               <span
@@ -226,7 +228,7 @@ function reset() {
               >
                 <icon-mdi-shield-check v-if="signature.integrity" />
                 <icon-mdi-shield-off v-else />
-                {{ signature.integrity ? 'Intact' : 'Tampered' }}
+                {{ signature.integrity ? t('tools.pdf-signature-checker.intact') : t('tools.pdf-signature-checker.tampered') }}
               </span>
               <!-- expired -->
               <span
@@ -235,7 +237,7 @@ function reset() {
               >
                 <icon-mdi-clock-alert v-if="signature.expired" />
                 <icon-mdi-clock-check v-else />
-                {{ signature.expired ? 'Cert Expired' : 'Cert Valid' }}
+                {{ signature.expired ? t('tools.pdf-signature-checker.certExpired') : t('tools.pdf-signature-checker.certValid') }}
               </span>
             </div>
           </div>
@@ -243,15 +245,15 @@ function reset() {
           <!-- 签名元数据（如有） -->
           <div v-if="signature.meta?.signatureMeta" class="sig-meta">
             <template v-if="signature.meta.signatureMeta.name">
-              <span class="meta-label">Signed by:</span>
+              <span class="meta-label">{{ t('tools.pdf-signature-checker.signedBy') }}</span>
               <span class="meta-value">{{ signature.meta.signatureMeta.name }}</span>
             </template>
             <template v-if="signature.meta.signatureMeta.reason">
-              <span class="meta-label">Reason:</span>
+              <span class="meta-label">{{ t('tools.pdf-signature-checker.reason') }}</span>
               <span class="meta-value">{{ signature.meta.signatureMeta.reason }}</span>
             </template>
             <template v-if="signature.meta.signatureMeta.location">
-              <span class="meta-label">Location:</span>
+              <span class="meta-label">{{ t('tools.pdf-signature-checker.location') }}</span>
               <span class="meta-value">{{ signature.meta.signatureMeta.location }}</span>
             </template>
           </div>

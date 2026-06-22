@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { parse as parseToml } from 'iarna-toml-esm';
 
+const { t } = useI18n();
+
 // ── 状态 ─────────────────────────────────────────────────────────────────
 const tomlInput = ref('');
 const debouncedToml = refDebounced(tomlInput, 150);
@@ -41,14 +43,14 @@ function clearInput() {
       <!-- 左：TOML 输入 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">TOML Input</span>
+          <span class="pane-title">{{ t('tools.toml-to-json.tomlInput') }}</span>
           <div class="pane-actions">
             <c-button
               v-if="tomlInput"
               variant="text"
               size="small"
               class="action-btn"
-              title="Clear"
+              :title="t('tools.toml-to-json.clear')"
               @click="clearInput"
             >
               <icon-mdi-close class="action-icon" />
@@ -59,7 +61,7 @@ function clearInput() {
         <c-code-input
           v-model="tomlInput"
           language="toml"
-          placeholder="Paste your TOML here..."
+          :placeholder="t('tools.toml-to-json.inputPlaceholder')"
           min-height="calc(100vh - 218px)"
         />
       </div>
@@ -67,7 +69,7 @@ function clearInput() {
       <!-- 右：JSON 输出 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">JSON Output</span>
+          <span class="pane-title">{{ t('tools.toml-to-json.jsonOutput') }}</span>
           <div class="pane-actions">
             <c-output-actions
               :value="jsonOutput"
@@ -82,7 +84,7 @@ function clearInput() {
           v-if="!parseError"
           :model-value="jsonOutput"
           language="json"
-          placeholder="Converted JSON will appear here…"
+          :placeholder="t('tools.toml-to-json.outputPlaceholder')"
           min-height="calc(100vh - 218px)"
           readonly
         />
@@ -93,11 +95,11 @@ function clearInput() {
             <icon-mdi-alert-circle-outline class="error-icon" />
           </div>
           <div class="error-title">
-            Parse Error
+            {{ t('tools.toml-to-json.parseError') }}
           </div>
           <pre class="error-message">{{ parseError }}</pre>
           <div class="error-tip">
-            Make sure your TOML syntax is valid. Check for missing quotes or incorrect table headers.
+            {{ t('tools.toml-to-json.tomlTip') }}
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@
 import { stringify as stringifyYaml } from 'yaml';
 import JSON5 from 'json5';
 
+const { t } = useI18n();
+
 // ── 状态 ─────────────────────────────────────────────────────────────────
 const jsonInput = ref('');
 const debouncedJson = refDebounced(jsonInput, 150);
@@ -43,14 +45,14 @@ function clearInput() {
       <!-- 左：JSON 输入 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">JSON Input</span>
+          <span class="pane-title">{{ t('tools.json-to-yaml-converter.jsonInput') }}</span>
           <div class="pane-actions">
             <c-button
               v-if="jsonInput"
               variant="text"
               size="small"
               class="action-btn"
-              title="Clear"
+              :title="t('tools.json-to-yaml-converter.clear')"
               @click="clearInput"
             >
               <icon-mdi-close class="action-icon" />
@@ -61,7 +63,7 @@ function clearInput() {
         <c-code-input
           v-model="jsonInput"
           language="json"
-          placeholder="Paste your JSON here..."
+          :placeholder="t('tools.json-to-yaml-converter.jsonPlaceholder')"
           min-height="calc(100vh - 218px)"
         />
       </div>
@@ -69,7 +71,7 @@ function clearInput() {
       <!-- 右：YAML 输出 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">YAML Output</span>
+          <span class="pane-title">{{ t('tools.json-to-yaml-converter.yamlOutput') }}</span>
           <div class="pane-actions">
             <c-output-actions
               :value="yamlOutput"
@@ -84,7 +86,7 @@ function clearInput() {
           v-if="!parseError"
           :model-value="yamlOutput"
           language="yaml"
-          placeholder="Converted YAML will appear here…"
+          :placeholder="t('tools.json-to-yaml-converter.yamlPlaceholder')"
           min-height="calc(100vh - 218px)"
           readonly
         />
@@ -95,11 +97,11 @@ function clearInput() {
             <icon-mdi-alert-circle-outline class="error-icon" />
           </div>
           <div class="error-title">
-            Parse Error
+            {{ t('tools.json-to-yaml-converter.parseError') }}
           </div>
           <pre class="error-message">{{ parseError }}</pre>
           <div class="error-tip">
-            Make sure your input is valid JSON. Trailing commas are allowed (JSON5).
+            {{ t('tools.json-to-yaml-converter.errorTip') }}
           </div>
         </div>
       </div>

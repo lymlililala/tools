@@ -5,6 +5,7 @@ import { decodeSafeLinksURL } from './safelink-decoder.service';
 import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
+const { t } = useI18n();
 const inputSafeLinkUrl = ref('');
 const inputDebounced = refDebounced(inputSafeLinkUrl, 300);
 
@@ -17,12 +18,12 @@ const decodeResult = computed<{ success: true; url: string } | { success: false;
   try {
     const url = decodeSafeLinksURL(raw);
     if (!url) {
-      return { success: false, error: 'Invalid SafeLinks URL provided' };
+      return { success: false, error: t('tools.safelink-decoder.invalidUrl') };
     }
     return { success: true, url };
   }
   catch (e: any) {
-    return { success: false, error: e?.message ?? 'Invalid SafeLinks URL provided' };
+    return { success: false, error: e?.message ?? t('tools.safelink-decoder.invalidUrl') };
   }
 });
 
@@ -62,17 +63,17 @@ async function copyOutput() {
   <div class="safelink-wrap" :class="{ dark: styleStore.isDarkTheme }">
     <!-- 输入区域 -->
     <div class="field-group">
-      <label class="field-label">Your input Outlook SafeLink Url:</label>
+      <label class="field-label">{{ t('tools.safelink-decoder.inputLabel') }}</label>
       <div class="input-wrapper" :class="{ 'has-error': hasError, 'has-success': hasSuccess }">
         <textarea
           v-model="inputSafeLinkUrl"
           class="url-textarea"
-          placeholder="Paste your Outlook SafeLink URL here..."
+          :placeholder="t('tools.safelink-decoder.inputPlaceholder')"
           spellcheck="false"
           autofocus
           rows="4"
         />
-        <button v-if="inputSafeLinkUrl" class="clear-btn" title="Clear" @click="clearInput">
+        <button v-if="inputSafeLinkUrl" class="clear-btn" :title="t('tools.safelink-decoder.clear')" @click="clearInput">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
@@ -92,7 +93,7 @@ async function copyOutput() {
 
     <!-- 输出区域 -->
     <div class="field-group">
-      <label class="field-label">Output decoded URL:</label>
+      <label class="field-label">{{ t('tools.safelink-decoder.outputLabel') }}</label>
       <div
         class="output-box"
         :class="{
@@ -108,7 +109,7 @@ async function copyOutput() {
             <rect x="4" y="14" width="18" height="3" rx="1.5" fill="currentColor" />
             <rect x="4" y="20" width="21" height="3" rx="1.5" fill="currentColor" />
           </svg>
-          <span>Decoded URL will appear here...</span>
+          <span>{{ t('tools.safelink-decoder.outputPlaceholder') }}</span>
         </div>
         <!-- 成功内容 -->
         <div v-else-if="hasSuccess" class="output-content">
@@ -126,7 +127,7 @@ async function copyOutput() {
           v-if="hasSuccess"
           class="copy-btn"
           :class="{ copied }"
-          title="Copy decoded URL"
+          :title="t('tools.safelink-decoder.copyTitle')"
           @click="copyOutput"
         >
           <svg v-if="!copied" width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -136,7 +137,7 @@ async function copyOutput() {
           <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span>{{ copied ? 'Copied!' : 'Copy' }}</span>
+          <span>{{ copied ? t('tools.safelink-decoder.copied') : t('tools.safelink-decoder.copy') }}</span>
         </button>
       </div>
     </div>

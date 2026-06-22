@@ -4,6 +4,8 @@ import { diff } from '../json-diff.models';
 import { DiffRootViewer } from './diff-viewer.models';
 import { useAppTheme } from '@/ui/theme/themes';
 
+const { t } = useI18n();
+
 const props = defineProps<{ leftJson: unknown; rightJson: unknown }>();
 const onlyShowDifferences = ref(false);
 const { leftJson, rightJson } = toRefs(props);
@@ -23,27 +25,27 @@ const showResults = computed(() => !_.isUndefined(leftJson.value) && !_.isUndefi
     <div class="diff-header">
       <div class="diff-title">
         <icon-mdi-compare class="dh-icon" />
-        <span>Diff Result</span>
+        <span>{{ t('tools.json-diff.diffResult') }}</span>
         <!-- 状态徽章 -->
         <span v-if="jsonAreTheSame" class="status-badge same">
           <icon-mdi-check-circle-outline class="sb-icon" />
-          Identical
+          {{ t('tools.json-diff.identical') }}
         </span>
         <span v-else class="status-badge diff">
           <icon-mdi-swap-horizontal class="sb-icon" />
-          Differences found
+          {{ t('tools.json-diff.differencesFound') }}
         </span>
       </div>
 
       <div class="diff-controls">
         <!-- 图例 -->
         <div class="legend">
-          <span class="legend-item added">+ Added</span>
-          <span class="legend-item removed">− Removed</span>
-          <span class="legend-item updated">~ Updated</span>
+          <span class="legend-item added">+ {{ t('tools.json-diff.added') }}</span>
+          <span class="legend-item removed">− {{ t('tools.json-diff.removed') }}</span>
+          <span class="legend-item updated">~ {{ t('tools.json-diff.updated') }}</span>
         </div>
 
-        <n-form-item v-if="!jsonAreTheSame" label="Only show differences" label-placement="left" style="margin-bottom:0">
+        <n-form-item v-if="!jsonAreTheSame" :label="t('tools.json-diff.onlyShowDifferences')" label-placement="left" style="margin-bottom:0">
           <n-switch v-model:value="onlyShowDifferences" size="small" />
         </n-form-item>
       </div>
@@ -52,7 +54,7 @@ const showResults = computed(() => !_.isUndefined(leftJson.value) && !_.isUndefi
     <c-card data-test-id="diff-result" class="diff-card">
       <div v-if="jsonAreTheSame" class="same-state">
         <icon-mdi-check-circle-outline class="same-icon" />
-        <span>The two JSONs are identical — no differences found</span>
+        <span>{{ t('tools.json-diff.identicalMessage') }}</span>
       </div>
       <DiffRootViewer v-else :diff="result" />
     </c-card>
@@ -61,7 +63,7 @@ const showResults = computed(() => !_.isUndefined(leftJson.value) && !_.isUndefi
   <!-- 空状态引导 -->
   <div v-else class="diff-empty">
     <icon-mdi-code-json class="de-icon" />
-    <span>Paste valid JSON in both panels above to see the diff</span>
+    <span>{{ t('tools.json-diff.emptyHint') }}</span>
   </div>
 </template>
 

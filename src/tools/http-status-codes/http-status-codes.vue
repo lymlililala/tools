@@ -25,7 +25,7 @@ const codesByCategoryFiltered = computed(() => {
   if (!search.value) {
     return codesByCategories;
   }
-  return [{ category: 'Search results', codes: searchResult.value }];
+  return [{ category: t('tools.http-status-codes.searchResults'), codes: searchResult.value }];
 });
 
 const isSearching = computed(() => search.value.trim().length > 0);
@@ -119,7 +119,7 @@ async function copyCode(code: number, name: string) {
           ref="searchInputRef"
           v-model="search"
           class="search-input"
-          placeholder="Search HTTP status code…  e.g. 404 or Not Found"
+          :placeholder="t('tools.http-status-codes.searchPlaceholder')"
           spellcheck="false"
           autofocus
         >
@@ -145,7 +145,7 @@ async function copyCode(code: number, name: string) {
     <!-- ── 无结果提示 ────────────────────────────────────────────────── -->
     <div v-if="noResults" class="empty-state">
       <icon-mdi-magnify-close class="es-icon" />
-      <span>No HTTP status codes found for "{{ search }}"</span>
+      <span>{{ t('tools.http-status-codes.noResults', { query: search }) }}</span>
     </div>
 
     <!-- ── 状态码列表 ────────────────────────────────────────────────── -->

@@ -15,6 +15,8 @@ import {
 import { convertHexToBin } from '../hash-text/hash-text.service';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 const algos = {
   MD5: HmacMD5,
   RIPEMD160: HmacRIPEMD160,
@@ -45,7 +47,7 @@ const hmac = computed(() =>
 );
 
 // 复制：带 isJustCopied 图标切换反馈
-const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the clipboard' });
+const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-generator.copiedToast') });
 </script>
 
 <template>
@@ -56,11 +58,11 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the
       multiline
       raw-text
       clearable
-      placeholder="Plain text to compute the hash..."
+      :placeholder="t('tools.hmac-generator.plainTextPlaceholder')"
       rows="3"
       autosize
       autofocus
-      label="Plain text to compute the hash"
+      :label="t('tools.hmac-generator.plainTextLabel')"
     />
 
     <!-- ② Secret key：单行 + 清空 -->
@@ -68,29 +70,29 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the
       v-model:value="secret"
       raw-text
       clearable
-      placeholder="Enter the secret key..."
-      label="Secret key"
+      :placeholder="t('tools.hmac-generator.secretPlaceholder')"
+      :label="t('tools.hmac-generator.secretLabel')"
     />
 
     <!-- ③ 两列选择器（移动端自动堆叠） -->
     <div class="selects-row">
       <c-select
         v-model:value="hashFunction"
-        label="Hashing function"
+        :label="t('tools.hmac-generator.hashingFunction')"
         class="select-item"
-        placeholder="Select a hashing function..."
+        :placeholder="t('tools.hmac-generator.hashingFunctionPlaceholder')"
         :options="Object.keys(algos).map((label) => ({ label, value: label }))"
       />
       <c-select
         v-model:value="encoding"
-        label="Output encoding"
+        :label="t('tools.hmac-generator.outputEncoding')"
         class="select-item"
-        placeholder="Select the result encoding..."
+        :placeholder="t('tools.hmac-generator.outputEncodingPlaceholder')"
         :options="[
-          { label: 'Binary (base 2)', value: 'Bin' },
-          { label: 'Hexadecimal (base 16)', value: 'Hex' },
-          { label: 'Base64 (base 64)', value: 'Base64' },
-          { label: 'Base64-url (base 64 with url safe chars)', value: 'Base64url' },
+          { label: t('tools.hmac-generator.encBinary'), value: 'Bin' },
+          { label: t('tools.hmac-generator.encHex'), value: 'Hex' },
+          { label: t('tools.hmac-generator.encBase64'), value: 'Base64' },
+          { label: t('tools.hmac-generator.encBase64url'), value: 'Base64url' },
         ]"
       />
     </div>
@@ -98,7 +100,7 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the
     <!-- ④ 输出区：只读灰底 + 内嵌复制按鈕（唯一复制入口） -->
     <div class="result-section">
       <div class="result-label">
-        HMAC of your text
+        {{ t('tools.hmac-generator.resultLabel') }}
       </div>
       <div class="result-box-row">
         <!-- 只读灰底输出框 -->
@@ -106,7 +108,7 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: 'HMAC copied to the
           <pre class="result-pre">{{ hmac }}</pre>
         </div>
         <!-- 内嵌复制按鈕：图标切换 ✓ -->
-        <c-tooltip :tooltip="isJustCopied ? 'Copied!' : 'Copy HMAC'" position="left">
+        <c-tooltip :tooltip="isJustCopied ? t('tools.hmac-generator.copied') : t('tools.hmac-generator.copyHmac')" position="left">
           <button
             class="copy-btn"
             :class="{ copied: isJustCopied }"

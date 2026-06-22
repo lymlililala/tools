@@ -2,6 +2,8 @@
 import markdownit from 'markdown-it';
 import { refDebounced } from '@vueuse/core';
 
+const { t } = useI18n();
+
 // ── 状态 ─────────────────────────────────────────────────────────────────
 const inputMarkdown = ref('');
 const debouncedMd = refDebounced(inputMarkdown, 150);
@@ -64,15 +66,15 @@ async function copyHtml() {
     <div class="settings-bar">
       <label class="setting-item">
         <n-switch v-model:value="enableHtml" size="small" />
-        <span class="setting-label">Allow HTML in source</span>
+        <span class="setting-label">{{ t('tools.markdown-to-html.allowHtml') }}</span>
       </label>
       <label class="setting-item">
         <n-switch v-model:value="enableLinkify" size="small" />
-        <span class="setting-label">Auto-linkify URLs</span>
+        <span class="setting-label">{{ t('tools.markdown-to-html.autoLinkify') }}</span>
       </label>
       <label class="setting-item">
         <n-switch v-model:value="enableTypographer" size="small" />
-        <span class="setting-label">Typographer</span>
+        <span class="setting-label">{{ t('tools.markdown-to-html.typographer') }}</span>
       </label>
     </div>
 
@@ -81,15 +83,15 @@ async function copyHtml() {
       <!-- 左：Markdown 输入 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Markdown Input</span>
+          <span class="pane-title">{{ t('tools.markdown-to-html.markdownInput') }}</span>
           <div class="pane-actions">
             <n-tooltip v-if="hasContent" trigger="hover" placement="top">
               <template #trigger>
-                <button class="icon-btn icon-btn-danger" title="Clear" @click="clearInput">
+                <button class="icon-btn icon-btn-danger" :title="t('tools.markdown-to-html.clear')" @click="clearInput">
                   <icon-mdi-close class="btn-icon" />
                 </button>
               </template>
-              Clear
+              {{ t('tools.markdown-to-html.clear') }}
             </n-tooltip>
           </div>
         </div>
@@ -97,7 +99,7 @@ async function copyHtml() {
         <c-code-input
           v-model="inputMarkdown"
           language="markdown"
-          placeholder="Paste or type your Markdown here…&#10;&#10;# Hello World&#10;**bold**, _italic_, `code`"
+          :placeholder="t('tools.markdown-to-html.inputPlaceholder')"
           min-height="calc(100vh - 236px)"
         />
       </div>
@@ -113,7 +115,7 @@ async function copyHtml() {
               @click="activeTab = 'html'"
             >
               <icon-mdi-code-tags class="tab-icon" />
-              HTML Source
+              {{ t('tools.markdown-to-html.htmlSource') }}
             </button>
             <button
               class="tab-btn"
@@ -121,7 +123,7 @@ async function copyHtml() {
               @click="activeTab = 'preview'"
             >
               <icon-mdi-eye-outline class="tab-icon" />
-              Preview
+              {{ t('tools.markdown-to-html.preview') }}
             </button>
           </div>
 
@@ -132,14 +134,14 @@ async function copyHtml() {
                 <button
                   class="icon-btn"
                   :class="{ 'icon-btn-success': copySuccess }"
-                  title="Copy HTML"
+                  :title="t('tools.markdown-to-html.copyHtml')"
                   @click="copyHtml"
                 >
                   <icon-mdi-check v-if="copySuccess" class="btn-icon" />
                   <icon-mdi-content-copy v-else class="btn-icon" />
                 </button>
               </template>
-              {{ copySuccess ? 'Copied!' : 'Copy HTML' }}
+              {{ copySuccess ? t('tools.markdown-to-html.copied') : t('tools.markdown-to-html.copyHtml') }}
             </n-tooltip>
             <!-- 打印为 PDF -->
             <n-tooltip trigger="hover" placement="top">
@@ -148,13 +150,13 @@ async function copyHtml() {
                   class="icon-btn"
                   :class="{ 'icon-btn-disabled': !hasOutput }"
                   :disabled="!hasOutput"
-                  title="Print as PDF"
+                  :title="t('tools.markdown-to-html.printPdf')"
                   @click="printHtml"
                 >
                   <icon-mdi-printer-outline class="btn-icon" />
                 </button>
               </template>
-              {{ hasOutput ? 'Print as PDF (renders HTML)' : 'No content to print' }}
+              {{ hasOutput ? t('tools.markdown-to-html.printPdfHint') : t('tools.markdown-to-html.noContentToPrint') }}
             </n-tooltip>
           </div>
         </div>
@@ -164,7 +166,7 @@ async function copyHtml() {
           v-if="activeTab === 'html'"
           :model-value="outputHtml"
           language="xml"
-          placeholder="Converted HTML will appear here…"
+          :placeholder="t('tools.markdown-to-html.outputPlaceholder')"
           min-height="calc(100vh - 236px)"
           readonly
         />
@@ -173,7 +175,7 @@ async function copyHtml() {
         <div v-else class="preview-pane" style="min-height:calc(100vh - 236px)">
           <div v-if="!hasOutput" class="preview-empty">
             <icon-mdi-eye-off-outline class="pe-icon" />
-            <span>No content yet — start typing on the left</span>
+            <span>{{ t('tools.markdown-to-html.previewEmpty') }}</span>
           </div>
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div v-else class="prose" v-html="outputHtml" />

@@ -214,20 +214,27 @@ function formatExecTime(d: Date): string {
 }
 
 // ── 帮助表格数据 ──────────────────────────────────────────────
-const helpers = [
-  { symbol: '*', meaning: 'Any value', example: '* * * *', equivalent: 'Every minute' },
-  { symbol: '-', meaning: 'Range of values', example: '1-10 * * *', equivalent: 'Minutes 1 through 10' },
-  { symbol: ',', meaning: 'List of values', example: '1,10 * * *', equivalent: 'At minutes 1 and 10' },
-  { symbol: '/', meaning: 'Step values', example: '*/10 * * *', equivalent: 'Every 10 minutes' },
-  { symbol: '@yearly', meaning: 'Once every year at midnight of 1 January', example: '@yearly', equivalent: '0 0 1 1 *' },
-  { symbol: '@annually', meaning: 'Same as @yearly', example: '@annually', equivalent: '0 0 1 1 *' },
-  { symbol: '@monthly', meaning: 'Once a month at midnight on the first day', example: '@monthly', equivalent: '0 0 1 * *' },
-  { symbol: '@weekly', meaning: 'Once a week at midnight on Sunday morning', example: '@weekly', equivalent: '0 0 * * 0' },
-  { symbol: '@daily', meaning: 'Once a day at midnight', example: '@daily', equivalent: '0 0 * * *' },
-  { symbol: '@midnight', meaning: 'Same as @daily', example: '@midnight', equivalent: '0 0 * * *' },
-  { symbol: '@hourly', meaning: 'Once an hour at the beginning of the hour', example: '@hourly', equivalent: '0 * * * *' },
-  { symbol: '@reboot', meaning: 'Run at startup', example: '', equivalent: '' },
-];
+const helpers = computed(() => [
+  { symbol: '*', meaning: t('tools.crontab-generator.helpAnyValue'), example: '* * * *', equivalent: t('tools.crontab-generator.helpEveryMinute') },
+  { symbol: '-', meaning: t('tools.crontab-generator.helpRange'), example: '1-10 * * *', equivalent: t('tools.crontab-generator.helpMinutes1to10') },
+  { symbol: ',', meaning: t('tools.crontab-generator.helpList'), example: '1,10 * * *', equivalent: t('tools.crontab-generator.helpAtMinutes1and10') },
+  { symbol: '/', meaning: t('tools.crontab-generator.helpStep'), example: '*/10 * * *', equivalent: t('tools.crontab-generator.helpEvery10Minutes') },
+  { symbol: '@yearly', meaning: t('tools.crontab-generator.helpYearly'), example: '@yearly', equivalent: '0 0 1 1 *' },
+  { symbol: '@annually', meaning: t('tools.crontab-generator.helpAnnually'), example: '@annually', equivalent: '0 0 1 1 *' },
+  { symbol: '@monthly', meaning: t('tools.crontab-generator.helpMonthly'), example: '@monthly', equivalent: '0 0 1 * *' },
+  { symbol: '@weekly', meaning: t('tools.crontab-generator.helpWeekly'), example: '@weekly', equivalent: '0 0 * * 0' },
+  { symbol: '@daily', meaning: t('tools.crontab-generator.helpDaily'), example: '@daily', equivalent: '0 0 * * *' },
+  { symbol: '@midnight', meaning: t('tools.crontab-generator.helpMidnight'), example: '@midnight', equivalent: '0 0 * * *' },
+  { symbol: '@hourly', meaning: t('tools.crontab-generator.helpHourly'), example: '@hourly', equivalent: '0 * * * *' },
+  { symbol: '@reboot', meaning: t('tools.crontab-generator.helpReboot'), example: '', equivalent: '' },
+]);
+
+const tableHeaders = computed(() => [
+  { key: 'symbol', label: t('tools.crontab-generator.colSymbol') },
+  { key: 'meaning', label: t('tools.crontab-generator.colMeaning') },
+  { key: 'example', label: t('tools.crontab-generator.colExample') },
+  { key: 'equivalent', label: t('tools.crontab-generator.colEquivalent') },
+]);
 
 // ── 页面加载自动聚焦 ──────────────────────────────────────────
 onMounted(() => nextTick(() => inputEl.value?.focus()));
@@ -286,13 +293,13 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
     <!-- ── 配置开关 ──────────────────────────────────────────── -->
     <div flex justify-center>
       <n-form :show-feedback="false" label-width="170" label-placement="left">
-        <n-form-item label="Verbose">
+        <n-form-item :label="t('tools.crontab-generator.verbose')">
           <n-switch v-model:value="cronstrueConfig.verbose" />
         </n-form-item>
-        <n-form-item label="Use 24 hour time format">
+        <n-form-item :label="t('tools.crontab-generator.use24Hour')">
           <n-switch v-model:value="cronstrueConfig.use24HourTimeFormat" />
         </n-form-item>
-        <n-form-item label="Days start at 0">
+        <n-form-item :label="t('tools.crontab-generator.daysStartAtZero')">
           <n-switch v-model:value="cronstrueConfig.dayOfWeekStartIndexZero" />
         </n-form-item>
       </n-form>
@@ -333,13 +340,13 @@ onMounted(() => nextTick(() => inputEl.value?.focus()));
 
     <div v-if="styleStore.isSmallScreen">
       <c-card v-for="{ symbol, meaning, example, equivalent } in helpers" :key="symbol" mb-3 important:border-none>
-        <div>Symbol: <strong>{{ symbol }}</strong></div>
-        <div>Meaning: <strong>{{ meaning }}</strong></div>
-        <div>Example: <strong><code>{{ example }}</code></strong></div>
-        <div>Equivalent: <strong>{{ equivalent }}</strong></div>
+        <div>{{ t('tools.crontab-generator.colSymbol') }}: <strong>{{ symbol }}</strong></div>
+        <div>{{ t('tools.crontab-generator.colMeaning') }}: <strong>{{ meaning }}</strong></div>
+        <div>{{ t('tools.crontab-generator.colExample') }}: <strong><code>{{ example }}</code></strong></div>
+        <div>{{ t('tools.crontab-generator.colEquivalent') }}: <strong>{{ equivalent }}</strong></div>
       </c-card>
     </div>
-    <c-table v-else :data="helpers" />
+    <c-table v-else :data="helpers" :headers="tableHeaders" />
   </c-card>
 </template>
 

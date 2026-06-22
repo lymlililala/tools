@@ -13,6 +13,32 @@ const { userAgentInfo, sections } = toRefs(props);
 
 const styleStore = useStyleStore();
 const { copy } = useClipboard();
+const { t } = useI18n();
+
+// 把稳定的英文 heading / label 映射到 i18n key（保留英文作为复制 JSON 的键名）
+const headingKeyMap: Record<string, string> = {
+  Browser: 'browser',
+  Engine: 'engine',
+  OS: 'os',
+  Device: 'device',
+  CPU: 'cpu',
+};
+const labelKeyMap: Record<string, string> = {
+  Name: 'name',
+  Version: 'version',
+  Model: 'model',
+  Type: 'type',
+  Vendor: 'vendor',
+  Architecture: 'architecture',
+};
+function headingLabel(heading: string) {
+  const k = headingKeyMap[heading];
+  return k ? t(`tools.user-agent-parser.section.${k}`) : heading;
+}
+function fieldLabel(label: string) {
+  const k = labelKeyMap[label];
+  return k ? t(`tools.user-agent-parser.field.${k}`) : label;
+}
 
 // 各卡片的复制反馈
 const copiedHeading = ref('');
@@ -49,7 +75,7 @@ function cardHasData(content: UserAgentResultSection['content']): boolean {
           <div class="card-header">
             <div class="card-title-row">
               <n-icon size="20" :component="icon" class="card-icon" />
-              <span class="card-heading">{{ heading }}</span>
+              <span class="card-heading">{{ headingLabel(heading) }}</span>
             </div>
 
             <!-- 每张卡片右上角复制按钮（有数据才显示） -->
@@ -58,14 +84,14 @@ function cardHasData(content: UserAgentResultSection['content']): boolean {
                 <button
                   class="copy-btn"
                   :class="{ 'is-copied': copiedHeading === heading }"
-                  :title="`Copy ${heading}`"
+                  :title="t('tools.user-agent-parser.copySection', { section: headingLabel(heading) })"
                   @click="copyCard(heading, content)"
                 >
                   <icon-mdi-check v-if="copiedHeading === heading" class="copy-icon success" />
                   <icon-mdi-content-copy v-else class="copy-icon" />
                 </button>
               </template>
-              {{ copiedHeading === heading ? 'Copied!' : `Copy ${heading}` }}
+              {{ copiedHeading === heading ? t('tools.user-agent-parser.copied') : t('tools.user-agent-parser.copySection', { section: headingLabel(heading) }) }}
             </n-tooltip>
           </div>
 
@@ -84,7 +110,7 @@ function cardHasData(content: UserAgentResultSection['content']): boolean {
                     {{ getValue(userAgentInfo) }}
                   </n-tag>
                 </template>
-                {{ label }}
+                {{ fieldLabel(label) }}
               </n-tooltip>
 
               <!-- 空字段：灰色虚线占位符保持布局一致 -->
@@ -96,7 +122,7 @@ function cardHasData(content: UserAgentResultSection['content']): boolean {
                 class="ua-tag ua-tag--empty"
               >
                 <icon-mdi-minus class="empty-icon" />
-                {{ label }}
+                {{ fieldLabel(label) }}
               </n-tag>
             </template>
           </div>
@@ -104,7 +130,7 @@ function cardHasData(content: UserAgentResultSection['content']): boolean {
           <!-- 全部为空时：统一空状态 -->
           <div v-else class="empty-state">
             <icon-mdi-information-outline class="es-icon" />
-            <span>{{ heading }} not detected</span>
+            <span>{{ t('tools.user-agent-parser.notDetected', { section: headingLabel(heading) }) }}</span>
           </div>
         </div>
       </n-gi>

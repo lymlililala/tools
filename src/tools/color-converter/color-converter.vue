@@ -9,6 +9,8 @@ import lchPlugin from 'colord/plugins/lch';
 import { buildColorFormat } from './color-converter.models';
 import { useStyleStore } from '@/stores/style.store';
 
+const { t } = useI18n();
+
 extend([cmykPlugin, hwbPlugin, namesPlugin, lchPlugin]);
 
 const styleStore = useStyleStore();
@@ -27,7 +29,7 @@ function applyAlpha(c: Colord): Colord {
 
 const formats = {
   picker: buildColorFormat({
-    label: 'color picker',
+    label: t('tools.color-converter.colorPicker'),
     format: (v: Colord) => {
       const hex = v.toHex();
       // 剥除 alpha，color-picker 只展示纯色
@@ -206,7 +208,7 @@ const alphaPercent = computed({
       <div class="converter-left">
         <c-card>
           <div class="section-label">
-            Color Formats
+            {{ t('tools.color-converter.colorFormats') }}
           </div>
 
           <!-- Color picker + alpha -->
@@ -278,7 +280,7 @@ const alphaPercent = computed({
         <!-- 颜色大预览 -->
         <c-card mb-3>
           <div class="section-label">
-            Preview
+            {{ t('tools.color-converter.preview') }}
           </div>
           <div
             class="color-preview"
@@ -289,7 +291,7 @@ const alphaPercent = computed({
               <span v-if="alpha < 1" class="preview-alpha-tag">{{ alphaPercent }}%</span>
             </span>
             <span class="preview-name" :style="{ color: isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)' }">
-              {{ formats.name.value.value || 'Unknown' }}
+              {{ formats.name.value.value || t('tools.color-converter.unknown') }}
             </span>
           </div>
         </c-card>
@@ -297,8 +299,8 @@ const alphaPercent = computed({
         <!-- WCAG 对比度 -->
         <c-card v-if="currentColord">
           <div class="section-label">
-            WCAG Contrast
-            <span class="wcag-hint">Accessibility Score</span>
+            {{ t('tools.color-converter.wcagContrast') }}
+            <span class="wcag-hint">{{ t('tools.color-converter.accessibilityScore') }}</span>
           </div>
 
           <!-- vs White -->
@@ -311,7 +313,7 @@ const alphaPercent = computed({
             </div>
             <div class="wcag-info">
               <div class="wcag-label">
-                on White
+                {{ t('tools.color-converter.onWhite') }}
               </div>
               <div class="wcag-ratio">
                 {{ wcagWhite.toFixed(2) }}:1
@@ -334,7 +336,7 @@ const alphaPercent = computed({
             </div>
             <div class="wcag-info">
               <div class="wcag-label">
-                on Black
+                {{ t('tools.color-converter.onBlack') }}
               </div>
               <div class="wcag-ratio">
                 {{ wcagBlack.toFixed(2) }}:1
@@ -350,7 +352,7 @@ const alphaPercent = computed({
             <!-- White 进度条 -->
             <div class="contrast-bar-wrap">
               <div class="contrast-bar-label">
-                <span>on White</span>
+                <span>{{ t('tools.color-converter.onWhite') }}</span>
                 <span class="bar-ratio" :style="{ color: whiteRating.color }">{{ wcagWhite.toFixed(2) }}:1</span>
               </div>
               <div class="segmented-track">
@@ -358,22 +360,22 @@ const alphaPercent = computed({
                 <div
                   class="seg seg-fail"
                   :class="{ active: wcagWhite > 0 && wcagWhite < 3 }"
-                  title="Fail: < 3"
+                  :title="t('tools.color-converter.segFail')"
                 />
                 <div
                   class="seg seg-aal"
                   :class="{ active: wcagWhite >= 3 && wcagWhite < 4.5 }"
-                  title="AA Large: 3-4.5"
+                  :title="t('tools.color-converter.segAaLarge')"
                 />
                 <div
                   class="seg seg-aa"
                   :class="{ active: wcagWhite >= 4.5 && wcagWhite < 7 }"
-                  title="AA: 4.5-7"
+                  :title="t('tools.color-converter.segAa')"
                 />
                 <div
                   class="seg seg-aaa"
                   :class="{ active: wcagWhite >= 7 }"
-                  title="AAA: ≥ 7"
+                  :title="t('tools.color-converter.segAaa')"
                 />
                 <!-- 指针 -->
                 <div
@@ -386,29 +388,29 @@ const alphaPercent = computed({
             <!-- Black 进度条 -->
             <div class="contrast-bar-wrap">
               <div class="contrast-bar-label">
-                <span>on Black</span>
+                <span>{{ t('tools.color-converter.onBlack') }}</span>
                 <span class="bar-ratio" :style="{ color: blackRating.color }">{{ wcagBlack.toFixed(2) }}:1</span>
               </div>
               <div class="segmented-track">
                 <div
                   class="seg seg-fail"
                   :class="{ active: wcagBlack > 0 && wcagBlack < 3 }"
-                  title="Fail: < 3"
+                  :title="t('tools.color-converter.segFail')"
                 />
                 <div
                   class="seg seg-aal"
                   :class="{ active: wcagBlack >= 3 && wcagBlack < 4.5 }"
-                  title="AA Large: 3-4.5"
+                  :title="t('tools.color-converter.segAaLarge')"
                 />
                 <div
                   class="seg seg-aa"
                   :class="{ active: wcagBlack >= 4.5 && wcagBlack < 7 }"
-                  title="AA: 4.5-7"
+                  :title="t('tools.color-converter.segAa')"
                 />
                 <div
                   class="seg seg-aaa"
                   :class="{ active: wcagBlack >= 7 }"
-                  title="AAA: ≥ 7"
+                  :title="t('tools.color-converter.segAaa')"
                 />
                 <div
                   class="bar-pointer"
@@ -419,10 +421,10 @@ const alphaPercent = computed({
 
             <!-- 图例 -->
             <div class="wcag-legend">
-              <span class="legend-item"><span class="legend-dot" style="background:#ef4444" />Fail &lt;3</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#f59e0b" />AA Large ≥3</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#10b981" />AA ≥4.5</span>
-              <span class="legend-item"><span class="legend-dot" style="background:#22c55e" />AAA ≥7</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#ef4444" />{{ t('tools.color-converter.legendFail') }}</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#f59e0b" />{{ t('tools.color-converter.legendAaLarge') }}</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#10b981" />{{ t('tools.color-converter.legendAa') }}</span>
+              <span class="legend-item"><span class="legend-dot" style="background:#22c55e" />{{ t('tools.color-converter.legendAaa') }}</span>
             </div>
           </div>
         </c-card>

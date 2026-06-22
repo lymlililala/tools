@@ -3,6 +3,8 @@ import { ulid } from 'ulid';
 import { computedRefreshable } from '@/composable/computedRefreshable';
 import { useCopy } from '@/composable/copy';
 
+const { t } = useI18n();
+
 // ── 数量：1 ~ 500 ──────────────────────────────────────────────────────────────
 const amount = useStorage('ulid-generator-amount', 1);
 const safeAmount = computed({
@@ -71,19 +73,19 @@ const timestampInfo = computed(() => {
 });
 
 // ── 复制 ──────────────────────────────────────────────────────────────────────
-const { copy, isJustCopied } = useCopy({ source: ulids, text: 'ULIDs copied to the clipboard' });
+const { copy, isJustCopied } = useCopy({ source: ulids, text: t('tools.ulid-generator.copiedToast') });
 </script>
 
 <template>
   <div class="ulid-wrap">
     <!-- ① 数量 -->
     <div mb-3 flex items-center>
-      <label class="field-label">Quantity:</label>
-      <n-input-number v-model:value="safeAmount" flex-1 :min="1" :max="500" placeholder="ULID quantity" />
+      <label class="field-label">{{ t('tools.ulid-generator.quantity') }}</label>
+      <n-input-number v-model:value="safeAmount" flex-1 :min="1" :max="500" :placeholder="t('tools.ulid-generator.quantityPlaceholder')" />
     </div>
 
     <!-- ② 格式 -->
-    <c-buttons-select v-model:value="format" :options="formats" label="Format:" label-width="75px" mb-3 />
+    <c-buttons-select v-model:value="format" :options="formats" :label="t('tools.ulid-generator.format')" label-width="75px" mb-3 />
 
     <!-- ③ 输出框：左对齐、等宽字体、max-height 滚动 -->
     <div class="output-card" data-test-id="ulids">
@@ -94,7 +96,7 @@ const { copy, isJustCopied } = useCopy({ source: ulids, text: 'ULIDs copied to t
     <transition name="fade">
       <div v-if="timestampInfo" class="ts-hint">
         <icon-mdi-clock-outline class="ts-icon" />
-        Timestamp: {{ timestampInfo.utc }}
+        {{ t('tools.ulid-generator.timestamp') }} {{ timestampInfo.utc }}
         <span class="ts-ms">({{ timestampInfo.ms }} ms)</span>
       </div>
     </transition>
@@ -103,7 +105,7 @@ const { copy, isJustCopied } = useCopy({ source: ulids, text: 'ULIDs copied to t
     <div mt-4 flex items-center justify-center gap-3>
       <c-button data-test-id="refresh" @click="handleRefresh()">
         <icon-mdi-refresh class="btn-icon" />
-        Refresh
+        {{ t('tools.ulid-generator.refresh') }}
       </c-button>
 
       <c-button type="primary" @click="copy()">
@@ -111,7 +113,7 @@ const { copy, isJustCopied } = useCopy({ source: ulids, text: 'ULIDs copied to t
           <icon-mdi-check v-if="isJustCopied" key="check" class="btn-icon" />
           <icon-mdi-content-copy v-else key="copy" class="btn-icon" />
         </transition>
-        {{ isJustCopied ? 'Copied!' : 'Copy' }}
+        {{ isJustCopied ? t('tools.ulid-generator.copied') : t('tools.ulid-generator.copy') }}
       </c-button>
     </div>
   </div>

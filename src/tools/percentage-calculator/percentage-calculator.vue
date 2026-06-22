@@ -217,7 +217,7 @@ function copyValue(key: string, val: string) {
             class="fi-input"
             :class="{ 'fi-input--error': fromIsZero }"
             type="number"
-            placeholder="From"
+            :placeholder="t('tools.percentage-calculator.fromPlaceholder')"
             data-test-id="numberFrom"
           >
         </div>
@@ -228,7 +228,7 @@ function copyValue(key: string, val: string) {
             v-model="numTo"
             class="fi-input"
             type="number"
-            placeholder="To"
+            :placeholder="t('tools.percentage-calculator.toPlaceholder')"
             data-test-id="numberTo"
           >
         </div>

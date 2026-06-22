@@ -3,6 +3,7 @@
 import { useClipboard } from '@vueuse/core';
 import { types as extensionToMimeType, extensions as mimeTypeToExtension } from 'mime-types';
 
+const { t } = useI18n();
 const { copy } = useClipboard();
 
 // ── 选择器数据 ─────────────────────────────────────────────────────────────
@@ -65,10 +66,10 @@ watch(tableSearch, () => {
       <!-- Mime → Extension -->
       <c-card class="conv-card">
         <div class="card-title">
-          Mime type → Extension
+          {{ t('tools.mime-types.mimeToExtTitle') }}
         </div>
         <div class="card-desc">
-          Know which file extensions are associated to a MIME type
+          {{ t('tools.mime-types.mimeToExtDesc') }}
         </div>
 
         <c-select
@@ -76,13 +77,13 @@ watch(tableSearch, () => {
 
           searchable mb-3 mt-3
           :options="mimeToExtensionsOptions"
-          placeholder="Select a MIME type…  (ex: application/pdf)"
+          :placeholder="t('tools.mime-types.selectMimePlaceholder')"
         />
 
         <transition name="result-fade">
           <div v-if="extensionsFound.length > 0" class="result-area">
             <span class="result-hint">
-              Extensions for <code class="inline-code">{{ selectedMimeType }}</code>:
+              {{ t('tools.mime-types.extensionsFor') }} <code class="inline-code">{{ selectedMimeType }}</code>:
             </span>
             <div class="tags-row">
               <n-tooltip
@@ -103,7 +104,7 @@ watch(tableSearch, () => {
                     .{{ ext }}
                   </n-tag>
                 </template>
-                Click to copy
+                {{ t('tools.mime-types.clickToCopy') }}
               </n-tooltip>
             </div>
           </div>
@@ -113,10 +114,10 @@ watch(tableSearch, () => {
       <!-- Extension → Mime -->
       <c-card class="conv-card">
         <div class="card-title">
-          Extension → Mime type
+          {{ t('tools.mime-types.extToMimeTitle') }}
         </div>
         <div class="card-desc">
-          Know which MIME type is associated to a file extension
+          {{ t('tools.mime-types.extToMimeDesc') }}
         </div>
 
         <c-select
@@ -124,13 +125,13 @@ watch(tableSearch, () => {
 
           searchable mb-3 mt-3
           :options="extensionToMimeTypeOptions"
-          placeholder="Select a file extension…  (ex: .pdf)"
+          :placeholder="t('tools.mime-types.selectExtPlaceholder')"
         />
 
         <transition name="result-fade">
           <div v-if="selectedExtension && mimeTypeFound" class="result-area">
             <span class="result-hint">
-              MIME type for <code class="inline-code">.{{ selectedExtension }}</code>:
+              {{ t('tools.mime-types.mimeTypeFor') }} <code class="inline-code">.{{ selectedExtension }}</code>:
             </span>
             <div class="tags-row">
               <n-tooltip trigger="hover" placement="top">
@@ -146,7 +147,7 @@ watch(tableSearch, () => {
                     {{ mimeTypeFound }}
                   </n-tag>
                 </template>
-                Click to copy
+                {{ t('tools.mime-types.clickToCopy') }}
               </n-tooltip>
             </div>
           </div>
@@ -163,12 +164,12 @@ watch(tableSearch, () => {
           <input
             v-model="tableSearch"
             class="table-search"
-            placeholder="Filter by MIME type or extension…"
+            :placeholder="t('tools.mime-types.filterPlaceholder')"
             spellcheck="false"
           >
         </div>
         <span class="table-count">
-          {{ filteredInfos.length }} result{{ filteredInfos.length !== 1 ? 's' : '' }}
+          {{ t('tools.mime-types.resultCount', { count: filteredInfos.length }) }}
         </span>
       </div>
 
@@ -178,10 +179,10 @@ watch(tableSearch, () => {
           <thead>
             <tr>
               <th class="th-mime">
-                MIME Type
+                {{ t('tools.mime-types.colMimeType') }}
               </th>
               <th class="th-ext">
-                Extensions
+                {{ t('tools.mime-types.colExtensions') }}
               </th>
             </tr>
           </thead>
@@ -213,7 +214,7 @@ watch(tableSearch, () => {
                       .{{ ext }}
                     </n-tag>
                   </template>
-                  Click to copy .{{ ext }}
+                  {{ t('tools.mime-types.clickToCopyExt', { ext: `.${ext}` }) }}
                 </n-tooltip>
               </td>
             </tr>

@@ -9,13 +9,14 @@ import { computedRefreshable } from '@/composable/computedRefreshable';
 const now = useTimestamp();
 const styleStore = useStyleStore();
 const { copy } = useClipboard();
+const { t } = useI18n();
 
 // ── Secret ────────────────────────────────────────────────────────────────
 const secret = ref(generateSecret());
 
 const secretValidationRules = [
-  { message: 'Please set a secret', validator: (v: string) => v !== '' },
-  { message: 'Secret must be a Base32 string (A–Z, 2–7)', validator: (v: string) => /^[A-Z2-7]+$/i.test(v) },
+  { message: t('tools.otp-code-generator-and-validator.secretRequired'), validator: (v: string) => v !== '' },
+  { message: t('tools.otp-code-generator-and-validator.secretBase32'), validator: (v: string) => /^[A-Z2-7]+$/i.test(v) },
 ];
 
 function refreshSecret() {
@@ -66,13 +67,13 @@ const showAdvanced = ref(false);
     <div class="secret-row">
       <c-input-text
         v-model:value="secret"
-        label="Secret (Base32)"
-        placeholder="Paste your TOTP secret…"
+        :label="t('tools.otp-code-generator-and-validator.secretLabel')"
+        :placeholder="t('tools.otp-code-generator-and-validator.secretPlaceholder')"
         :validation-rules="secretValidationRules"
         style="flex:1"
       >
         <template #suffix>
-          <c-tooltip tooltip="Generate a new random secret">
+          <c-tooltip :tooltip="t('tools.otp-code-generator-and-validator.generateNewSecret')">
             <c-button circle variant="text" size="small" @click="refreshSecret">
               <icon-mdi-refresh />
             </c-button>
@@ -85,16 +86,16 @@ const showAdvanced = ref(false);
     <div class="otp-card">
       <!-- 三段标签 -->
       <div class="otp-labels">
-        <span class="otp-label side">Previous</span>
-        <span class="otp-label center">Current OTP</span>
-        <span class="otp-label side">Next</span>
+        <span class="otp-label side">{{ t('tools.otp-code-generator-and-validator.previous') }}</span>
+        <span class="otp-label center">{{ t('tools.otp-code-generator-and-validator.currentOtp') }}</span>
+        <span class="otp-label side">{{ t('tools.otp-code-generator-and-validator.next') }}</span>
       </div>
 
       <!-- 三段数值 -->
       <div class="otp-tokens">
         <!-- Previous -->
         <div class="otp-cell">
-          <c-tooltip w-full :tooltip="copiedKey === 'prev' ? 'Copied!' : 'Copy Previous OTP'" position="bottom">
+          <c-tooltip w-full :tooltip="copiedKey === 'prev' ? t('tools.otp-code-generator-and-validator.copied') : t('tools.otp-code-generator-and-validator.copyPreviousOtp')" position="bottom">
             <button
               class="otp-token side-token"
               :class="{ copied: copiedKey === 'prev' }"
@@ -107,7 +108,7 @@ const showAdvanced = ref(false);
 
         <!-- Current -->
         <div class="otp-cell otp-cell--cur">
-          <c-tooltip w-full :tooltip="copiedKey === 'cur' ? 'Copied!' : 'Copy Current OTP'" position="bottom">
+          <c-tooltip w-full :tooltip="copiedKey === 'cur' ? t('tools.otp-code-generator-and-validator.copied') : t('tools.otp-code-generator-and-validator.copyCurrentOtp')" position="bottom">
             <button
               class="otp-token current-token"
               :class="{ copied: copiedKey === 'cur' }"
@@ -121,7 +122,7 @@ const showAdvanced = ref(false);
 
         <!-- Next -->
         <div class="otp-cell">
-          <c-tooltip w-full :tooltip="copiedKey === 'next' ? 'Copied!' : 'Copy Next OTP'" position="bottom">
+          <c-tooltip w-full :tooltip="copiedKey === 'next' ? t('tools.otp-code-generator-and-validator.copied') : t('tools.otp-code-generator-and-validator.copyNextOtp')" position="bottom">
             <button
               class="otp-token side-token"
               :class="{ copied: copiedKey === 'next' }"
@@ -141,18 +142,18 @@ const showAdvanced = ref(false);
         />
       </div>
       <div class="countdown" :class="{ urgent: remaining <= 5 }">
-        Next in {{ String(remaining).padStart(2, '0') }}s
+        {{ t('tools.otp-code-generator-and-validator.nextIn', { seconds: String(remaining).padStart(2, '0') }) }}
       </div>
     </div>
 
     <!-- QR Code + 链接 -->
     <div class="qr-section">
       <div class="qr-wrap">
-        <img :src="qrcode" class="qr-img" alt="TOTP QR Code">
+        <img :src="qrcode" class="qr-img" :alt="t('tools.otp-code-generator-and-validator.qrAlt')">
       </div>
       <c-button :href="keyUri" target="_blank" variant="text" size="small">
         <icon-mdi-open-in-new style="font-size:13px; margin-right:4px" />
-        Open Key URI in new tab
+        {{ t('tools.otp-code-generator-and-validator.openKeyUri') }}
       </c-button>
     </div>
 
@@ -160,14 +161,14 @@ const showAdvanced = ref(false);
     <div class="advanced-section">
       <button class="advanced-toggle" @click="showAdvanced = !showAdvanced">
         <icon-mdi-chevron-right class="adv-arrow" :class="{ open: showAdvanced }" />
-        <span>Debug / Advanced info</span>
+        <span>{{ t('tools.otp-code-generator-and-validator.advancedInfo') }}</span>
       </button>
 
       <transition name="adv-slide">
         <div v-if="showAdvanced" class="advanced-body">
           <!-- Secret in Hex -->
           <div class="adv-row">
-            <span class="adv-label">Secret (hex)</span>
+            <span class="adv-label">{{ t('tools.otp-code-generator-and-validator.secretHex') }}</span>
             <div class="adv-value-wrap">
               <span class="adv-value mono">{{ base32toHex(secret) }}</span>
               <button class="adv-copy" @click="copyValue('hex', base32toHex(secret))">
@@ -179,7 +180,7 @@ const showAdvanced = ref(false);
 
           <!-- Epoch -->
           <div class="adv-row">
-            <span class="adv-label">Epoch (s)</span>
+            <span class="adv-label">{{ t('tools.otp-code-generator-and-validator.epochS') }}</span>
             <div class="adv-value-wrap">
               <span class="adv-value mono">{{ Math.floor(now / 1000) }}</span>
               <button class="adv-copy" @click="copyValue('epoch', String(Math.floor(now / 1000)))">
@@ -191,7 +192,7 @@ const showAdvanced = ref(false);
 
           <!-- Iteration count -->
           <div class="adv-row">
-            <span class="adv-label">Iteration count</span>
+            <span class="adv-label">{{ t('tools.otp-code-generator-and-validator.iterationCount') }}</span>
             <div class="adv-value-wrap">
               <span class="adv-value mono">{{ getCounterFromTime({ now, timeStep: 30 }) }}</span>
               <button class="adv-copy" @click="copyValue('iter', String(getCounterFromTime({ now, timeStep: 30 })))">
@@ -203,7 +204,7 @@ const showAdvanced = ref(false);
 
           <!-- Padded hex -->
           <div class="adv-row">
-            <span class="adv-label">Padded hex</span>
+            <span class="adv-label">{{ t('tools.otp-code-generator-and-validator.paddedHex') }}</span>
             <div class="adv-value-wrap">
               <span class="adv-value mono">{{ getCounterFromTime({ now, timeStep: 30 }).toString(16).padStart(16, '0') }}</span>
               <button class="adv-copy" @click="copyValue('phex', getCounterFromTime({ now, timeStep: 30 }).toString(16).padStart(16, '0'))">

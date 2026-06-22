@@ -221,6 +221,33 @@ tools:
     faq4a: 真正安全的密码特征：至少 16 位（越长越好）；随机性高（不是单词或可预测模式）；包含大小写字母、数字和特殊字符的组合。最安全的方式是使用密码管理器（Bitwarden、1Password 等）生成和存储完全随机的高强度密码，不同网站使用不同密码。密码短语（4-5 个随机词）也是兼顾安全和记忆的好选择。
     title: 密码强度分析仪
     description: 在线密码强度检测工具，实时评估密码的安全强度，估算暴力破解所需时间，并给出改进建议，支持信息熵值计算和常见弱密码检测，帮助你设置更安全的密码，防止账户被爆破攻击。
+    veryWeak: 极弱
+    weak: 弱
+    fair: 一般
+    good: 良好
+    strong: 强
+    tipMinLength: 至少使用 8 个字符 — 越长越安全。
+    tipLonger: 尝试加长（建议 12 个字符以上）。
+    tipUppercase: 添加大写字母（A-Z）。
+    tipLowercase: 添加小写字母（a-z）。
+    tipDigit: 至少包含一个数字（0-9）。
+    tipSpecial: 添加特殊字符（!、{'@'}、#、$…）。
+    tipRepeat: 避免多次重复同一个字符。
+    tipCommon: 避免使用“123”“password”等常见模式。
+    passwordLength: 密码长度：
+    entropy: 信息熵：
+    charsetSize: 字符集大小：
+    charsetTooltip: 所检测字符集中的唯一字符数量（小写、大写、数字、符号）
+    scoreLabel: 评分：
+    scoreTooltip: 评分 = min(熵 / 128, 1) × 100
+    inputPlaceholder: 输入密码……
+    hidePassword: 隐藏密码
+    showPassword: 显示密码
+    crackSubtitle: 暴力破解此密码所需的时长
+    emptyHint: 在上方输入密码以开始分析……
+    suggestionsTitle: 增强密码强度的建议：
+    noteLabel: 注意：
+    noteBody: 所计算的强度基于使用暴力破解所需的时间，未考虑字典攻击或已泄露的密码库。
 
   chronometer:
     step1: '步骤 1：点击「开始」启动计时器。'
@@ -313,6 +340,8 @@ tools:
     copyResult: 复制结果
     zeroDenominator: 分母不能为零
     zeroFrom: 起始值不能为零（无法计算百分比变化）
+    fromPlaceholder: 起始值
+    toPlaceholder: 目标值
 
   svg-placeholder-generator:
     settingsTitle: 设置
@@ -484,6 +513,22 @@ tools:
     faq4a: HSL（色相、饱和度、亮度）对人类更直观。改变亮度只需调整 L 值，不会影响色相；生成颜色主题更简单（如同色相不同亮度的变体）。在 CSS 中，hsl() 让调色更容易理解和维护，特别适合动态生成颜色渐变、主题切换和响应式配色方案设计。
     title: 颜色格式转换器（HEX/RGB/HSL）
     description: 在线颜色格式转换器，支持 HEX、RGB、HSL、HSV、CMYK 和 CSS 命名颜色之间的相互转换，提供实时颜色预览，适合前端开发、UI 设计和颜色系统建设场景。
+    colorPicker: 拾色器
+    colorFormats: 颜色格式
+    preview: 预览
+    unknown: 未知
+    wcagContrast: WCAG 对比度
+    accessibilityScore: 无障碍评分
+    onWhite: 白底上
+    onBlack: 黑底上
+    segFail: Fail：< 3
+    segAaLarge: AA Large：3-4.5
+    segAa: AA：4.5-7
+    segAaa: AAA：≥ 7
+    legendFail: Fail <3
+    legendAaLarge: AA Large ≥3
+    legendAa: AA ≥4.5
+    legendAaa: AAA ≥7
   ascii-text-drawer:
     title: ASCII 艺术字生成器
     description: 在线 ASCII 艺术字生成器，将普通文字转换为各种 ASCII 艺术风格的大字，支持 100+ 种字体样式和自定义宽度，适合制作命令行 Banner、欢迎信息和装饰文字。
@@ -573,6 +618,29 @@ tools:
     invalidCron: 表达式无效，请检查语法
     inputPlaceholder: 输入 cron 表达式查看描述
     nextExecutions: 接下来 5 次执行时间
+    verbose: 详细描述
+    use24Hour: 使用 24 小时制
+    daysStartAtZero: 星期从 0 开始
+    colSymbol: 符号
+    colMeaning: 含义
+    colExample: 示例
+    colEquivalent: 等价于
+    helpAnyValue: 任意值
+    helpEveryMinute: 每分钟
+    helpRange: 取值范围
+    helpMinutes1to10: 第 1 到第 10 分钟
+    helpList: 取值列表
+    helpAtMinutes1and10: 在第 1 和第 10 分钟
+    helpStep: 步长值
+    helpEvery10Minutes: 每 10 分钟
+    helpYearly: 每年 1 月 1 日午夜执行一次
+    helpAnnually: 同 {'@'}yearly
+    helpMonthly: 每月 1 日午夜执行一次
+    helpWeekly: 每周日凌晨午夜执行一次
+    helpDaily: 每天午夜执行一次
+    helpMidnight: 同 {'@'}daily
+    helpHourly: 每小时整点执行一次
+    helpReboot: 开机启动时执行
 
   http-status-codes:
     step1: '步骤 1：浏览按类别组织的 HTTP 状态码列表。'
@@ -589,6 +657,9 @@ tools:
     title: HTTP 状态码速查表
     description: 完整的 HTTP 状态码参考手册，涵盖 1xx/2xx/3xx/4xx/5xx 所有状态码的名称、含义和用途说明，附带常用错误码的实际应用场景和排查建议，适合 Web 开发和 API 设计。
     backToTop: 回到顶部
+    searchPlaceholder: 搜索 HTTP 状态码…  例如 404 或 Not Found
+    searchResults: 搜索结果
+    noResults: 未找到与“{query}”匹配的 HTTP 状态码
 
   sql-prettify:
     step1: '步骤 1：将 SQL 查询语句粘贴到输入编辑器中。'
@@ -896,6 +967,22 @@ tools:
     faq4a: API 签名流程：服务端和客户端共享一个密钥（secret）；客户端用 HMAC 对请求内容（URL+时间戳+body）签名，将签名放入请求头；服务端用同样密钥重新计算 HMAC，与请求头中的签名对比，相同则认证通过。时间戳防止重放攻击，通常允许 5 分钟窗口。AWS、Stripe、GitHub Webhooks 都使用此方案。
     title: HMAC 签名生成器
     description: 在线 HMAC 生成器，使用自定义密钥和 MD5、SHA1、SHA256、SHA512 等哈希函数生成消息认证码（HMAC），适合 API 签名验证和数据完整性校验。
+    plainTextLabel: 待计算哈希的明文
+    plainTextPlaceholder: 待计算哈希的明文…
+    secretLabel: 密钥
+    secretPlaceholder: 请输入密钥…
+    hashingFunction: 哈希函数
+    hashingFunctionPlaceholder: 选择哈希函数…
+    outputEncoding: 输出编码
+    outputEncodingPlaceholder: 选择结果编码…
+    encBinary: 二进制 (base 2)
+    encHex: 十六进制 (base 16)
+    encBase64: Base64 (base 64)
+    encBase64url: Base64-url (URL 安全字符)
+    resultLabel: 文本的 HMAC
+    copyHmac: 复制 HMAC
+    copied: 已复制！
+    copiedToast: HMAC 已复制到剪贴板
 
   bip39-generator:
     step1: '步骤 1：选择助记词的单词数量（12、15、18、21 或 24 个）。'
@@ -939,6 +1026,32 @@ tools:
     faq4a: Base64 编码会使原始数据体积增加约 33%（每 3 字节编码为 4 个字符）。例如 1MB 的图片经 Base64 编码后约为 1.37MB。这在嵌入 CSS/HTML 时需要权衡：减少了 HTTP 请求，但增加了页面体积，建议只对小文件（小于 10KB）使用。
     title: Base64 文件转换器
     description: 在线将文件（图片、PDF、二进制文件等）转换为 Base64 字符串，或将 Base64 字符串解码还原为文件，支持拖拽上传，结果可直接复制，适合内联图片、API 数据传输等场景。
+    fileName: 文件名
+    fileNamePlaceholder: 如 document
+    extension: 扩展名
+    extensionPlaceholder: 如 png
+    autoDetected: 已从 Data URI 自动识别
+    autoDetectedTip: 已从 Data URI 头部自动识别
+    invalidBase64: 无效的 Base64 字符串
+    base64Placeholder: 在此粘贴 Base64 或 Data URI 字符串…
+    autoDetectedHint: 已从 Data URI 头部自动识别扩展名：
+    previewImage: 预览图片
+    downloadFile: 下载文件
+    converting: 转换中…
+    clickToReplace: 点击或拖拽以替换
+    dragDrop: 将文件拖拽到此处
+    browseFiles: 浏览文件
+    maxSize: 最大 10 MB
+    outputFormat: 输出格式：
+    dataUriWithHeader: Data URI（含头部）
+    rawBase64Only: 仅 Base64 原文
+    base64OutputLabel: Base64 输出
+    copied: 已复制！
+    copyFullBase64: 复制完整 Base64
+    copy: 复制
+    truncatePrefix: 预览已截断至
+    truncateMiddle: 个字符以避免浏览器卡顿。完整内容
+    truncateSuffix: 已复制到剪贴板。
   list-converter:
     step1: '步骤 1：将列表数据粘贴到输入框中。'
     step2: '步骤 2：选择输入分隔符（换行、逗号、分号等）。'
@@ -954,6 +1067,26 @@ tools:
     faq4a: 列表格式转换的实际场景：将换行列表转为 SQL IN 子句的逗号分隔格式；将 CSV 导出的列转为 JSON 数组；将 Markdown 列表转为纯文本用于邮件；将 HTML 列表项提取为结构化数据；在 Excel/SQL/代码之间批量转换数据格式。可节省大量手工复制粘贴的重复劳动。
     title: 列表格式转换器
     description: 在线列表处理工具，可对多行数据进行转置、添加前缀和后缀、反转列表、排序（升序/降序）、大小写转换、去重以及截断等操作，支持批量处理任意行数的文本列表，适合数据清洗场景。
+    sortAscending: 升序排列
+    sortDescending: 降序排列
+    trimItems: 去除首尾空格
+    removeDuplicates: 去除重复项
+    toLowercase: 转为小写
+    keepLineBreaks: 保留换行
+    sortList: 列表排序
+    noSorting: 不排序
+    separator: 分隔符
+    wrapItem: 包裹每项
+    wrapList: 包裹整个列表
+    prefix: 前缀
+    suffix: 后缀
+    inputData: 输入数据
+    transformedData: 转换结果
+    items: 项
+    clear: 清空
+    copy: 复制
+    inputPlaceholder: 在此粘贴输入数据...
+    outputPlaceholder: 转换结果将显示在这里…
 
   base64-string-converter:
     title: Base64 字符串编码/解码
@@ -969,6 +1102,22 @@ tools:
     faq3a: 'Base64 常用于：在 HTML/CSS 中内联图片（data URI）、在 HTTP Header 中传输二进制内容、JWT Token 中的 Base64url 编码、以及将证书文件（PEM 格式）转换为可在文本协议中传输的格式。'
     faq4q: Base64 编码和加密是一回事吗？
     faq4a: 不，Base64 是编码而非加密。它只是将二进制数据转换为可打印的 ASCII 字符串，任何人都可以轻松解码，没有密钥保护。不要用 Base64 来保护敏感数据，它仅用于数据传输和存储的格式兼容性。需要安全保护请使用 AES、RSA 等加密算法。
+    encodeUrlSafe: URL 安全编码
+    encodeUrlSafeTip: 将 + 替换为 -、/ 替换为 _，便于在 URL 中安全使用
+    stringToEncode: 待编码字符串
+    clearInput: 清空输入
+    stringPlaceholder: 在此输入字符串…
+    base64Output: Base64 输出
+    copied: 已复制！
+    copyBase64: 复制 Base64
+    base64OutputPlaceholder: Base64 结果将显示在这里…
+    decodeUrlSafe: URL 安全解码
+    decodeUrlSafeTip: 解码 URL 安全的 Base64 时将 - 视为 +、_ 视为 /
+    base64ToDecode: 待解码 Base64 字符串
+    base64InputPlaceholder: 在此粘贴 Base64 字符串…
+    decodedString: 解码结果
+    copyDecoded: 复制解码结果
+    decodedPlaceholder: 解码结果将显示在这里…
 
   toml-to-yaml:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -984,6 +1133,13 @@ tools:
     faq4a: 选 TOML 的场景：配置相对简单扁平（如 Cargo.toml、pyproject.toml）；团队不熟悉 YAML 的缩进陷阱；需要原生日期时间支持；偏好语法严格（TOML 无歧义）。选 YAML 的场景：Kubernetes/Helm/Ansible 生态（事实标准）；配置嵌套层次深；需要引用和锚点减少重复；工具链支持更广泛。总体上 YAML 更通用，TOML 更适合包管理配置。
     title: TOML 到 YAML
     description: 在线 TOML 转 YAML 工具，支持标准 TOML 语法解析并转换为标准 YAML 格式，结果可直接复制使用，适合将 Rust/Go 项目配置迁移到 YAML 格式的 CI/CD 和 Kubernetes 配置。
+    tomlInput: TOML 输入
+    yamlOutput: YAML 输出
+    clear: 清空
+    inputPlaceholder: 在此粘贴 TOML…
+    outputPlaceholder: 转换后的 YAML 将显示在这里…
+    parseError: 解析错误
+    tomlTip: 请确认 TOML 语法正确，检查是否缺少引号或表头格式有误。
 
   math-evaluator:
     step1: '步骤 1：在输入框中输入数学表达式。'
@@ -1028,6 +1184,13 @@ tools:
     faq4a: YAML 相比 JSON 的可读性优势：支持注释（# 注释）；不需要引号（大多数字符串不加引号）；不需要逗号分隔符；使用缩进代替括号，视觉层次更清晰；支持多行字符串；布尔值更自然（true/false 或 yes/no）。特别适合 Kubernetes manifests、Ansible playbooks、CI/CD 配置文件。
     title: JSON到YAML转换器
     description: 在线 JSON 转 YAML 工具，将 JSON 数据一键转换为 YAML 格式，保留对象层级结构和数组关系，适用于 Kubernetes、Docker Compose 等配置文件迁移和格式转换。
+    jsonInput: JSON 输入
+    yamlOutput: YAML 输出
+    clear: 清空
+    jsonPlaceholder: 在此粘贴你的 JSON…
+    yamlPlaceholder: 转换后的 YAML 将显示在这里…
+    parseError: 解析错误
+    errorTip: 请确保输入为合法 JSON，允许尾随逗号（JSON5）。
 
   url-parser:
     step1: '步骤 1：将 URL 粘贴到输入框中。'
@@ -1043,6 +1206,28 @@ tools:
     faq4a: 强烈推荐使用内置 API：浏览器的 new URL(urlString) 和 Node.js 的 new URL(urlString) 能正确处理各种边界情况（IPv6 地址、Unicode 域名、相对路径）；而自己写的正则很难覆盖所有 RFC 3986 规定的合法 URL 格式。URL 解析看似简单，但边界情况非常多，使用标准库是最可靠的做法。
     title: URL 解析器
     description: 在线 URL 解析工具，解析 URL 字符串并拆分为协议（protocol）、主机（host）、路径（path）、查询参数（query string）、端口、用户名密码等各个组成部分。
+    urlToParse: 待解析的 URL
+    clear: 清空
+    invalidUrl: URL 无效 — 请确保包含协议（https://）
+    urlStructure: URL 结构
+    protocol: 协议
+    username: 用户名
+    password: 密码
+    hostname: 主机名
+    port: 端口
+    pathname: 路径
+    search: 查询串
+    hash: 锚点
+    copyField: 复制{field}
+    queryParameters: 查询参数
+    addParameter: 添加参数
+    add: 添加
+    noParams: 暂无查询参数 — 点击「添加」新增一项
+    keyPlaceholder: 键
+    valuePlaceholder: 值
+    copyValue: 复制值：{value}
+    removeParam: 删除 {key}
+    emptyState: 在上方粘贴 URL 开始解析
 
   iban-validator-and-parser:
     step1: '步骤 1：输入或粘贴 IBAN 号码。'
@@ -1102,6 +1287,24 @@ tools:
     copiedBtn: 已复制！
     copyJsonTooltip: 将所有解析结果复制为 JSON
     copiedTooltip: 已复制到剪贴板
+    uaLabel: User-Agent 字符串
+    uaPlaceholder: 在此粘贴你的 User-Agent……
+    copied: 已复制！
+    copySection: 复制{section}
+    notDetected: 未检测到{section}
+    section:
+      browser: 浏览器
+      engine: 引擎
+      os: 操作系统
+      device: 设备
+      cpu: CPU
+    field:
+      name: 名称
+      version: 版本
+      model: 型号
+      type: 类型
+      vendor: 厂商
+      architecture: 架构
 
   numeronym-generator:
     step1: '步骤 1：输入单词或短语。'
@@ -1141,6 +1344,25 @@ tools:
     faq4a: camelCase（小驼峰）用于 JavaScript 变量和函数；PascalCase（大驼峰）用于类名和 React 组件；snake_case 用于 Python 变量、数据库列名和 URL；kebab-case 用于 CSS 类名、HTML 属性和 URL 路径；SCREAMING_SNAKE_CASE 用于常量和环境变量；Title Case 用于标题和书名。
     title: 字符串大小写转换器
     description: 在线大小写转换工具，支持 camelCase、PascalCase、snake_case、kebab-case、UPPER_CASE、Title Case 等多种命名法互转，适合代码变量重命名和 API 字段格式统一处理。
+    lowercase: 全小写
+    uppercase: 全大写
+    sentenceCase: 句子格式
+    capitalCase: 首字母大写
+    camelCase: 小驼峰 (camelCase)
+    pascalCase: 大驼峰 (PascalCase)
+    snakeCase: 蛇形 (snake_case)
+    constantCase: 常量 (CONSTANT_CASE)
+    kebabCase: 短横线 (kebab-case)
+    headerCase: 标题 (Header-Case)
+    dotCase: 点分 (dot.case)
+    pathCase: 路径 (path/case)
+    noCase: 无格式
+    mockingCase: 嘲讽大小写
+    yourString: 你的字符串：
+    inputPlaceholder: 在此粘贴或输入文本…
+    clear: 清空
+    codeFormats: 代码格式
+    textFormats: 文本格式
 
   html-entities:
     step1: '步骤 1：输入包含特殊字符的 HTML 文本，或输入实体进行解码。'
@@ -1156,6 +1378,16 @@ tools:
     faq4a: 必须编码的字符：< 和 > 避免被解析为标签（&lt; &gt;）；& 避免被解析为实体开始（&amp;）；属性值中的引号（&quot;）。用户输入的内容在展示到页面前务必进行 HTML 实体转义，防止 XSS（跨站脚本）攻击。现代框架（React、Vue）会自动处理这一转义。
     title: HTML 实体编码 / 解码
     description: 在线 HTML 实体转义工具，将特殊字符（< > & " '）转义为 HTML 实体（&lt; &gt; &amp; &quot;），或将 HTML 实体反解码为普通字符，有效防止 XSS 注入，确保网页内容安全显示。
+    directionHint: 编辑任一框 — 实时自动互转
+    clearAll: 清空全部
+    chars: 字符
+    plainHtml: 明文 HTML
+    copied: 已复制！
+    copyPlainHtml: 复制明文 HTML
+    plainPlaceholder: 在此输入或粘贴原始 HTML…  例如 <title>IT Tool</title>
+    escapedEntities: 转义实体
+    copyEscaped: 复制转义字符串
+    escapedPlaceholder: 或在此粘贴 HTML 实体…  例如 &lt;title&gt;IT Tool&lt;/title&gt;
 
   json-prettify:
     title: JSON 格式化 / 校验
@@ -1253,6 +1485,20 @@ tools:
     faq4a: MIME 类型的关键作用：浏览器根据 Content-Type 决定如何处理响应（显示/下载/渲染）；错误的 MIME 类型可能导致文件下载而非展示（如 PDF）；API 响应必须设置 application/json；文件上传时验证 MIME 类型可防止恶意文件（但需与文件内容魔数校验结合）。
     title: MIME 类型速查表
     description: MIME 类型与文件扩展名互查工具，支持双向查询：输入文件扩展名获取 Content-Type，或输入 MIME 类型查找对应扩展名，方便 API 开发、服务器配置和文件上传场景使用。
+    mimeToExtTitle: MIME 类型 → 扩展名
+    mimeToExtDesc: 查询某个 MIME 类型对应的文件扩展名
+    selectMimePlaceholder: 选择 MIME 类型…（例：application/pdf）
+    extensionsFor: 匹配扩展名
+    extToMimeTitle: 扩展名 → MIME 类型
+    extToMimeDesc: 查询某个文件扩展名对应的 MIME 类型
+    selectExtPlaceholder: 选择文件扩展名…（例：.pdf）
+    mimeTypeFor: 匹配 MIME 类型
+    clickToCopy: 点击复制
+    clickToCopyExt: 点击复制 {ext}
+    filterPlaceholder: 按 MIME 类型或扩展名筛选…
+    resultCount: "{count} 条结果"
+    colMimeType: MIME 类型
+    colExtensions: 扩展名
 
   toml-to-json:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -1268,6 +1514,13 @@ tools:
     faq4a: TOML 原生支持日期时间（RFC 3339 格式），而 JSON 没有日期类型，只有字符串和数字。转换时 TOML 的日期时间通常转为 JSON 字符串（保持 ISO 8601 格式）。使用转换结果时，需在代码中手动将字符串解析为 Date 对象。建议在 API 文档中注明日期字段的格式约定，避免下游系统误解。
     title: TOML 到 JSON
     description: 将 TOML 数据在线转换为 JSON 格式，适用于将 Rust/Go 项目的 TOML 配置转为 API 数据或前端处理，支持标准 TOML 语法解析，结果格式化展示，可一键复制使用。
+    tomlInput: TOML 输入
+    jsonOutput: JSON 输出
+    clear: 清空
+    inputPlaceholder: 在此粘贴 TOML…
+    outputPlaceholder: 转换后的 JSON 将显示在这里…
+    parseError: 解析错误
+    tomlTip: 请确认 TOML 语法正确，检查是否缺少引号或表头格式有误。
 
   lorem-ipsum-generator:
     step1: '步骤 1：选择输出类型：段落、句子或单词。'
@@ -1410,6 +1663,20 @@ tools:
     faq4a: RSA-2048 目前仍被认为安全，NIST 预计在 2030 年前不会被破解，性能更好（签名/加密速度约是 4096 的 4-8 倍）；RSA-4096 提供更长远的安全裕度，适合需要保护 10 年以上的高敏感数据。实际建议：TLS 证书和 SSH 密钥用 2048 足够（或改用 Ed25519，更短更快更安全）；代码签名证书或长期文档加密考虑 4096。
     title: RSA密钥对生成器
     description: 在线生成 RSA 公私钥对，支持 1024/2048/4096 位密钥尺寸，输出标准 PEM 格式，适用于 SSL/TLS 证书、JWT 签名、SSH 认证等加密场景，全程浏览器本地生成，密钥不上传。
+    bitsLabel: "位数:"
+    bitsRule: 位数需满足 256 ≤ bits ≤ 16384 且为 8 的倍数
+    generating: 生成中…
+    refreshKeyPair: 重新生成密钥对
+    publicKey: 公钥
+    privateKey: 私钥
+    copyPublicKey: 复制公钥
+    copyPrivateKey: 复制私钥
+    downloadPublicPem: 下载 public.pem
+    downloadPrivatePem: 下载 private.pem
+    copied: 已复制！
+    publicKeyCopied: 公钥已复制
+    privateKeyCopied: 私钥已复制
+    generatingHint: 正在生成 RSA {bits} 位密钥对…大密钥可能需要数秒。
 
   html-wysiwyg-editor:
     step1: '步骤 1：在所见即所得编辑器中输入或粘贴内容。'
@@ -1476,6 +1743,13 @@ tools:
     faq4a: YAML 到 TOML 转换的不兼容特性：YAML 的锚点和引用（&anchor、*alias）在 TOML 中不存在，转换时会展开；YAML 允许 null 值，TOML 不支持（会被忽略）；YAML 的特殊类型（二进制、时间戳带时区）处理方式不同；YAML 支持多文档流（---分隔），TOML 不支持。转换后请仔细审查输出以确保正确性。
     title: YAML 到 TOML
     description: 将 YAML 数据在线转换为 TOML 格式，适用于 Rust、Go 等语言的配置文件迁移，保留层级结构和注释，结果实时生成，可一键复制，帮助开发者快速完成配置格式迁移。
+    yamlInput: YAML 输入
+    tomlOutput: TOML 输出
+    clear: 清空
+    inputPlaceholder: 在此粘贴 YAML…
+    outputPlaceholder: 转换后的 TOML 将显示在这里…
+    parseError: 解析错误
+    yamlTip: 请检查 YAML 缩进——不允许使用 Tab，只能用空格。
 
   mac-address-generator:
     step1: '步骤 1：输入要生成的 MAC 地址数量。'
@@ -1521,6 +1795,32 @@ tools:
     faq4a: CI/CD 中 JSON 对比的用途：API 版本兼容性测试（对比新旧 API 响应结构变化）；配置文件审查（PR 中高亮配置变更）；快照测试（存储期望输出，自动检测非预期变化）；数据库 schema 变更审查。命令行工具推荐 jq 或 jsondiff（Python）用于自动化流水线中的 JSON 比较。
     title: JSON 差异比较
     description: 在线 JSON Diff 对比工具，并排比较两个 JSON 对象的差异，高亮显示新增、删除和修改的字段，支持嵌套结构和数组对比，帮助开发者快速定位 API 响应和配置文件的变化。
+    invalidJson: JSON 格式无效
+    formatLeft: 格式化左侧
+    prettifyLeft: 美化左侧 JSON
+    clearLeft: 清空左侧
+    clearLeftPanel: 清空左侧面板
+    swap: 左右互换
+    clearAll: 全部清空
+    clearBothPanels: 清空两侧面板
+    formatRight: 格式化右侧
+    prettifyRight: 美化右侧 JSON
+    clearRight: 清空右侧
+    clearRightPanel: 清空右侧面板
+    firstJson: 第一个 JSON
+    jsonToCompare: 对比的 JSON
+    valid: 有效
+    firstPlaceholder: 在此粘贴第一个 JSON…
+    comparePlaceholder: 在此粘贴要对比的 JSON…
+    diffResult: 差异结果
+    identical: 完全一致
+    differencesFound: 发现差异
+    added: 新增
+    removed: 删除
+    updated: 修改
+    onlyShowDifferences: 仅显示差异
+    identicalMessage: 两个 JSON 完全一致——没有差异
+    emptyHint: 在上方两个面板粘贴合法 JSON 即可查看差异
   jwt-parser:
     step1: '步骤 1：将 JWT 令牌粘贴到输入框中。'
     step2: '步骤 2：Header、Payload 和 Signature 被解码并用颜色标记。'
@@ -1535,6 +1835,26 @@ tools:
     faq4a: 验证 JWT 签名需要密钥：HMAC（HS256）用共享密钥；RSA/ECDSA 用公钥。本工具只解码 Token 内容，不验证签名（因为没有密钥）。在应用代码中，使用官方库（如 Node.js 的 jsonwebtoken、Python 的 PyJWT）进行完整验证，包括签名验证、exp 过期检查、iss/aud 声明验证。切勿在不验证签名的情况下信任 JWT 内容。
     title: JWT Token 解析器
     description: 在线 JWT Token 解析工具，将 JSON Web Token 解码为 Header、Payload、Signature 三部分，显示声明内容和过期时间，支持 HS256/RS256 等算法。
+    jwtToken: JWT 令牌
+    copyToken: 复制令牌
+    copied: 已复制！
+    clear: 清空
+    textareaPlaceholder: |-
+      在此粘贴你的 JWT…
+      例如 eyJhbGci…
+    invalidJwt: 无效的 JWT —— 必须是用点分隔的 3 段 Base64URL 编码内容
+    header: 头部
+    payload: 载荷
+    signature: 签名
+    emptyHint: 在上方粘贴 JWT 令牌以解码并查看
+    copyAsJson: 复制为 JSON
+    verifySignature: 验证签名
+    secretPlaceholder: 输入你的 HMAC 密钥以验证…
+    show: 显示
+    hide: 隐藏
+    verifyValid: 签名验证通过 —— 此 JWT 未被篡改
+    verifyInvalid: 签名无效 —— 密钥错误或令牌已被修改
+    verifyUnsupported: 签名验证仅支持 HS256 / HS384 / HS512 算法
 
   date-converter:
     step1: '步骤 1：在输入框中输入日期和时间。'
@@ -1712,6 +2032,13 @@ tools:
     faq4a: Rust 生态（Cargo.toml、Tauri、Bevy）广泛使用 TOML 格式。迁移步骤：用本工具将现有 JSON 配置转换为 TOML；审查输出，注意 TOML 特有的日期时间格式（RFC 3339）和多行字符串（三引号）；在 Rust 中使用 serde + toml crate 反序列化。TOML 比 JSON 更适合手写配置，注释支持更友好。
     title: JSON 转 TOML 转换器
     description: 将 JSON 数据在线转换为 TOML 格式，适用于应用配置迁移，保留层级结构，尤其适合 Rust、Go 项目从 JSON 迁移到 TOML 配置，结果实时生成，可一键复制使用。
+    jsonInput: JSON 输入
+    tomlOutput: TOML 输出
+    clear: 清空
+    jsonPlaceholder: 在此粘贴你的 JSON…
+    tomlPlaceholder: 转换后的 TOML 将显示在这里…
+    parseError: 解析错误
+    errorTip: 请确保输入为合法 JSON，允许尾随逗号（JSON5）。
 
   device-information:
     step1: '步骤 1：打开工具——设备信息自动检测。'
@@ -1742,6 +2069,43 @@ tools:
     faq4a: 数字签名（Digital Signature）是使用 PKI 证书（如 X.509）对 PDF 进行加密签名，可验证签名者身份和文档完整性，法律效力强；电子签名（E-Signature）是广义概念，包括手写签名图片、点击确认等，未必有密码学保证。中国《电子签名法》认可符合条件的数字签名的法律效力。
     title: PDF签名检查器
     description: 在线 PDF 数字签名验证工具，检测 PDF 文件中的数字签名数量和有效性，判断文件签名后内容是否被篡改，支持拖拽上传，结果实时展示，适合合同核验和文档真实性验证。
+    analysing: 正在分析签名…
+    dragDrop: 将 PDF 拖放到此处
+    browseFiles: 浏览文件
+    formatHint: 支持格式：.pdf · 最大：50 MB
+    privacyNote: 100% 本地处理 —— 文件绝不会上传到任何服务器
+    typeError: 仅支持 PDF 文件，请选择 .pdf 文件。
+    sizeError: 文件过大（最大 50 MB），请使用更小的 PDF。
+    noSignatureTitle: 未找到数字签名
+    noSignatureSub: "{name} 不包含任何嵌入的数字签名。"
+    tryAnother: 换一个文件
+    parseFailTitle: PDF 解析失败
+    parseFailSub: 文件可能已损坏或格式不受支持。
+    analyseAnother: 分析其他文件
+    signature: 签名 {index}
+    verified: 已验证
+    notVerified: 未验证
+    intact: 完整
+    tampered: 已篡改
+    certExpired: 证书已过期
+    certValid: 证书有效
+    signedBy: "签名者:"
+    reason: "原因:"
+    location: "位置:"
+    validityPeriod: 有效期
+    issuedBy: 颁发者
+    issuedTo: 使用者
+    pemCertificate: PEM 证书
+    certificateName: 证书 {index}
+    notBefore: 起始时间
+    notAfter: 截止时间
+    commonName: 通用名称
+    organizationName: 组织名称
+    countryName: 国家名称
+    localityName: 地区名称
+    organizationalUnitName: 组织单元名称
+    stateOrProvinceName: 省/州名称
+    viewPemCert: 查看 PEM 证书
 
   json-minify:
     step1: '步骤 1：将 JSON 粘贴到左侧编辑器。'
@@ -1787,6 +2151,14 @@ tools:
     faq4a: ULID 优势：时间戳前缀使其按创建时间天然有序（对 B-tree 索引更友好，减少页分裂）；字符串形式比 UUID 短（26 字符 vs 36 字符）；URL 安全（只含大写字母和数字）。UUID v4 优势：使用更广泛、库支持更完善；完全随机，无时间信息泄露顾虑。场景选择：数据库主键、需要排序的 ID 场景选 ULID；需要完全随机 ID 且不关心顺序选 UUID v4。
     title: ULID 唯一ID生成器
     description: 在线生成 ULID（通用唯一词典可排序标识符），比 UUID 更易排序和调试，兼具唯一性和时间顺序性，特别适合需要时间有序 ID 的分布式系统、日志记录和数据库主键场景。
+    quantity: "数量:"
+    quantityPlaceholder: ULID 数量
+    format: "格式:"
+    timestamp: "时间戳:"
+    refresh: 刷新
+    copy: 复制
+    copied: 已复制！
+    copiedToast: ULID 已复制到剪贴板
 
   string-obfuscator:
     step1: '步骤 1：输入要脱敏的字符串（如 API 密钥、IBAN、令牌）。'
@@ -1844,6 +2216,13 @@ tools:
     faq4a: YAML 支持锚点（&anchor）和引用（*alias）用于复用配置片段，这是 JSON 不具备的特性。转换为 JSON 时，引用会被展开（内联替换），生成完整的重复数据。这意味着转换后的 JSON 比 YAML 更冗长，且失去了原有的维护优势。如果需要 JSON 也支持复用，可以在应用层处理（如 JSON Schema 的 $ref）。
     title: YAML到JSON转换器
     description: 将 YAML 数据在线转换为 JSON 格式，保留层级结构和数据类型，适用于配置迁移、API 测试和数据格式转换，支持多文档 YAML，转换结果自动格式化，可一键复制。
+    yamlInput: YAML 输入
+    jsonOutput: JSON 输出
+    clear: 清空
+    inputPlaceholder: 在此粘贴 YAML…
+    outputPlaceholder: 转换后的 JSON 将显示在这里…
+    parseError: 解析错误
+    yamlTip: 请检查 YAML 缩进——不允许使用 Tab，只能用空格。
 
   yaml-viewer:
     step1: '步骤 1：将 YAML 内容粘贴到左侧编辑器。'
@@ -1963,8 +2342,14 @@ tools:
     faq3a: NATO 音标字母表（ITU/ICAO 标准）：Alpha、Bravo、Charlie、Delta、Echo、Foxtrot、Golf、Hotel、India、Juliet、Kilo、Lima、Mike、November、Oscar、Papa、Quebec、Romeo、Sierra、Tango、Uniform、Victor、Whiskey、X-ray、Yankee、Zulu。数字：Zero 到 Niner。
     faq4q: NATO 字母表在哪些专业领域广泛使用？
     faq4a: NATO 音标字母表（Alpha Bravo Charlie...）的使用场景：航空通信（飞行员与塔台通讯）；军事和警察无线电通话；客服电话中核实客户信息；医疗急救沟通（药品名称、患者 ID）；气象报告；业余无线电（HAM Radio）。它被 ICAO（国际民航组织）标准化，全球 26 个字母统一发音，消除因口音和背景噪音引起的误解。
-    title: 文本转北约字母表
+    title: NATO 音标字母
     description: 将文本转换为北约音标字母（NATO Phonetic Alphabet：Alpha、Bravo、Charlie…），适用于当面拼写验证、无线电通信和航空等场景，支持实时转换和一键复制，帮助避免字母混淆。
+    input: 输入
+    inputPlaceholder: 在此输入文本…如 SOS
+    clear: 清空
+    copied: 已复制！
+    copy: 复制
+    emptyHint: 输入时结果将显示在这里
 
   basic-auth-generator:
     step1: '步骤 1：输入您的用户名和密码。'
@@ -1980,6 +2365,16 @@ tools:
     faq4a: Basic Auth 将用户名和密码用 Base64 编码后放在请求头中，本身不提供加密。必须配合 HTTPS 使用才相对安全。适合内部 API、开发测试环境或不需要高安全性的场景。生产环境面向用户的服务建议使用 OAuth2、JWT 或 API Key 等更安全的认证方式。
     title: 基本身份验证生成器
     description: 在线生成 HTTP Basic Auth 认证头，输入用户名和密码即可生成 Base64 编码的 Authorization 标头，供 API 测试和开发调试使用。
+    username: 用户名
+    usernamePlaceholder: 你的用户名…
+    password: 密码
+    passwordPlaceholder: 你的密码…
+    showPassword: 显示密码
+    hidePassword: 隐藏密码
+    authorizationHeader: Authorization 请求头
+    emptyHint: 在上方输入用户名和密码以生成请求头
+    copyHeader: 复制请求头
+    copied: 已复制！
 
   text-to-unicode:
     step1: '步骤 1：输入文本转换为 Unicode 码点，或输入码点进行解码。'
@@ -2080,6 +2475,16 @@ tools:
     faq3a: URL 编码将特殊字符转换为 %XX 格式，用于 URL 中安全传输。Base64 将二进制数据编码为 ASCII 字符串，用于在文本协议中传输二进制内容。URL 参数应使用 URL 编码，而非 Base64。
     faq4q: URL 编码（Percent-encoding）和 Base64 编码有什么区别？
     faq4a: URL 编码（%XX）专门用于 URL 中不安全字符的转义，将字节转为 %+十六进制，使 URL 保持合法格式（如空格转 %20，中文转 %E4%B8%AD）；Base64 将任意二进制数据转为 64 个安全字符，使数据可在文本协议中传输，但会增加约 33% 体积。URL 编码用于 URL 参数；Base64 用于 data URI、API 认证、邮件附件等。
+    directionHint: 编辑任一框 — 实时自动互转
+    clearAll: 清空全部
+    chars: 字符
+    plainText: 明文
+    copied: 已复制！
+    copyPlain: 复制明文
+    plainPlaceholder: 在此输入或粘贴明文…  例如 Hello world :)
+    urlEncoded: URL 编码
+    copyEncoded: 复制编码字符串
+    encodedPlaceholder: 或在此粘贴百分号编码字符串…  例如 Hello%20world%20%3A)
 
   text-to-binary:
     step1: '步骤 1：输入文本转换为二进制，或输入二进制解码回文本。'
@@ -2544,6 +2949,21 @@ tools:
     faq3a: XML 命名空间前缀（如 <ns:tag>）在转换为 JSON 时通常作为键名的一部分保留（如 ns:tag），或者将命名空间 URI 单独记录。本工具会尽量保留原始 XML 的结构信息，但复杂的命名空间场景建议手动校验转换结果。
     faq4q: XML 转 JSON 后如何处理属性和元素的对应关系？
     faq4a: "XML 有属性（attribute）和元素（element）两种数据承载方式，JSON 只有键值对。常见转换策略：属性转为 JSON 对象的特殊键（如 {'@'}attr 或 _attributes 嵌套对象）；元素文本内容转为 #text 键；数组处理需要特别注意（单个子元素和多个子元素需统一为数组）。不同库（xml2js、fast-xml-parser）策略不同，需根据使用场景选择合适的转换选项。"
+    ignoreAttributes: 忽略属性
+    autoConvertNumbers: 自动转换数字
+    compactMode: 紧凑模式
+    xmlInput: XML 输入
+    jsonOutput: JSON 输出
+    uploadXml: 上传 .xml 文件
+    formatXml: 格式化 XML
+    clear: 清空
+    copyJson: 复制 JSON
+    copied: 已复制！
+    downloadJson: 下载 .json
+    xmlPlaceholder: 在此粘贴你的 XML…  例如 <root><name>John</name></root>
+    jsonPlaceholder: 转换后的 JSON 将显示在这里…
+    parseError: 解析错误
+    errorTip: 请检查 XML 是否格式良好——每个标签都需正确闭合。
 
   json-to-xml:
     title: JSON 转 XML 转换器
@@ -2559,6 +2979,20 @@ tools:
     faq3a: 由于 XML 必须有唯一的根节点，而 JSON 对象/数组没有根节点概念，转换时通常会自动添加 <root> 作为根标签，或使用 JSON 对象的第一个键作为根节点名称。本工具默认使用 <root> 作为根节点，可在输出中手动修改。
     faq4q: JSON 转 XML 后需要注意哪些验证问题？
     faq4a: JSON 转 XML 后建议验证：XML 标签名不能以数字开头、不能含空格；JSON 的 null 值在 XML 中表示方式不统一；属性 vs 元素的选择影响 XML 结构设计；如有 Schema 要求（XSD），转换后需按 Schema 调整结构。企业级系统间对接时，建议参考目标系统的 WSDL/XSD 规范手动调整。
+    prettyPrint: 美化 XML
+    compactMode: 紧凑模式
+    jsonInput: JSON 输入
+    xmlOutput: XML 输出
+    uploadJson: 上传 .json 文件
+    formatJson: 格式化 JSON
+    clear: 清空
+    copyXml: 复制 XML
+    copied: 已复制！
+    downloadXml: 下载 .xml
+    jsonPlaceholder: 在此粘贴你的 JSON…
+    xmlPlaceholder: 转换后的 XML 将显示在这里…
+    parseError: 解析错误
+    errorTip: 请检查 JSON 语法——键名需加引号，括号需成对闭合。
 
   markdown-to-html:
     title: Markdown 转 HTML
@@ -2574,6 +3008,25 @@ tools:
     faq3a: 转换生成的 HTML 使用标准标签（h1-h6、p、ul、code 等），样式由 CSS 决定。将生成的 HTML 嵌入网页时，需要引入对应的 CSS（如 GitHub Markdown 样式表）才能正确显示格式和代码高亮。
     faq4q: Markdown 转 HTML 时如何防止 XSS 攻击？
     faq4a: Markdown 支持嵌入原生 HTML，恶意用户可能插入 script 标签或 on* 事件属性。防护措施：服务端用 DOMPurify、bleach（Python）等库对转换后的 HTML 进行 sanitize，只允许白名单标签；或禁用 Markdown 引擎的原生 HTML 支持；CSP（内容安全策略）可作为最后一道防线。
+    allowHtml: 允许源码中的 HTML
+    autoLinkify: 自动识别链接
+    typographer: 智能排版
+    markdownInput: Markdown 输入
+    clear: 清空
+    inputPlaceholder: |-
+      在此粘贴或输入 Markdown…
+
+      # Hello World
+      **bold**, _italic_, `code`
+    htmlSource: HTML 源码
+    preview: 预览
+    copyHtml: 复制 HTML
+    copied: 已复制！
+    printPdf: 打印为 PDF
+    printPdfHint: 打印为 PDF（渲染 HTML）
+    noContentToPrint: 暂无可打印内容
+    outputPlaceholder: 转换后的 HTML 将显示在这里…
+    previewEmpty: 暂无内容——在左侧开始输入
 
   safelink-decoder:
     title: Outlook 安全链接解码器
@@ -2589,6 +3042,15 @@ tools:
     faq3a: Microsoft Defender for Office 365 会将电子邮件中的 URL 替换为经过封装的「安全链接」（Safe Links），形如 https://urldefense.com/... 或 https://nam.safelinks.protection.outlook.com/...，用于扫描链接是否指向恶意网站。当你需要获取原始 URL 时（如分享或调试），可以用本工具将其解码还原。
     faq4q: 为什么邮件系统要对链接进行 SafeLink 封装？
     faq4a: SafeLink（安全链接）封装是邮件安全网关（如 Microsoft Defender for Office 365、Proofpoint）的功能，将所有邮件中的 URL 替换为安全代理 URL。点击时安全网关先检查目标 URL 是否是已知恶意网站、钓鱼链接或刚注册的可疑域名，确认安全后才重定向。本工具用于还原被封装的原始地址。
+    inputLabel: 请输入 Outlook SafeLink 链接：
+    inputPlaceholder: 在此粘贴你的 Outlook SafeLink 链接……
+    clear: 清空
+    invalidUrl: 提供的 SafeLinks 链接无效
+    outputLabel: 解码后的 URL：
+    outputPlaceholder: 解码后的 URL 将显示在这里……
+    copyTitle: 复制解码后的 URL
+    copied: 已复制！
+    copy: 复制
 
   common:
     faqSafe: 这个工具安全吗？我的数据会被上传吗？
@@ -2597,6 +3059,51 @@ tools:
     faqFreeA: 完全免费。无需注册，无需登录，永久免费使用。
     faqMobile: 支持手机使用吗？
     faqMobileA: 支持。MyUtl 已针对移动端优化，在手机和平板上均可正常使用。
+  date-time-converter:
+    inputPlaceholder: 在此输入日期字符串……
+    live: 实时
+    inputFormat: 输入格式：
+    clockPaused: 时钟已暂停 — 数值已固定，便于复制
+    invalidForFormat: 该日期不符合此格式
+    invalidDate: 无效日期……
+  integer-base-converter:
+    inputNumber: 输入数字
+    base: 进制
+    binary: 二进制
+    octal: 八进制
+    decimal: 十进制
+    hexadecimal: 十六进制
+    custom: 自定义：
+    bigIntHint: 检测到大数 —— 通过 BigInt 保证精度（无损失）。
+    copied: 已复制！
+    copy: 复制
+  meta-tag-generator:
+    outputTitle: 你的 Meta 标签
+    copied: 已复制！
+    copy: 复制
+    copyAllTooltip: 复制全部 Meta 标签到剪贴板
+    outputPlaceholder: Meta 标签将显示在这里……
+  otp-code-generator-and-validator:
+    secretLabel: 密钥 (Base32)
+    secretPlaceholder: 粘贴你的 TOTP 密钥…
+    secretRequired: 请设置密钥
+    secretBase32: 密钥必须为 Base32 字符串（A–Z、2–7）
+    generateNewSecret: 生成新的随机密钥
+    previous: 上一个
+    currentOtp: 当前 OTP
+    next: 下一个
+    copyPreviousOtp: 复制上一个 OTP
+    copyCurrentOtp: 复制当前 OTP
+    copyNextOtp: 复制下一个 OTP
+    copied: 已复制！
+    nextIn: "{seconds}s 后刷新"
+    qrAlt: TOTP 二维码
+    openKeyUri: 在新标签页打开 Key URI
+    advancedInfo: 调试 / 高级信息
+    secretHex: 密钥 (hex)
+    epochS: 时间戳 (秒)
+    iterationCount: 迭代计数
+    paddedHex: 补齐 hex
 
 menu:
   searchPlaceholder: 搜索工具...

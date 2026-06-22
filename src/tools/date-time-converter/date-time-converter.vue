@@ -29,6 +29,8 @@ import {
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
 
+const { t } = useI18n();
+
 const inputDate = ref('');
 
 const toDate: ToDateMapper = date => new Date(date);
@@ -162,7 +164,7 @@ const validation = useValidation({
   watch: [formatIndex],
   rules: [
     {
-      message: 'This date is invalid for this format',
+      message: t('tools.date-time-converter.invalidForFormat'),
       validator: value =>
         withDefaultOnError(() => {
           if (value === '') {
@@ -196,7 +198,7 @@ const isLiveMode = computed(() => !inputDate.value);
         <c-input-text
           v-model:value="inputDate"
           autofocus
-          placeholder="Put your date string here..."
+          :placeholder="t('tools.date-time-converter.inputPlaceholder')"
           clearable
           test-id="date-time-converter-input"
           :validation="validation"
@@ -206,14 +208,14 @@ const isLiveMode = computed(() => !inputDate.value);
         <transition name="fade">
           <div v-if="isLiveMode" class="live-badge">
             <span class="live-dot" />
-            Live
+            {{ t('tools.date-time-converter.live') }}
           </div>
         </transition>
       </div>
 
       <!-- 下拉框 + 明确标签 -->
       <div class="format-select-wrap">
-        <span class="format-label">Input format:</span>
+        <span class="format-label">{{ t('tools.date-time-converter.inputFormat') }}</span>
         <c-select
           v-model:value="formatIndex"
           style="flex: 0 0 170px"
@@ -236,7 +238,7 @@ const isLiveMode = computed(() => !inputDate.value);
       <transition name="fade">
         <div v-if="isFrozen && isLiveMode" class="freeze-hint">
           <icon-mdi-pause-circle class="freeze-icon" />
-          Clock paused — values are stable for copying
+          {{ t('tools.date-time-converter.clockPaused') }}
         </div>
       </transition>
 
@@ -248,7 +250,7 @@ const isLiveMode = computed(() => !inputDate.value);
         label-position="left"
         label-align="right"
         :value="formatDateUsingFormatter(fromDate, normalizedDate)"
-        placeholder="Invalid date..."
+        :placeholder="t('tools.date-time-converter.invalidDate')"
         :test-id="name"
         readonly
         mt-2

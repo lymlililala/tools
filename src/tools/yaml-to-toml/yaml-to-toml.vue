@@ -2,6 +2,8 @@
 import { stringify as stringifyToml } from 'iarna-toml-esm';
 import { parse as parseYaml } from 'yaml';
 
+const { t } = useI18n();
+
 // ── 状态 ─────────────────────────────────────────────────────────────────
 const yamlInput = ref('');
 const debouncedYaml = refDebounced(yamlInput, 150);
@@ -46,14 +48,14 @@ function clearInput() {
       <!-- 左：YAML 输入 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">YAML Input</span>
+          <span class="pane-title">{{ t('tools.yaml-to-toml.yamlInput') }}</span>
           <div class="pane-actions">
             <c-button
               v-if="yamlInput"
               variant="text"
               size="small"
               class="action-btn"
-              title="Clear"
+              :title="t('tools.yaml-to-toml.clear')"
               @click="clearInput"
             >
               <icon-mdi-close class="action-icon" />
@@ -64,7 +66,7 @@ function clearInput() {
         <c-code-input
           v-model="yamlInput"
           language="yaml"
-          placeholder="Paste your YAML here..."
+          :placeholder="t('tools.yaml-to-toml.inputPlaceholder')"
           min-height="calc(100vh - 218px)"
         />
       </div>
@@ -72,7 +74,7 @@ function clearInput() {
       <!-- 右：TOML 输出 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">TOML Output</span>
+          <span class="pane-title">{{ t('tools.yaml-to-toml.tomlOutput') }}</span>
           <div class="pane-actions">
             <c-output-actions
               :value="tomlOutput"
@@ -87,7 +89,7 @@ function clearInput() {
           v-if="!parseError"
           :model-value="tomlOutput"
           language="toml"
-          placeholder="Converted TOML will appear here…"
+          :placeholder="t('tools.yaml-to-toml.outputPlaceholder')"
           min-height="calc(100vh - 218px)"
           readonly
         />
@@ -98,11 +100,11 @@ function clearInput() {
             <icon-mdi-alert-circle-outline class="error-icon" />
           </div>
           <div class="error-title">
-            Parse Error
+            {{ t('tools.yaml-to-toml.parseError') }}
           </div>
           <pre class="error-message">{{ parseError }}</pre>
           <div class="error-tip">
-            Check your YAML indentation — tabs are not allowed, use spaces only.
+            {{ t('tools.yaml-to-toml.yamlTip') }}
           </div>
         </div>
       </div>
