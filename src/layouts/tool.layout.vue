@@ -7,13 +7,15 @@ import BaseLayout from './base.layout.vue';
 import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
 import { useLocaleRoute } from '@/composables/useLocaleRoute';
+import { toolI18nKey } from '@/lib/tool-i18n-keys';
 
 const route = useRoute();
 const { t, te, locale } = useI18n();
 const { basePath, canonical, ogLocale, alternates } = useLocaleRoute();
 
-// i18n key 用「剥掉语言前缀」的逻辑路径，否则 /zh/json-format 会取成 zh/json-format（错 key）。
-const i18nKey = computed<string>(() => basePath.value.replace(/^\//, ''));
+// i18n key 用「剥掉语言前缀」的逻辑路径，并过 slug→key 映射（7 个工具路由名≠i18n键）。
+// 否则 /zh/json-format 取不到 tools.json-prettify，标题/FAQ 回落英文。
+const i18nKey = computed<string>(() => toolI18nKey(basePath.value.replace(/^\//, '')));
 const toolTitle = computed<string>(() => t(`tools.${i18nKey.value}.title`, String(route.meta.name)));
 const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.description`, String(route.meta.description)));
 
