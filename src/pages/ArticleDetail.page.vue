@@ -1,17 +1,29 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
-import { getArticleDetailCached, prefetchArticleDetail } from '../lib/articles';
+import { getArticleDetailCached, prefetchArticleDetail, pickLang, hasZh } from '../lib/articles';
 import type { DbArticle } from '../lib/articles';
 
 const route = useRoute();
+const { t, locale } = useI18n();
 const slug = computed(() => route.params.slug as string);
+
+// 语言以 URL 前缀为准（爬虫不带 storage），并同步全站 UI 语言。
+const isZh = computed(() => route.path.startsWith('/zh/'));
+const blogPrefix = computed(() => (isZh.value ? '/zh' : ''));
+watchEffect(() => {
+  if (isZh.value) { locale.value = 'zh'; }
+  else if (locale.value === 'zh') { locale.value = 'en'; }
+});
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const article = ref<DbArticle | null>(null);
 const relatedArticles = ref<DbArticle[]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
+
+// 按当前语言挑选展示字段（缺译回落英文）
+const view = computed(() => (article.value ? pickLang(article.value, isZh.value) : null));
 
 // 仅当文章 toolPath 与主题相关时才显示 "Try the Tool" CTA。
 // 白名单来自构建时生成的 /article-tools.json（DB 里约 26% 的 toolPath 是历史错配）。
@@ -36,7 +48,7 @@ async function fetchArticle(s: string) {
   }
   catch (e: any) {
     error.value = e?.status === 404
-      ? 'Article not found'
+      ? t('blog.notFound')
       : (e?.message ?? '加载失败，请稍后重试');
   }
   finally {
@@ -48,37 +60,50 @@ async function fetchArticle(s: string) {
 watch(slug, fetchArticle, { immediate: true });
 
 // ─── SEO ──────────────────────────────────────────────────────────────────────
-const canonicalUrl = computed(() => `https://myutl.com/blog/${slug.value}`);
+const canonicalUrl = computed(() => `https://myutl.com${blogPrefix.value}/blog/${slug.value}`);
 
 watchEffect(() => {
-  if (!article.value) {
+  if (!article.value || !view.value) {
     return;
   }
+  // 仅当该文有中文版时才发 zh hreflang，避免指向空壳；x-default 指英文。
+  const enUrl = `https://myutl.com/blog/${slug.value}`;
+  const zhUrl = `https://myutl.com/zh/blog/${slug.value}`;
+  const alt: Array<Record<string, string>> = [
+    { rel: 'alternate', hreflang: 'en', href: enUrl },
+  ];
+  if (hasZh(article.value)) {
+    alt.push({ rel: 'alternate', hreflang: 'zh-Hans', href: zhUrl });
+  }
+  alt.push({ rel: 'alternate', hreflang: 'x-default', href: enUrl });
+
   useHead({
-    title: `${article.value.title} | MyUtl Blog`,
+    title: `${view.value.title} | MyUtl Blog`,
     meta: [
-      { name: 'description', content: article.value.description },
-      { name: 'keywords', content: (article.value.keywords ?? []).join(', ') },
-      { property: 'og:title', content: article.value.title },
-      { property: 'og:description', content: article.value.description },
+      { name: 'description', content: view.value.description },
+      { name: 'keywords', content: view.value.keywords.join(', ') },
+      { property: 'og:title', content: view.value.title },
+      { property: 'og:description', content: view.value.description },
       { property: 'og:url', content: canonicalUrl.value },
       { property: 'og:type', content: 'article' },
+      { property: 'og:locale', content: isZh.value ? 'zh_CN' : 'en_US' },
       { property: 'article:published_time', content: article.value.published_at },
       { property: 'article:section', content: article.value.category },
     ],
-    link: [{ rel: 'canonical', href: canonicalUrl.value }],
+    link: [{ rel: 'canonical', href: canonicalUrl.value }, ...alt],
     script: [
       {
         type: 'application/ld+json',
         children: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Article',
-          'headline': article.value.title,
-          'description': article.value.description,
+          'headline': view.value.title,
+          'description': view.value.description,
           'datePublished': article.value.published_at,
+          'inLanguage': isZh.value ? 'zh-CN' : 'en',
           'url': canonicalUrl.value,
           'publisher': { '@type': 'Organization', 'name': 'MyUtl', 'url': 'https://myutl.com' },
-          'keywords': (article.value.keywords ?? []).join(', '),
+          'keywords': view.value.keywords.join(', '),
         }),
       },
     ],
@@ -94,10 +119,10 @@ watchEffect(() => {
     </div>
 
     <!-- Error / Not Found -->
-    <div v-else-if="error || !article" class="not-found">
-      <h2>Article not found</h2>
-      <RouterLink to="/blog">
-        ← Back to Blog
+    <div v-else-if="error || !article || !view" class="not-found">
+      <h2>{{ t('blog.notFound') }}</h2>
+      <RouterLink :to="`${blogPrefix}/blog`">
+        {{ t('blog.backToBlog') }}
       </RouterLink>
     </div>
 
@@ -106,11 +131,11 @@ watchEffect(() => {
       <!-- Breadcrumb -->
       <nav class="breadcrumb">
         <RouterLink to="/">
-          Home
+          {{ t('blog.home') }}
         </RouterLink>
         <span class="sep">›</span>
-        <RouterLink to="/blog">
-          Blog
+        <RouterLink :to="`${blogPrefix}/blog`">
+          {{ t('blog.blog') }}
         </RouterLink>
         <span class="sep">›</span>
         <span>{{ article.category }}</span>
@@ -123,53 +148,53 @@ watchEffect(() => {
           <span class="article-date">{{ article.published_at }}</span>
         </div>
         <h1 class="article-title">
-          {{ article.title }}
+          {{ view.title }}
         </h1>
         <p class="article-description">
-          {{ article.description }}
+          {{ view.description }}
         </p>
         <RouterLink v-if="effectiveToolPath" :to="effectiveToolPath" class="try-tool-btn">
           <icon-mdi-tools style="margin-right:6px" />
-          Try the Tool →
+          {{ t('blog.tryTool') }}
         </RouterLink>
       </header>
 
       <!-- Article Content -->
       <article class="article-content">
-        <c-markdown :markdown="article.content ?? ''" />
+        <c-markdown :markdown="view.content" />
       </article>
 
       <!-- Tags -->
       <div class="article-tags">
-        <span v-for="kw in (article.keywords ?? [])" :key="kw" class="tag">{{ kw }}</span>
+        <span v-for="kw in view.keywords" :key="kw" class="tag">{{ kw }}</span>
       </div>
 
       <!-- CTA -->
       <div v-if="effectiveToolPath" class="article-cta">
         <RouterLink :to="effectiveToolPath" class="cta-btn">
-          🚀 Open {{ article.title.split(':')[0] }} Tool
+          {{ t('blog.openTool', { name: view.title.split(':')[0] }) }}
         </RouterLink>
       </div>
 
       <!-- Related Articles -->
       <section v-if="relatedArticles.length > 0" class="related-section">
         <h2 class="related-title">
-          Related Guides
+          {{ t('blog.relatedGuides') }}
         </h2>
         <div class="related-grid">
           <RouterLink
             v-for="rel in relatedArticles"
             :key="rel.slug"
-            :to="`/blog/${rel.slug}`"
+            :to="`${blogPrefix}/blog/${rel.slug}`"
             class="related-card"
             @pointerenter="prefetchArticleDetail(rel.slug)"
             @touchstart.passive="prefetchArticleDetail(rel.slug)"
           >
             <div class="related-card-title">
-              {{ rel.title }}
+              {{ pickLang(rel, isZh).title }}
             </div>
             <div class="related-card-desc">
-              {{ rel.description }}
+              {{ pickLang(rel, isZh).description }}
             </div>
           </RouterLink>
         </div>

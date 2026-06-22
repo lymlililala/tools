@@ -48,6 +48,58 @@
   to = "/index.html"
   status = 200
 
+# ── 中文 /zh 前缀（与 vercel.json 同步）──────────────────────────────────────
+[[redirects]]
+  from = "/zh"
+  to = "/zh/prerender-home/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/about"
+  to = "/zh/about/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/contact"
+  to = "/zh/contact/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/privacy"
+  to = "/zh/privacy/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/terms"
+  to = "/zh/terms/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/blog"
+  to = "/zh/blog/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/blog/*"
+  to = "/zh/blog/:splat/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/c/:slug"
+  to = "/zh/c/:slug/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/zh/:slug"
+  to = "/zh/tools/:slug/index.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/zh/*"
+  to = "/zh/index.html"
+  status = 200
+
 # 未匹配的路径返回真实 404
 [[redirects]]
   from = "/*"

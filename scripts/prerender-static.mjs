@@ -55,12 +55,81 @@ const SITE = 'https://myutl.com'
 const SITE_NAME = 'MyUtl'
 const OG_IMAGE = `${SITE}/banner.png`
 
+// 某逻辑路径的 hreflang 全簇：en 根 + zh-Hans(/zh) + x-default→en 根。
+// en 页与 zh 页都用它，保证 hreflang 双向对称（否则 Google 会忽略整组标注）。
+// basePath 形如 '/json-format'，首页传 '/'。
+function fullAltCluster(basePath) {
+  const clean = basePath === '/' ? '' : basePath
+  const enHref = `${SITE}${clean}` || `${SITE}/`
+  return [
+    { hreflang: 'en', href: enHref },
+    { hreflang: 'zh-Hans', href: `${SITE}/zh${clean}` },
+    { hreflang: 'x-default', href: enHref },
+  ]
+}
+
 // ── 读取 en.yml 获取工具 title / description / steps / FAQ ────────────────────
 // 站点面向英文受众(lang=en),预渲染(爬虫可见)的工具页 SEO 内容与 schema 必须为英文。
 const enYmlPath = path.join(rootDir, 'locales', 'en.yml')
 const enRaw = fs.readFileSync(enYmlPath, 'utf-8')
 const en = parseYaml(enRaw)
 const toolsI18n = en.tools ?? {}
+
+// ── 多语言：读取 zh.yml，供 /zh 前缀页预渲染中文 SEO 内容 ─────────────────────
+// ⚠️ 必须与 src/lib/locales.ts 的 LOCALES 保持同步（脚本不能 import TS，此处内联等价副本）。
+//    加一种语言 = 这里加一行 + src/lib/locales.ts 加一行 + vercel.json 加一组规则。
+const LOCALES = [
+  { code: 'en', prefix: '', htmlLang: 'en', ogLocale: 'en_US', hreflang: 'en' },
+  { code: 'zh', prefix: '/zh', htmlLang: 'zh-CN', ogLocale: 'zh_CN', hreflang: 'zh-Hans' },
+]
+const ZH = LOCALES.find(l => l.code === 'zh')
+let zhYml = {}
+try {
+  zhYml = parseYaml(fs.readFileSync(path.join(rootDir, 'locales', 'zh.yml'), 'utf-8')) ?? {}
+}
+catch (e) {
+  console.warn('⚠️  读取 zh.yml 失败，跳过中文工具/页面预渲染：', e.message)
+}
+const toolsI18nZh = zhYml.tools ?? {}
+// 各 locale 的工具 i18n 数据（取中文，缺则英文兜底由调用方处理）
+const ymlByLocale = { en, zh: zhYml }
+
+// ── 预渲染 SEO 区块的硬编码 UI 文案（按语言）──────────────────────────────────
+const SEO_UI = {
+  en: {
+    howTo: 'How to Use',
+    faq: 'Frequently Asked Questions',
+    relatedTools: c => `Related ${c} Tools`,
+    relatedGuides: 'Related Guides &amp; Tutorials',
+    relatedGuidesShort: 'Related Guides',
+    browseOther: 'Browse other categories',
+  },
+  zh: {
+    howTo: '使用方法',
+    faq: '常见问题',
+    relatedTools: c => `相关${c}工具`,
+    relatedGuides: '相关指南与教程',
+    relatedGuidesShort: '相关指南',
+    browseOther: '浏览其它分类',
+  },
+}
+// 分类显示名（中文）
+const categoryNamesZh = {
+  Crypto: '加密与安全',
+  Converter: '转换器',
+  Web: 'Web',
+  'Images and videos': '图片与视频',
+  Development: '开发',
+  Network: '网络',
+  Math: '数学',
+  Measurement: '测量',
+  Text: '文本',
+  Data: '数据',
+}
+// 按语言取分类显示名
+function catLabelOf(cat, lang) {
+  return lang === 'zh' ? (categoryNamesZh[cat] || categoryNames[cat] || cat) : (categoryNames[cat] || cat)
+}
 
 // sitemap slug（新路径）→ zh.yml 中对应的 key（工具目录名/旧路径）
 // 当工具路由路径与 zh.yml key 不一致时需要在此配置映射
@@ -305,9 +374,9 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
 }
 
-function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld, seoContent = '', ogType, articleMeta }) {
-  // 首页直接用完整 title（已含品牌），其余拼接品牌后缀
-  const fullTitle = routePath === '/' ? title : `${title} | ${SITE_NAME}`
+function buildHtml({ path: routePath, title, description, h1, keywords = '', jsonld, seoContent = '', ogType, articleMeta, alternates, htmlLang, ogLocale }) {
+  // 首页用完整 title；其余拼接品牌后缀，但标题已含品牌则不重复拼接（修双 MyUtl bug）。
+  const fullTitle = (routePath === '/' || String(title).includes(SITE_NAME)) ? title : `${title} | ${SITE_NAME}`
   const canonicalUrl = routePath === '/' ? SITE : `${SITE}${routePath}`
   const escapedTitle = escapeAttr(fullTitle)
   const escapedDesc = escapeAttr(description)
@@ -365,11 +434,16 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     }
   }
 
-  // 替换 hreflang（英文单语站,指向当前页 canonical）
+  // hreflang：博客双语页传 alternates（en/zh-Hans/x-default 互指）；其它页保持英文单语自指。
   html = html
-    .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, `<link rel="alternate" hreflang="en" href="${canonicalUrl}" />`)
-    .replace(/<link rel="alternate" hreflang="zh(?:-CN)?"[^>]*>/g, '')
-    .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, `<link rel="alternate" hreflang="x-default" href="${canonicalUrl}" />`)
+    .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, '')
+    .replace(/<link rel="alternate" hreflang="zh(?:-Hans|-CN)?"[^>]*>/g, '')
+    .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, '')
+  const alts = (alternates && alternates.length)
+    ? alternates
+    : [{ hreflang: 'en', href: canonicalUrl }, { hreflang: 'x-default', href: canonicalUrl }]
+  const altTags = alts.map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${a.href}" />`).join('\n    ')
+  html = html.replace(canonicalTag, `${canonicalTag}\n    ${altTags}`)
 
   // 替换原有 JSON-LD（如果没匹配到，就注入到 </head> 前）
   const jsonLdTag = `<!-- JSON-LD: prerendered -->\n    <script type="application/ld+json">\n    ${JSON.stringify(jsonld, null, 2)}\n    </script>`
@@ -396,6 +470,14 @@ function buildHtml({ path: routePath, title, description, h1, keywords = '', jso
     : `<div id="app"></div>`
 
   html = html.replace('<div id="app"></div>', seoBlock)
+
+  // 非默认语言：替换 <html lang> 并注入 og:locale（英文页不传这两个参数 → 产物零变化）。
+  if (htmlLang) {
+    html = html.replace(/<html lang="[^"]*">/, `<html lang="${htmlLang}">`)
+  }
+  if (ogLocale) {
+    html = html.replace('</head>', `    <meta property="og:locale" content="${ogLocale}" />\n  </head>`)
+  }
 
   return html
 }
@@ -431,19 +513,31 @@ const SUPA_URL = process.env.SUPABASE_URL || 'https://tixgzezefjjsyuzgdhcd.supab
 const SUPA_KEY = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_KEY
 if (SUPA_KEY) {
   try {
-    const haveSlugs = new Set(blogArticles.map((a) => a.slug))
+    const bySlug = new Map(blogArticles.map(a => [a.slug, a]))
     const { createClient } = await import('@supabase/supabase-js')
     const supa = createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: false } })
     const { data, error } = await supa
       .from('tools_articles')
-      .select('slug, tool_path, title, description, keywords, category, published_at, content')
+      .select('slug, tool_path, title, description, keywords, category, published_at, content, title_zh, description_zh, content_zh, keywords_zh')
       .order('published_at', { ascending: false })
     if (error) throw new Error(error.message)
-    let added = 0
+    let added = 0; let zhMerged = 0
     for (const r of data || []) {
-      if (!r.slug || haveSlugs.has(r.slug) || !r.content) continue
-      haveSlugs.add(r.slug)
-      blogArticles.push({
+      if (!r.slug) continue
+      const zh = {
+        titleZh: r.title_zh ?? null,
+        descriptionZh: r.description_zh ?? null,
+        contentZh: r.content_zh ?? null,
+        keywordsZh: Array.isArray(r.keywords_zh) ? r.keywords_zh : [],
+      }
+      const existing = bySlug.get(r.slug)
+      if (existing) {
+        // 已在 data.ts（英文）→ 仅补中文字段（中文以 DB 为唯一来源）
+        if (r.content_zh) { Object.assign(existing, zh); zhMerged++ }
+        continue
+      }
+      if (!r.content) continue
+      const merged = {
         slug: r.slug,
         toolPath: r.tool_path ?? null,
         title: r.title || r.slug,
@@ -452,10 +546,13 @@ if (SUPA_KEY) {
         category: r.category || 'Blog',
         publishedAt: r.published_at || '',
         content: r.content,
-      })
+        ...zh,
+      }
+      bySlug.set(r.slug, merged)
+      blogArticles.push(merged)
       added++
     }
-    console.log(`🗄️  合并库内新增博客 ${added} 篇（DB-only），博客总数 ${blogArticles.length}`)
+    console.log(`🗄️  合并库内新增博客 ${added} 篇（DB-only），补中文 ${zhMerged} 篇，博客总数 ${blogArticles.length}`)
   }
   catch (e) {
     console.warn('⚠️  合并 Supabase 文章失败（跳过，不影响构建）：', e.message)
@@ -588,11 +685,27 @@ function resolveToolCategory(article) {
     parts.push(`      </ul>`)
   }
   const blogRoute = staticRoutes.find((r) => r.path === '/blog')
-  if (blogRoute) blogRoute.seoContent = parts.join('\n')
+  if (blogRoute) {
+    blogRoute.seoContent = parts.join('\n')
+    // 有任一中文文章时，英文列表页发 zh hreflang 互指 /zh/blog
+    if (blogArticles.some(a => a.contentZh && String(a.contentZh).trim())) {
+      blogRoute.alternates = [
+        { hreflang: 'en', href: `${SITE}/blog` },
+        { hreflang: 'zh-Hans', href: `${SITE}/zh/blog` },
+        { hreflang: 'x-default', href: `${SITE}/blog` },
+      ]
+    }
+  }
 }
 
 // ── 生成静态页面 ─────────────────────────────────────────────────────────────────
 let count = 0
+
+// 英文静态页补 zh-Hans 回链（hreflang 双向对称）。blog 有自己的条件逻辑，跳过。
+for (const r of staticRoutes) {
+  if (r.path === '/blog') continue
+  r.alternates = fullAltCluster(r.path)
+}
 
 // 1. 静态路由（首页、博客）
 for (const route of staticRoutes) {
@@ -613,8 +726,56 @@ for (const route of staticRoutes) {
   count++
 }
 
+// 1.5 中文博客列表页 /zh/blog（仅当存在中文文章时）
+{
+  const zhArticles = blogArticles.filter(a => a.contentZh && String(a.contentZh).trim())
+  if (zhArticles.length) {
+    const sorted = [...zhArticles].sort((a, b) =>
+      new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0),
+    )
+    const parts = []
+    parts.push(`      <p>MyUtl 博客发布开发者工具的深度指南，涵盖哈希与加密、编码格式、正则表达式、网络等主题。</p>`)
+    parts.push(`      <ul>`)
+    sorted.forEach((a) => {
+      const slug = a.slug
+      const title = escapeHtml(a.titleZh || a.title || slug)
+      const desc = a.descriptionZh ? ` — ${escapeHtml(a.descriptionZh.slice(0, 40))}` : ''
+      parts.push(`        <li><a href="/zh/blog/${slug}">${title}</a>${desc}</li>`)
+    })
+    parts.push(`      </ul>`)
+    const zhBlogRoute = {
+      path: '/zh/blog',
+      title: '开发者工具指南 — MyUtl 博客',
+      description: '100+ 开发者工具的深度指南——加密、编码、正则、网络与数据转换，结合实例讲解。',
+      h1: '开发者工具指南 — MyUtl 博客',
+      keywords: '开发者工具指南, 编程教程, 在线工具博客',
+      seoContent: parts.join('\n'),
+      alternates: [
+        { hreflang: 'en', href: `${SITE}/blog` },
+        { hreflang: 'zh-Hans', href: `${SITE}/zh/blog` },
+        { hreflang: 'x-default', href: `${SITE}/blog` },
+      ],
+      jsonld: {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: `${SITE_NAME} 博客`,
+        inLanguage: 'zh-CN',
+        url: `${SITE}/zh/blog`,
+        publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+      },
+    }
+    const outDir = path.join(distDir, 'zh', 'blog')
+    fs.mkdirSync(outDir, { recursive: true })
+    fs.writeFileSync(path.join(outDir, 'index.html'), buildHtml(zhBlogRoute), 'utf-8')
+    console.log(`✅ Static: dist/zh/blog/index.html`)
+    count++
+  }
+}
+
 // ── 辅助：从 i18n 数据构建工具页 SEO 正文 HTML ─────────────────────────────────
-function buildToolSeoContent(i18n, slug) {
+function buildToolSeoContent(i18n, slug, lang = 'en') {
+  const ui = SEO_UI[lang] || SEO_UI.en
+  const ti = ymlByLocale[lang]?.tools ?? toolsI18n
   const parts = []
 
   // 使用说明段落
@@ -630,7 +791,7 @@ function buildToolSeoContent(i18n, slug) {
   }
   if (steps.length > 0) {
     parts.push(`      <section>`)
-    parts.push(`        <h2>How to Use</h2>`)
+    parts.push(`        <h2>${ui.howTo}</h2>`)
     parts.push(`        <ol>`)
     steps.forEach(s => parts.push(`          <li>${escapeHtml(s)}</li>`))
     parts.push(`        </ol>`)
@@ -647,7 +808,7 @@ function buildToolSeoContent(i18n, slug) {
   }
   if (faqs.length > 0) {
     parts.push(`      <section>`)
-    parts.push(`        <h2>Frequently Asked Questions</h2>`)
+    parts.push(`        <h2>${ui.faq}</h2>`)
     faqs.forEach(({ q, a }) => {
       parts.push(`        <div>`)
       parts.push(`          <h3>${escapeHtml(q)}</h3>`)
@@ -663,15 +824,15 @@ function buildToolSeoContent(i18n, slug) {
     if (cat) {
       const siblings = (toolCategories[cat] || []).filter(s => s !== slug).slice(0, 6)
       if (siblings.length > 0) {
-        const catLabel = categoryNames[cat] || cat
+        const catLabel = catLabelOf(cat, lang)
         parts.push(`      <nav aria-label="Related tools">`)
-        parts.push(`        <h2>Related ${catLabel} Tools</h2>`)
+        parts.push(`        <h2>${ui.relatedTools(catLabel)}</h2>`)
         parts.push(`        <ul>`)
         siblings.forEach((s) => {
           const sKey = slugToI18nKey[s] ?? s
-          const sI18n = toolsI18n[sKey] ?? toolsI18n[s] ?? {}
+          const sI18n = ti[sKey] ?? ti[s] ?? toolsI18n[sKey] ?? toolsI18n[s] ?? {}
           const sTitle = sI18n.title || s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-          parts.push(`          <li><a href="/${s}">${escapeHtml(sTitle)}</a></li>`)
+          parts.push(`          <li><a href="${ZH && lang === 'zh' ? ZH.prefix : ''}/${s}">${escapeHtml(sTitle)}</a></li>`)
         })
         parts.push(`        </ul>`)
         parts.push(`      </nav>`)
@@ -782,6 +943,7 @@ for (const slug of toolSlugs) {
     keywords: [toolTitle, slug, 'online tool', 'free', 'browser', SITE_NAME].filter(Boolean).join(','),
     seoContent,
     jsonld,
+    alternates: fullAltCluster(`/${slug}`),
   }
 
   const outDir = path.join(distDir, 'tools', slug)
@@ -793,8 +955,12 @@ for (const slug of toolSlugs) {
 }
 
 // ── 辅助：从 Markdown 内容构建博客文章 SEO 正文 HTML ──────────────────────────
-function buildArticleSeoContent(article, related = []) {
-  const { content, description, toolPath } = article
+function buildArticleSeoContent(article, related = [], lang = 'en') {
+  const zh = lang === 'zh'
+  const content = zh ? (article.contentZh || article.content) : article.content
+  const description = zh ? (article.descriptionZh || article.description) : article.description
+  const toolPath = article.toolPath
+  const blogBase = zh ? '/zh/blog' : '/blog'
   const raw = content || ''
   const parts = []
 
@@ -813,10 +979,11 @@ function buildArticleSeoContent(article, related = []) {
   // 相关文章内链(按 toolPath 聚类，填补文章↔文章互链空白)
   if (related.length > 0) {
     parts.push(`      <nav aria-label="Related guides">`)
-    parts.push(`        <h2>Related Guides</h2>`)
+    parts.push(`        <h2>${zh ? '相关指南' : 'Related Guides'}</h2>`)
     parts.push(`        <ul>`)
     related.forEach((a) => {
-      parts.push(`          <li><a href="/blog/${a.slug}">${escapeHtml(a.title)}</a></li>`)
+      const t = zh ? (a.titleZh || a.title) : a.title
+      parts.push(`          <li><a href="${blogBase}/${a.slug}">${escapeHtml(t)}</a></li>`)
     })
     parts.push(`        </ul>`)
     parts.push(`      </nav>`)
@@ -829,7 +996,7 @@ function buildArticleSeoContent(article, related = []) {
     if (catTools.length > 0) {
       const catLabel = categoryNames[cat] || cat
       parts.push(`      <nav aria-label="Related tools">`)
-      parts.push(`        <h2>Related ${catLabel} Tools</h2>`)
+      parts.push(`        <h2>${zh ? `相关${catLabel}工具` : `Related ${catLabel} Tools`}</h2>`)
       parts.push(`        <ul>`)
       catTools.forEach((s) => {
         const sKey = slugToI18nKey[s] ?? s
@@ -845,9 +1012,14 @@ function buildArticleSeoContent(article, related = []) {
   return parts.join('\n')
 }
 
-// 3. 博客文章路由（从 articles.data.ts 读取）
-for (const article of blogArticles) {
-  const { slug, toolPath, title, description, keywords = [], category = 'Development', publishedAt, content } = article
+// 3. 博客文章路由（从 articles.data.ts 读取）。每篇产英文页；有中文版再产 /zh/ 页。
+function emitArticlePage(article, lang) {
+  const { slug, title, category = 'Development', publishedAt, keywords = [] } = article
+  const zh = lang === 'zh'
+  const hasZhVer = !!(article.contentZh && String(article.contentZh).trim())
+  const dispTitle = zh ? (article.titleZh || title) : title
+  const content = zh ? (article.contentZh || article.content) : article.content
+  const dbDesc = zh ? (article.descriptionZh || article.description) : article.description
 
   // 从 markdown 内容提取纯文本摘要（取前 300 字符，去掉 markdown 语法）
   const plainText = (content || '')
@@ -859,15 +1031,26 @@ for (const article of blogArticles) {
     .trim()
     .slice(0, 300)
 
-  const articleSeoContent = buildArticleSeoContent(article, relatedArticles(article))
+  const articleSeoContent = buildArticleSeoContent(article, relatedArticles(article), lang)
+  const routePath = zh ? `/zh/blog/${slug}` : `/blog/${slug}`
+  const canonical = `${SITE}${routePath}`
+  const enUrl = `${SITE}/blog/${slug}`
+  const zhUrl = `${SITE}/zh/blog/${slug}`
+  // 仅当存在中文版时才互指 zh hreflang，避免指向空壳；x-default 指英文。
+  const alternates = hasZhVer
+    ? [{ hreflang: 'en', href: enUrl }, { hreflang: 'zh-Hans', href: zhUrl }, { hreflang: 'x-default', href: enUrl }]
+    : null
+  const kwEn = Array.isArray(keywords) ? keywords.join(', ') : keywords
+  const kw = zh && Array.isArray(article.keywordsZh) && article.keywordsZh.length ? article.keywordsZh.join(', ') : kwEn
 
   const articleRoute = {
-    path: `/blog/${slug}`,
-    title,
-    description: description || plainText,
-    h1: title,
-    keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
+    path: routePath,
+    title: dispTitle,
+    description: dbDesc || plainText,
+    h1: dispTitle,
+    keywords: kw,
     ogType: 'article',
+    alternates,
     articleMeta: {
       publishedTime: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
       section: category,
@@ -878,9 +1061,10 @@ for (const article of blogArticles) {
       '@graph': [
         {
           '@type': 'Article',
-          headline: title,
-          description: description || plainText,
-          url: `${SITE}/blog/${slug}`,
+          headline: dispTitle,
+          description: dbDesc || plainText,
+          inLanguage: zh ? 'zh-CN' : 'en',
+          url: canonical,
           datePublished: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
           dateModified: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
           image: OG_IMAGE,
@@ -892,27 +1076,37 @@ for (const article of blogArticles) {
             logo: { '@type': 'ImageObject', url: `${SITE}/android-chrome-192x192.png` },
           },
           articleSection: category,
-          keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
-          mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/blog/${slug}` },
+          keywords: kw,
+          mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
         },
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
-            { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
-            { '@type': 'ListItem', position: 3, name: title, item: `${SITE}/blog/${slug}` },
+            { '@type': 'ListItem', position: 1, name: zh ? '首页' : 'Home', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: zh ? '博客' : 'Blog', item: zh ? `${SITE}/zh/blog` : `${SITE}/blog` },
+            { '@type': 'ListItem', position: 3, name: dispTitle, item: canonical },
           ],
         },
       ],
     },
   }
 
-  const outDir = path.join(distDir, 'blog', slug)
+  const outDir = zh ? path.join(distDir, 'zh', 'blog', slug) : path.join(distDir, 'blog', slug)
   fs.mkdirSync(outDir, { recursive: true })
   fs.writeFileSync(path.join(outDir, 'index.html'), buildHtml(articleRoute), 'utf-8')
-  count++
 }
-console.log(`✅ Blog: ${blogArticles.length} 篇文章页预渲染完成`)
+
+let zhCount = 0
+for (const article of blogArticles) {
+  emitArticlePage(article, 'en')
+  count++
+  if (article.contentZh && String(article.contentZh).trim()) {
+    emitArticlePage(article, 'zh')
+    count++
+    zhCount++
+  }
+}
+console.log(`✅ Blog: ${blogArticles.length} 篇英文 + ${zhCount} 篇中文 预渲染完成`)
 
 // 3.5 分类 hub 页（/c/<slug>）—— 与 src/lib/categories.ts 保持一致
 const CATEGORY_HUBS = [
@@ -975,6 +1169,7 @@ for (const hub of CATEGORY_HUBS) {
     h1: hub.label,
     keywords: [hub.label, `${hub.name} tools`, 'online tools', 'free', SITE_NAME].join(','),
     seoContent: parts.join('\n'),
+    alternates: fullAltCluster(`/c/${hub.slug}`),
     jsonld: {
       '@context': 'https://schema.org',
       '@graph': [
@@ -1000,6 +1195,301 @@ for (const hub of CATEGORY_HUBS) {
   categoryHubSlugs.push(hub.slug)
 }
 console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染完成`)
+
+// ════════════════════════════════════════════════════════════════════════════
+// 中文（/zh）预渲染 pass —— 纯增量，不影响上面任何英文产物。
+// 工具/首页/分类/静态页全部生成 dist/zh/... 中文静态 HTML（中文内容来自 zh.yml）。
+// 博客 /zh 已在上方按 DB content_zh 生成；此处不重复。
+// ════════════════════════════════════════════════════════════════════════════
+{
+  // 某逻辑路径的 hreflang 全簇：en 根 + zh-Hans(/zh) + x-default→en 根。
+  const altCluster = (basePath) => {
+    const clean = basePath === '/' ? '' : basePath
+    const enHref = `${SITE}${clean}` || `${SITE}/`
+    return [
+      { hreflang: 'en', href: enHref },
+      { hreflang: 'zh-Hans', href: `${SITE}/zh${clean}` },
+      { hreflang: 'x-default', href: enHref },
+    ]
+  }
+  // zh 工具标题（带英文兜底）
+  const zhToolI18n = (slug) => {
+    const key = slugToI18nKey[slug] ?? slug
+    return toolsI18nZh[key] ?? toolsI18nZh[slug] ?? toolsI18n[key] ?? toolsI18n[slug] ?? {}
+  }
+  const zhTitleOf = (slug, i18n) => i18n.title || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+  // 写 zh 文件助手
+  const writeZh = (relDir, route) => {
+    route.htmlLang = ZH.htmlLang
+    route.ogLocale = ZH.ogLocale
+    const outDir = path.join(distDir, 'zh', relDir)
+    fs.mkdirSync(outDir, { recursive: true })
+    fs.writeFileSync(path.join(outDir, 'index.html'), buildHtml(route), 'utf-8')
+  }
+  let zhPageCount = 0
+
+  // A) 中文首页 → dist/zh/prerender-home/index.html
+  {
+    const parts = []
+    parts.push(`      <p>MyUtl 提供 90+ 款免费在线开发者工具，全部在浏览器本地运行——无需注册、无需上传，数据永不离开你的设备。</p>`)
+    for (const [cat, slugs] of Object.entries(toolCategories)) {
+      parts.push(`      <section>`)
+      parts.push(`        <h2>${escapeHtml(catLabelOf(cat, 'zh'))}</h2>`)
+      parts.push(`        <ul>`)
+      slugs.slice(0, 5).forEach((s) => {
+        const i18n = zhToolI18n(s)
+        const sTitle = zhTitleOf(s, i18n)
+        const sDesc = i18n.description ? ` — ${String(i18n.description).slice(0, 50)}` : ''
+        parts.push(`          <li><a href="/zh/${s}">${escapeHtml(sTitle)}</a>${escapeHtml(sDesc)}</li>`)
+      })
+      parts.push(`        </ul>`)
+      parts.push(`      </section>`)
+    }
+    writeZh('prerender-home', {
+      path: '/zh',
+      title: zhYml.home?.metaTitle || 'MyUtl — 免费在线工具箱',
+      description: zhYml.home?.metaDesc || 'MyUtl 提供 90+ 免费在线开发者工具，全部在浏览器本地运行。',
+      h1: zhYml.home?.heroTitle || 'MyUtl — 免费在线工具箱',
+      seoContent: parts.join('\n'),
+      alternates: altCluster('/'),
+      jsonld: {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SITE_NAME,
+        url: `${SITE}/zh`,
+        inLanguage: 'zh-CN',
+        description: 'MyUtl 免费在线工具箱，90+ 款开发者与日常实用工具，全部在浏览器本地运行。',
+      },
+    })
+    console.log('✅ Static(zh): dist/zh/prerender-home/index.html')
+    zhPageCount++
+  }
+
+  // B) 中文工具页 → dist/zh/tools/<slug>/index.html
+  for (const slug of toolSlugs) {
+    const i18n = zhToolI18n(slug)
+    const toolTitle = zhTitleOf(slug, i18n)
+    const toolDesc = i18n.description || `${toolTitle} —— 免费在线工具，在浏览器中运行，无需安装、无需注册。`
+
+    let seoContent = buildToolSeoContent(i18n, slug, 'zh')
+
+    // 工具页 → 相关指南（中文标题优先，链接到 /zh/blog 当文章有中文版，否则 /blog）
+    const toolGuides = guidesForTool(slug)
+    if (toolGuides.length > 0) {
+      const guideParts = ['      <nav aria-label="Related guides">', `        <h2>${SEO_UI.zh.relatedGuides}</h2>`, '        <ul>']
+      toolGuides.forEach((a) => {
+        const hasZhVer = !!(a.contentZh && String(a.contentZh).trim())
+        const base = hasZhVer ? '/zh/blog' : '/blog'
+        const t = hasZhVer ? (a.titleZh || a.title) : a.title
+        guideParts.push(`          <li><a href="${base}/${a.slug}">${escapeHtml(t)}</a></li>`)
+      })
+      guideParts.push('        </ul>', '      </nav>')
+      seoContent += '\n' + guideParts.join('\n')
+    }
+
+    // FAQ / 步骤 schema（中文）
+    const faqItems = []
+    for (let n = 1; n <= 6; n++) {
+      const q = i18n[`faq${n}q`]; const a = i18n[`faq${n}a`]
+      if (q && a) faqItems.push({ q, a }); else break
+    }
+    const commonFaqZh = toolsI18nZh.common ?? {}
+    if (commonFaqZh.faqSafe && commonFaqZh.faqSafeA) {
+      faqItems.push({ q: commonFaqZh.faqSafe, a: commonFaqZh.faqSafeA })
+    }
+    const howToSteps = []
+    for (let n = 1; n <= 8; n++) {
+      if (i18n[`step${n}`]) howToSteps.push(i18n[`step${n}`]); else break
+    }
+
+    const graph = [{
+      '@type': 'WebApplication',
+      name: toolTitle,
+      description: toolDesc,
+      url: `${SITE}/zh/${slug}`,
+      inLanguage: 'zh-CN',
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires JavaScript',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      provider: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+    }]
+    const cat = slugCategory[slug]
+    const crumbs = [{ name: '首页', url: `${SITE}/zh` }]
+    if (cat) crumbs.push({ name: catLabelOf(cat, 'zh'), url: `${SITE}/zh/c/${catHubSlug(cat)}` })
+    crumbs.push({ name: toolTitle, url: `${SITE}/zh/${slug}` })
+    graph.push({
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })),
+    })
+    if (howToSteps.length > 0) {
+      graph.push({
+        '@type': 'HowTo',
+        name: `如何使用${toolTitle}`,
+        step: howToSteps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, text: s })),
+      })
+    }
+    if (faqItems.length > 0) {
+      graph.push({
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+      })
+    }
+
+    writeZh(path.join('tools', slug), {
+      path: `/zh/${slug}`,
+      title: toolTitle,
+      description: toolDesc,
+      h1: toolTitle,
+      seoContent,
+      alternates: altCluster(`/${slug}`),
+      jsonld: { '@context': 'https://schema.org', '@graph': graph },
+    })
+    zhPageCount++
+  }
+  console.log(`✅ Tool(zh): ${toolSlugs.length} 个中文工具页`)
+
+  // C) 中文分类 hub 页 → dist/zh/c/<slug>/index.html
+  const CATEGORY_HUB_ZH = {
+    'crypto': { label: '加密与安全工具', desc: '免费在线加密与安全工具——哈希、加密、令牌与密钥生成、密码强度检测等，全部在浏览器中运行。' },
+    'converter': { label: '转换器工具', desc: '免费在线转换器——日期、数字、颜色、文本编码，以及 JSON、YAML、TOML、XML 等数据格式互转。快速、私密、无需上传。' },
+    'web': { label: 'Web 开发工具', desc: '面向 Web 开发者的免费在线工具——URL 编码、HTML 实体、JWT、Basic Auth、HTTP 状态码、User-Agent 解析等。' },
+    'images-and-videos': { label: '图片与视频工具', desc: '免费在线图片与视频工具——二维码与 SVG 占位图生成、调色板，以及浏览器内置摄像头录制。' },
+    'development': { label: '开发者实用工具', desc: '免费在线开发者实用工具——JSON/SQL/XML/YAML 格式化、正则测试、crontab、chmod、Docker 与 Git 速查，全部在浏览器中运行。' },
+    'network': { label: '网络工具', desc: '免费在线网络工具——IPv4 子网与地址段计算、MAC 地址查询与生成、IPv6 ULA 生成。' },
+    'math': { label: '数学与计算器工具', desc: '免费在线数学与金融计算器——表达式求值、百分比、房贷、个税、ETA、数字格式化。' },
+    'measurement': { label: '测量工具', desc: '免费在线测量工具——秒表、温度转换、BMI 计算，以及代码基准测试构建器。' },
+    'text': { label: '文本工具', desc: '免费在线文本工具——Lorem Ipsum、文本统计、文本对比、表情选择、字符串混淆、ASCII 艺术等。' },
+    'data': { label: '数据工具', desc: '免费在线数据工具——电话号码解析与格式化、IBAN 校验与解析。' },
+  }
+  let zhCatCount = 0
+  for (const hub of CATEGORY_HUBS) {
+    const slugs = toolCategories[hub.name] || []
+    if (slugs.length === 0) continue
+    const zhHub = CATEGORY_HUB_ZH[hub.slug] || { label: hub.label, desc: hub.desc }
+    const parts = []
+    parts.push(`      <p>${escapeHtml(zhHub.desc)}</p>`)
+    parts.push(`      <h2>${escapeHtml(zhHub.label)}</h2>`)
+    parts.push(`      <ul>`)
+    for (const s of slugs) {
+      const i18n = zhToolI18n(s)
+      const sTitle = zhTitleOf(s, i18n)
+      const sDesc = i18n.description ? ` — ${escapeHtml(String(i18n.description).slice(0, 80))}` : ''
+      parts.push(`        <li><a href="/zh/${s}">${escapeHtml(sTitle)}</a>${sDesc}</li>`)
+    }
+    parts.push(`      </ul>`)
+    // 相关指南（中文标题优先）
+    const seenG = new Set(); const guideLines = []
+    for (const s of slugs) {
+      for (const g of guidesForTool(s, 4)) {
+        if (seenG.has(g.slug)) continue
+        seenG.add(g.slug)
+        const hasZhVer = !!(g.contentZh && String(g.contentZh).trim())
+        const base = hasZhVer ? '/zh/blog' : '/blog'
+        const t = hasZhVer ? (g.titleZh || g.title) : g.title
+        guideLines.push(`        <li><a href="${base}/${g.slug}">${escapeHtml(t)}</a></li>`)
+      }
+    }
+    if (guideLines.length) {
+      parts.push(`      <h2>${escapeHtml(zhHub.label)}指南</h2>`)
+      parts.push(`      <ul>`)
+      parts.push(...guideLines.slice(0, 12))
+      parts.push(`      </ul>`)
+    }
+    // 其它分类内链
+    parts.push(`      <nav aria-label="Other categories"><h2>${SEO_UI.zh.browseOther}</h2><ul>`)
+    for (const c of CATEGORY_HUBS) {
+      if (c.slug === hub.slug) continue
+      const cl = (CATEGORY_HUB_ZH[c.slug] || { label: c.label }).label
+      parts.push(`        <li><a href="/zh/c/${c.slug}">${escapeHtml(cl)}</a></li>`)
+    }
+    parts.push(`      </ul></nav>`)
+
+    writeZh(path.join('c', hub.slug), {
+      path: `/zh/c/${hub.slug}`,
+      title: `${zhHub.label} — 免费在线`,
+      description: zhHub.desc,
+      h1: zhHub.label,
+      seoContent: parts.join('\n'),
+      alternates: altCluster(`/c/${hub.slug}`),
+      jsonld: {
+        '@context': 'https://schema.org',
+        '@graph': [
+          { '@type': 'CollectionPage', name: zhHub.label, description: zhHub.desc, url: `${SITE}/zh/c/${hub.slug}`, inLanguage: 'zh-CN' },
+          { '@type': 'BreadcrumbList', itemListElement: [
+            { '@type': 'ListItem', position: 1, name: '首页', item: `${SITE}/zh` },
+            { '@type': 'ListItem', position: 2, name: zhHub.label, item: `${SITE}/zh/c/${hub.slug}` },
+          ] },
+        ],
+      },
+    })
+    zhCatCount++
+  }
+  console.log(`✅ Category(zh): ${zhCatCount} 个中文分类页`)
+
+  // D) 中文静态信息页（about/contact/privacy/terms）→ 正文取 zh.yml 的 markdown
+  const splitMdH1 = (md) => {
+    const s = String(md || '')
+    const m = s.match(/^\s*#\s+(.+?)\s*(?:\n|$)/)
+    if (m) return { h1: m[1], body: s.slice(m[0].length) }
+    return { h1: '', body: s }
+  }
+  const ZH_STATIC = [
+    { key: 'about', jsonType: 'AboutPage' },
+    { key: 'contact', jsonType: 'ContactPage' },
+    { key: 'privacy', jsonType: 'WebPage' },
+    { key: 'terms', jsonType: 'WebPage' },
+  ]
+  let zhStaticCount = 0
+  for (const { key, jsonType } of ZH_STATIC) {
+    const page = zhYml[key]
+    if (!page || !page.content) continue
+    const { h1, body } = splitMdH1(page.content)
+    const seoContent = `      <article class="prose">\n${marked.parse(body)}\n      </article>`
+    writeZh(key, {
+      path: `/zh/${key}`,
+      title: page.metaTitle || h1 || key,
+      description: page.metaDesc || '',
+      h1: h1 || page.metaTitle || key,
+      seoContent,
+      alternates: altCluster(`/${key}`),
+      jsonld: {
+        '@context': 'https://schema.org',
+        '@type': jsonType,
+        name: page.metaTitle || h1 || key,
+        url: `${SITE}/zh/${key}`,
+        inLanguage: 'zh-CN',
+        publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE },
+      },
+    })
+    zhStaticCount++
+  }
+  console.log(`✅ Static(zh): ${zhStaticCount} 个中文信息页`)
+
+  // E) 中文 SPA 兜底壳 dist/zh/index.html（lang=zh-CN，供 /zh/* 未预渲染路由客户端渲染）
+  {
+    let zhShell = template.replace(/<html lang="[^"]*">/, `<html lang="${ZH.htmlLang}">`)
+    fs.writeFileSync(path.join(distDir, 'zh', 'index.html'), zhShell, 'utf-8')
+    console.log('✅ Shell(zh): dist/zh/index.html')
+  }
+
+  // F) 中文 404 → dist/zh/404.html
+  {
+    let z404 = template
+      .replace(/<html lang="[^"]*">/, `<html lang="${ZH.htmlLang}">`)
+      .replace(/<title>[^<]*<\/title>/, `<title>页面未找到 — ${SITE_NAME}</title>`)
+      .replace(/<link rel="canonical"[^>]*>/g, '')
+      .replace(/<link rel="alternate" hreflang="en"[^>]*>/g, `<link rel="alternate" hreflang="en" href="${SITE}/" />`)
+      .replace(/<link rel="alternate" hreflang="zh(?:-Hans|-CN)?"[^>]*>/g, '')
+      .replace(/<link rel="alternate" hreflang="x-default"[^>]*>/g, `<link rel="alternate" hreflang="x-default" href="${SITE}/" />`)
+      .replace('</head>', `    <meta name="description" content="您访问的页面不存在。返回 ${SITE_NAME} 首页继续使用免费在线工具。" />\n    <meta name="robots" content="noindex, follow" />\n  </head>`)
+    fs.writeFileSync(path.join(distDir, 'zh', '404.html'), z404, 'utf-8')
+    console.log('✅ Generated: dist/zh/404.html')
+  }
+
+  count += zhPageCount + zhCatCount + zhStaticCount
+  console.log(`🈶 中文预渲染完成：首页 + ${toolSlugs.length} 工具 + ${zhCatCount} 分类 + ${zhStaticCount} 信息页 + SPA壳 + 404`)
+}
 
 // 4. 生成 404.html（Vercel/Netlify 兜底，返回 404 状态码）
 let html404 = template
@@ -1060,11 +1550,36 @@ for (const s of extraBlogSlugsFromStatic) {
   seenBlogSlugs.add(s)
   allBlogSlugsInOrder.push(s)
 }
+// 有中文版的 slug（来自 DB content_zh 非空）→ 额外加 /zh/blog/ 条目
+const zhSlugSet = new Set(
+  blogArticles.filter(a => a.contentZh && String(a.contentZh).trim()).map(a => a.slug),
+)
+let zhUrlCount = 0
 for (const s of allBlogSlugsInOrder) {
   const pub = articlePubMap[s] || TOOL_LASTMOD
   // 取「发布日」与「内容修订日」中较晚者(ISO 日期可直接字符串比较)
   const lastmod = pub > BLOG_CONTENT_REV ? pub : BLOG_CONTENT_REV
   blogUrlLines.push(`  <url><loc>${SITE}/blog/${s}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`)
+  if (zhSlugSet.has(s)) {
+    blogUrlLines.push(`  <url><loc>${SITE}/zh/blog/${s}</loc><lastmod>${lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`)
+    zhUrlCount++
+  }
+}
+
+// ── 中文 /zh 页面的 sitemap 条目（home/static/category/tool）──────────────────
+// 与每页 HTML <head> 里的 hreflang 簇配合，建立 en↔zh 双语关系并保证被抓取。
+const zhSeoUrlLines = [
+  `  <url><loc>${SITE}/zh</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+  `  <url><loc>${SITE}/zh/about</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>`,
+  `  <url><loc>${SITE}/zh/contact</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.4</priority></url>`,
+  `  <url><loc>${SITE}/zh/privacy</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>`,
+  `  <url><loc>${SITE}/zh/terms</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>`,
+  ...categoryHubSlugs.map(s => `  <url><loc>${SITE}/zh/c/${s}</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`),
+]
+for (const [, slugs] of Object.entries(toolCategories)) {
+  for (const s of slugs) {
+    zhSeoUrlLines.push(`  <url><loc>${SITE}/zh/${s}</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>`)
+  }
 }
 
 const newSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1081,7 +1596,13 @@ const newSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
+${zhSlugSet.size ? `  <url>
+    <loc>${SITE}/zh/blog</loc>
+    <lastmod>${TOOL_LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+` : ''}
   <!-- Static pages -->
   <url><loc>${SITE}/about</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>${SITE}/contact</loc><lastmod>${TOOL_LASTMOD}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
@@ -1094,10 +1615,13 @@ ${categoryHubSlugs.map(s => `  <url><loc>${SITE}/c/${s}</loc><lastmod>${TOOL_LAS
 ${toolUrlLines.join('\n')}
   <!-- Blog Articles -->
 ${blogUrlLines.join('\n')}
+
+  <!-- Chinese /zh pages -->
+${zhSeoUrlLines.join('\n')}
 </urlset>`
 
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), newSitemapXml, 'utf-8')
-console.log(`✅ Generated: dist/sitemap.xml (${allBlogSlugsInOrder.length} 篇博客 + ${toolSlugs.length} 个工具 + ${categoryHubSlugs.length} 个分类)`)
+console.log(`✅ Generated: dist/sitemap.xml (${allBlogSlugsInOrder.length} 篇英文博客 + ${zhUrlCount} 篇中文博客 + ${toolSlugs.length} 个工具 + ${categoryHubSlugs.length} 个分类)`)
 
 console.log(`\n🎉 预渲染完成：生成了 ${count} 个静态 HTML 文件`)
 console.log(`   - ${staticRoutes.length} 个静态页面（首页、博客列表）`)

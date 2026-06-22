@@ -6,15 +6,18 @@ import type { HeadObject } from '@vueuse/head';
 import BaseLayout from './base.layout.vue';
 import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
+import { useLocaleRoute } from '@/composables/useLocaleRoute';
 
 const route = useRoute();
 const { t, te, locale } = useI18n();
+const { basePath, canonical, ogLocale, alternates } = useLocaleRoute();
 
-const i18nKey = computed<string>(() => route.path.trim().replace('/', ''));
+// i18n key 用「剥掉语言前缀」的逻辑路径，否则 /zh/json-format 会取成 zh/json-format（错 key）。
+const i18nKey = computed<string>(() => basePath.value.replace(/^\//, ''));
 const toolTitle = computed<string>(() => t(`tools.${i18nKey.value}.title`, String(route.meta.name)));
 const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.description`, String(route.meta.description)));
 
-const canonicalUrl = computed(() => `https://myutl.com${route.path}`);
+const canonicalUrl = canonical;
 
 // 判断 i18n key 是否存在（兼容 vue-i18n v9 编译模式）
 function hasKey(key: string): boolean {
@@ -51,25 +54,19 @@ const head = computed<HeadObject>(() => ({
       name: 'description',
       content: toolDescription.value,
     },
-    {
-      name: 'keywords',
-      content: [
-        ...((route.meta.keywords ?? []) as string[]),
-        ...t('layout.keywords').split(',').map((k: string) => k.trim()),
-        'myutl',
-      ].join(','),
-    },
     // Open Graph
     { property: 'og:title', content: `${toolTitle.value} - MyUtl` },
     { property: 'og:description', content: toolDescription.value },
     { property: 'og:url', content: canonicalUrl.value },
     { property: 'og:type', content: 'website' },
+    { property: 'og:locale', content: ogLocale.value },
     // Twitter
     { name: 'twitter:title', content: `${toolTitle.value} - MyUtl` },
     { name: 'twitter:description', content: toolDescription.value },
   ],
   link: [
     { rel: 'canonical', href: canonicalUrl.value },
+    ...alternates(),
   ],
   script: [
     {

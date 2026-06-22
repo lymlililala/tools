@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
 import { computed } from 'vue';
+import { useLocaleRoute } from '@/composables/useLocaleRoute';
 
 const { t } = useI18n();
+const { canonical, ogLocale, alternates } = useLocaleRoute();
 
 useHead(computed(() => ({
   title: t('privacy.metaTitle'),
@@ -10,9 +12,11 @@ useHead(computed(() => ({
     { name: 'description', content: t('privacy.metaDesc') },
     { property: 'og:title', content: t('privacy.metaTitle') },
     { property: 'og:description', content: t('privacy.metaDesc') },
+    { property: 'og:locale', content: ogLocale.value },
   ],
   link: [
-    { rel: 'canonical', href: 'https://myutl.com/privacy' },
+    { rel: 'canonical', href: canonical.value },
+    ...alternates(),
   ],
 })));
 </script>

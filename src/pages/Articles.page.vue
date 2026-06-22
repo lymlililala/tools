@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
-import { RouterLink } from 'vue-router';
-import { getArticleListCached, prefetchArticleDetail } from '../lib/articles';
+import { RouterLink, useRoute } from 'vue-router';
+import { getArticleListCached, prefetchArticleDetail, pickLang } from '../lib/articles';
 import type { DbArticle } from '../lib/articles';
 
 // hover 一篇文章时：① 预取它的数据 ② 预取详情页 chunk（懒加载组件），
@@ -15,21 +15,34 @@ function prefetchOnHover(slug: string) {
   }
 }
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const route = useRoute();
 
-useHead(computed(() => ({
-  title: t('blog.metaTitle'),
-  meta: [
-    { name: 'description', content: t('blog.metaDesc') },
-    { name: 'keywords', content: t('blog.metaKeywords') },
-    { property: 'og:title', content: t('blog.metaTitle') },
-    { property: 'og:description', content: t('blog.metaDescShort') },
-    { property: 'og:url', content: 'https://myutl.com/blog' },
-  ],
-  link: [
-    { rel: 'canonical', href: 'https://myutl.com/blog' },
-  ],
-})));
+// 语言以 URL 前缀为准，并同步全站 UI 语言。
+const isZh = computed(() => route.path.startsWith('/zh/'));
+const blogPrefix = computed(() => (isZh.value ? '/zh' : ''));
+watchEffect(() => { locale.value = isZh.value ? 'zh' : 'en'; });
+
+useHead(computed(() => {
+  const enUrl = 'https://myutl.com/blog';
+  const zhUrl = 'https://myutl.com/zh/blog';
+  return {
+    title: t('blog.metaTitle'),
+    meta: [
+      { name: 'description', content: t('blog.metaDesc') },
+      { name: 'keywords', content: t('blog.metaKeywords') },
+      { property: 'og:title', content: t('blog.metaTitle') },
+      { property: 'og:description', content: t('blog.metaDescShort') },
+      { property: 'og:url', content: isZh.value ? zhUrl : enUrl },
+    ],
+    link: [
+      { rel: 'canonical', href: isZh.value ? zhUrl : enUrl },
+      { rel: 'alternate', hreflang: 'en', href: enUrl },
+      { rel: 'alternate', hreflang: 'zh-Hans', href: zhUrl },
+      { rel: 'alternate', hreflang: 'x-default', href: enUrl },
+    ],
+  };
+}));
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const articles = ref<DbArticle[]>([]);
@@ -77,11 +90,13 @@ const searchedArticles = computed(() => {
   if (!q) {
     return filteredArticles.value;
   }
-  return filteredArticles.value.filter(a =>
-    a.title.toLowerCase().includes(q)
-    || a.description.toLowerCase().includes(q)
-    || (a.keywords ?? []).some((k: string) => k.toLowerCase().includes(q)),
-  );
+  const zh = isZh.value;
+  return filteredArticles.value.filter((a) => {
+    const v = pickLang(a, zh);
+    return v.title.toLowerCase().includes(q)
+      || v.description.toLowerCase().includes(q)
+      || v.keywords.some((k: string) => k.toLowerCase().includes(q));
+  });
 });
 
 const totalPages = computed(() => Math.ceil(searchedArticles.value.length / PAGE_SIZE));
@@ -102,15 +117,15 @@ watch([activeCategory, searchQuery], () => {
     <!-- Hero -->
     <div class="blog-hero">
       <h1 class="blog-title">
-        Developer Tools Guides
+        {{ t('blog.heroTitle') }}
       </h1>
       <p class="blog-subtitle">
-        In-depth articles on hashing, encoding, networking, regex, and every tool on MyUtl.
+        {{ t('blog.heroSubtitle') }}
       </p>
       <div class="blog-search-wrap">
         <n-input
           v-model:value="searchQuery"
-          placeholder="Search articles..."
+          :placeholder="t('blog.searchPlaceholder')"
           size="large"
           clearable
           class="blog-search"
@@ -125,7 +140,7 @@ watch([activeCategory, searchQuery], () => {
     <!-- Loading -->
     <div v-if="loading" class="state-placeholder">
       <n-spin size="large" />
-      <p>Loading articles...</p>
+      <p>{{ t('blog.loading') }}</p>
     </div>
 
     <!-- Error -->
@@ -133,7 +148,7 @@ watch([activeCategory, searchQuery], () => {
       <icon-mdi-alert-circle style="font-size:32px;color:#ef4444" />
       <p>{{ error }}</p>
       <c-button @click="fetchArticles">
-        Retry
+        {{ t('blog.retry') }}
       </c-button>
     </div>
 
@@ -145,7 +160,7 @@ watch([activeCategory, searchQuery], () => {
           :class="{ active: activeCategory === 'All' }"
           @click="activeCategory = 'All'"
         >
-          All ({{ articles.length }})
+          {{ t('blog.all') }} ({{ articles.length }})
         </button>
         <button
           v-for="cat in categories"
@@ -163,7 +178,7 @@ watch([activeCategory, searchQuery], () => {
         <RouterLink
           v-for="article in displayedArticles"
           :key="article.slug"
-          :to="`/blog/${article.slug}`"
+          :to="`${blogPrefix}/blog/${article.slug}`"
           class="article-card"
           @pointerenter="prefetchOnHover(article.slug)"
           @touchstart.passive="prefetchOnHover(article.slug)"
@@ -172,20 +187,20 @@ watch([activeCategory, searchQuery], () => {
             {{ article.category }}
           </div>
           <h2 class="article-title">
-            {{ article.title }}
+            {{ pickLang(article, isZh).title }}
           </h2>
           <p class="article-desc">
-            {{ article.description }}
+            {{ pickLang(article, isZh).description }}
           </p>
           <div class="article-footer">
             <span class="article-date">{{ article.published_at }}</span>
-            <span class="article-read">Read →</span>
+            <span class="article-read">{{ t('blog.read') }}</span>
           </div>
         </RouterLink>
       </div>
 
       <div v-else class="no-results">
-        No articles found for "{{ searchQuery }}"
+        {{ t('blog.noResults', { query: searchQuery }) }}
       </div>
 
       <!-- Pagination -->
@@ -195,7 +210,7 @@ watch([activeCategory, searchQuery], () => {
           :disabled="currentPage === 1"
           @click="currentPage--"
         >
-          ← Prev
+          {{ t('blog.prev') }}
         </button>
         <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
         <button
@@ -203,7 +218,7 @@ watch([activeCategory, searchQuery], () => {
           :disabled="currentPage === totalPages"
           @click="currentPage++"
         >
-          Next →
+          {{ t('blog.next') }}
         </button>
       </div>
     </template>

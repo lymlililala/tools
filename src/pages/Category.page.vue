@@ -4,10 +4,12 @@ import { useHead } from '@vueuse/head';
 import ToolCard from '../components/ToolCard.vue';
 import { toolsWithCategory } from '@/tools';
 import { CATEGORY_META, findCategoryBySlug } from '@/lib/categories';
+import { useLocaleRoute } from '@/composables/useLocaleRoute';
 
 const route = useRoute();
 const slug = computed(() => route.params.slug as string);
 const category = computed(() => findCategoryBySlug(slug.value));
+const { canonical, ogLocale, alternates } = useLocaleRoute();
 
 const tools = computed(() =>
   category.value ? toolsWithCategory.filter(t => t.category === category.value!.name) : [],
@@ -46,7 +48,7 @@ watch(slug, loadGuides);
 
 const otherCategories = computed(() => CATEGORY_META.filter(c => c.slug !== slug.value));
 
-const canonicalUrl = computed(() => `https://myutl.com/c/${slug.value}`);
+const canonicalUrl = canonical;
 watchEffect(() => {
   if (!category.value) {
     return;
@@ -58,8 +60,9 @@ watchEffect(() => {
       { property: 'og:title', content: `${category.value.label} — MyUtl` },
       { property: 'og:description', content: category.value.description },
       { property: 'og:url', content: canonicalUrl.value },
+      { property: 'og:locale', content: ogLocale.value },
     ],
-    link: [{ rel: 'canonical', href: canonicalUrl.value }],
+    link: [{ rel: 'canonical', href: canonicalUrl.value }, ...alternates()],
   });
 });
 </script>

@@ -16,8 +16,33 @@ export interface DbArticle {
   category: string
   published_at: string
   content: string
+  // 双语：中文列（缺译时为空，前端回落英文）
+  title_zh?: string | null
+  description_zh?: string | null
+  content_zh?: string | null
+  keywords_zh?: string[] | null
   created_at?: string
   updated_at?: string
+}
+
+/** 按语言挑选展示字段：中文视图优先 *_zh，缺译自动回落英文。 */
+export function pickLang(a: Partial<DbArticle>, zh: boolean): {
+  title: string
+  description: string
+  content: string
+  keywords: string[]
+} {
+  return {
+    title: zh && a.title_zh ? a.title_zh : (a.title ?? ''),
+    description: zh && a.description_zh ? a.description_zh : (a.description ?? ''),
+    content: zh && a.content_zh ? a.content_zh : (a.content ?? ''),
+    keywords: zh && a.keywords_zh?.length ? a.keywords_zh : (a.keywords ?? []),
+  };
+}
+
+/** 该文章是否有可用的中文版（决定是否发 zh hreflang / 生成 /zh 页 / 提供语言切换）。 */
+export function hasZh(a: Partial<DbArticle>): boolean {
+  return !!(a.content_zh && a.content_zh.trim());
 }
 
 async function getJson(url: string) {

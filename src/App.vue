@@ -5,6 +5,7 @@ import { useHead } from '@vueuse/head';
 import { darkThemeOverrides, lightThemeOverrides } from './themes';
 import { layouts } from './layouts';
 import { useStyleStore } from './stores/style.store';
+import { LOCALE_CODES, byCode, splitLocale } from './lib/locales';
 
 const route = useRoute();
 const layout = computed(() => route?.meta?.layout ?? layouts.base);
@@ -15,15 +16,40 @@ const themeOverrides = computed(() => (styleStore.isDarkTheme ? darkThemeOverrid
 
 const { locale } = useI18n();
 
-syncRef(
-  locale,
-  useStorage('locale', locale),
+// ── 语言初始化与同步 ──────────────────────────────────────────────────────────
+// 优先级：URL 前缀 > localStorage > 默认 en。
+// 爬虫不带 storage，直接访问 /zh/* 也能按 URL 正确判定中文（SEO 关键）。
+const stored = useStorage('locale', '');
+const urlLocale = splitLocale(route.path).locale;
+if (urlLocale.prefix) {
+  // 带前缀的 URL（/zh/...）→ 以 URL 为准
+  locale.value = urlLocale.code;
+}
+else if (stored.value && LOCALE_CODES.includes(stored.value)) {
+  // 根路径 → 回退到上次记住的语言
+  locale.value = stored.value;
+}
+
+// 当前语言写回 localStorage（供下次根路径访问回退）
+watch(locale, (l) => {
+  stored.value = l;
+});
+
+// URL 前缀变化时同步界面语言（点中文链接 / 切换器跳转 / 浏览器前进后退）
+watch(
+  () => route.path,
+  (p) => {
+    const l = splitLocale(p).locale;
+    if (locale.value !== l.code) {
+      locale.value = l.code;
+    }
+  },
 );
 
-// 让 <html lang> 跟随当前界面语言(默认 en;切换语言时同步),
-// 修复 index.html 写死 zh-CN 与英文界面不符的可访问性/SEO 问题。
+// 让 <html lang> 跟随当前语言：en→'en'，zh→'zh-CN'。
+// 修复 index.html 写死的 lang 与实际界面语言不符的可访问性/SEO 问题。
 useHead({
-  htmlAttrs: { lang: locale },
+  htmlAttrs: { lang: computed(() => byCode(locale.value).htmlLang) },
 });
 </script>
 

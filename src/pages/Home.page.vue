@@ -8,9 +8,11 @@ import ToolCard from '../components/ToolCard.vue';
 import { CATEGORY_META } from '@/lib/categories';
 import { useToolStore } from '@/tools/tools.store';
 import { config } from '@/config';
+import { useLocaleRoute } from '@/composables/useLocaleRoute';
 
 const toolStore = useToolStore();
 const { t } = useI18n();
+const { canonical, ogLocale, alternates } = useLocaleRoute();
 
 useHead(computed(() => ({
   title: t('home.metaTitle'),
@@ -18,9 +20,11 @@ useHead(computed(() => ({
     { name: 'description', content: t('home.metaDesc') },
     { property: 'og:title', content: t('home.metaTitle') },
     { property: 'og:description', content: t('home.metaDescShort') },
+    { property: 'og:locale', content: ogLocale.value },
   ],
   link: [
-    { rel: 'canonical', href: 'https://myutl.com/' },
+    { rel: 'canonical', href: canonical.value },
+    ...alternates('/'),
   ],
 })));
 

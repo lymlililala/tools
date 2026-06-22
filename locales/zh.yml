@@ -304,6 +304,30 @@ tools:
     zeroFrom: 起始值不能为零（无法计算百分比变化）
 
   svg-placeholder-generator:
+    settingsTitle: 设置
+    resetTitle: 恢复默认
+    reset: 重置
+    widthLabel: 宽度
+    widthPlaceholder: 例如 300
+    heightLabel: 高度
+    heightPlaceholder: 例如 150
+    bgColor: 背景色
+    fgColor: 文字颜色
+    fontSizeLabel: 字体大小
+    fontSizePlaceholder: 自动
+    fontSizeUnit: px
+    customText: 自定义文字
+    customTextPlaceholder: 例如 {w}×{h}
+    exactSize: 固定尺寸
+    exactSizeLabel: 固定尺寸
+    exactSizeOn: 开
+    exactSizeOff: 关
+    exactSizeTooltip: 开启时 SVG 使用固定的宽高属性；关闭时则按容器自适应缩放。
+    responsiveLabel: 自适应
+    svgCode: SVG 代码
+    base64Code: Data URI（Base64）
+    downloadSvg: 下载 SVG
+    livePreview: 实时预览
     step1: '步骤 1：设置占位图的宽度和高度。'
     step2: '步骤 2：选择背景色和文字颜色。'
     step3: '步骤 3：可选自定义标签文字。'
@@ -794,6 +818,28 @@ tools:
     description: 在线 YAML 格式化工具，将压缩或格式混乱的 YAML 文本重新排版为整洁易读的标准缩进格式，同时进行语法校验，适合整理 Kubernetes 配置和 CI/CD 流水线文件。
 
   eta-calculator:
+    example: 示例：你有 186 个项目要处理，每 5 分钟完成 3 个——本工具会估算你何时能全部完成。
+    totalTasks: 任务总数
+    startTime: 开始时间
+    useNow: 使用当前时间
+    now: 现在
+    speed: 处理速度
+    per: 每
+    complete: 完成
+    unit: 个任务
+    unitMs: 毫秒
+    unitSec: 秒
+    unitMin: 分钟
+    unitHour: 小时
+    unitDay: 天
+    totalDuration: 总耗时
+    estimatedEnd: 预计完成
+    today: 今天
+    tomorrow: 明天
+    yesterday: 昨天
+    cannotCalc: 无法计算
+    allPositive: 所有数值必须大于零。
+    zeroErrorMsg: 输入大于零的数值即可查看预估结果。
     step1: '步骤 1：输入要处理的项目总数。'
     step2: '步骤 2：输入已完成的数量。'
     step3: '步骤 3：输入已经过的时间。'
@@ -2558,6 +2604,23 @@ blog:
   metaDesc: 'MyUtl 工具使用指南：深度讲解加密、编码、正则、网络、格式转换等 100+ 开发者工具的原理与实践。'
   metaKeywords: '开发者工具指南, 编程教程, 在线工具博客, web开发技巧'
   metaDescShort: 'MyUtl 工具使用指南：100+ 开发者工具的深度讲解。'
+  heroTitle: '开发者工具指南'
+  heroSubtitle: '深入讲解哈希、编码、网络、正则，以及 MyUtl 上的每一个工具。'
+  searchPlaceholder: '搜索文章...'
+  loading: '正在加载文章...'
+  retry: '重试'
+  all: '全部'
+  read: '阅读 →'
+  noResults: '未找到与“{query}”相关的文章'
+  prev: '← 上一页'
+  next: '下一页 →'
+  home: '首页'
+  blog: '博客'
+  tryTool: '试用工具 →'
+  openTool: '🚀 打开 {name} 工具'
+  relatedGuides: '相关指南'
+  notFound: '文章未找到'
+  backToBlog: '← 返回博客'
 
 notFound:
   metaTitle: '页面未找到 - MyUtl'

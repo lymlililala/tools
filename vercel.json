@@ -107,6 +107,14 @@
       "destination": "/blog/:slug/index.html"
     },
     {
+      "source": "/zh/blog",
+      "destination": "/zh/blog/index.html"
+    },
+    {
+      "source": "/zh/blog/:slug",
+      "destination": "/zh/blog/:slug/index.html"
+    },
+    {
       "source": "/c/:slug",
       "destination": "/c/:slug/index.html"
     },
@@ -485,6 +493,38 @@
     {
       "source": "/yaml-to-toml",
       "destination": "/tools/yaml-to-toml/index.html"
+    },
+    {
+      "source": "/zh",
+      "destination": "/zh/prerender-home/index.html"
+    },
+    {
+      "source": "/zh/about",
+      "destination": "/zh/about/index.html"
+    },
+    {
+      "source": "/zh/contact",
+      "destination": "/zh/contact/index.html"
+    },
+    {
+      "source": "/zh/privacy",
+      "destination": "/zh/privacy/index.html"
+    },
+    {
+      "source": "/zh/terms",
+      "destination": "/zh/terms/index.html"
+    },
+    {
+      "source": "/zh/c/:slug",
+      "destination": "/zh/c/:slug/index.html"
+    },
+    {
+      "source": "/zh/:slug",
+      "destination": "/zh/tools/:slug/index.html"
+    },
+    {
+      "source": "/zh/:path*",
+      "destination": "/zh/index.html"
     },
     {
       "source": "/:path*",
