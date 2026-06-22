@@ -2372,6 +2372,7 @@ tools:
     paneUnicode: Unicode
     decodedPlaceholder: Decoded text will appear here
     unicodeOutputPlaceholder: Unicode output will appear here
+    outputFormat: "Output format:"
 
   ipv4-range-expander:
     step1: 'Step 1: Enter the start and end IPv4 addresses of the range.'

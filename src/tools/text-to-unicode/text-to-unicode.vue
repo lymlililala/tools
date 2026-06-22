@@ -83,7 +83,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
   <div class="tool-wide ttu-wrap">
     <!-- 工具栏：格式选择 -->
     <div class="toolbar">
-      <span class="toolbar-label">Output format:</span>
+      <span class="toolbar-label">{{ t('tools.text-to-unicode.outputFormat') }}</span>
       <div class="format-tabs">
         <button
           v-for="opt in unicodeFormatOptions"

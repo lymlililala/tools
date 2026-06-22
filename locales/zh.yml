@@ -2399,6 +2399,7 @@ tools:
     paneUnicode: Unicode
     decodedPlaceholder: 解码后的文本将显示在此
     unicodeOutputPlaceholder: Unicode 输出将显示在此
+    outputFormat: 输出格式：
 
   ipv4-range-expander:
     step1: '步骤 1：输入 IP 范围的起始和结束 IPv4 地址。'
