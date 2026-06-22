@@ -127,7 +127,12 @@ function sanitizeJSON(s) {
   let esc = false
   for (const ch of s) {
     if (inStr) {
-      if (esc) { out += ch; esc = false; continue }
+      if (esc) {
+        // 上一字符是 \：若 ch 不是合法 JSON 转义字符（" \ / b f n r t u），
+        // 说明这是字面反斜杠（如正则 \d \w \s），把已输出的 \ 补成 \\ 再输出 ch。
+        if (!('"\\/bfnrtu'.includes(ch))) out += '\\'
+        out += ch; esc = false; continue
+      }
       if (ch === '\\') { out += ch; esc = true; continue }
       if (ch === '"') { out += ch; inStr = false; continue }
       if (ch === '\n') { out += '\\n'; continue }

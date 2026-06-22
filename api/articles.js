@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 
       const { data: related } = await supabase
         .from('tools_articles')
-        .select('slug, title, description, category')
+        .select('slug, title, description, category, title_zh, description_zh')
         .eq('category', data.category)
         .neq('slug', slug)
         .limit(3)
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     // ─── List ─────────────────────────────────────────────────────────────────
     const { data, error } = await supabase
       .from('tools_articles')
-      .select('slug, title, description, keywords, category, published_at')
+      .select('slug, title, description, keywords, category, published_at, title_zh, description_zh, keywords_zh')
       .order('published_at', { ascending: false })
 
     if (error)

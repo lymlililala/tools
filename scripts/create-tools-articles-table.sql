@@ -14,6 +14,11 @@ CREATE TABLE IF NOT EXISTS tools_articles (
   category     TEXT         NOT NULL,
   published_at DATE         NOT NULL,
   content      TEXT         NOT NULL,
+  -- 双语：中文列（nullable，缺译时前端回落英文）
+  title_zh       TEXT,
+  description_zh TEXT,
+  content_zh     TEXT,
+  keywords_zh    TEXT[]     NOT NULL DEFAULT '{}',
   created_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
   updated_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );

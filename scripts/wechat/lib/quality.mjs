@@ -48,3 +48,43 @@ export function checkQuality(draft, opts = {}) {
 
   return { pass: reasons.length === 0, reasons, len: content.length, images: imgPlaceholders, headings }
 }
+
+/**
+ * 中文版「软闸门」—— 与英文闸门相互独立、宽松得多。
+ * 不过线只表示「中文不入库、前端回落英文」，绝不阻塞英文发布。
+ * @param {object} draft  { title_zh, description_zh, content_zh }
+ * @param {object} [opts] { minChars=1200 }  中文按字符计（中文更密，1200 汉字 ≈ 英文 4500 char 篇幅）
+ * @returns {{ pass:boolean, reasons:string[], len:number, headings:number, cjk:number }}
+ */
+export function checkQualityZh(draft, opts = {}) {
+  const minChars = opts.minChars ?? 1200
+  const content = draft.content_zh || ''
+  const reasons = []
+
+  if (!content) { return { pass: false, reasons: ['NO-ZH-CONTENT'], len: 0, headings: 0, cjk: 0 } }
+  if (content.length < minChars) reasons.push(`THIN:${content.length}<${minChars}`)
+
+  if (!draft.title_zh || draft.title_zh.length < 4) reasons.push('TITLE-ZH:too-short')
+
+  const desc = draft.description_zh || ''
+  if (desc.length < 10) reasons.push('DESC-ZH:too-short')
+  if (desc.length > 90) reasons.push(`DESC-ZH:too-long:${desc.length}`)
+
+  // 结构应与英文对应：至少 3 个二级/三级标题
+  const headings = (content.match(/^#{2,3}\s+\S/gm) || []).length
+  if (headings < 3) reasons.push(`HEADINGS:${headings}<3`)
+
+  // 反向校验：剥离代码块/行内代码/链接后，散文里中文占比应远高于拉丁；
+  // 真没翻译（直接抄英文）时中文才会接近 0。代码/英文术语密集的正文不会误杀。
+  const prose = content
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]+`/g, ' ')
+    .replace(/!?\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/https?:\/\/\S+/g, ' ')
+  const cjk = (prose.match(/[一-龥]/g) || []).length
+  const latin = (prose.match(/[a-zA-Z]/g) || []).length
+  // 样本量门槛：剥离代码后散文过短（<300 中英字符）时占比不可靠，跳过此项，避免误杀代码密集文。
+  if (cjk + latin >= 300 && cjk < (cjk + latin) * 0.30) reasons.push(`LOW-CJK:${cjk}/${cjk + latin}疑似未译`)
+
+  return { pass: reasons.length === 0, reasons, len: content.length, headings, cjk }
+}

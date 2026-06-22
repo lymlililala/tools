@@ -9,7 +9,7 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { DeepSeek } from './deepseek.mjs'
-import { checkQuality } from './lib/quality.mjs'
+import { checkQuality, checkQualityZh } from './lib/quality.mjs'
 import { ImageFinder } from './lib/images.mjs'
 import { DATA_DIR } from './lib/env.mjs'
 import { hasSupabase, getSupabase } from './lib/supabase.mjs'
@@ -45,21 +45,32 @@ function fallbackUrl(used, seed) {
   return imgUrl(id)
 }
 
-/** 把正文里的 ![alt](IMG: kw) 占位替换为真实图：优先搜图，未命中回退兜底池。 */
+/** 把正文里的 ![alt](IMG: kw) 占位替换为真实图：优先搜图，未命中回退兜底池。返回 { out, urls }（urls 按出现顺序）。 */
 async function resolveImages(content, slug, finder) {
   const used = new Set()
   let seed = (slug || '').length
   const matches = [...(content || '').matchAll(/!\[([^\]]*)\]\(\s*IMG:\s*([^)]*)\)/gi)]
   let out = content || ''
+  const urls = []
   for (const m of matches) {
     const [whole, alt, kw] = m
     let url = null
     const hit = await finder.find(kw.trim(), alt.trim())
     if (hit) url = hit.url
     if (!url) url = fallbackUrl(used, seed++)
+    urls.push(url)
     out = out.replace(whole, `![${alt.trim()}](${url})`)
   }
-  return out
+  return { out, urls }
+}
+
+/** 中文正文复用英文已解析的图：按出现顺序把 IMG 占位替换为 urls[i]；多出的占位（无对应图）直接移除整行。 */
+function applyImageUrls(content, urls) {
+  let i = 0
+  return (content || '').replace(/!\[([^\]]*)\]\(\s*IMG:\s*[^)]*\)/gi, (_whole, alt) => {
+    const url = urls[i++]
+    return url ? `![${alt.trim()}](${url})` : ''
+  })
 }
 
 const DRAFTS = join(DATA_DIR, 'drafts.json')
@@ -143,8 +154,13 @@ for (const d of drafts) {
   if (score?.fabricated_claims?.length) console.log(`     ⚠️ 虚构: ${score.fabricated_claims.join(' | ')}`)
   if (score?.issues?.length) console.log(`     问题: ${score.issues.join('; ')}`)
 
-  // 解析正文配图占位（无占位则原样返回）
-  const content = await resolveImages(d.content, d.slug, finder)
+  // 解析正文配图占位（无占位则原样返回）；中文复用英文同位置图，省搜图配额
+  const { out: content, urls: imgUrls } = await resolveImages(d.content, d.slug, finder)
+
+  // 中文软闸门：不过线 → 中文列置空（前端回落英文），但绝不阻塞英文发布
+  const qZh = checkQualityZh(d)
+  const contentZh = qZh.pass ? applyImageUrls(d.content_zh, imgUrls) : null
+  if (!qZh.pass && d.content_zh) console.log(`     ⓘ 中文暂留(回落英文): ${qZh.reasons.join(',')}`)
 
   const publishedAt = new Date().toISOString().slice(0, 10) // DATE 列
   let action = decision
@@ -163,6 +179,10 @@ for (const d of drafts) {
           category: d.category || 'Development',
           published_at: publishedAt,
           content,
+          title_zh: qZh.pass ? d.title_zh : null,
+          description_zh: qZh.pass ? d.description_zh : null,
+          content_zh: contentZh,
+          keywords_zh: qZh.pass ? (d.keywords_zh || []) : [],
           updated_at: new Date().toISOString(),
         }, { onConflict: 'slug' })
         if (error) throw new Error(error.message)
@@ -184,6 +204,7 @@ for (const d of drafts) {
     accuracy: score?.accuracy ?? null,
     fabricated_claims: score?.fabricated_claims ?? [],
     quality: q.reasons,
+    zh: qZh.pass ? 'ok' : (d.content_zh ? 'held:' + qZh.reasons.join(',') : 'none'),
     sources: d._sources?.map(s => s.url),
   })
   if (!DRY) writeFileSync(OUT, JSON.stringify(results, null, 2))

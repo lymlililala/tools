@@ -14,6 +14,11 @@ export interface Article {
   keywords?: string[]
   tags?: string[]
   readingTime?: number
+  // 双语：中文字段（data.ts 不填，预渲染时由 DB 的 content_zh 等合并注入）
+  titleZh?: string | null
+  descriptionZh?: string | null
+  contentZh?: string | null
+  keywordsZh?: string[] | null
 }
 
 export const articles: Article[] = [

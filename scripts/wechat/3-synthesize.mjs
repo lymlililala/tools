@@ -15,6 +15,7 @@ import { loadExistingPosts, isDuplicate } from './lib/dedup.mjs'
 import { fetchSources } from './lib/sources.mjs'
 import { loadToolCatalog, normalizeToolPath } from './lib/tools.mjs'
 import { DATA_DIR } from './lib/env.mjs'
+import { ZH_TRANSLATE_RULES, ZH_JSON_FIELDS, clampDescZh } from './lib/translate-prompt.mjs'
 
 function arg(name, def) {
   const i = process.argv.indexOf(name)
@@ -61,9 +62,10 @@ IRON RULES:
 3. GitHub-flavored Markdown: short 1-2 sentence intro (no heading), then ## / ### sections, bullet/ordered lists, | tables | for comparison, fenced code blocks with a language tag where relevant. Bold key terms. No invented URLs/versions/exact numbers you are unsure of.
 4. Length: 900-1500 English words, with at least 3 section headings. You MAY (optional) link once to a relevant it-tools utility with a relative path if it genuinely fits (e.g. [JSON formatter](/json-format)); do not force it and do not invent paths.
 5. ${IMG_RULE}
+6. BILINGUAL — also produce a faithful Simplified-Chinese version (title_zh/description_zh/content_zh/keywords_zh). ${ZH_TRANSLATE_RULES}
 
 Return ONLY JSON:
-{"slug":"clean-lowercase-hyphenated, max 6 words, no date/suffix","title":"English title 45-70 chars","description":"meta description 120-158 chars, one sentence, no trailing ellipsis","content":"full Markdown body","keywords":["6-10 lowercase SEO keywords"],"category":"short English category"}`
+{"slug":"clean-lowercase-hyphenated, max 6 words, no date/suffix","title":"English title 45-70 chars","description":"meta description 120-158 chars, one sentence, no trailing ellipsis","content":"full Markdown body","keywords":["6-10 lowercase SEO keywords"],"category":"short English category",${ZH_JSON_FIELDS}}`
 
 const SYS_TOOL = `You are a senior technical writer for it-tools (online developer utilities). You will be given several Chinese tech WeChat articles on one topic as REFERENCE MATERIAL. Synthesize them into a brand-new, ORIGINAL ENGLISH explainer that complements a specific on-site tool. The tool already has a basic intro article, so go DEEPER on the given angle.
 
@@ -74,9 +76,10 @@ IRON RULES:
 4. Reference the companion tool ONCE or twice with a relative Markdown link to its tool_path (given below), e.g. "Try it in our [JSON formatter](/json-format)." Do NOT invent other site paths.
 5. Length: 1100-1700 English words (substantial), at least 5 section headings. Depth and worked examples over filler.
 6. ${IMG_RULE}
+7. BILINGUAL — also produce a faithful Simplified-Chinese version (title_zh/description_zh/content_zh/keywords_zh). ${ZH_TRANSLATE_RULES}
 
 Return ONLY JSON:
-{"slug":"clean-lowercase-hyphenated, max 6 words, no date/suffix","title":"English title 45-70 chars","description":"meta description 120-158 chars","content":"full Markdown body referencing the tool path","keywords":["6-10 lowercase SEO keywords"],"category":"short English category"}`
+{"slug":"clean-lowercase-hyphenated, max 6 words, no date/suffix","title":"English title 45-70 chars","description":"meta description 120-158 chars","content":"full Markdown body referencing the tool path","keywords":["6-10 lowercase SEO keywords"],"category":"short English category",${ZH_JSON_FIELDS}}`
 
 const drafts = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : []
 const doneTopics = new Set(drafts.map(d => d._topic))
@@ -107,18 +110,23 @@ for (const c of clusters) {
 
   console.log(`合成中[${kind}]: ${c.working_title}  ${toolPath ? '→ ' + toolPath : ''}  (${members.length} 源文)`)
   try {
-    const d = await ds.chatJSON([{ role: 'system', content: sys }, { role: 'user', content: userMsg }], { maxTokens: 9000, temperature: 0.6 })
+    const d = await ds.chatJSON([{ role: 'system', content: sys }, { role: 'user', content: userMsg }], { maxTokens: 16000, temperature: 0.6 })
     d.slug = uniqueSlug(d.slug || c.working_title, existingSlugs)
     d.description = clampDesc(d.description)
     d.kind = kind
     d.toolPath = toolPath // blog 为 null
     d.category = d.category || c.suggested_category || (kind === 'tool' ? 'Development' : 'Blog')
     d.keywords = Array.isArray(d.keywords) && d.keywords.length ? d.keywords : (c.suggested_keywords || [])
+    // 中文字段：缺失则置空（4-publish 软闸门会判定，缺译时前端回落英文）
+    d.title_zh = (d.title_zh || '').trim() || null
+    d.description_zh = d.description_zh ? clampDescZh(d.description_zh) : null
+    d.content_zh = (d.content_zh || '').trim() || null
+    d.keywords_zh = Array.isArray(d.keywords_zh) && d.keywords_zh.length ? d.keywords_zh : []
     d._topic = c.topic
     d._sources = members.map(m => ({ sn: m.sn, account: m.account, title: m.title, url: m.content_url }))
     drafts.push(d)
     writeFileSync(OUT, JSON.stringify(drafts, null, 2))
-    console.log(`  ✓ ${d.slug}  ${(d.content || '').length} 字符`)
+    console.log(`  ✓ ${d.slug}  en ${(d.content || '').length} 字符 / zh ${(d.content_zh || '').length} 字符`)
   } catch (e) {
     console.log(`  ✗ 合成失败: ${e.message}`)
   }
