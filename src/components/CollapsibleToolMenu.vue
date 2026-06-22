@@ -17,12 +17,14 @@ import {
 } from '@vicons/tabler';
 import MenuIconItem from './MenuIconItem.vue';
 import type { Tool, ToolCategory } from '@/tools/tools.types';
+import { toolTitleOf } from '@/lib/tool-i18n-keys';
 
 const props = withDefaults(defineProps<{ toolsByCategory?: ToolCategory[] }>(), { toolsByCategory: () => [] });
 const { toolsByCategory } = toRefs(props);
 const route = useRoute();
+const { t, te, locale } = useI18n();
 
-const makeLabel = (tool: Tool) => () => h(RouterLink, { to: tool.path }, { default: () => tool.name });
+const makeLabel = (tool: Tool) => () => h(RouterLink, { to: tool.path }, { default: () => toolTitleOf(tool, t, te) });
 const makeIcon = (tool: Tool) => () => h(MenuIconItem, { tool });
 
 const collapsedCategories = useStorage<Record<string, boolean>>(
@@ -78,20 +80,24 @@ function toggleCategoryCollapse({ name }: { name: string }) {
 
 const search = ref('');
 
-const menuOptions = computed(() =>
-  toolsByCategory.value
+const menuOptions = computed(() => {
+  // 读一下 locale，切语言时强制重算菜单标签（label 渲染函数按当前语言取名）。
+  void locale.value;
+  const q = search.value.trim().toLowerCase();
+  return toolsByCategory.value
     .map(({ name, components }) => {
-      const filteredTools = search.value.trim()
-        ? components.filter(t =>
-          t.name.toLowerCase().includes(search.value.toLowerCase())
-          || t.keywords.some(k => k.toLowerCase().includes(search.value.toLowerCase())),
+      const filteredTools = q
+        ? components.filter(tool =>
+          toolTitleOf(tool, t, te).toLowerCase().includes(q)
+          || tool.name.toLowerCase().includes(q)
+          || tool.keywords.some(k => k.toLowerCase().includes(q)),
         )
         : components;
       return {
         name,
         components,
         filteredTools,
-        isExpanded: search.value.trim() ? filteredTools.length > 0 : isCategoryExpanded(name, components),
+        isExpanded: q ? filteredTools.length > 0 : isCategoryExpanded(name, components),
         tools: filteredTools.map(tool => ({
           label: makeLabel(tool),
           icon: makeIcon(tool),
@@ -99,8 +105,8 @@ const menuOptions = computed(() =>
         })),
       };
     })
-    .filter(c => c.filteredTools.length > 0),
-);
+    .filter(c => c.filteredTools.length > 0);
+});
 
 function expandAll() {
   toolsByCategory.value.forEach(({ name }) => {

@@ -17,3 +17,34 @@ export const TOOL_I18N_KEY: Record<string, string> = {
 export function toolI18nKey(slug: string): string {
   return TOOL_I18N_KEY[slug] ?? slug;
 }
+
+type TFn = (key: string) => string;
+type TeFn = (key: string) => boolean;
+
+// 工具定义里的 name/description 是「模块加载时」用 translate() 取的，锁死成英文
+// （加载时 locale=en），切语言不会变。卡片/菜单等展示处改用下面这两个解析器，
+// 按当前 locale 响应式取 i18n（映射 key → slug key → 锁死英文兜底，与预渲染同链）。
+export function toolTitleOf(tool: { path: string; name: string }, t: TFn, te: TeFn): string {
+  const slug = tool.path.replace(/^\//, '');
+  const k = toolI18nKey(slug);
+  if (te(`tools.${k}.title`)) {
+    return t(`tools.${k}.title`);
+  }
+  if (te(`tools.${slug}.title`)) {
+    return t(`tools.${slug}.title`);
+  }
+  return tool.name;
+}
+
+export function toolDescOf(tool: { path: string; description: string }, t: TFn, te: TeFn): string {
+  const slug = tool.path.replace(/^\//, '');
+  const k = toolI18nKey(slug);
+  if (te(`tools.${k}.description`)) {
+    return t(`tools.${k}.description`);
+  }
+  if (te(`tools.${slug}.description`)) {
+    return t(`tools.${slug}.description`);
+  }
+  return tool.description;
+}
+

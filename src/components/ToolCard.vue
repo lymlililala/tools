@@ -3,11 +3,17 @@ import { useThemeVars } from 'naive-ui';
 import FavoriteButton from './FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
 import { useStyleStore } from '@/stores/style.store';
+import { toolDescOf, toolTitleOf } from '@/lib/tool-i18n-keys';
 
 const props = defineProps<{ tool: Tool & { category: string } }>();
 const { tool } = toRefs(props);
 const theme = useThemeVars();
 const styleStore = useStyleStore();
+
+// 工具名/描述按当前语言响应式取（工具定义里的 name/description 锁死英文）。
+const { t, te } = useI18n();
+const title = computed(() => toolTitleOf(tool.value, t, te));
+const description = computed(() => toolDescOf(tool.value, t, te));
 </script>
 
 <template>
@@ -34,12 +40,12 @@ const styleStore = useStyleStore();
 
       <!-- 工具名 -->
       <div class="card-title">
-        {{ tool.name }}
+        {{ title }}
       </div>
 
       <!-- 描述 -->
       <div class="card-desc">
-        {{ tool.description }}
+        {{ description }}
       </div>
 
       <!-- Glow 光晕层（hover 时显示） -->
