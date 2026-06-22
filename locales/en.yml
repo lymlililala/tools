@@ -583,6 +583,7 @@ tools:
     inputPlaceholder: 'Your string to bcrypt...'
     saltLabel: 'Salt count:'
     saltPlaceholder: 'Salt rounds...'
+    saltTooltip: "bcrypt's cost factor: the salt is applied 2^n times. Higher is more secure but slower. Allowed range 4–20, typically 10–12."
     computing: 'Computing…'
     copyHash: 'Copy hash'
     copied: 'Copied!'
@@ -592,7 +593,7 @@ tools:
     compareStringLabel: 'Your string:'
     compareStringPlaceholder: 'Your string to compare...'
     compareHashLabel: 'Your hash:'
-    compareHashPlaceholder: 'Your hash to compare...'
+    compareHashPlaceholder: 'Paste hash here...'
     doTheyMatch: 'Do they match?'
     yes: 'Yes'
     no: 'No'
@@ -845,8 +846,10 @@ tools:
     encryptTitle: Encrypt
     decryptTitle: Decrypt
     yourText: 'Your text:'
+    yourTextHint: 'The original content you want to protect — it gets scrambled into ciphertext.'
     encryptPlaceholder: 'The string to encrypt…'
     secretKey: 'Your secret key:'
+    secretKeyHint: 'The password that locks and unlocks the text — keep it private, and use the same key to decrypt.'
     algorithm: 'Encryption algorithm:'
     encryptedOutput: 'Your text encrypted:'
     decryptedOutput: 'Your decrypted text:'

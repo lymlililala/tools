@@ -12,6 +12,18 @@ const saltCount = ref(10);
 const hashed = ref('');
 const isHashing = ref(false);
 
+// 盐值轮数边界（与 bcrypt cost factor 一致）
+const SALT_MIN = 4;
+const SALT_MAX = 20;
+
+// 始终把值约束在合法范围内，避免 naive-ui 对越界值显示删除线
+function onSaltUpdate(value: number | null) {
+  if (value === null) {
+    return;
+  }
+  saltCount.value = Math.min(SALT_MAX, Math.max(SALT_MIN, Math.round(value)));
+}
+
 // Web Worker 实例（Vite 支持 ?worker 语法）
 let worker: Worker | null = null;
 
@@ -107,8 +119,16 @@ const compareState = computed<CompareState>(() => {
         mb-2
       />
 
-      <n-form-item :label="t('tools.bcrypt.saltLabel')" label-placement="left" label-width="120" :show-feedback="false" mb-3>
-        <n-input-number v-model:value="saltCount" :placeholder="t('tools.bcrypt.saltPlaceholder')" :max="20" :min="4" w-full />
+      <n-form-item label-placement="left" label-width="120" :show-feedback="false" mb-3>
+        <template #label>
+          <span class="salt-label">
+            {{ t('tools.bcrypt.saltLabel') }}
+            <c-tooltip :tooltip="t('tools.bcrypt.saltTooltip')" position="top">
+              <icon-mdi-help-circle-outline class="salt-help-icon" />
+            </c-tooltip>
+          </span>
+        </template>
+        <n-input-number :value="saltCount" :placeholder="t('tools.bcrypt.saltPlaceholder')" :max="SALT_MAX" :min="SALT_MIN" :validator="(x: number) => x >= SALT_MIN && x <= SALT_MAX" w-full @update:value="onSaltUpdate" />
       </n-form-item>
 
       <!-- 输出框：右侧内嵌复制按钮 -->
@@ -203,6 +223,24 @@ const compareState = computed<CompareState>(() => {
 
   .bcrypt-card {
     width: 100%;
+  }
+}
+
+/* ── 盐值轮数标签 ───────────────────────────────────────────────── */
+.salt-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.salt-help-icon {
+  font-size: 15px;
+  opacity: 0.5;
+  cursor: help;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.85;
   }
 }
 

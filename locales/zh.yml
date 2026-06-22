@@ -581,6 +581,7 @@ tools:
     inputPlaceholder: '输入要进行 bcrypt 哈希的字符串...'
     saltLabel: '盐值轮数：'
     saltPlaceholder: '盐值轮数...'
+    saltTooltip: '即 bcrypt 的代价因子（cost factor），表示加盐计算的迭代次数为 2 的该次方。数值越大越安全、也越慢，取值 4–20，常用 10–12。'
     computing: '计算中…'
     copyHash: '复制哈希'
     copied: '已复制！'
@@ -590,7 +591,7 @@ tools:
     compareStringLabel: '您的字符串：'
     compareStringPlaceholder: '输入要比较的字符串...'
     compareHashLabel: '您的哈希：'
-    compareHashPlaceholder: '输入要比较的哈希...'
+    compareHashPlaceholder: '粘贴哈希值...'
     doTheyMatch: '是否匹配？'
     yes: '是'
     no: '否'
@@ -843,8 +844,10 @@ tools:
     encryptTitle: 加密
     decryptTitle: 解密
     yourText: '您的文本：'
+    yourTextHint: '要保护的原始内容，加密后会变成一串乱码（密文）。'
     encryptPlaceholder: '要加密的字符串…'
     secretKey: '您的密钥：'
+    secretKeyHint: '给文本加锁/解锁的口令，请妥善保管；解密时必须使用同一把密钥。'
     algorithm: '加密算法：'
     encryptedOutput: '加密后的文本：'
     decryptedOutput: '解密后的文本：'
