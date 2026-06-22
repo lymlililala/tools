@@ -65,21 +65,22 @@ export default async function handler(req, res) {
         .neq('slug', slug)
         .limit(3)
 
-      // Edge cache: served data is public and changes rarely.
-      res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400')
+      // 边缘缓存拉长：内容很少变，且发布管线会触发 Vercel 重新部署、自动刷新该缓存，
+      // 故可长缓存让绝大多数请求命中 CDN（HIT），不再打冷源站。
+      res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=604800')
       return res.status(200).json({ article: data, related: related ?? [] })
     }
 
     // ─── List ─────────────────────────────────────────────────────────────────
     const { data, error } = await supabase
       .from('tools_articles')
-      .select('id, slug, tool_path, title, description, keywords, category, published_at')
+      .select('slug, title, description, keywords, category, published_at')
       .order('published_at', { ascending: false })
 
     if (error)
       return res.status(500).json({ error: error.message })
 
-    res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=86400')
+    res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=604800')
     return res.status(200).json({ articles: data ?? [] })
   }
   catch (e) {

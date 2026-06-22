@@ -10,6 +10,7 @@ import { config } from '@/config';
 import type { ToolCategory } from '@/tools/tools.types';
 import { useToolStore } from '@/tools/tools.store';
 import CollapsibleToolMenu from '@/components/CollapsibleToolMenu.vue';
+import { prefetchArticleList } from '@/lib/articles';
 
 const themeVars = useThemeVars();
 const styleStore = useStyleStore();
@@ -46,7 +47,7 @@ const tools = computed<ToolCategory[]>(() => [
       </div>
 
       <!-- Blog 入口 -->
-      <RouterLink to="/blog" class="sider-blog-link" @click="styleStore.isSmallScreen && (styleStore.isMenuCollapsed = true)">
+      <RouterLink to="/blog" class="sider-blog-link" @pointerenter="prefetchArticleList()" @click="styleStore.isSmallScreen && (styleStore.isMenuCollapsed = true)">
         <icon-mdi-newspaper-variant-outline style="font-size:15px;margin-right:6px;opacity:0.6" />
         {{ $t('menu.blogLink') }}
       </RouterLink>
@@ -82,7 +83,7 @@ const tools = computed<ToolCategory[]>(() => [
 
         <div class="topbar-right">
           <c-tooltip :tooltip="$t('menu.blogLink')" position="bottom">
-            <c-button to="/blog" variant="text" aria-label="Blog" class="topbar-blog-btn">
+            <c-button to="/blog" variant="text" aria-label="Blog" class="topbar-blog-btn" @pointerenter="prefetchArticleList()">
               <icon-mdi-newspaper-variant-outline style="font-size:17px" />
             </c-button>
           </c-tooltip>

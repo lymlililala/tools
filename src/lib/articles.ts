@@ -44,6 +44,24 @@ export async function fetchArticleList(): Promise<DbArticle[]> {
   return (data?.articles ?? []) as DbArticle[];
 }
 
+// 列表也做客户端缓存：进 /blog 会拉全量列表（~200KB / 519 篇），国内首次较慢。
+// 缓存 Promise，使会话内重复进入/导航瞬开；可在导航 hover 时预热。
+let listCache: Promise<DbArticle[]> | null = null;
+
+/** Cached article list — first call fetches, later calls return instantly. */
+export function getArticleListCached(): Promise<DbArticle[]> {
+  if (!listCache) {
+    listCache = fetchArticleList();
+    listCache.catch(() => { listCache = null; }); // 失败不缓存，允许重试
+  }
+  return listCache;
+}
+
+/** Warm the list cache ahead of navigation (e.g. hovering the Blog nav link). */
+export function prefetchArticleList(): void {
+  void getArticleListCached().catch(() => {});
+}
+
 /** Fetch a single article plus related articles. Throws with status 404 if not found. */
 export async function fetchArticleDetail(
   slug: string,

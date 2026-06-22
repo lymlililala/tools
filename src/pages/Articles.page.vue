@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
 import { RouterLink } from 'vue-router';
-import { fetchArticleList, prefetchArticleDetail } from '../lib/articles';
+import { getArticleListCached, prefetchArticleDetail } from '../lib/articles';
 import type { DbArticle } from '../lib/articles';
 
 // hover 一篇文章时：① 预取它的数据 ② 预取详情页 chunk（懒加载组件），
@@ -46,7 +46,7 @@ async function fetchArticles() {
   error.value = null;
 
   try {
-    articles.value = await fetchArticleList();
+    articles.value = await getArticleListCached();
   }
   catch (e: any) {
     error.value = e?.message ?? '加载失败，请稍后重试';
