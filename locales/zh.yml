@@ -1703,6 +1703,7 @@ tools:
     copyHtml: 复制 HTML
     justCopied: 已复制！
     emptyHint: 在左侧编辑器输入内容后，HTML 源码将显示在这里
+    defaultContent: <h1>你好！</h1><p>欢迎使用这个 HTML 富文本编辑器</p>
 
   email-normalizer:
     title: 邮箱地址规范化工具

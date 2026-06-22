@@ -1706,6 +1706,7 @@ tools:
     htmlSource: HTML Source
     clearContent: Clear Content
     copyHtml: Copy HTML
+    defaultContent: <h1>Hey!</h1><p>Welcome to this html wysiwyg editor</p>
   email-normalizer:
     title: Email Address Normalizer
     description: Batch normalize and deduplicate email addresses with support for Gmail + aliases, dot-ignoring rules, and major provider-specific formats for clean mailing lists.

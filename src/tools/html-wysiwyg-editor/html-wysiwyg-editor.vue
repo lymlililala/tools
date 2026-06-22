@@ -12,7 +12,7 @@ const { t } = useI18n();
 
 hljs.registerLanguage('html', xmlHljs);
 
-const html = useStorage('html-wysiwyg-editor--html', '<h1>Hey!</h1><p>Welcome to this html wysiwyg editor</p>');
+const html = useStorage('html-wysiwyg-editor--html', t('tools.html-wysiwyg-editor.defaultContent'));
 const formattedHtml = asyncComputed(() => format(html.value, { parser: 'html', plugins: [htmlParser] }), '');
 
 const styleStore = useStyleStore();
