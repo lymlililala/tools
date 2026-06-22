@@ -1007,6 +1007,7 @@ tools:
     language: 语言
     wordCount: 单词数量
     entropyLabel: 熵（十六进制）
+    entropyHint: 熵就是生成助记词所用的随机数据，熵越大助记词越难被猜到——12 个词用 128 位（32 个十六进制字符），24 个词用 256 位（64 个十六进制字符）。
     entropyPlaceholder: 输入十六进制熵值...
     generateEntropy: 生成新熵
     copied: 已复制！

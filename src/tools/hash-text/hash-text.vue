@@ -23,6 +23,17 @@ const { t } = useI18n();
 const encoding = useQueryParam<Encoding>({ defaultValue: 'Hex', name: 'encoding' });
 const clearText = ref('');
 
+// ── 手动“生成”：结果基于已提交的文本快照 hashedText 计算 ────────────────────────
+// 切换摘要编码只是重新格式化，依赖 encoding 实时生效，无需再次点“生成”。
+const hashedText = ref('');
+const hasGenerated = ref(false);
+const isStale = computed(() => hasGenerated.value && clearText.value !== hashedText.value);
+
+function generate() {
+  hashedText.value = clearText.value;
+  hasGenerated.value = true;
+}
+
 function formatWithEncoding(words: lib.WordArray, encoding: Encoding) {
   if (encoding === 'Bin') {
     return convertHexToBin(words.toString(enc.Hex));
@@ -37,7 +48,7 @@ const copiedAlgo = ref<AlgoNames | null>(null);
 let copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
 async function copyHash(algo: AlgoNames) {
-  const text = hashText(algo, clearText.value);
+  const text = hashText(algo, hashedText.value);
   try {
     await navigator.clipboard.writeText(text);
   }

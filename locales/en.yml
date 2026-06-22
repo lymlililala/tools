@@ -1009,6 +1009,7 @@ tools:
     language: Language
     wordCount: Word Count
     entropyLabel: Entropy (hex)
+    entropyHint: Entropy is the random data the mnemonic is built from. More entropy means a harder-to-guess phrase — 12 words use 128 bits (32 hex chars), 24 words use 256 bits (64 hex chars).
     entropyPlaceholder: Enter hex entropy value...
     generateEntropy: Generate new entropy
     copied: Copied!
