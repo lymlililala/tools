@@ -64,7 +64,7 @@ function downloadPem(content: string, filename: string) {
 </script>
 
 <template>
-  <div class="rsa-wrap">
+  <div class="rsa-wrap tool-wide">
     <!-- ① 控制栏 -->
     <div class="controls">
       <n-form-item :label="t('tools.rsa-key-pair-generator.bitsLabel')" v-bind="bitsValidationAttrs as any" label-placement="left" label-width="60" :show-feedback="false">
@@ -166,6 +166,9 @@ function downloadPem(content: string, filename: string) {
 <style scoped lang="less">
 .rsa-wrap {
   width: 100%;
+  /* 撑宽：两栏各能放下 PEM 每行 64 字符，避免被强制折行 */
+  max-width: 1080px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
