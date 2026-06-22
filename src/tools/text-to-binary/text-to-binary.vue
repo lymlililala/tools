@@ -3,6 +3,8 @@ import { convertAsciiBinaryToText, convertTextToAsciiBinary } from './text-to-bi
 import { useCopy } from '@/composable/copy';
 import { withDefaultOnError } from '@/utils/defaults';
 
+const { t } = useI18n();
+
 // ── 字节分隔符开关 ──────────────────────────────────────────────────────
 const separateBytes = ref(true);
 const separator = computed(() => separateBytes.value ? ' ' : '');
@@ -90,7 +92,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
     <div class="toolbar">
       <label class="switch-label">
         <n-switch v-model:value="separateBytes" size="small" />
-        <span>Separate bytes with spaces</span>
+        <span>{{ t('tools.text-to-binary.separateBytes') }}</span>
       </label>
     </div>
 
@@ -99,7 +101,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
       <!-- 左：文本输入/显示 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Text</span>
+          <span class="pane-title">{{ t('tools.text-to-binary.paneText') }}</span>
           <c-button
             v-if="displayText"
             size="small"
@@ -125,7 +127,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
           :rows="6"
           raw-text
           autofocus
-          placeholder="e.g. Hello world"
+          :placeholder="t('tools.text-to-binary.textPlaceholder')"
           class="pane-textarea"
           test-id="text-to-binary-input"
           @update:value="onTextInput"
@@ -137,7 +139,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
           @click="activeSource = 'binary'; binaryInput = binaryInput"
         >
           <span v-if="displayText">{{ displayText }}</span>
-          <span v-else class="placeholder-text">Decoded text will appear here</span>
+          <span v-else class="placeholder-text">{{ t('tools.text-to-binary.decodedPlaceholder') }}</span>
         </div>
 
         <div class="pane-footer">
@@ -158,7 +160,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
       <!-- 右：二进制输入/显示 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Binary</span>
+          <span class="pane-title">{{ t('tools.text-to-binary.paneBinary') }}</span>
           <c-button
             v-if="displayBinary"
             size="small"
@@ -196,7 +198,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: textToCop
           @click="activeSource = 'text'"
         >
           <span v-if="displayBinary">{{ displayBinary }}</span>
-          <span v-else class="placeholder-text">Binary output will appear here</span>
+          <span v-else class="placeholder-text">{{ t('tools.text-to-binary.binaryOutputPlaceholder') }}</span>
         </div>
 
         <div class="pane-footer">

@@ -198,7 +198,7 @@ function handleFileInput(e: Event) {
     <!-- ══════════════════════════════════════════════ -->
     <!-- ① Base64 → 文件（左卡） -->
     <!-- ══════════════════════════════════════════════ -->
-    <c-card class="b64f-card" title="Base64 → File">
+    <c-card class="b64f-card" :title="t('tools.base64-file-converter.titleBase64ToFile')">
       <!-- 文件名 + 扩展名 -->
       <div class="filename-row">
         <n-form-item :label="t('tools.base64-file-converter.fileName')" :show-feedback="false" label-placement="top" style="flex: 2">
@@ -280,7 +280,7 @@ function handleFileInput(e: Event) {
     <!-- ══════════════════════════════════════════════ -->
     <!-- ② 文件 → Base64（右卡） -->
     <!-- ══════════════════════════════════════════════ -->
-    <c-card class="b64f-card" title="File → Base64">
+    <c-card class="b64f-card" :title="t('tools.base64-file-converter.titleFileToBase64')">
       <!-- 自定义 Dropzone -->
       <div
         class="dropzone"

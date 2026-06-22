@@ -1054,6 +1054,8 @@ tools:
     truncatePrefix: Preview truncated to
     truncateMiddle: chars to avoid browser freeze. Full content
     truncateSuffix: is copied to clipboard.
+    titleBase64ToFile: Base64 → File
+    titleFileToBase64: File → Base64
 
   list-converter:
     step1: 'Step 1: Paste your list data into the input box.'
@@ -1121,6 +1123,8 @@ tools:
     decodedString: Decoded string
     copyDecoded: Copy decoded string
     decodedPlaceholder: Decoded string will appear here…
+    titleStringToBase64: String → Base64
+    titleBase64ToString: Base64 → String
 
   toml-to-yaml:
     step1: 'Step 1: Paste your TOML content into the left editor.'
@@ -2364,6 +2368,10 @@ tools:
     title: Text to Unicode
     description: Convert text to Unicode code points and back. Enter any string to get its Unicode escape sequences, or paste Unicode codes to decode them back to readable text.
     textPlaceholder: 'e.g. Hello 你好 🚀'
+    paneText: Text
+    paneUnicode: Unicode
+    decodedPlaceholder: Decoded text will appear here
+    unicodeOutputPlaceholder: Unicode output will appear here
 
   ipv4-range-expander:
     step1: 'Step 1: Enter the start and end IPv4 addresses of the range.'
@@ -2473,6 +2481,12 @@ tools:
     faq4a: "The underlying process: character to character encoding (Unicode code point, e.g., 'A' = U+0041 = 65) to byte sequence (UTF-8/UTF-16/ASCII, e.g., 'A' in ASCII = 01000001) to high/low voltage levels in memory. English characters are 1 byte (8 bits) in ASCII and UTF-8; Chinese characters are 3 bytes (24 bits) in UTF-8. Understanding this process is essential for diagnosing encoding issues (garbled text)."
     title: Text to ASCII binary
     description: Convert text to ASCII binary representation (0s and 1s) and decode binary strings back to text. Supports custom separators and shows hex/decimal equivalents. Great for learning and data encoding.
+    separateBytes: Separate bytes with spaces
+    paneText: Text
+    textPlaceholder: e.g. Hello world
+    decodedPlaceholder: Decoded text will appear here
+    paneBinary: Binary
+    binaryOutputPlaceholder: Binary output will appear here
 
   mortgage-calculator:
     period: 'Month {n}'

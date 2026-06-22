@@ -51,7 +51,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 <template>
   <div class="tool-wide b64-layout">
     <!-- ① 左侧：编码 ─────────────────────────────────────────────────── -->
-    <c-card class="b64-card" title="String → Base64">
+    <c-card class="b64-card" :title="t('tools.base64-string-converter.titleStringToBase64')">
       <!-- URL Safe 开关 -->
       <n-form-item :label="t('tools.base64-string-converter.encodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
         <c-tooltip :tooltip="t('tools.base64-string-converter.encodeUrlSafeTip')" position="right">
@@ -112,7 +112,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
     </c-card>
 
     <!-- ② 右侧：解码 ─────────────────────────────────────────────────── -->
-    <c-card class="b64-card" title="Base64 → String">
+    <c-card class="b64-card" :title="t('tools.base64-string-converter.titleBase64ToString')">
       <!-- URL Safe 开关 -->
       <n-form-item :label="t('tools.base64-string-converter.decodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
         <c-tooltip :tooltip="t('tools.base64-string-converter.decodeUrlSafeTip')" position="right">

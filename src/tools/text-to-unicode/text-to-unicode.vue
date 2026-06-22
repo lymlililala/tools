@@ -103,7 +103,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
       <!-- 左：文本 -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Text</span>
+          <span class="pane-title">{{ t('tools.text-to-unicode.paneText') }}</span>
           <c-button
             v-if="displayText"
             size="small"
@@ -140,7 +140,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
           @click="activeSource = 'text'"
         >
           <span v-if="displayText">{{ displayText }}</span>
-          <span v-else class="placeholder-text">Decoded text will appear here</span>
+          <span v-else class="placeholder-text">{{ t('tools.text-to-unicode.decodedPlaceholder') }}</span>
         </div>
 
         <div class="pane-footer">
@@ -161,7 +161,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
       <!-- 右：Unicode -->
       <div class="pane">
         <div class="pane-header">
-          <span class="pane-title">Unicode</span>
+          <span class="pane-title">{{ t('tools.text-to-unicode.paneUnicode') }}</span>
           <c-button
             v-if="displayUnicode"
             size="small"
@@ -199,7 +199,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({ source: displayTe
           @click="activeSource = 'unicode'"
         >
           <span v-if="displayUnicode">{{ displayUnicode }}</span>
-          <span v-else class="placeholder-text">Unicode output will appear here</span>
+          <span v-else class="placeholder-text">{{ t('tools.text-to-unicode.unicodeOutputPlaceholder') }}</span>
         </div>
 
         <div class="pane-footer">

@@ -1052,6 +1052,8 @@ tools:
     truncatePrefix: 预览已截断至
     truncateMiddle: 个字符以避免浏览器卡顿。完整内容
     truncateSuffix: 已复制到剪贴板。
+    titleBase64ToFile: Base64 → 文件
+    titleFileToBase64: 文件 → Base64
   list-converter:
     step1: '步骤 1：将列表数据粘贴到输入框中。'
     step2: '步骤 2：选择输入分隔符（换行、逗号、分号等）。'
@@ -1118,6 +1120,8 @@ tools:
     decodedString: 解码结果
     copyDecoded: 复制解码结果
     decodedPlaceholder: 解码结果将显示在这里…
+    titleStringToBase64: 字符串 → Base64
+    titleBase64ToString: Base64 → 字符串
 
   toml-to-yaml:
     step1: '步骤 1：将 TOML 内容粘贴到左侧编辑器。'
@@ -2391,6 +2395,10 @@ tools:
     title: 文本转 Unicode
     description: 将文本与 Unicode 码点双向转换，支持查看字符的 Unicode 编号、UTF-8/UTF-16 编码，适合国际化开发调试、查找特殊字符码点以及处理多语言文本编码问题。
     textPlaceholder: '例如：Hello 你好 🚀'
+    paneText: 文本
+    paneUnicode: Unicode
+    decodedPlaceholder: 解码后的文本将显示在此
+    unicodeOutputPlaceholder: Unicode 输出将显示在此
 
   ipv4-range-expander:
     step1: '步骤 1：输入 IP 范围的起始和结束 IPv4 地址。'
@@ -2500,6 +2508,12 @@ tools:
     faq4a: 计算机存储文字的底层过程：字符转字符编码（Unicode 码点，如 A = U+0041 = 65）→ 字节序列（UTF-8/UTF-16/ASCII 编码，如 ASCII 下 A = 01000001）→ 内存中的高低电平。英文字符在 ASCII 和 UTF-8 下都是 1 字节（8 位），中文在 UTF-8 下是 3 字节（24 位）。理解这一过程对处理编码问题（乱码）至关重要。
     title: 文本到 ASCII 二进制
     description: 在线文本与 ASCII 二进制互转工具，支持将任意文本转换为 0/1 二进制字符串，或将二进制串解码还原为原始文本，支持自定义分隔符，适合编程学习、数据处理和编码原理教学。
+    separateBytes: 用空格分隔字节
+    paneText: 文本
+    textPlaceholder: 例如 Hello world
+    decodedPlaceholder: 解码后的文本将显示在此
+    paneBinary: 二进制
+    binaryOutputPlaceholder: 二进制输出将显示在此
 
   mortgage-calculator:
     title: 房贷月供计算器
