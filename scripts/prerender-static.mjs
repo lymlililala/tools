@@ -750,6 +750,8 @@ for (const route of staticRoutes) {
       h1: '开发者工具指南 — MyUtl 博客',
       keywords: '开发者工具指南, 编程教程, 在线工具博客',
       seoContent: parts.join('\n'),
+      htmlLang: ZH.htmlLang,
+      ogLocale: ZH.ogLocale,
       alternates: [
         { hreflang: 'en', href: `${SITE}/blog` },
         { hreflang: 'zh-Hans', href: `${SITE}/zh/blog` },
@@ -1051,6 +1053,8 @@ function emitArticlePage(article, lang) {
     keywords: kw,
     ogType: 'article',
     alternates,
+    htmlLang: zh ? ZH.htmlLang : undefined,
+    ogLocale: zh ? ZH.ogLocale : undefined,
     articleMeta: {
       publishedTime: publishedAt ? `${publishedAt}T00:00:00+08:00` : undefined,
       section: category,
@@ -1228,7 +1232,10 @@ console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染
   }
   let zhPageCount = 0
 
-  // A) 中文首页 → dist/zh/prerender-home/index.html
+  // A) 中文首页 → dist/zh/index.html（既作 /zh 目录首页，又作 /zh/* SPA 兜底）。
+  //    Vercel 文件系统优先于 rewrite：/zh 会直接命中 dist/zh/index.html，
+  //    故首页正文必须写进 index.html 本身（与英文 dist/index.html 同理），
+  //    另存一份 prerender-home 兼容 rewrite 目标。
   {
     const parts = []
     parts.push(`      <p>MyUtl 提供 90+ 款免费在线开发者工具，全部在浏览器本地运行——无需注册、无需上传，数据永不离开你的设备。</p>`)
@@ -1245,13 +1252,15 @@ console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染
       parts.push(`        </ul>`)
       parts.push(`      </section>`)
     }
-    writeZh('prerender-home', {
+    const homeRoute = {
       path: '/zh',
       title: zhYml.home?.metaTitle || 'MyUtl — 免费在线工具箱',
       description: zhYml.home?.metaDesc || 'MyUtl 提供 90+ 免费在线开发者工具，全部在浏览器本地运行。',
       h1: zhYml.home?.heroTitle || 'MyUtl — 免费在线工具箱',
       seoContent: parts.join('\n'),
       alternates: altCluster('/'),
+      htmlLang: ZH.htmlLang,
+      ogLocale: ZH.ogLocale,
       jsonld: {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
@@ -1260,8 +1269,15 @@ console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染
         inLanguage: 'zh-CN',
         description: 'MyUtl 免费在线工具箱，90+ 款开发者与日常实用工具，全部在浏览器本地运行。',
       },
-    })
-    console.log('✅ Static(zh): dist/zh/prerender-home/index.html')
+    }
+    const homeHtml = buildHtml(homeRoute)
+    // 主文件：dist/zh/index.html（/zh 与 /zh/ 直接命中、并作 SPA 兜底）
+    fs.mkdirSync(path.join(distDir, 'zh'), { recursive: true })
+    fs.writeFileSync(path.join(distDir, 'zh', 'index.html'), homeHtml, 'utf-8')
+    // 兼容份：dist/zh/prerender-home/index.html（rewrite 目标）
+    fs.mkdirSync(path.join(distDir, 'zh', 'prerender-home'), { recursive: true })
+    fs.writeFileSync(path.join(distDir, 'zh', 'prerender-home', 'index.html'), homeHtml, 'utf-8')
+    console.log('✅ Static(zh): dist/zh/index.html（首页+SPA兜底）+ prerender-home')
     zhPageCount++
   }
 
@@ -1466,12 +1482,7 @@ console.log(`✅ Category: ${categoryHubSlugs.length} 个分类 hub 页预渲染
   }
   console.log(`✅ Static(zh): ${zhStaticCount} 个中文信息页`)
 
-  // E) 中文 SPA 兜底壳 dist/zh/index.html（lang=zh-CN，供 /zh/* 未预渲染路由客户端渲染）
-  {
-    let zhShell = template.replace(/<html lang="[^"]*">/, `<html lang="${ZH.htmlLang}">`)
-    fs.writeFileSync(path.join(distDir, 'zh', 'index.html'), zhShell, 'utf-8')
-    console.log('✅ Shell(zh): dist/zh/index.html')
-  }
+  // E) SPA 兜底壳已并入 A) 的 dist/zh/index.html（中文首页即兜底壳，与英文 dist/index.html 同理）。
 
   // F) 中文 404 → dist/zh/404.html
   {
