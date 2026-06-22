@@ -2,19 +2,18 @@
 import { RouterLink, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { getArticleDetailCached, prefetchArticleDetail, pickLang, hasZh } from '../lib/articles';
+import { splitLocale } from '../lib/locales';
 import type { DbArticle } from '../lib/articles';
 
 const route = useRoute();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const slug = computed(() => route.params.slug as string);
 
-// 语言以 URL 前缀为准（爬虫不带 storage），并同步全站 UI 语言。
-const isZh = computed(() => route.path.startsWith('/zh/'));
+// 语言以 URL 前缀为准（与 App.vue 的全局 locale 管理一致）。
+// 注意：不在此设置 locale.value —— App.vue 已统一按 URL 设语言；
+// 组件再设会和 App.vue 抢，且导航到裸 /zh 时把全站打回英文（旧 bug）。
+const isZh = computed(() => splitLocale(route.path).locale.code === 'zh');
 const blogPrefix = computed(() => (isZh.value ? '/zh' : ''));
-watchEffect(() => {
-  if (isZh.value) { locale.value = 'zh'; }
-  else if (locale.value === 'zh') { locale.value = 'en'; }
-});
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const article = ref<DbArticle | null>(null);
