@@ -3,6 +3,7 @@ import { RouterLink, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { getArticleDetailCached, prefetchArticleDetail, pickLang, hasZh } from '../lib/articles';
 import { splitLocale } from '../lib/locales';
+import { blogCategoryLabel } from '../lib/blog-categories';
 import type { DbArticle } from '../lib/articles';
 
 const route = useRoute();
@@ -137,13 +138,13 @@ watchEffect(() => {
           {{ t('blog.blog') }}
         </RouterLink>
         <span class="sep">›</span>
-        <span>{{ article.category }}</span>
+        <span>{{ blogCategoryLabel(article.category, isZh) }}</span>
       </nav>
 
       <!-- Article Header -->
       <header class="article-header">
         <div class="article-meta">
-          <span class="article-cat">{{ article.category }}</span>
+          <span class="article-cat">{{ blogCategoryLabel(article.category, isZh) }}</span>
           <span class="article-date">{{ article.published_at }}</span>
         </div>
         <h1 class="article-title">

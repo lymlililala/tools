@@ -56,7 +56,7 @@ function onUpdateFavoriteTools() {
         :to="`/c/${c.slug}`"
         class="category-chip"
       >
-        {{ c.label }}
+        {{ $t(`home.categoryNav.${c.slug}`) }}
       </RouterLink>
     </nav>
 

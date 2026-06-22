@@ -3,6 +3,7 @@ import { useHead } from '@vueuse/head';
 import { RouterLink, useRoute } from 'vue-router';
 import { getArticleListCached, prefetchArticleDetail, pickLang } from '../lib/articles';
 import { splitLocale } from '../lib/locales';
+import { blogCategoryLabel } from '../lib/blog-categories';
 import type { DbArticle } from '../lib/articles';
 
 // hover 一篇文章时：① 预取它的数据 ② 预取详情页 chunk（懒加载组件），
@@ -171,7 +172,7 @@ watch([activeCategory, searchQuery], () => {
           :class="{ active: activeCategory === cat }"
           @click="activeCategory = cat"
         >
-          {{ cat }}
+          {{ blogCategoryLabel(cat, isZh) }}
         </button>
       </div>
 
@@ -186,7 +187,7 @@ watch([activeCategory, searchQuery], () => {
           @touchstart.passive="prefetchOnHover(article.slug)"
         >
           <div class="article-cat">
-            {{ article.category }}
+            {{ blogCategoryLabel(article.category, isZh) }}
           </div>
           <h2 class="article-title">
             {{ pickLang(article, isZh).title }}
