@@ -19,6 +19,7 @@ const algos = {
 type AlgoNames = keyof typeof algos;
 type Encoding = keyof typeof enc | 'Bin';
 const algoNames = Object.keys(algos) as AlgoNames[];
+const { t } = useI18n();
 const encoding = useQueryParam<Encoding>({ defaultValue: 'Hex', name: 'encoding' });
 const clearText = ref('');
 
@@ -64,19 +65,19 @@ async function copyHash(algo: AlgoNames) {
     <c-card>
       <!-- ① 输入框 + 清空按钮 -->
       <div class="input-wrapper-outer">
-        <label class="input-label">Your text to hash:</label>
+        <label class="input-label">{{ t('tools.hash-text.inputLabel') }}</label>
         <div class="textarea-wrap">
           <textarea
             v-model="clearText"
             class="hash-textarea"
-            placeholder="Your string to hash..."
+            :placeholder="t('tools.hash-text.inputPlaceholder')"
             rows="3"
             spellcheck="false"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
           />
-          <button v-if="clearText" class="clear-btn" title="Clear" @click="clearText = ''">
+          <button v-if="clearText" class="clear-btn" :title="t('tools.hash-text.clear')" @click="clearText = ''">
             <icon-mdi-close />
           </button>
         </div>
@@ -88,12 +89,12 @@ async function copyHash(algo: AlgoNames) {
       <c-select
         v-model:value="encoding"
         mb-4
-        label="Digest encoding"
+        :label="t('tools.hash-text.digestEncoding')"
         :options="[
-          { label: 'Binary (base 2)', value: 'Bin' },
-          { label: 'Hexadecimal (base 16)', value: 'Hex' },
-          { label: 'Base64 (base 64)', value: 'Base64' },
-          { label: 'Base64url (base 64 with url safe chars)', value: 'Base64url' },
+          { label: t('tools.hash-text.encBin'), value: 'Bin' },
+          { label: t('tools.hash-text.encHex'), value: 'Hex' },
+          { label: t('tools.hash-text.encBase64'), value: 'Base64' },
+          { label: t('tools.hash-text.encBase64url'), value: 'Base64url' },
         ]"
       />
 
@@ -116,7 +117,7 @@ async function copyHash(algo: AlgoNames) {
           <button
             class="copy-btn"
             :class="{ copied: copiedAlgo === algo }"
-            :title="copiedAlgo === algo ? 'Copied!' : 'Copy'"
+            :title="copiedAlgo === algo ? t('tools.hash-text.copied') : t('tools.hash-text.copy')"
             @click="copyHash(algo)"
           >
             <transition name="icon-switch" mode="out-in">
