@@ -58,19 +58,28 @@ function transferToDecrypt() {
     <!-- ① 加密卡片 -->
     <c-card :title="t('tools.encryption.encryptTitle')" class="enc-card">
       <div class="inputs-row">
-        <c-input-text
-          v-model:value="cypherInput"
-          :label="t('tools.encryption.yourText')"
-          :placeholder="t('tools.encryption.encryptPlaceholder')"
-          rows="4"
-          multiline
-          raw-text
-          monospace
-          autosize
-          class="input-flex"
-        />
+        <div class="input-flex">
+          <c-input-text
+            v-model:value="cypherInput"
+            :label="t('tools.encryption.yourText')"
+            :placeholder="t('tools.encryption.encryptPlaceholder')"
+            rows="4"
+            multiline
+            raw-text
+            monospace
+            autosize
+          />
+          <div class="field-hint">
+            {{ t('tools.encryption.yourTextHint') }}
+          </div>
+        </div>
         <div class="settings-col">
-          <c-input-text v-model:value="cypherSecret" :label="t('tools.encryption.secretKey')" clearable raw-text />
+          <div>
+            <c-input-text v-model:value="cypherSecret" :label="t('tools.encryption.secretKey')" clearable raw-text />
+            <div class="field-hint">
+              {{ t('tools.encryption.secretKeyHint') }}
+            </div>
+          </div>
           <c-select
             v-model:value="cypherAlgo"
             :label="t('tools.encryption.algorithm')"
@@ -255,6 +264,14 @@ function transferToDecrypt() {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* 字段说明小字：解释"文本"与"密钥"的区别 */
+.field-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.55;
+  margin-top: 4px;
 }
 
 /* ── 输出框区域 ──────────────────────────────────────────────────────── */
