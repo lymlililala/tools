@@ -131,10 +131,10 @@ function build(content, title, cover, body) {
   const alt = String(title || 'cover').replace(/[\[\]]/g, '').slice(0, 80)
   const body2 = stripAllImages(content)
   const lines = body2.split('\n')
-  // 找 ## 小节标题行号（跳过第 1 个，从中段开始插，均匀分布）
+  // 找小节标题行号（## 或 ###，跳过第 1 个=多为标题/引子），从中段均匀插
   const heads = []
-  for (let i = 0; i < lines.length; i++) if (/^##\s+\S/.test(lines[i])) heads.push(i)
-  const targetsHeads = heads.slice(1) // 跳过开头第一个小节
+  for (let i = 0; i < lines.length; i++) if (/^#{2,3}\s+\S/.test(lines[i])) heads.push(i)
+  const targetsHeads = heads.slice(1) // 跳过开头第一个标题
   const picks = []
   if (targetsHeads.length && body.length) {
     const step = Math.max(1, Math.floor(targetsHeads.length / body.length))
