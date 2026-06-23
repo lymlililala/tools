@@ -972,8 +972,11 @@ tools:
     description: 在线 HMAC 生成器，使用自定义密钥和 MD5、SHA1、SHA256、SHA512 等哈希函数生成消息认证码（HMAC），适合 API 签名验证和数据完整性校验。
     plainTextLabel: 待计算哈希的明文
     plainTextPlaceholder: 待计算哈希的明文…
+    plainTextHint: 要被签名/认证的消息内容，本身不需保密，例如请求参数、URL+时间戳或任意文本。
     secretLabel: 密钥
     secretPlaceholder: 请输入密钥…
+    secretHint: 收发双方共享的秘密，必须保密；只有持有相同密钥才能算出一致结果，密钥不同结果完全不同。
+    exampleTip: 分不清明文和密钥？
     hashingFunction: 哈希函数
     hashingFunctionPlaceholder: 选择哈希函数…
     outputEncoding: 输出编码
@@ -986,6 +989,7 @@ tools:
     copyHmac: 复制 HMAC
     copied: 已复制！
     copiedToast: HMAC 已复制到剪贴板
+    fillExample: 填入示例
 
   bip39-generator:
     step1: '步骤 1：选择助记词的单词数量（12、15、18、21 或 24 个）。'

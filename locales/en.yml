@@ -974,8 +974,11 @@ tools:
     description: Computes a hash-based message authentication code (HMAC) using a secret key and your favorite hashing function.
     plainTextLabel: Plain text to compute the hash
     plainTextPlaceholder: Plain text to compute the hash...
+    plainTextHint: The message you want to sign/authenticate. It does not need to be secret — e.g. request params, URL + timestamp, or any text.
     secretLabel: Secret key
     secretPlaceholder: Enter the secret key...
+    secretHint: A secret shared by both parties — keep it private. Only the same key reproduces the same HMAC; a different key gives a completely different result.
+    exampleTip: Not sure how plain text differs from the key?
     hashingFunction: Hashing function
     hashingFunctionPlaceholder: Select a hashing function...
     outputEncoding: Output encoding
@@ -988,6 +991,7 @@ tools:
     copyHmac: Copy HMAC
     copied: Copied!
     copiedToast: HMAC copied to the clipboard
+    fillExample: Fill with example
 
   bip39-generator:
     step1: 'Step 1: Choose the number of words for your mnemonic phrase (12, 15, 18, 21, or 24).'

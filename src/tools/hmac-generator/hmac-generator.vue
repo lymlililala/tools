@@ -42,6 +42,12 @@ const secret = ref('');
 const hashFunction = ref<keyof typeof algos>('SHA256');
 const encoding = ref<Encoding>('Hex');
 
+// 一键填入示例：帮助用户区分「明文（被签名的消息）」与「密钥（共享的秘密）」
+function fillExample() {
+  plainText.value = 'amount=100&order_id=12345&timestamp=1700000000';
+  secret.value = 'my-secret-key-2024';
+}
+
 const hmac = computed(() =>
   formatWithEncoding(algos[hashFunction.value](plainText.value, secret.value), encoding.value),
 );
@@ -52,6 +58,14 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
 
 <template>
   <div class="tool-wide hmac-wrap">
+    <!-- 示例栏：解释明文 vs 密钥，并提供一键填入 -->
+    <div class="example-bar">
+      <span class="example-tip">{{ t('tools.hmac-generator.exampleTip') }}</span>
+      <button class="example-btn" type="button" @click="fillExample">
+        {{ t('tools.hmac-generator.fillExample') }}
+      </button>
+    </div>
+
     <!-- ① Plain text：多行 + 清空 -->
     <c-input-text
       v-model:value="plainText"
@@ -64,6 +78,9 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
       autofocus
       :label="t('tools.hmac-generator.plainTextLabel')"
     />
+    <div class="field-hint">
+      {{ t('tools.hmac-generator.plainTextHint') }}
+    </div>
 
     <!-- ② Secret key：单行 + 清空 -->
     <c-input-text
@@ -73,6 +90,9 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
       :placeholder="t('tools.hmac-generator.secretPlaceholder')"
       :label="t('tools.hmac-generator.secretLabel')"
     />
+    <div class="field-hint">
+      {{ t('tools.hmac-generator.secretHint') }}
+    </div>
 
     <!-- ③ 两列选择器（移动端自动堆叠） -->
     <div class="selects-row">
@@ -132,6 +152,41 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
   flex-direction: column;
   gap: 16px;
   width: 100%;
+}
+
+/* ── 示例栏 ───────────────────────────────────────────────────── */
+.example-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.example-btn {
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 3px 10px;
+  font-size: 13px;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: #18a058;
+    color: #18a058;
+  }
+}
+
+/* ── 字段下方说明 ─────────────────────────────────────────────── */
+.field-hint {
+  /* 紧贴上方输入框 */
+  margin-top: -10px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.6;
 }
 
 /* ── 选择器两列 → 移动端单列 ──────────────────────────────────── */
