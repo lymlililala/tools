@@ -47,6 +47,17 @@ function getFileExtensionFromMimeType({
   return defaultExtension;
 }
 
+function base64ToBlob({ rawBase64, mimeType }: { rawBase64: string; mimeType: string }): Blob {
+  // 去掉所有空白字符（换行、空格等），否则 atob 会抛错
+  const cleaned = rawBase64.replace(/\s/g, '');
+  const binary = atob(cleaned);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new Blob([bytes], { type: mimeType });
+}
+
 function downloadFromBase64({ sourceValue, filename, extension, fileMimeType }:
 { sourceValue: string; filename?: string; extension?: string; fileMimeType?: string }) {
   if (sourceValue === '') {
@@ -55,11 +66,10 @@ function downloadFromBase64({ sourceValue, filename, extension, fileMimeType }:
 
   const defaultExtension = extension ?? 'txt';
   const { mimeType } = getMimeTypeFromBase64({ base64String: sourceValue });
-  let base64String = sourceValue;
-  if (!mimeType) {
-    const targetMimeType = fileMimeType ?? getMimeTypeFromExtension(defaultExtension);
-    base64String = `data:${targetMimeType};base64,${sourceValue}`;
-  }
+
+  // 解析出实际的 mime 类型与纯 base64 数据（剥离 Data URI 头部）
+  const resolvedMimeType = mimeType ?? fileMimeType ?? getMimeTypeFromExtension(defaultExtension) ?? 'application/octet-stream';
+  const rawBase64 = sourceValue.replace(/^data:[^;]*;base64,/, '');
 
   const cleanExtension = extension ?? getFileExtensionFromMimeType(
     { mimeType, defaultExtension });
@@ -68,10 +78,20 @@ function downloadFromBase64({ sourceValue, filename, extension, fileMimeType }:
     cleanFileName = `${cleanFileName}.${cleanExtension}`;
   }
 
+  // 用 Blob + object URL 触发下载，避免 Chrome 对 data: URL 下载的限制
+  // （直接 a.href = "data:..." 在部分浏览器会报"网站出问题了"或对大文件失败）
+  const blob = base64ToBlob({ rawBase64, mimeType: resolvedMimeType });
+  const objectUrl = URL.createObjectURL(blob);
+
   const a = document.createElement('a');
-  a.href = base64String;
+  a.href = objectUrl;
   a.download = cleanFileName;
+  document.body.appendChild(a);
   a.click();
+  a.remove();
+
+  // 延迟释放，确保下载已经开始
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
 }
 
 function useDownloadFileFromBase64(
