@@ -96,11 +96,11 @@ async function copyHash(algo: AlgoNames) {
 
       <n-divider />
 
-      <!-- ② 编码选择 -->
-      <c-select
+      <!-- ② 编码选择：平铺按钮组，切换即时重新格式化 -->
+      <c-buttons-select
         v-model:value="encoding"
-        mb-4
         :label="t('tools.hash-text.digestEncoding')"
+        label-position="top"
         :options="[
           { label: t('tools.hash-text.encBin'), value: 'Bin' },
           { label: t('tools.hash-text.encHex'), value: 'Hex' },
@@ -109,8 +109,20 @@ async function copyHash(algo: AlgoNames) {
         ]"
       />
 
-      <!-- ③ Hash 结果列表 -->
-      <div class="hash-list">
+      <!-- ③ 生成按钮：手动触发，文本改动后提示重新生成 -->
+      <div class="generate-row">
+        <c-button
+          type="primary"
+          :disabled="!clearText"
+          @click="generate"
+        >
+          {{ isStale ? t('tools.hash-text.regenerate') : t('tools.hash-text.generate') }}
+        </c-button>
+        <span v-if="isStale" class="stale-hint">{{ t('tools.hash-text.staleHint') }}</span>
+      </div>
+
+      <!-- ④ Hash 结果列表 -->
+      <div v-if="hasGenerated" class="hash-list">
         <div v-for="algo in algoNames" :key="algo" class="hash-row">
           <!-- 算法名称：固定宽度、加粗 -->
           <div class="algo-name">
@@ -118,9 +130,9 @@ async function copyHash(algo: AlgoNames) {
           </div>
 
           <!-- Hash 值：等宽字体、超长截断 + Tooltip -->
-          <c-tooltip :tooltip="hashText(algo, clearText)" position="bottom" class="hash-value-wrap">
+          <c-tooltip :tooltip="hashText(algo, hashedText)" position="bottom" class="hash-value-wrap">
             <div class="hash-value">
-              {{ hashText(algo, clearText) }}
+              {{ hashText(algo, hashedText) }}
             </div>
           </c-tooltip>
 
@@ -137,6 +149,11 @@ async function copyHash(algo: AlgoNames) {
             </transition>
           </button>
         </div>
+      </div>
+
+      <!-- ⑤ 空状态提示 -->
+      <div v-else class="empty-hint">
+        {{ t('tools.hash-text.emptyHint') }}
       </div>
     </c-card>
   </div>
@@ -204,6 +221,30 @@ async function copyHash(algo: AlgoNames) {
   &:hover {
     opacity: 0.85;
   }
+}
+
+/* ── 生成按钮区域 ─────────────────────────────────────────────── */
+.generate-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.stale-hint {
+  font-size: 13px;
+  opacity: 0.7;
+  color: #f0a020;
+}
+
+.empty-hint {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.5;
+  border: 1px dashed rgba(128, 128, 128, 0.25);
+  border-radius: 6px;
 }
 
 /* ── Hash 结果列表 ─────────────────────────────────────────────── */

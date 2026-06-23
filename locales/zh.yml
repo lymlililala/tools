@@ -2012,6 +2012,10 @@ tools:
     encHex: '十六进制 (base 16)'
     encBase64: 'Base64 (base 64)'
     encBase64url: 'Base64url (URL 安全字符)'
+    generate: '生成哈希'
+    regenerate: '重新生成'
+    emptyHint: '输入文本并点击“生成哈希”查看结果。'
+    staleHint: '文本已改动，点击“重新生成”刷新结果。'
     copy: '复制'
     copied: '已复制！'
     description: 在线文本哈希工具，支持 MD5、SHA1、SHA256、SHA224、SHA512、SHA384、SHA3 和 RIPEMD160 等多种哈希算法，输入文本即时输出哈希值，适合数据完整性校验和密码学学习。
