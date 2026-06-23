@@ -979,8 +979,10 @@ tools:
     exampleTip: 分不清明文和密钥？
     hashingFunction: 哈希函数
     hashingFunctionPlaceholder: 选择哈希函数…
+    hashingFunctionHint: 可点击切换 MD5、SHA1、SHA256、SHA512 等多种算法。
     outputEncoding: 输出编码
     outputEncodingPlaceholder: 选择结果编码…
+    outputEncodingHint: 可点击切换十六进制、Base64、Base64-URL、二进制等格式。
     encBinary: 二进制 (base 2)
     encHex: 十六进制 (base 16)
     encBase64: Base64 (base 64)

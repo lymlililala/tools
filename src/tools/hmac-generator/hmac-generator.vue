@@ -96,25 +96,33 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
 
     <!-- ③ 两列选择器（移动端自动堆叠） -->
     <div class="selects-row">
-      <c-select
-        v-model:value="hashFunction"
-        :label="t('tools.hmac-generator.hashingFunction')"
-        class="select-item"
-        :placeholder="t('tools.hmac-generator.hashingFunctionPlaceholder')"
-        :options="Object.keys(algos).map((label) => ({ label, value: label }))"
-      />
-      <c-select
-        v-model:value="encoding"
-        :label="t('tools.hmac-generator.outputEncoding')"
-        class="select-item"
-        :placeholder="t('tools.hmac-generator.outputEncodingPlaceholder')"
-        :options="[
-          { label: t('tools.hmac-generator.encBinary'), value: 'Bin' },
-          { label: t('tools.hmac-generator.encHex'), value: 'Hex' },
-          { label: t('tools.hmac-generator.encBase64'), value: 'Base64' },
-          { label: t('tools.hmac-generator.encBase64url'), value: 'Base64url' },
-        ]"
-      />
+      <div class="select-col">
+        <c-select
+          v-model:value="hashFunction"
+          :label="t('tools.hmac-generator.hashingFunction')"
+          :placeholder="t('tools.hmac-generator.hashingFunctionPlaceholder')"
+          :options="Object.keys(algos).map((label) => ({ label, value: label }))"
+        />
+        <div class="field-hint">
+          {{ t('tools.hmac-generator.hashingFunctionHint') }}
+        </div>
+      </div>
+      <div class="select-col">
+        <c-select
+          v-model:value="encoding"
+          :label="t('tools.hmac-generator.outputEncoding')"
+          :placeholder="t('tools.hmac-generator.outputEncodingPlaceholder')"
+          :options="[
+            { label: t('tools.hmac-generator.encBinary'), value: 'Bin' },
+            { label: t('tools.hmac-generator.encHex'), value: 'Hex' },
+            { label: t('tools.hmac-generator.encBase64'), value: 'Base64' },
+            { label: t('tools.hmac-generator.encBase64url'), value: 'Base64url' },
+          ]"
+        />
+        <div class="field-hint">
+          {{ t('tools.hmac-generator.outputEncodingHint') }}
+        </div>
+      </div>
     </div>
 
     <!-- ④ 输出区：只读灰底 + 内嵌复制按鈕（唯一复制入口） -->
@@ -195,9 +203,14 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
   gap: 8px;
 }
 
-.select-item {
+.select-col {
   flex: 1;
   min-width: 0;
+}
+
+/* 下拉框下方的说明：贴近下拉，不用负边距 */
+.select-col .field-hint {
+  margin-top: 6px;
 }
 
 @media (max-width: 520px) {
@@ -205,7 +218,7 @@ const { copy, isJustCopied } = useCopy({ source: hmac, text: t('tools.hmac-gener
     flex-direction: column;
   }
 
-  .select-item {
+  .select-col {
     width: 100%;
   }
 }

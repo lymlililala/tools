@@ -981,8 +981,10 @@ tools:
     exampleTip: Not sure how plain text differs from the key?
     hashingFunction: Hashing function
     hashingFunctionPlaceholder: Select a hashing function...
+    hashingFunctionHint: Click to switch between MD5, SHA1, SHA256, SHA512 and more.
     outputEncoding: Output encoding
     outputEncodingPlaceholder: Select the result encoding...
+    outputEncodingHint: Click to switch between Hex, Base64, Base64-URL and Binary.
     encBinary: Binary (base 2)
     encHex: Hexadecimal (base 16)
     encBase64: Base64 (base 64)
