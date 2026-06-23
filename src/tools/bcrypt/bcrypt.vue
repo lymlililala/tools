@@ -113,13 +113,10 @@ const compareState = computed<CompareState>(() => {
         :placeholder="t('tools.bcrypt.inputPlaceholder')"
         raw-text
         :label="t('tools.bcrypt.inputLabel')"
-        label-position="left"
-        label-align="right"
-        label-width="120px"
         mb-2
       />
 
-      <n-form-item label-placement="left" label-width="120" :show-feedback="false" mb-3>
+      <n-form-item label-placement="top" :show-feedback="false" mb-3>
         <template #label>
           <span class="salt-label">
             {{ t('tools.bcrypt.saltLabel') }}
@@ -161,11 +158,11 @@ const compareState = computed<CompareState>(() => {
 
     <!-- ② Compare 卡片 -->
     <c-card :title="t('tools.bcrypt.compareTitle')" class="bcrypt-card">
-      <n-form label-width="120">
-        <n-form-item :label="t('tools.bcrypt.compareStringLabel')" label-placement="left" :show-feedback="false">
+      <n-form>
+        <n-form-item :label="t('tools.bcrypt.compareStringLabel')" label-placement="top" :show-feedback="false">
           <c-input-text v-model:value="compareString" :placeholder="t('tools.bcrypt.compareStringPlaceholder')" raw-text />
         </n-form-item>
-        <n-form-item :label="t('tools.bcrypt.compareHashLabel')" label-placement="left" :show-feedback="false">
+        <n-form-item :label="t('tools.bcrypt.compareHashLabel')" label-placement="top" :show-feedback="false">
           <c-input-text v-model:value="compareHash" :placeholder="t('tools.bcrypt.compareHashPlaceholder')" raw-text />
         </n-form-item>
 
