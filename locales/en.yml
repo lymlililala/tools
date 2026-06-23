@@ -2255,6 +2255,12 @@ tools:
     faq4q: What is the difference between UUID v4 and v7? Which should I choose?
     faq4a: UUID v4 is completely random and widely supported, suitable for most global unique ID use cases. UUID v7 (standardized in 2023) includes a timestamp prefix, making it naturally time-ordered — more B-tree index friendly (fewer page splits, better insert performance) while retaining sufficient randomness to prevent collisions. New projects should consider UUID v7 or ULID for database primary keys. Existing systems using v4 do not need to migrate.
     versionLabel: UUID version
+    versionDesc:
+      NIL: 'The special all-zero UUID (00000000-0000-0000-0000-000000000000), used as a null or placeholder value.'
+      v1: 'Time-based: combines the current timestamp with a node identifier. Roughly ordered but predictable.'
+      v3: 'Name-based using MD5 hashing. The same namespace + name always produces the same UUID.'
+      v4: 'Randomly generated — the most common choice for general-purpose unique IDs.'
+      v5: 'Name-based using SHA-1 hashing. Same namespace + name yields the same UUID; preferred over v3.'
     quantity: Quantity
     quantityPlaceholder: UUID quantity
     v3HashInfo: UUID v3 uses MD5 hashing

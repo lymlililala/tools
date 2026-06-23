@@ -11,6 +11,12 @@ const versions = ['NIL', 'v1', 'v3', 'v4', 'v5'] as const;
 const version = useStorage<typeof versions[number]>('uuid-generator:version', 'v4');
 const count = useStorage('uuid-generator:quantity', 1);
 
+// 当前版本的说明文字
+const versionDesc = computed(() => t(`tools.uuid-generator.versionDesc.${version.value}`));
+
+// 输出框行数随数量自适应（1~14 行，超出由滚动条处理）
+const displayRows = computed(() => Math.min(Math.max(count.value, 1), 14));
+
 // v3/v5 命名空间预设
 const NAMESPACE_PRESETS = {
   DNS: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
@@ -88,7 +94,12 @@ watch(version, () => {
 <template>
   <div class="uuid-wrap">
     <!-- ① 版本选择 -->
-    <c-buttons-select v-model:value="version" :options="versions" :label="t('tools.uuid-generator.versionLabel')" label-width="110px" mb-3 />
+    <c-buttons-select v-model:value="version" :options="versions" :label="t('tools.uuid-generator.versionLabel')" label-width="110px" mb-2 />
+
+    <!-- 版本说明 -->
+    <p class="version-hint">
+      {{ versionDesc }}
+    </p>
 
     <!-- ② 数量 -->
     <div mb-3 flex items-center gap-3>
@@ -151,13 +162,9 @@ watch(version, () => {
     <!-- ④ 结果输出框：每行一个 UUID，高度自适应最大 320px -->
     <c-input-text
       :value="uuids"
-      multiline
       :placeholder="t('tools.uuid-generator.outputPlaceholder')"
-      rows="1"
-      readonly
-      raw-text
-      monospace
-      my-3
+      :rows="displayRows"
+      raw-text monospace readonly multiline my-3
       class="uuid-display"
     />
 
@@ -191,6 +198,14 @@ watch(version, () => {
   font-size: 14px;
   text-align: right;
   padding-right: 12px;
+}
+
+/* 版本说明 */
+.version-hint {
+  margin: 0 0 14px 110px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  opacity: 0.6;
 }
 
 /* ── v3/v5 面板 ────────────────────────────────────────────────── */
@@ -308,6 +323,10 @@ watch(version, () => {
   .field-label {
     width: 80px;
     font-size: 13px;
+  }
+
+  .version-hint {
+    margin-left: 80px;
   }
 
   .preset-row {
