@@ -249,16 +249,14 @@ tools:
       lessThanASecond: 不到一秒
       separator: ' '
       unit:
-        millennium: '{n} 千年'
-        century: '{n} 个世纪'
-        decade: '{n} 个十年'
-        year: '{n} 年'
-        month: '{n} 个月'
-        week: '{n} 周'
-        day: '{n} 天'
-        hour: '{n} 小时'
-        minute: '{n} 分钟'
-        second: '{n} 秒'
+        yi: '{n}亿年'
+        wan: '{n}万年'
+        year: '{n}年'
+        month: '{n}个月'
+        day: '{n}天'
+        hour: '{n}小时'
+        minute: '{n}分钟'
+        second: '{n}秒'
     emptyHint: 在上方输入密码以开始分析……
     suggestionsTitle: 增强密码强度的建议：
     noteLabel: 注意：

@@ -1,10 +1,38 @@
 import _ from 'lodash';
 
-export { getPasswordCrackTimeEstimation, getCharsetLength, getHumanFriendlyDurationParts };
+export { getPasswordCrackTimeEstimation, getCharsetLength, getHumanFriendlyDurationParts, DURATION_UNITS_EN, DURATION_UNITS_ZH };
 
 export type CrackDurationParts =
   | { special: 'instantly' | 'lessThanASecond' }
   | { parts: { unit: string; count: number; display: string }[] };
+
+export interface DurationUnit { unit: string; secondsInUnit: number; prettify?: boolean }
+
+// 英文/西方语言：millennium / century / decade …（与原始 it-tools 一致）
+const DURATION_UNITS_EN: DurationUnit[] = [
+  { unit: 'millennium', secondsInUnit: 31536000000, prettify: true },
+  { unit: 'century', secondsInUnit: 3153600000 },
+  { unit: 'decade', secondsInUnit: 315360000 },
+  { unit: 'year', secondsInUnit: 31536000 },
+  { unit: 'month', secondsInUnit: 2592000 },
+  { unit: 'week', secondsInUnit: 604800 },
+  { unit: 'day', secondsInUnit: 86400 },
+  { unit: 'hour', secondsInUnit: 3600 },
+  { unit: 'minute', secondsInUnit: 60 },
+  { unit: 'second', secondsInUnit: 1 },
+];
+
+// 中文：没有“个十年/个世纪”的说法，改用 亿年 / 万年 / 年 / 月 / 天 / 时 / 分 / 秒
+const DURATION_UNITS_ZH: DurationUnit[] = [
+  { unit: 'yi', secondsInUnit: 3153600000000000, prettify: true }, // 亿年 = 1e8 年
+  { unit: 'wan', secondsInUnit: 315360000000 }, //                    万年 = 1e4 年
+  { unit: 'year', secondsInUnit: 31536000 },
+  { unit: 'month', secondsInUnit: 2592000 },
+  { unit: 'day', secondsInUnit: 86400 },
+  { unit: 'hour', secondsInUnit: 3600 },
+  { unit: 'minute', secondsInUnit: 60 },
+  { unit: 'second', secondsInUnit: 1 },
+];
 
 function prettifyExponentialNotation(exponentialNotation: number) {
   const [base, exponent] = exponentialNotation.toString().split('e');
@@ -53,8 +81,9 @@ function getHumanFriendlyDuration({ seconds }: { seconds: number }) {
     .value();
 }
 
-// 与 getHumanFriendlyDuration 同逻辑，但返回结构化片段供 UI 做 i18n 渲染（单位名/复数交给 vue-i18n）
-function getHumanFriendlyDurationParts({ seconds }: { seconds: number }): CrackDurationParts {
+// 与 getHumanFriendlyDuration 同逻辑，但返回结构化片段供 UI 做 i18n 渲染（单位名/复数交给 vue-i18n）。
+// units 决定单位粒度，按语言传入（中文用 DURATION_UNITS_ZH，其余用 DURATION_UNITS_EN）。
+function getHumanFriendlyDurationParts({ seconds, units = DURATION_UNITS_EN }: { seconds: number; units?: DurationUnit[] }): CrackDurationParts {
   if (seconds <= 0.001) {
     return { special: 'instantly' };
   }
@@ -63,20 +92,7 @@ function getHumanFriendlyDurationParts({ seconds }: { seconds: number }): CrackD
     return { special: 'lessThanASecond' };
   }
 
-  const timeUnits = [
-    { unit: 'millennium', secondsInUnit: 31536000000, prettify: true },
-    { unit: 'century', secondsInUnit: 3153600000 },
-    { unit: 'decade', secondsInUnit: 315360000 },
-    { unit: 'year', secondsInUnit: 31536000 },
-    { unit: 'month', secondsInUnit: 2592000 },
-    { unit: 'week', secondsInUnit: 604800 },
-    { unit: 'day', secondsInUnit: 86400 },
-    { unit: 'hour', secondsInUnit: 3600 },
-    { unit: 'minute', secondsInUnit: 60 },
-    { unit: 'second', secondsInUnit: 1 },
-  ];
-
-  const parts = _.chain(timeUnits)
+  const parts = _.chain(units)
     .map(({ unit, secondsInUnit, prettify }) => {
       const quantity = Math.floor(seconds / secondsInUnit);
       seconds %= secondsInUnit;
@@ -104,7 +120,6 @@ function getPasswordCrackTimeEstimation({ password, guessesPerSecond = 1e9 }: { 
   const secondsToCrack = 2 ** entropy / guessesPerSecond;
 
   const crackDurationFormatted = getHumanFriendlyDuration({ seconds: secondsToCrack });
-  const crackDurationParts = getHumanFriendlyDurationParts({ seconds: secondsToCrack });
 
   const score = Math.min(entropy / 128, 1);
 
@@ -113,7 +128,6 @@ function getPasswordCrackTimeEstimation({ password, guessesPerSecond = 1e9 }: { 
     charsetLength,
     passwordLength,
     crackDurationFormatted,
-    crackDurationParts,
     secondsToCrack,
     score,
   };

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getPasswordCrackTimeEstimation } from './password-strength-analyser.service';
+import { DURATION_UNITS_EN, DURATION_UNITS_ZH, getHumanFriendlyDurationParts, getPasswordCrackTimeEstimation } from './password-strength-analyser.service';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const password = ref('');
 const showPassword = ref(false);
@@ -98,8 +98,10 @@ const entropyTooltip = computed(() => {
 });
 
 // ── 破解时长（本地化渲染）────────────────────────────────────────────────────
+// 中文用 亿年/万年/年/… 这套地道单位；其余语言用 millennium/century/decade/…
 const crackDurationLocalized = computed(() => {
-  const d = estimation.value.crackDurationParts;
+  const units = locale.value === 'zh' ? DURATION_UNITS_ZH : DURATION_UNITS_EN;
+  const d = getHumanFriendlyDurationParts({ seconds: estimation.value.secondsToCrack, units });
   const prefix = 'tools.password-strength-analyser.duration';
   if ('special' in d) {
     return t(`${prefix}.${d.special}`);
