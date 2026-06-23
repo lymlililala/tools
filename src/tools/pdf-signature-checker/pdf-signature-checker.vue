@@ -53,8 +53,18 @@ async function onFileSelected(uploadedFile: File) {
       status.value = 'parsed';
     }
   }
-  catch {
-    status.value = 'error';
+  catch (err) {
+    // pdf-signature-reader 在 PDF 不含任何数字签名时会直接 throw
+    // VerifyPDFError('cannot find subfilter', TYPE_PARSE)，而非返回空数组。
+    // 这种情况属于「无签名」的正常文档，不应误报为「解析失败」。
+    const message = String((err as { message?: string })?.message ?? '').toLowerCase();
+    const type = (err as { type?: string })?.type;
+    if (type === 'TYPE_PARSE' || message.includes('subfilter')) {
+      status.value = 'no-signature';
+    }
+    else {
+      status.value = 'error';
+    }
   }
 }
 
