@@ -173,7 +173,7 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
       mb-2
     >
       <div class="input-action-row">
-        <c-input-text v-model:value="entropy" :placeholder="t('tools.bip39-generator.entropyPlaceholder')" raw-text monospace class="grow" />
+        <c-input-text v-model:value="entropy" :placeholder="t('tools.bip39-generator.entropyPlaceholder')" raw-text monospace multiline autosize class="grow" />
 
         <!-- 刷新 -->
         <c-tooltip :tooltip="t('tools.bip39-generator.generateEntropy')" position="top">
@@ -204,7 +204,7 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
       :validation-status="mnemonicValidation.status"
     >
       <div class="input-action-row">
-        <c-input-text v-model:value="mnemonic" :placeholder="t('tools.bip39-generator.mnemonicPlaceholder')" raw-text class="grow" />
+        <c-input-text v-model:value="mnemonic" :placeholder="t('tools.bip39-generator.mnemonicPlaceholder')" raw-text multiline autosize class="grow" />
 
         <!-- 复制助记词 -->
         <c-tooltip :tooltip="mnemonicCopied ? t('tools.bip39-generator.copied') : t('tools.bip39-generator.copyMnemonic')" position="top">
@@ -265,7 +265,7 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
 /* ── 输入+操作行 ─────────────────────────────────────────────────── */
 .input-action-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
   width: 100%;
 }
