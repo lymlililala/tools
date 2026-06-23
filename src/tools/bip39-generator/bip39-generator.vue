@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import {
-  chineseSimplifiedWordList,
-  chineseTraditionalWordList,
-  czechWordList,
-  englishWordList,
   entropyToMnemonic,
-  frenchWordList,
-  generateEntropy,
-  italianWordList,
-  japaneseWordList,
-  koreanWordList,
   mnemonicToEntropy,
-  portugueseWordList,
-  spanishWordList,
-} from '@it-tools/bip39';
+} from '@scure/bip39';
+import { wordlist as czechWordList } from '@scure/bip39/wordlists/czech.js';
+import { wordlist as englishWordList } from '@scure/bip39/wordlists/english.js';
+import { wordlist as frenchWordList } from '@scure/bip39/wordlists/french.js';
+import { wordlist as italianWordList } from '@scure/bip39/wordlists/italian.js';
+import { wordlist as japaneseWordList } from '@scure/bip39/wordlists/japanese.js';
+import { wordlist as koreanWordList } from '@scure/bip39/wordlists/korean.js';
+import { wordlist as portugueseWordList } from '@scure/bip39/wordlists/portuguese.js';
+import { wordlist as chineseSimplifiedWordList } from '@scure/bip39/wordlists/simplified-chinese.js';
+import { wordlist as spanishWordList } from '@scure/bip39/wordlists/spanish.js';
+import { wordlist as chineseTraditionalWordList } from '@scure/bip39/wordlists/traditional-chinese.js';
 
 import { useCopy } from '@/composable/copy';
 import { useValidation } from '@/composable/validation';
@@ -21,6 +20,16 @@ import { isNotThrowing } from '@/utils/boolean';
 import { withDefaultOnError } from '@/utils/defaults';
 
 const { t } = useI18n();
+
+// ── hex ↔ bytes 辅助 ──────────────────────────────────────────────────────────
+// @scure/bip39 的熵以 Uint8Array 形式传入/返回，UI 仍以 hex 字符串为唯一来源。
+function hexToBytes(hex: string): Uint8Array {
+  return Uint8Array.from(hex.match(/.{1,2}/g)?.map(byte => Number.parseInt(byte, 16)) ?? []);
+}
+
+function bytesToHex(bytes: Uint8Array): string {
+  return [...bytes].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
 
 // ── 词库 ──────────────────────────────────────────────────────────────────────
 const languages = {
@@ -58,26 +67,30 @@ const wordCount = ref(12);
 const language = ref<keyof typeof languages>('English');
 
 // ── Entropy ───────────────────────────────────────────────────────────────────
-const entropy = ref(generateEntropy(wordCountToBytes[12]));
+function generateEntropyHex(bytes: number): string {
+  return bytesToHex(crypto.getRandomValues(new Uint8Array(bytes)));
+}
+
+const entropy = ref(generateEntropyHex(wordCountToBytes[12]));
 const passphraseInput = ref('');
 
 // 当 wordCount 改变时重新生成对应长度的熵
 watch(wordCount, (n) => {
-  entropy.value = generateEntropy(wordCountToBytes[n]);
+  entropy.value = generateEntropyHex(wordCountToBytes[n]);
 });
 
 // ── Mnemonic（双向绑定）──────────────────────────────────────────────────────
 const mnemonic = computed({
   get() {
     return withDefaultOnError(
-      () => entropyToMnemonic(entropy.value, languages[language.value]),
+      () => entropyToMnemonic(hexToBytes(entropy.value), languages[language.value]),
       passphraseInput.value,
     );
   },
   set(value: string) {
     passphraseInput.value = value;
     const newEntropy = withDefaultOnError(
-      () => mnemonicToEntropy(value, languages[language.value]),
+      () => bytesToHex(mnemonicToEntropy(value, languages[language.value])),
       '',
     );
     entropy.value = newEntropy;
@@ -117,7 +130,7 @@ const mnemonicValidation = useValidation({
 });
 
 function refreshEntropy() {
-  entropy.value = generateEntropy(wordCountToBytes[wordCount.value]);
+  entropy.value = generateEntropyHex(wordCountToBytes[wordCount.value]);
 }
 
 // ── 复制（带图标反馈）─────────────────────────────────────────────────────────
@@ -178,6 +191,9 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
             </transition>
           </button>
         </c-tooltip>
+      </div>
+      <div class="entropy-hint">
+        {{ t('tools.bip39-generator.entropyHint') }}
       </div>
     </n-form-item>
 
@@ -257,6 +273,14 @@ const { copy: copyMnemonic, isJustCopied: mnemonicCopied } = useCopy({ source: m
 .grow {
   flex: 1;
   min-width: 0;
+}
+
+/* 熵说明 */
+.entropy-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.6;
+  margin-top: 4px;
 }
 
 /* 操作按钮 */
