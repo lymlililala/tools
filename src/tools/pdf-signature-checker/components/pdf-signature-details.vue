@@ -6,12 +6,13 @@ const { t } = useI18n();
 const props = defineProps<{ signature: SignatureInfo }>();
 const { signature } = toRefs(props);
 
-const tableHeaders = {
+// 表头需用 computed 保持响应式，否则会被锁定在组件初始化时的语言（导致中文界面下表头仍是英文）
+const tableHeaders = computed(() => ({
   validityPeriod: t('tools.pdf-signature-checker.validityPeriod'),
   issuedBy: t('tools.pdf-signature-checker.issuedBy'),
   issuedTo: t('tools.pdf-signature-checker.issuedTo'),
   pemCertificate: t('tools.pdf-signature-checker.pemCertificate'),
-};
+}));
 
 const certs = computed(() => signature.value.meta.certs.map((certificate, index) => ({
   ...certificate,
