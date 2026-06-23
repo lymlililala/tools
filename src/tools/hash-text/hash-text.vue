@@ -113,6 +113,7 @@ async function copyHash(algo: AlgoNames) {
       <div class="generate-row">
         <c-button
           type="primary"
+          class="generate-btn"
           :disabled="!clearText"
           @click="generate"
         >
@@ -230,6 +231,21 @@ async function copyHash(algo: AlgoNames) {
   gap: 12px;
   margin: 16px 0;
   flex-wrap: wrap;
+}
+
+/* 生成按钮：实心填充，与编码选中态（浅绿描边）区分开。
+   class 落在 c-button 根元素上，直接覆盖其 v-bind 背景色 */
+.generate-btn {
+  background-color: #18a058 !important;
+  color: #fff !important;
+
+  &:not(.disabled):hover {
+    background-color: #1ea54c !important;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .stale-hint {
