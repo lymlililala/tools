@@ -6,7 +6,6 @@ import { withDefaultOnError } from '@/utils/defaults';
 const { t } = useI18n();
 
 const encodeUrlSafe = useStorage('base64-string-converter--encode-url-safe', false);
-const decodeUrlSafe = useStorage('base64-string-converter--decode-url-safe', false);
 
 // ── 编码端 ────────────────────────────────────────────────────────────────
 const textInput = ref('');
@@ -27,7 +26,8 @@ const decodeError = computed(() => {
   if (!val) {
     return '';
   }
-  if (!isValidBase64(val, { makeUrlSafe: decodeUrlSafe.value })) {
+  // 解码端自动兼容标准与 URL 安全两种字符集（js-base64 解码本身即可解析两者）
+  if (!isValidBase64(val, { makeUrlSafe: true })) {
     return 'Invalid Base64 string. Please check for illegal characters or incorrect padding.';
   }
   return '';
@@ -38,7 +38,7 @@ const textOutput = computed(() => {
   if (!val || decodeError.value) {
     return '';
   }
-  return withDefaultOnError(() => base64ToText(val, { makeUrlSafe: decodeUrlSafe.value }), '');
+  return withDefaultOnError(() => base64ToText(val, { makeUrlSafe: true }), '');
 });
 
 const { copy: copyText, isJustCopied: textCopied } = useCopy({
@@ -54,10 +54,9 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
     <c-card class="b64-card" :title="t('tools.base64-string-converter.titleStringToBase64')">
       <!-- URL Safe 开关 -->
       <n-form-item :label="t('tools.base64-string-converter.encodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
-        <c-tooltip :tooltip="t('tools.base64-string-converter.encodeUrlSafeTip')" position="right">
-          <n-switch v-model:value="encodeUrlSafe" />
-        </c-tooltip>
+        <n-switch v-model:value="encodeUrlSafe" />
       </n-form-item>
+      <p class="switch-hint">{{ t('tools.base64-string-converter.encodeUrlSafeTip') }}</p>
 
       <!-- 输入框 -->
       <div class="area-wrap">
@@ -113,12 +112,11 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 
     <!-- ② 右侧：解码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" :title="t('tools.base64-string-converter.titleBase64ToString')">
-      <!-- URL Safe 开关 -->
-      <n-form-item :label="t('tools.base64-string-converter.decodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
-        <c-tooltip :tooltip="t('tools.base64-string-converter.decodeUrlSafeTip')" position="right">
-          <n-switch v-model:value="decodeUrlSafe" />
-        </c-tooltip>
-      </n-form-item>
+      <!-- 解码自动兼容标准与 URL 安全字符集，无需手动切换 -->
+      <p class="decode-note">
+        <icon-mdi-information-outline class="decode-note-icon" />
+        {{ t('tools.base64-string-converter.decodeAutoNote') }}
+      </p>
 
       <!-- 输入框 -->
       <div class="area-wrap">
@@ -203,7 +201,32 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 
 /* ── URL Safe 开关行 ───────────────────────────────────────────────────── */
 .switch-row {
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+/* 开关下方常驻说明 */
+.switch-hint {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.5;
+}
+
+/* 解码端：自动兼容说明 */
+.decode-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.5;
+}
+
+.decode-note-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 /* ── 标签行 ────────────────────────────────────────────────────────────── */

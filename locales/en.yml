@@ -1133,7 +1133,7 @@ tools:
     faq4q: Is Base64 encoding the same as encryption?
     faq4a: No. Base64 is encoding, not encryption. It simply converts binary data to printable ASCII characters, and anyone can easily decode it without a key. Do not use Base64 to protect sensitive data — it provides no security. For real protection, use encryption algorithms like AES or RSA.
     encodeUrlSafe: Encode URL safe
-    encodeUrlSafeTip: Replaces + with - and / with _ for safe use in URLs
+    encodeUrlSafeTip: Replaces + with - and / with _, and drops the = padding, for safe use in URLs.
     stringToEncode: String to encode
     clearInput: Clear input
     stringPlaceholder: Put your string here…
@@ -1142,7 +1142,7 @@ tools:
     copyBase64: Copy Base64
     base64OutputPlaceholder: Base64 output will appear here…
     decodeUrlSafe: Decode URL safe
-    decodeUrlSafeTip: Treats - as + and _ as / when decoding URL-safe Base64
+    decodeAutoNote: Automatically handles both standard and URL-safe Base64 — no toggle needed.
     base64ToDecode: Base64 string to decode
     base64InputPlaceholder: Paste your Base64 string here…
     decodedString: Decoded string

@@ -1128,7 +1128,7 @@ tools:
     faq4q: Base64 编码和加密是一回事吗？
     faq4a: 不，Base64 是编码而非加密。它只是将二进制数据转换为可打印的 ASCII 字符串，任何人都可以轻松解码，没有密钥保护。不要用 Base64 来保护敏感数据，它仅用于数据传输和存储的格式兼容性。需要安全保护请使用 AES、RSA 等加密算法。
     encodeUrlSafe: URL 安全编码
-    encodeUrlSafeTip: 将 + 替换为 -、/ 替换为 _，便于在 URL 中安全使用
+    encodeUrlSafeTip: 将 + 替换为 -、/ 替换为 _，并去掉末尾的 = 填充，便于在 URL 中安全使用。
     stringToEncode: 待编码字符串
     clearInput: 清空输入
     stringPlaceholder: 在此输入字符串…
@@ -1137,7 +1137,7 @@ tools:
     copyBase64: 复制 Base64
     base64OutputPlaceholder: Base64 结果将显示在这里…
     decodeUrlSafe: URL 安全解码
-    decodeUrlSafeTip: 解码 URL 安全的 Base64 时将 - 视为 +、_ 视为 /
+    decodeAutoNote: 自动兼容标准与 URL 安全两种 Base64，无需手动切换。
     base64ToDecode: 待解码 Base64 字符串
     base64InputPlaceholder: 在此粘贴 Base64 字符串…
     decodedString: 解码结果
