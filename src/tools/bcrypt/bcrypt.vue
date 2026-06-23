@@ -249,6 +249,17 @@ const compareState = computed<CompareState>(() => {
   border-radius: 4px;
   overflow: hidden;
   min-height: 40px;
+
+  /* 复制按钮被 c-tooltip 包裹(根 div + targetRef 内层),逐层撑满高度让图标垂直居中、分隔线贯穿 */
+  :deep([inline-block]) {
+    display: flex;
+    align-self: stretch;
+  }
+
+  :deep([inline-block] > div) {
+    display: flex;
+    flex: 1;
+  }
 }
 
 .hash-output {
