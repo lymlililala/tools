@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
-export { getPasswordCrackTimeEstimation, getCharsetLength };
+export { getPasswordCrackTimeEstimation, getCharsetLength, getHumanFriendlyDurationParts };
+
+export type CrackDurationParts =
+  | { special: 'instantly' | 'lessThanASecond' }
+  | { parts: { unit: string; count: number; display: string }[] };
 
 function prettifyExponentialNotation(exponentialNotation: number) {
   const [base, exponent] = exponentialNotation.toString().split('e');
@@ -49,6 +53,48 @@ function getHumanFriendlyDuration({ seconds }: { seconds: number }) {
     .value();
 }
 
+// 与 getHumanFriendlyDuration 同逻辑，但返回结构化片段供 UI 做 i18n 渲染（单位名/复数交给 vue-i18n）
+function getHumanFriendlyDurationParts({ seconds }: { seconds: number }): CrackDurationParts {
+  if (seconds <= 0.001) {
+    return { special: 'instantly' };
+  }
+
+  if (seconds <= 1) {
+    return { special: 'lessThanASecond' };
+  }
+
+  const timeUnits = [
+    { unit: 'millennium', secondsInUnit: 31536000000, prettify: true },
+    { unit: 'century', secondsInUnit: 3153600000 },
+    { unit: 'decade', secondsInUnit: 315360000 },
+    { unit: 'year', secondsInUnit: 31536000 },
+    { unit: 'month', secondsInUnit: 2592000 },
+    { unit: 'week', secondsInUnit: 604800 },
+    { unit: 'day', secondsInUnit: 86400 },
+    { unit: 'hour', secondsInUnit: 3600 },
+    { unit: 'minute', secondsInUnit: 60 },
+    { unit: 'second', secondsInUnit: 1 },
+  ];
+
+  const parts = _.chain(timeUnits)
+    .map(({ unit, secondsInUnit, prettify }) => {
+      const quantity = Math.floor(seconds / secondsInUnit);
+      seconds %= secondsInUnit;
+
+      if (quantity <= 0) {
+        return undefined;
+      }
+
+      const display = prettify ? prettifyExponentialNotation(quantity) : String(quantity);
+      return { unit, count: quantity, display };
+    })
+    .compact()
+    .take(2)
+    .value();
+
+  return { parts };
+}
+
 function getPasswordCrackTimeEstimation({ password, guessesPerSecond = 1e9 }: { password: string; guessesPerSecond?: number }) {
   const charsetLength = getCharsetLength({ password });
   const passwordLength = password.length;
@@ -58,6 +104,7 @@ function getPasswordCrackTimeEstimation({ password, guessesPerSecond = 1e9 }: { 
   const secondsToCrack = 2 ** entropy / guessesPerSecond;
 
   const crackDurationFormatted = getHumanFriendlyDuration({ seconds: secondsToCrack });
+  const crackDurationParts = getHumanFriendlyDurationParts({ seconds: secondsToCrack });
 
   const score = Math.min(entropy / 128, 1);
 
@@ -66,6 +113,7 @@ function getPasswordCrackTimeEstimation({ password, guessesPerSecond = 1e9 }: { 
     charsetLength,
     passwordLength,
     crackDurationFormatted,
+    crackDurationParts,
     secondsToCrack,
     score,
   };

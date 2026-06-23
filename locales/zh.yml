@@ -244,6 +244,21 @@ tools:
     hidePassword: 隐藏密码
     showPassword: 显示密码
     crackSubtitle: 暴力破解此密码所需的时长
+    duration:
+      instantly: 瞬间破解
+      lessThanASecond: 不到一秒
+      separator: ' '
+      unit:
+        millennium: '{n} 千年'
+        century: '{n} 个世纪'
+        decade: '{n} 个十年'
+        year: '{n} 年'
+        month: '{n} 个月'
+        week: '{n} 周'
+        day: '{n} 天'
+        hour: '{n} 小时'
+        minute: '{n} 分钟'
+        second: '{n} 秒'
     emptyHint: 在上方输入密码以开始分析……
     suggestionsTitle: 增强密码强度的建议：
     noteLabel: 注意：

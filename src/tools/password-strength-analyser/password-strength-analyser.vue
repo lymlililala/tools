@@ -97,6 +97,19 @@ const entropyTooltip = computed(() => {
   return `E = L × log₂(R) = ${L} × log₂(${R}) ≈ ${E} bits`;
 });
 
+// ── 破解时长（本地化渲染）────────────────────────────────────────────────────
+const crackDurationLocalized = computed(() => {
+  const d = estimation.value.crackDurationParts;
+  const prefix = 'tools.password-strength-analyser.duration';
+  if ('special' in d) {
+    return t(`${prefix}.${d.special}`);
+  }
+  const sep = t(`${prefix}.separator`);
+  return d.parts
+    .map(p => t(`${prefix}.unit.${p.unit}`, p.count, { named: { n: p.display } }))
+    .join(sep);
+});
+
 const details = computed(() => [
   { label: t('tools.password-strength-analyser.passwordLength'), value: estimation.value.passwordLength, tooltip: null },
   { label: t('tools.password-strength-analyser.entropy'), value: `${Math.round(estimation.value.entropy * 100) / 100} bits`, tooltip: entropyTooltip.value },
@@ -161,7 +174,7 @@ const details = computed(() => [
           {{ t('tools.password-strength-analyser.crackSubtitle') }}
         </div>
         <div class="crack-duration" :style="{ color: strengthMeta.color }" data-test-id="crack-duration">
-          {{ estimation.crackDurationFormatted }}
+          {{ crackDurationLocalized }}
         </div>
       </c-card>
       <div v-else key="empty" class="empty-hint">

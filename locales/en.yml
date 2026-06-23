@@ -244,6 +244,21 @@ tools:
     hidePassword: Hide password
     showPassword: Show password
     crackSubtitle: Duration to crack this password with brute force
+    duration:
+      instantly: Instantly
+      lessThanASecond: Less than a second
+      separator: ', '
+      unit:
+        millennium: '{n} millennium | {n} millennia'
+        century: '{n} century | {n} centuries'
+        decade: '{n} decade | {n} decades'
+        year: '{n} year | {n} years'
+        month: '{n} month | {n} months'
+        week: '{n} week | {n} weeks'
+        day: '{n} day | {n} days'
+        hour: '{n} hour | {n} hours'
+        minute: '{n} minute | {n} minutes'
+        second: '{n} second | {n} seconds'
     emptyHint: Enter a password above to start the analysis…
     suggestionsTitle: "Suggestions to strengthen your password:"
     noteLabel: "Note:"
