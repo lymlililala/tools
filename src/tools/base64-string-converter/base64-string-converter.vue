@@ -52,11 +52,14 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
   <div class="tool-wide b64-layout">
     <!-- ① 左侧：编码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" :title="t('tools.base64-string-converter.titleStringToBase64')">
-      <!-- URL Safe 开关 -->
-      <n-form-item :label="t('tools.base64-string-converter.encodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
-        <n-switch v-model:value="encodeUrlSafe" />
-      </n-form-item>
-      <p class="switch-hint">{{ t('tools.base64-string-converter.encodeUrlSafeTip') }}</p>
+      <!-- 顶部控制区（固定高度，与右侧对齐） -->
+      <div class="b64-head">
+        <!-- URL Safe 开关 -->
+        <n-form-item :label="t('tools.base64-string-converter.encodeUrlSafe')" label-placement="left" :show-feedback="false" class="switch-row">
+          <n-switch v-model:value="encodeUrlSafe" />
+        </n-form-item>
+        <p class="switch-hint">{{ t('tools.base64-string-converter.encodeUrlSafeTip') }}</p>
+      </div>
 
       <!-- 输入框 -->
       <div class="area-wrap">
@@ -112,11 +115,14 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 
     <!-- ② 右侧：解码 ─────────────────────────────────────────────────── -->
     <c-card class="b64-card" :title="t('tools.base64-string-converter.titleBase64ToString')">
-      <!-- 解码自动兼容标准与 URL 安全字符集，无需手动切换 -->
-      <p class="decode-note">
-        <icon-mdi-information-outline class="decode-note-icon" />
-        {{ t('tools.base64-string-converter.decodeAutoNote') }}
-      </p>
+      <!-- 顶部控制区（固定高度，与左侧对齐） -->
+      <div class="b64-head">
+        <!-- 解码自动兼容标准与 URL 安全字符集，无需手动切换 -->
+        <p class="decode-note">
+          <icon-mdi-information-outline class="decode-note-icon" />
+          {{ t('tools.base64-string-converter.decodeAutoNote') }}
+        </p>
+      </div>
 
       <!-- 输入框 -->
       <div class="area-wrap">
@@ -199,6 +205,15 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
   min-width: 0;
 }
 
+/* ── 顶部控制区：左右等高，保证下方文本框对齐 ─────────────────────────── */
+.b64-head {
+  min-height: 78px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 /* ── URL Safe 开关行 ───────────────────────────────────────────────────── */
 .switch-row {
   margin-bottom: 4px;
@@ -206,7 +221,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
 
 /* 开关下方常驻说明 */
 .switch-hint {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 12px;
   line-height: 1.5;
   opacity: 0.5;
@@ -217,7 +232,7 @@ const { copy: copyText, isJustCopied: textCopied } = useCopy({
   display: flex;
   align-items: flex-start;
   gap: 5px;
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 12px;
   line-height: 1.5;
   opacity: 0.5;
